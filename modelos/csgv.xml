@@ -1,0 +1,2336 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<item create="true"  id="1" name="ORIGENS" api="true" apiname="Origens" friendlyname="Origens" modelversion="3" descriptor="Origens">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="id" method="Insert" processcode="10" procname="PRDEVORIINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+
+		</insertcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="select" processcode="100" method="Find" return="int" returnmode="2" procname="" desc ="Verifica se um registro de origem já existe na base de dados">
+				<query translate="true">
+					<![CDATA[
+string SQL="SELECT id FROM origens WHERE"; 
+SQL += " nm_apelido = '" + model.NM_APELIDO + "'";
+SQL += " and nm_rz_social = '" + model.NM_RZ_SOCIAL.Replace("'","''") + "'";
+SQL += " and registro = '" + model.REGISTRO + "'";
+SQL += " and registro_uf = '" + model.REGISTRO_UF + "'";
+SQL += " and cep = '" + model.CEP + "'";
+SQL += " and email = '" + model.EMAIL + "'";
+SQL += " and login = '" + model.LOGIN + "'";
+SQL += " and senha= '" + model.SENHA + "'";
+SQL += " and contato = '" + model.CONTATO + "'";
+SQL += " and site = '" + model.SITE + "'";
+SQL += " and obs = '" + model.OBS + "'";
+SQL += " and EmpresaMigrada=" + model.EMPRESAMIGRADA.ToString() + " LIMIT 1";
+]]>
+				</query>
+
+				<parameters>
+					<parameter input="true" apply="false" desc ="Objeto Origem" translate="false" name="model" type="Origens"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Origens" procname="" desc ="Obtêm um registro de origens com base no id">
+				<query>
+					<![CDATA[SELECT * FROM origens A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Id de Registro da Origem" name="id" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="int" procname="" desc ="Retorna o ID de duplicidade de registro de inscrição do veterinário">
+				<query>
+					<![CDATA[SELECT id FROM origens A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Registro" name="Registro" type="System.String" size="14" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="UF" name="Registro_uf" type="System.String" size="5" default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="String" procname="" desc ="Retorna a string da ultima ocorrencia de registro invalido de crmv">
+				<query>
+					<![CDATA[SELECT MAX(registro) as t FROM cli.origens WHERE registro LIKE 'MIG%' ORDER BY 1 DESC limit 1]]>
+				</query>
+
+			</item>
+		</selectcommand>
+	</item>
+
+
+	<item create="true" id="2" name="CLI" api="true" apiname="Tutores" friendlyname="Tutores" modelversion="3" descriptor="Cadastro de Tutores" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+
+		<insertcommand  script="false" webtype="[HttpPost]" route="insert" key="Key" fieldreturn="" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um novo tutor/cliente">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END 
+SET pRETURN_VALUE=0;
+SELECT IFNULL(CPF,-2) INTO pRETURN_VALUE FROM CLI WHERE CPF = pCPF LIMIT 1;
+	
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="select" processcode="100" method="Select" return="Tutores" procname="" desc ="Seleciona as informações de um tutor com base no cpf">
+				<query>
+					<![CDATA[SELECT * FROM cli A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="CPF/CNPJ do Tutor" name="cpf" type="System.String"  size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+
+			<item script="false" alias="A." sql="" route="select" processcode="100" method="Find" return="int" procname="" desc ="Localiza um CPF">
+				<query>
+					<![CDATA[SELECT CASE WHEN CPF IS NULL THEN 0 ELSE 1 END  AS RETURN_VALUE FROM CLI A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="CPF/CNPJ do Tutor" name="cpf" type="System.String"  size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="GetPhones" type="List" return="DW.Domain.Models.Telefones" procname="DW.PRGETCLIFON" desc ="Seleciona todos os registros de Telefones válidos de um determinado cliente" remarks="Para listar todos os clientes, informe '0' no campo relativo ao pCODCMF">
+				<query>
+					<![CDATA[		
+        ]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código do Cliente" islike="true" name="CODCMF" type="System.String"  size="14"  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Tipo de Telefone" islike="true" name="TIPCTO" type="System.Byte"   output="" null="false"/>
+				</parameters>
+			</item>
+
+
+
+			<item script="true" alias="A." sql="" type="List" method="GetNPSList" return="NPS" returnmode="2" procname="PRGETQRYNPS" desc ="Obtêm uma lista de informações de NPS a partir da base de clientes" remarks="" >
+				<query>
+					<![CDATA[
+	SET @DATINI = adddate(curdate(), interval -7 day);
+	SET @DATFIN = curdate();
+    
+	IF DAYOFWEEK(CURDATE()) > 2 THEN
+		SET @DATPRO = NOW();
+		SET @DAYWEK = DAYOFWEEK(@DATPRO);
+		SET @DATBAS = adddate(@DATPRO, INTERVAL (@DAYWEK - 2)*-1 DAY);
+        set @DATINI = adddate(@DATBAS, interval -7 day);
+		set @DATFIN = @DATBAS;
+	END IF;
+    
+    SET @DATINI = date_format(@DATINI, '%Y-%m-%d 00:00:00');
+    SET @DATFIN = date_format(@DATFIN, '%Y-%m-%d 23:59:59');
+    
+    set @row := 1;
+	set @codani = '';
+   
+	SELECT 
+		MAX(cl.nome) AS NOMTUT,
+		MAX(cl.email) AS DSCMAL,
+		MAX(cl.tel_res) AS TELRES,
+		MAX(cl.tel_cel) AS TELCEL,
+		MAX(emp.apelido_emp) AS APEEMP,
+		MAX(lan.data_proced) AS DATPCD
+	FROM
+		cli.lanc_proced lan
+			INNER JOIN
+		cli.empresas emp ON (emp.id_emp = lan.id_emp_exec)
+			INNER JOIN
+		cli.animais ani ON (ani.codigo = lan.codigo_ani)
+			INNER JOIN
+		cli.cli cl ON (cl.cpf = ani.id)
+			INNER JOIN
+		(SELECT 
+			codigo,
+				codigo_ani,
+				a1.data_proced,
+				@Row:=(CASE
+					WHEN (CONCAT(codigo_ani, DATE_FORMAT(data_proced, '%Y%m%d')) = @CODANI) THEN @row + 1
+					ELSE 1
+				END) AS NUMROW,
+				(@CODANI:=CONCAT(codigo_ani, DATE_FORMAT(data_proced, '%Y%m%d')))
+		FROM
+			cli.lanc_proced a1
+		WHERE
+			a1.data_proced >= @DATINI
+				AND a1.data_proced < @DATFIN
+		ORDER BY codigo_ani , data_proced DESC) sec ON (sec.codigo = lan.codigo
+			AND sec.numrow = 1)
+	WHERE
+		lan.data_proced >= @DATINI
+			AND lan.data_proced < @DATFIN
+			AND lan.codigo_proced IN (2 , 4, 3010, 5, 7, 9, 3882, 1740, 3883, 1675, 1694)
+			AND ani.morto <> 'S'
+	GROUP BY cl.nome , cl.email , cl.TEL_RES , cl.tel_cel , emp.apelido_emp;
+
+
+]]>
+				</query>
+
+			</item>
+
+
+
+
+
+		</selectallcommand>
+	</item>
+
+	<item create="true"  id="3" name="ANIMAIS" api="true" apiname="Animais" friendlyname="Animais" modelversion="3" descriptor="Cadastro de Animais" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable>
+			SELECT CODIGO, ID, NOME_ANI, SEXO, DT_NASC, PESO, PESO_IDEAL, RACA, ALERGICO, COR, ESPECIE, RGA, MORTO, CASTRADO, OBSERVACOES, ORIGEM, CODIGO_ANTIGO, DT_STATUS_MORTO,data_atualizacao, empresamigrada, datamigrada,statusregistro
+			FROM animais where codigo=-1 ;
+		</SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" webtype="[HttpPost]" route="insert"  key="Identity" fieldreturn="" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um novo pet">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Animais" procname="" desc ="Obtêm um registro com base no código de identificação do pet">
+				<query>
+					<![CDATA[SELECT * FROM ANIMAIS A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Animal" name="CODIGO" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="101" type="List" method="FindByIdName" return="Animais" procname="" desc ="Obtêm um registro com base no código do tutor e o nome do animal">
+				<query>
+					<![CDATA[SELECT * FROM ANIMAIS A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Tutor" name="id" type="System.String"  size="14" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Nome do Animal" name="Nome_ani" type="System.String"  size="20" default="''"  output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql="" route="" processcode="102" type="" method="Find" return="Animais"  procname="" desc ="Obtêm o registro de um animal de acordo com os parâmetros de pesquisa">
+				<query>
+					<![CDATA[SELECT * FROM ANIMAIS A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Tutor" name="id" type="System.String"  size="14" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Nome do Animal" name="Nome_ani" type="System.String"  size="20" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Data de Nascimento" name="DT_NASC" type="System.String"  size="25" default=""  output="" null="false" stringformat="yyyy-MM-dd 00:00:00"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="103" type="" method="TutorExists" return="int"  procname="" desc ="Retorna 1 se o CPF existe na base de informações">
+				<query>
+					<![CDATA[SELECT CASE WHEN CPF IS NULL THEN 0 ELSE 1 END AS RETORNO FROM CLI A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Tutor" name="CPF" type="System.String"  size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" route="listall" method="SelectAll" type="List" return="Animais" procname="" desc ="Obtêm uma lista completa do cadastro de pet's">
+				<query order="ID, NOME_ANI">
+					<![CDATA[SELECT * FROM ANIMAIS A]]>
+				</query>
+			</item>
+		</selectallcommand>
+	</item>
+
+	<item create="true"  id="4" name="PESO" api="true" apiname="Peso" friendlyname="Peso" modelversion="3" descriptor="Controle de Peso por Animal" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand  script="false" webtype="[HttpPost]"  key="Key" fieldreturn="CODIGO" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um novo registro de peso para o pet">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos></pos>
+
+		</insertcommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="101" type="List" method="Select" return="Peso" procname="" desc ="Obtêm um registro de peso com base nos parâmetros fornecidos">
+				<query>
+					<![CDATA[SELECT * FROM peso A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Animal" name="CODIGO" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Data de lançamento (yyyy-MM-dd HH:mm:ss)" name="DATA_LANC_PESO" type="System.String"  size="17" default="''"  output="" null="false"/>
+				</parameters>
+			</item>
+
+
+			<item script="false" alias="A." sql="" route="" processcode="101"  method="Find" return="int" procname="" desc ="Verifica se o registro de peso e data de pesagem existem na base de dados">
+				<query>
+					<![CDATA[SELECT CODIGO FROM peso A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Animal" name="CODIGO" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Data de lançamento (yyyy-MM-dd HH:mm:ss)" name="DATA_LANC_PESO" type="System.String"  size="17" default="''"  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+
+	</item>
+
+	<item create="true"  id="5" name="EMPRESAS" api="true" apiname="Empresas" friendlyname="Empresas" modelversion="3" descriptor="Cadastro de Empresas/Unidades" roles="Corporativo">
+
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<objectclass>
+			<item script="true" alias="A." sql="" method="EmailHost" return="int" returnmode="1" procname="" desc ="Objeto de Retenção de Informações de Host de Email" returnvalue="1">
+				<query>
+					<![CDATA[select email_smtp as MailUser, email_porta as 'Port', email_ssl as EnableSSL, senha_smtp as MailPassword, serv_smtp as MailHost from cli.empresas where id_empresa=-1;]]>
+				</query>
+			</item>
+		</objectclass>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" route="" method="GetEmailHost" type="EmailHost" return="EmailHost" procname="" desc ="Obtêm os dados de informação de host de email de uma empresa">
+				<query order="">
+					<![CDATA[select email_smtp as MailUser, email_porta as 'Port', email_ssl as EnableSSL, senha_smtp as MailPassword, serv_smtp as MailHost from cli.empresas ]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Empresa" name="ID_EMPRESA" type="System.Byte" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+	</item>
+
+
+	<item create="true"  id="7" name="GRUPO_PRODUTOS" api="true" apiname="GrupoProdutos" friendlyname="GrupoProdutos" modelversion="3" descriptor="Cadastro de Agrupamento de Produtos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Key" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVAGRPROINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=-2;
+SELECT IFNULL(id,0) INTO pRETURN_VALUE FROM grupo_produtos WHERE descricao= pDESCRICAO;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="EMPRESA JÁ EXISTENTE" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+	</item>
+
+
+	<item create="true"  id="8" name="PRODUTOS" api="true" apiname="Produtos" friendlyname="Produtos" modelversion="3" descriptor="Cadastro de Produtos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Identity" fieldreturn="codigo" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVPROINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+	</item>
+
+	<item create="true"  id="9" name="FORNECEDORES" api="true" apiname="Fornecedores" friendlyname="Fornecedores" modelversion="3" descriptor="Cadastro de Fornecedores">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" fieldreturn="codigo" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVFORINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""/>
+
+			</returns>
+		</insertcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Fornecedores" procname="" desc ="Retorna o registro com base no código do fornecedor">
+				<query>
+					<![CDATA[SELECT * FROM FORNECEDORES A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Fornecedor" name="CODIGO" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Retorna o código do fornecedor com base no identificador de registro">
+				<query>
+					<![CDATA[SELECT CODIGO FROM FORNECEDORES A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Registro do Fornecedor" name="REGISTRO" type="System.String" size="14"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+
+
+	<item create="true"  id="16" name="CAD_AREAS_INTERNACAO" api="true" apiname="AreasInternacao" friendlyname="AreasInternacao" modelversion="3" descriptor="Áreas de Internação">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" fieldreturn="codigo" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVAREINTINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""></return>
+				<return value="-1" message="REGISTRO JA EXISTENTE" error="RECORDFOUND"></return>
+				<return value="-999" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="23" name="USUARIOS" api="true" apiname="Usuarios" friendlyname="Usuarios" modelversion="3" descriptor="Usuários"  roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<!--<SqlTable>
+			SELECT id_usuario,NOME, APELIDO, DOCUMENTO, SERVICOS, LOJA, CAIXA, AGENDA_BT, CONTROL_HORARIO, COMISSIONADO, VALOR_COMISSAO, TIPO, SENHA, ID_PERFIL, AG_BT, AG_OPE, ID_ESPECIALIDADE, EMAIL FROM usuarios where id_usuario=-1;
+		</SqlTable>-->
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<objectclass>
+			<item script="true" alias="A." sql="" name="UsuarioMigracao" return="int" returnmode="1" procname="" desc ="Objeto de Retenção de Analise de Apelido de Usuários" returnvalue="1">
+				<query>
+					<![CDATA[SELECT ID_USUARIO, APELIDO, NOME FROM cli.usuarios where id_usuario=-1]]>
+				</query>
+			</item>
+		</objectclass>
+
+		<insertcommand  script="false" webtype="[HttpPost]"  key="Identity"  fieldreturn="id_usuario" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um novo usuário">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand  script="false" webtype="[HttpPost]"  key="Identity"  fieldreturn="id_usuario" exceptionparamns="" method="Update" processcode="10" procname="" remarks="Altera o usuário">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error=""/>
+			</returns>
+		</updatecommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Usuarios" procname="" desc ="Seleciona um registro de usuário com base no id">
+				<query>
+					<![CDATA[SELECT * FROM Usuarios A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Usuario" name="ID_USUARIO" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="SelectByNick" return="Usuarios" procname="" desc ="Seleciona um registro de usuário com base no apelido">
+				<query>
+					<![CDATA[SELECT * FROM Usuarios A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Apelido" name="APELIDO" type="System.String" size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Retorna o código do usuário com base no apelido">
+				<query>
+					<![CDATA[SELECT ID_USUARIO FROM USUARIOS A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Apelido" name="apelido" type="System.String" size="14"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<!--<selectallcommand>
+			<item script="false" alias="A." sql="" route="" method="SelectUserNick" type="List" return="UsuarioMigracao" procname="" desc ="Obtêm todos os registros de usuario e seu apelido">
+				<query order="">
+					<![CDATA[SELECT id_usuario, nome, apelido FROM USUARIOS A]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código" name="ID_USUARIO" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>-->
+	</item>
+	<item create="true"  id="23" name="USUARIOS_EMPRESAS" api="true" apiname="UsuariosEmpresas" friendlyname="UsuariosEmpresas" modelversion="3" descriptor="Usuários x Empresas"  roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable>
+		</SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  script="false" webtype="[HttpPost]"  key="Identity"  fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um novo usuário">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand  script="false" webtype="[HttpPost]"  key="Identity"  fieldreturn="id" exceptionparamns="" method="Update" processcode="10" procname="" remarks="Altera o usuário">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error=""/>
+			</returns>
+		</updatecommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Retorna o id do código do usuário x empresa ">
+				<query>
+					<![CDATA[SELECT ID FROM USUARIOS_EMPRESAS A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do USUARIO" name="ID_USUARIO" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Empresa" name="ID_empresa" type="System.Byte"  default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="24" name="INTERNACAO_DADOS" api="true" apiname="Internacao" friendlyname="Internacao" modelversion="3" descriptor="Internação">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" fieldreturn="id_internacao" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVINTINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="28" name="OS_REGISTROS" api="true" apiname="OS" friendlyname="OS" modelversion="3" descriptor="Ordens de Serviço - Registro">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id_os" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+	<item create="true"  id="30" name="LANC_PROCED" api="true" apiname="ProcedimentosLancamentos" friendlyname="ProcedimentosLancamentos" modelversion="3" descriptor="Procedimentos - Lançamentos" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<objectclass>
+			<item script="true" alias="A." sql="" name="EmailRequest" return="int" returnmode="1" procname="" desc ="Objeto de Retenção de Informações de Envio de Email" returnvalue="1">
+				<query>
+					<![CDATA[select 
+       EE.cod_obs as CODPCD, 
+       LP.id_emp_exec as EMPKEY, 
+       CLI.email as EMLCLI, 
+       ORI.email as EMLORI, 
+       case when ifnull(ors.email, '') = ori.email then ' ' else ifnull(ors.email, '') end as EMLSOL,
+       CLI.nome AS NOMCLI, 
+       ANI.nome_ani as NOMANI, 
+       case when ifnull(obs.descricao,' ') = ' ' then ifnull(LC.url,'') else ifnull(OBS.descricao,'')  end as URLLDO,
+       IFNULL(OBS.cod_obs,0) as CODLDO, 
+       IFNULL(LC.id,0) as NIDLDO,
+       emp.email_smtp as EMLUSR, 
+       emp.email_porta as EMLPRT, 
+       emp.email_ssl as EMLSSL, 
+       emp.senha_smtp as EMLPSW, 
+       emp.serv_smtp as EMLHST   
+  from cli.envia_email as EE 
+  left join cli.lanc_proced as LP on (EE.cod_obs = LP.codigo) 
+  left join cli.OBS_PROCED as OBS on (EE.cod_obs = OBS.cod_obs) 
+  left join cli.laudos_conteudo as LC on (EE.cod_obs = LC.cod_sgv) 
+  left join cli.ANIMAIS as ANI on (LP.codigo_ani = ANI.codigo) 
+  left join cli.CLI on (ANI.id = CLI.cpf) 
+  left join cli.origens as ORI on (LP.origem = ORI.id) 
+  left join cli.empresas as EMP on (LP.id_emp_exec = EMP.id_emp) 
+  left join cli.origens as ORS on (ORS.id = lp.ID_INDICACAO) 
+#where EE.status = 'N' and lp.obs=1
+where lp.obs=-1]]>
+				</query>
+			</item>
+
+			<item script="true" alias="LAN." sql="" name="ReportSalesComissionBasis" return="int" returnmode="1" procname="" desc ="Relatório bade de comissão por empresa, vendedor e período de extração" returnvalue="1">
+				<query>
+					<![CDATA[SELECT LAN.data_proced as data,
+ 'S' as tipo,
+ ANI.id as id_cli,
+ LAN.codigo_ani as cod_ani,
+ ANI.nome_ani as nome_ani,
+ REF.tipo_proced as tipo2,
+ REF.descricao_proced as descricao,
+ LAN.valor_proced as valor_bruto,
+ LAN.codigo_proced as codigo_proced,
+ LAN.valor_proced as valor_proced,
+ 0.00 AS COMISSAO
+   FROM cli.LANC_PROCED LAN
+  INNER JOIN cli.REF_PROCED REF ON (LAN.codigo_proced = REF.codigo_proced)
+   LEFT JOIN cli.ANIMAIS ANI ON (LAN.codigo_ani = ANI.codigo)  where LAN.codigo=-1]]>
+				</query>
+			</item>
+
+			<item script="true" alias="LAN." sql="" name="ReportObesity" return="int" returnmode="1" procname="" desc ="Relatório base de campanha de obesidade" returnvalue="1">
+				<query>
+					<![CDATA[select '' AS NOMTUT,
+       '' AS NOMANI,
+       '' AS DSCRAC,
+       '' AS NUMCEL,
+       '' AS DSCMAL,
+       '' AS DSCEMP,
+       0 AS IDAANI,
+       '' AS DSCBAS
+]]>
+				</query>
+			</item>
+
+			<item script="true" alias="LAN." sql="" name="ReportCampaignEZVET" return="int" returnmode="1" procname="" desc ="Relatório base de campanha EZVET" returnvalue="1">
+				<query>
+					<![CDATA[select '' AS NOMTUT,
+       '' AS NUMCEL,
+       '' AS DSCMAL,
+       '' AS DEAANI,
+	         '' AS LIVANI,
+       0 AS IDAANI,
+	          0 AS CODANI,
+       '' AS DSCBAS
+]]>
+				</query>
+			</item>
+		</objectclass>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="CODIGO" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVPROLANINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Localiza um Lancamento de Migração">
+				<query>
+					<![CDATA[SELECT  CASE WHEN CODIGO IS NULL THEN 0 ELSE CODIGO END  AS RETURN_VALUE FROM LANC_PROCED A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Empresa" name="ID_EMP_EXEC" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Codigo Antigo" name="CODIGO_ANTIGO" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" type="ProcedimentosLancamentos" return="int" procname="" desc ="Retorna o registro de um Lancamento de Migração">
+				<query>
+					<![CDATA[SELECT * FROM LANC_PROCED A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Empresa" name="ID_EMP_EXEC" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Codigo Antigo" name="CODIGO_ANTIGO" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" route="listall" method="SelectAll" type="List" return="ProcedimentosLancamentos" procname="" desc ="Obtêm todos os registros de procedimento de um pet">
+				<query order="DATA_PROCED DESC">
+					<![CDATA[SELECT * FROM LANC_PROCED A]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código" name="CODIGO_ANI" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+			</item>
+			<!-- SELECT LANC_PROCED.data_proced as data,
+ 'S' as tipo,
+ ANIMAIS.id as id_cli,
+ LANC_PROCED.codigo_ani as cod_ani,
+ ANIMAIS.nome_ani as nome_ani,
+ REF_PROCED.tipo_proced as tipo2,
+ REF_PROCED.descricao_proced as descricao,
+ LANC_PROCED.valor_proced as valor_bruto,
+ LANC_PROCED.codigo_proced as codigo_proced,
+ LANC_PROCED.valor_proced as valor_proced,
+ 0.00 AS COMISSAO
+   FROM cli.LANC_PROCED 
+  INNER JOIN cli.REF_PROCED ON (LANC_PROCED.codigo_proced = REF_PROCED.codigo_proced)
+   LEFT JOIN cli.ANIMAIS ON (LANC_PROCED.codigo_ani = ANIMAIS.codigo) 
+ WHERE LANC_PROCED.id_emp_exec in (7)
+and (LANC_PROCED.VET='L.VALVERDE')
+and (LANC_PROCED.data_proced >='2022-11-28 00:00:00') and (LANC_PROCED.data_proced <='2023-02-02 23:59:59');				
+					-->
+			<item script="false" alias="LAN." sql="" route="" method="GetSalesComissionBasis" type="List" return="ReportSalesComissionBasis" procname="" desc ="Obtêm um relatório de base de comissão para um vendedor">
+				<query>
+					<![CDATA[
+SELECT LAN.data_proced as data,
+ 'S' as tipo,
+ ANI.id as id_cli,
+ LAN.codigo_ani as cod_ani,
+ ANI.nome_ani as nome_ani,
+ REF.tipo_proced as tipo2,
+ REF.descricao_proced as descricao,
+ LAN.valor_proced as valor_bruto,
+ LAN.codigo_proced as codigo_proced,
+ LAN.valor_proced as valor_proced,
+ 0.00 AS COMISSAO
+   FROM cli.LANC_PROCED LAN
+  INNER JOIN cli.REF_PROCED REF ON (LAN.codigo_proced = REF.codigo_proced)
+   LEFT JOIN cli.ANIMAIS ANI ON (LAN.codigo_ani = ANI.codigo)]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Empresa" name="ID_EMP_EXEC" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" desc ="Veterinário" name="VET" type="System.String" size="14" default="" output="" null="false"/>
+					<parameter input="true" desc ="Data Inicial" block="1" fieldname="DATA_PROCED" operator="&gt;=" name="DATA_PROCED1" type="System.DateTime"  default="" output="" null="false"/>
+					<parameter input="true" desc ="Data Final"  block="2" fieldname="DATA_PROCED" operator="&lt;=" name="DATA_PROCED2" type="System.DateTime"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="true" alias="A." sql="" route="" method="GetEmailsForSend" type="List" return="EmailRequest" procname="PRGETEMLDTA" desc ="Obtêm os endereços de email para notificação de laudos">
+				<query order="id_emp">
+					<![CDATA[select 
+       EE.cod_obs as CODPCD, 
+       LP.id_emp_exec as EMPKEY, 
+       CLI.email as EMLCLI, 
+       ORI.email as EMLORI, 
+       case when ifnull(ors.email, '') = ori.email then ' ' else ifnull(ors.email, '') end as EMLSOL,
+       CLI.nome AS NOMCLI, 
+       ANI.nome_ani as NOMANI, 
+       case when ifnull(obs.descricao,' ') = ' ' then ifnull(LC.url,'') else ifnull(OBS.descricao,'')  end as URLLDO,
+       IFNULL(OBS.cod_obs,0) as CODLDO, 
+       IFNULL(LC.id,0) as NIDLDO,
+       emp.email_smtp as EMLUSR, 
+       emp.email_porta as EMLPRT, 
+       emp.email_ssl as EMLSSL, 
+       emp.senha_smtp as EMLPSW, 
+       emp.serv_smtp as EMLHST   
+  from cli.envia_email as EE 
+  left join cli.lanc_proced as LP on (EE.cod_obs = LP.codigo) 
+  left join cli.OBS_PROCED as OBS on (EE.cod_obs = OBS.cod_obs) 
+  left join cli.laudos_conteudo as LC on (EE.cod_obs = LC.cod_sgv) 
+  left join cli.ANIMAIS as ANI on (LP.codigo_ani = ANI.codigo) 
+  left join cli.CLI on (ANI.id = CLI.cpf) 
+  left join cli.origens as ORI on (LP.origem = ORI.id) 
+  left join cli.empresas as EMP on (LP.id_emp_exec = EMP.id_emp) 
+  left join cli.origens as ORS on (ORS.id = lp.ID_INDICACAO) 
+#where EE.status = 'N' and lp.obs=1
+where lp.obs=1 ]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código" name="CODIGO_ANI" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+
+			<item script="true" alias="A." sql="" type="List" method="GetMarketingList" return="ReportMarketing" returnmode="2" procname="PRGETQRYMKT" desc ="Obtêm uma lista de clientes para estratégia de marketing" remarks="" >
+				<query>
+					<![CDATA[
+/* Implementa um contador de linhas baseado em condicão para delimitar registros*/
+SET @Row:=0;
+/* Variável adicional para controle de condição */
+SET @CODANI=0;
+SELECT cli.nome as NOMTUT,
+       ANI.NOME_ANI AS NOMANI, 
+       ani.especie as DSCESP,
+       ani.raca as DSCRAC,
+       cli.tel_cel as NUMCEL,
+       cli.email aS DSCMAL,
+       APELIDO_EMP AS APEEMP,
+       'PETCARE' AS DSCBAS
+FROM (
+SELECT CODIGO_ANI, EMP.APELIDO_EMP, DATA_PROCED AS DT, 
+@Row:=(CASE WHEN ( CODIGO_ANI =@CODANI) THEN @row+1  ELSE 1  END ) AS NUMROW,
+(@CODANI := CODIGO_ANI)
+FROM LANC_PROCED LAN
+LEFT JOIN (SELECT NIDORL, NIDORI, NIDBAS, IFNULL(DATINI, '2015-05-11 13:44:24') AS DATINI, IFNULL(DATFIN,'2050-12-31 23:59:59') AS DATFIN
+			 FROM (SELECT ID AS NIDORL, 
+                          ID_ORIGEM AS NIDORI, 
+                          ID_BASE AS NIDBAS, 
+                          DATA_RELAC AS DATINI, 
+						  DATA_FIM AS DATFIN, 
+                          ATIVO AS STAREC
+                     FROM CLI.ORIGEM_BASE_RELAC
+                    UNION
+					SELECT 0 AS NIDORL, A.NIDORI, 0 AS NIDBAS, NULL, NULL, 2 AS STAREC
+					 FROM (SELECT DISTINCT ORIGEM AS NIDORI
+                             FROM CLI.LANC_PROCED
+                            WHERE ORIGEM NOT IN(SELECT DISTINCT ID_ORIGEM FROM CLI.ORIGEM_BASE_RELAC)
+                            UNION
+						   SELECT DISTINCT ID  AS NIDORI
+                             FROM CLI.ORIGENS
+                            WHERE ID NOT IN(SELECT DISTINCT ID_ORIGEM FROM CLI.ORIGEM_BASE_RELAC)
+                          ) A LEFT JOIN(SELECT ID_ORIGEM  
+                                          FROM CLI.ORIGEM_BASE_RELAC 
+										  GROUP BY ID_ORIGEM) B ON(B.ID_ORIGEM = A.NIDORI)) A1) A0
+		ON (A0.nIDORI = LAN.ORIGEM )
+ INNER JOIN EMPRESAS EMP ON (EMP.id_emp =LAN.id_emp_exec)
+ WHERE LAN.DATA_PROCED >= ADDDATE(NOW(), INTERVAL -36 MONTH)
+ 
+   AND LAN.CODIGO_PROCED NOT IN (SELECT CODIGO_PROCED FROM REF_PROCED WHERE OPERACAO IN (1,2))
+   AND LAN.CODIGO_ANI NOT IN (SELECT CODIGO FROM ANIMAIS WHERE MORTO='S' OR CAST( (DATEDIFF(NOW(), DT_NASC)/365) AS UNSIGNED) <= 5)
+   AND LAN.CODIGO_ANI NOT IN (SELECT CODIGO_ANI FROM LANC_PROCED L1 
+                               WHERE CODIGO_PROCED IN (SELECT CODIGO_PROCED 
+                                                         FROM REF_PROCED 
+														WHERE OPERACAO IN (14)
+                                 AND DATA_PROCED > ADDDATE(NOW(), INTERVAL -12 MONTH) AND DATA_PROCED <= NOW()  
+                                 ))
+   AND A0.NIDBAS IN (0,11,13)
+   ORDER BY CODIGO_ANI, DATA_PROCED DESC
+   ) A 
+INNER JOIN ANIMAIS ANI ON (ANI.CODIGO = A.CODIGO_ANI)
+INNER JOIN CLI CLI ON (CLI.CPF = ANI.ID)
+WHERE A.NUMROW=1;
+]]>
+				</query>
+
+			</item>
+
+
+			<item script="false" alias="A." sql="" type="List" method="GetCampaignEZVET" return="ReportCampaignEZVET" returnmode="2" procname="PRGETQRYCAMEZV" desc ="Obtêm uma lista de clientes para estratégia de campanha EZVET" remarks="" >
+				<query>
+					<![CDATA[
+
+]]>
+				</query>
+
+			</item>
+
+			<item script="true" alias="A." sql="" type="List" method="GetProcedureRecords" return="DW.Domain.Models.ProcedimentosLancamentos" returnmode="2" procname="DWGETLANPCD" desc ="Obtêm os registros de lançamentos de procedimetos" remarks="A procedure retorna os dados com base retroativo a data fornecida e o id de registro de lancamento superior ao informado, assume o codigo fornecido como origem de base como o padrão de origem" >
+				<query>
+					<![CDATA[SELECT L.codigo as NIDPCD, MONTH(DATA_PROCED) AS NUMMES, YEAR(DATA_PROCED) AS NUMANO
+,A.ID AS CODCMF
+,L.CODIGO_ANI AS CODANI
+,DATA_PROCED AS pDATPCD
+,VALOR_PROCED AS VLRPCD
+,VALOR_PAGO AS VLRPGT
+,VET AS APEVET
+,L.CODIGO_PROCED AS CODPCD
+,L.ORIGEM AS CODORI
+,ID_EMP_EXEC AS CODEMP
+,L.ID_OS AS NUMOSS
+,(VALOR_PROCED - VALOR_PAGO) AS VLRDCT
+,pORGBAS AS ORGBAS
+,IFNULL(C.FINALIZADA, ' ') AS STAOSS
+from lanc_proced L 
+LEFT JOIN cli.ANIMAIS A ON (A.CODIGO = L.CODIGO_ANI)
+LEFT JOIN cli.REF_PROCED B ON (B.CODIGO_PROCED = L.CODIGO_PROCED)
+LEFT JOIN cli.OS_REGISTROS C ON (C.ID_OS = L.ID_OS)
+WHERE DATA_PROCED <= pDATPCD
+AND L.CODIGO > pNIDPCD
+ORDER BY L.CODIGO;   
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="false" desc ="Data Base de Leitura" name="DATPCD" type="System.DateTime" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="ID de Leitura Inicial" name="NIDPCD" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="ID da Base de Origem" name="ORGBAS" type="System.Byte" default="" output="" null="false"/>
+
+				</parameters>
+			</item>
+
+
+			<item script="true" alias="A." sql="" type="List" method="GetCustomerStatus" return="DW.Domain.Models.StatusCliente" returnmode="2" procname="DWGETSTACLI" desc ="Obtêm os registros de classificação de status de clientes por unidade" remarks="" >
+				<query>
+					<![CDATA[
+      SET SQL_SAFE_UPDATES = 0;
+      DELETE FROM CLI.TPSTACLI;
+
+      INSERT INTO CLI.TPSTACLI(CODANI, CODEMP)
+      SELECT DISTINCT 
+             CODIGO_ANI, ID_EMP_EXEC
+        FROM CLI.lanc_proced
+       WHERE codigo_ani in (SELECT codigo 
+                              FROM cli.animais)
+             AND DATA_PROCED <= pDATPRO;
+
+
+      UPDATE CLI.TPSTACLI A
+       INNER JOIN (SELECT CODIGO_ANI AS CODANI
+                         , ID_EMP_EXEC AS CODEMP
+                         , MAX(DATA_PROCED) AS MAX001
+                         , MIN(DATA_PROCED) AS MIN001
+                         , COUNT(*) AS NUM001
+                     FROM cli.lanc_proced b1
+                    where (data_proced >= pDATREF and data_proced <= pDATPRO)
+                      AND b1.codigo_proced not in (SELECT CODIGO_PROCED 
+                                                     FROM cli.ref_proced 
+                                                    WHERE DESCRICAO_PROCED LIKE '%RETORNO%')
+                    GROUP BY CODIGO_ANI, ID_EMP_EXEC) b 
+          ON (a.codani = b.CODANI and a.codemp = b.CODEMP)
+         SET A.PER001 = 1, A.MAX001 = B.MAX001, A.MIN001= B.MIN001, A.NUM001= B.NUM001;
+
+      UPDATE CLI.tpstacli a
+       INNER JOIN (SELECT CODIGO_ANI AS CODANI
+                         , ID_EMP_EXEC AS CODEMP
+                         , MAX(DATA_PROCED) AS MAX002
+                         , MIN(DATA_PROCED) AS MIN002
+                         , COUNT(*) AS NUM002
+                     FROM cli.lanc_proced b1
+                    where (data_proced >= pDATLIM and data_proced <= pDATREF)
+                      AND b1.codigo_proced not in (select CODIGO_PROCED 
+                                              from cli.ref_proced 
+                                             where DESCRICAO_PROCED LIKE '%RETORNO%')
+                    GROUP BY CODIGO_ANI, ID_EMP_EXEC) b 
+          ON (a.codani = b.CODANI and a.codemp = b.CODEMP)
+         SET A.PER002 = 1, A.MAX002 = B.MAX002, A.MIN002= B.MIN002, A.NUM002= B.NUM002;
+
+      UPDATE CLI.tpstacli A
+       INNER JOIN (SELECT CODIGO_ANI as CODANI
+                         ,ID_EMP_EXEC AS CODEMP
+                         , 1 AS PER003 
+                         ,count(*) AS NUM003
+                         , MAX(DATA_PROCED) AS MAXDAT
+                         , MIN(DATA_PROCED) AS MINDAT
+                     FROM  cli.lanc_proced b
+                    where  data_proced < pDATLIM
+                      AND b.codigo_proced not in (select CODIGO_PROCED from cli.ref_proced where DESCRICAO_PROCED LIKE '%RETORNO%')
+                    GROUP BY CODIGO_ANI, ID_EMP_EXEC) B
+          ON (A.CODANI = B.CODANI AND A.CODEMP = B.CODEMP)
+         SET A.PER003 = 1, A.MAX003 = B.MAXDAT, A.MIN003= B.MINDAT, A.NUM003= B.NUM003;
+
+   UPDATE CLI.tpstacli A
+	INNER JOIN (SELECT CODIGO_ANI AS CODANI, ID_EMP_EXEC AS CODEMP, 
+                       SUM(CASE WHEN DESCRICAO_PROCED LIKE '%RETORNO%' THEN 1 ELSE 0 END ) AS CNTRET,
+                       SUM(CASE WHEN DESCRICAO_PROCED NOT LIKE '%RETORNO%' THEN 1 ELSE 0 END ) AS CNTPRO
+                  FROM CLI.LANC_PROCED A
+                 INNER JOIN CLI.REF_PROCED B  ON (B.CODIGO_PROCED= A.CODIGO_PROCED)
+    WHERE DATA_PROCED <= pDATPRO
+    GROUP BY CODIGO_ANI, ID_EMP_EXEC
+    HAVING SUM(CASE WHEN DESCRICAO_PROCED NOT LIKE '%RETORNO%' THEN 1 ELSE 0 END ) =0) B
+      ON (A.CODANI = B.CODANI AND A.CODEMP = B.CODEMP)
+         SET A.STACLI = 7;
+    
+    /* CONDICAO DE RECORRENTE -> RECUPERADO */
+	UPDATE CLI.TPSTACLI
+       SET STACLI = 4
+	 WHERE PER001= 0 AND PER002 = 1 AND PER003= 1 
+       AND (PERIOD_DIFF(DATE_FORMAT(MIN002, '%Y%m'),DATE_FORMAT(MAX003, '%Y%m')) > 18 
+       AND PERIOD_DIFF(DATE_FORMAT(MAX002, '%Y%m'),DATE_FORMAT(MIN002, '%Y%m')) < 2 )
+       AND STACLI = 0;
+       
+   /* CONDICAO DE RECORRENTE -> NOVO */
+	UPDATE CLI.TPSTACLI
+       SET STACLI = 1
+	 WHERE PER001= 0 AND PER002 = 1 AND PER003= 0 
+       AND PERIOD_DIFF(DATE_FORMAT(MAX002, '%Y%m'),DATE_FORMAT(MIN002, '%Y%m')) < 2
+       AND STACLI = 0;
+
+   /* NOVO */
+	UPDATE CLI.TPSTACLI
+       SET STACLI = 1
+	 WHERE PER001= 1 AND PER002 = 0 AND PER003= 0 
+       AND STACLI = 0;
+       
+ /* CONDICAO DE RECORRENTE */
+	UPDATE CLI.TPSTACLI
+       SET STACLI = 2
+	 WHERE ((PER001= 0 AND PER002 = 1 AND PER003= 0) 
+	   OR  (PER001= 0 AND PER002 = 1 AND PER003= 1) 
+       OR  (PER001= 1 AND PER002 = 1 AND PER003= 1) 
+       OR  (PER001= 1 AND PER002 = 1 AND PER003= 0))
+       AND STACLI = 0;
+       
+ /* CONDICAO DE RECUPERADO */
+	UPDATE CLI.TPSTACLI
+       SET STACLI = 4
+	 WHERE (PER001= 1 AND PER002 = 0 AND PER003= 1) 
+	   AND STACLI = 0;
+
+
+ /* CONDICAO DE PERDIDO */
+	UPDATE CLI.TPSTACLI
+       SET STACLI = 5
+	 WHERE PER001= 0 AND PER002 = 0 AND PER003= 1 
+       AND STACLI = 0;
+       
+       
+       SELECT  CONCAT(RIGHT(CONCAT('00',pORGBAS),2), RIGHT(CONCAT('0000000' ,CODANI),7)) AS ANIKEY,
+               CASE WHEN pORGBAS =2 THEN 28 ELSE CODEMP END AS CODEMP,
+               MONTH(pDATPRO) AS NUMMES,
+               YEAR(pDATPRO) AS NUMANO,
+               STACLI
+
+         FROM CLI.TPSTACLI
+     ORDER BY STACLI DESC;
+
+
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="false" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="Data Base de Processamento" name="DATPRO" type="System.DateTime" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="Data Referência" name="DATREF" type="System.DateTime" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="Data Limite" name="DATLIM" type="System.DateTime" default="" output="" null="false"/>
+
+				</parameters>
+			</item>
+
+
+			<!--<item script="true" alias="A." sql="" type="List" method="GetCustomerStatus" return="DW.Domain.Models.ProcedimentosLancamentos" returnmode="2" procname="DWGETLANPCD" desc ="Obtêm os registros de lançamentos de procedimetos" remarks="A procedure retorna os dados com base retroativo a data fornecida e o id de registro de lancamento superior ao informado, assume o codigo fornecido como origem de base como o padrão de origem" >
+				<query>
+					<![CDATA[
+    DELETE FROM CLI.tpstacli;
+      IF(ISDATE(pDATPRO)=1) THEN
+         /* Data Base de Processamento */
+		 SET @DATA_PROC = LAST_DAY(pDATPRO);
+		SET @DATA_PROC = adddate(@DATA_PROC, interval 86399 second);
+		SET @MONTH_PROC = MONTH(@DATA_PROC);
+		SET @YEAR_PROC = YEAR(@DATA_PROC);
+		SET @DATA_ANT = adddate(@DATA_PROC, interval (day(@DATA_PROC) * -1) day);
+		SET @DATA_ANTREG = adddate(@DATA_ANT, interval 1 day);
+
+   		#seleciona todos os registros e insere na tabela temporaria
+		   insert into cli.tpstacli (CODANI, CODEMP, CODVER, NUMMES, NUMANO)
+		  select distinct concat(right(concat('00', pORGBAS),2), right(concat('0000000' ,codigo_ani),7)) AS ANIKEY, ID_EMP_EXEC, pCODVER, @MONTH_PROC, @YEAR_PROC
+			from cli.lanc_proced
+            where DATA_PROCED <= @DATA_PROC;
+     
+		 #classifica o periodo anterior de avaliação
+			  
+		  UPDATE cli.tpstacli  A
+		  inner  join cli.lanc_proced b on (b.codigo_ani = A.CODANI and b.ID_EMP_EXEC = A.CODEMP)
+		  SET PER001=1
+			 where (b.data_proced < adddate(@DATA_ANT, interval -18 month) )
+                      and (pCODVER=2 AND b.codigo_proced not in (select CODIGO_PROCED from cli.ref_proced where DESCRICAO_PROCED LIKE '%RETORNO%'));
+	
+		  #classifica o periodo de intervalo
+		  update cli.tpstacli a
+		   inner join cli.lanc_proced b on (b.codigo_ani = A.CODANI and b.ID_EMP_EXEC = A.CODEMP)
+ 		 set PER002 = 1
+			  where (data_proced >= adddate(@DATA_ANT, interval -18 month) and data_proced <@DATA_ANTREG)
+                and (pCODVER=2 AND b.codigo_proced not in (select CODIGO_PROCED from cli.ref_proced where DESCRICAO_PROCED LIKE '%RETORNO%'));
+	
+		  #classifica o periodo de atual de geração
+			 update cli.tpstacli a
+		   inner join cli.lanc_proced b on (b.codigo_ani = A.CODANI and b.ID_EMP_EXEC = A.CODEMP)
+			set PER003 = 1
+			  where (month(b.data_proced) = @MONTH_PROC and year(b.data_proced) = @YEAR_PROC)
+                       and (pCODVER=2 AND b.codigo_proced not in (select CODIGO_PROCED from cli.ref_proced where DESCRICAO_PROCED LIKE '%RETORNO%'));
+	  END IF;
+      SELECT * FROM cli.tpstacli;
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="false" desc ="Data Base de Processamento" name="DATPRO" type="System.DateTime" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="Versão de Aplicação" name="CODVER" type="System.Byte" default="" output="" null="false"/>
+
+				</parameters>
+			</item>-->
+
+			<item script="false" alias="A." sql="" type="List" method="GetObesityList" return="ReportObesity" returnmode="2" procname="PRGETQRYOBD" desc ="Obtêm uma lista de informações de Obesidade" remarks="" >
+				<query>
+					<![CDATA[]]>
+				</query>
+
+			</item>
+
+		</selectallcommand>
+
+
+		<methods>
+			<item script="false" alias="" sql="" method="UpdateEmailSent" return="int" returnmode="22" procname="" desc ="Atualiza o registro de envio de email" returnvalue="0">
+				<query merge="true">
+					<![CDATA[UPDATE ENVIA_EMAIL SET status = 'S']]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do e-mail" name="COD_OBS" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="31" name="ANAMNESE" api="true" apiname="Anamnese" friendlyname="Anamnese" modelversion="3" descriptor="Anamnese">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable>
+		</SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel></extendedmodel>
+
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Key" supressidentity="true" fieldreturn="COD_ANA_" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+	<item create="true"  id="32" name="ANAMNESES" api="true" apiname="Anamneses" friendlyname="Anamneses" modelversion="3" descriptor="Anamneses" comments="A anamnese é o diálogo estabelecido entre profissional de saúde e paciente com o objetivo de ajudá-lo a lembrar de situações e fatos que podem estar relacionados a sua doença. Parte-se de uma queixa principal para entender a doença atual e reconstituir a história clínica daquele paciente.">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="ID" exceptionparamns="" method="Update" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Anamneses" procname="" desc ="Seleciona um registro de anamneses com base no id da anamnese">
+				<query>
+					<![CDATA[SELECT * FROM ANAMNESES A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Usuario" name="ID_ANA" type="System.Int32"  default=""  output="" null="false"/>
+			</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+
+	<item create="true"  id="33" name="RETORNOS" api="true" apiname="Retornos" friendlyname="Retornos" modelversion="3" descriptor="Retornos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="34" name="ANAMNESE_LANCAMENTOS" api="true" apiname="AnamnesesLancamentos" friendlyname="AnamnesesLancamentos" modelversion="3" descriptor="Anamneses - Lançamentos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="ID_ANA" supressidentity="false" fieldreturn="ID_ANA" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+			<updatecommand script="false" webtype="[HttpPost]"  key="ID_ANA" supressidentity="false" fieldreturn="ID_ANA" exceptionparamns="" method="Update" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA ALTERACAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="AnamnesesLancamentos" procname="" desc ="Seleciona um registro de anamneses lancamento com base no id da anamnese">
+				<query>
+					<![CDATA[SELECT * FROM anamnese_lancamentos A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Usuario" name="ID_ANA" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+	
+
+	</item>
+
+
+
+	<item create="true"  id="35" name="OBS_PROCED" api="true" apiname="ObservacoesProcedimento" friendlyname="ObservacoesProcedimento" modelversion="3" descriptor="Observações de Procedimentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Key" supressidentity="true" fieldreturn="COD_OBS" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="43" name="REF_PROCED_VALORES" api="true" apiname="ProcedimentosValores" friendlyname="ProcedimentosValores" modelversion="3" descriptor="Registro de Valores por procedimento/empresa">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="43" name="REF_PROCED" api="true" apiname="Procedimentos" friendlyname="Procedimentos" modelversion="3" descriptor="Procedimentos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="key" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="46" name="USUARIOS_COMISSOES" api="true" apiname="UsuariosComissoes" friendlyname="UsuariosComissoes" modelversion="3" descriptor="Registro de Comissões por Usuário e procedimento" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  script="false" webtype="[HttpPost]"  key="Identity"  fieldreturn="" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um novo usuário">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="REGISTRO JA EXISTENTE" error="RECORDFOUND"></return>
+				<return value="-999" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+
+			</returns>
+		</insertcommand>
+
+		<updatecommand  script="false" webtype="[HttpPost]"  key="Identity"  fieldreturn="id_usuario" exceptionparamns="" method="Update" processcode="10" procname="" remarks="Altera o usuário">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+
+				<return value="-1" message="REGISTRO NAO EXISTENTE" error="RECORDNOTFOUND"></return>
+				<return value="-999" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="UsuariosComissoes" procname="" desc ="Seleciona um registro de usuário com base no id">
+				<query>
+					<![CDATA[SELECT * FROM Usuarios_Comissoes A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Usuario" name="ID_USUARIO" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Código do Procedimento" name="ID_PROCED" type="System.Int32"  default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+
+	<item create="true"  id="56" name="LAUDOS_CONTEUDO" api="true" apiname="LaudosConteudo" friendlyname="LaudosConteudo" modelversion="3" descriptor="Registro de Referencias de Laudos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Update" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Localiza o registro de Lancamento de Laudo">
+				<query>
+					<![CDATA[SELECT  CASE WHEN cod_sgv IS NULL THEN 0 ELSE cod_sgv END  AS RETURN_VALUE FROM laudos_conteudo A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Codigo Antigo" name="cod_sgv" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="57" name="PGTOS_TRANSACOES" api="true" apiname="PagamentosTransacoes" friendlyname="PagamentosTransacoes" modelversion="3" descriptor="Registro de Transações de Pagamento">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id_transacao" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="58" name="PGTOS_GRUPOS" api="true" apiname="PagamentosGrupos" friendlyname="PagamentosGrupos" modelversion="3" descriptor="Registro de Pagamento">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id_grupo" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="59" name="PGTO_PROCED" api="true" apiname="PagamentoProcedimentos" friendlyname="PagamentoProcedimentos" modelversion="3" descriptor="Registro de Pagamento de Procedimentos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="61" name="ORIGEM_BASE_RELAC" api="true" apiname="OrigemBaseRelacionamento" friendlyname="OrigemBaseRelacionamento" modelversion="3" descriptor="Registro de Origem x Base">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="63" name="RETORNOS_LANC" api="true" apiname="RetornoLancamentos" friendlyname="RetornoLancamentos" modelversion="3" descriptor="Retorno Lancamentod">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="64" name="RACAS" api="true" apiname="Racas" friendlyname="Racas" modelversion="3" descriptor="Raças" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel>SELECT ID_RACA, NOME_RACA, A.ID_ESPECIE,B.NOME_ESPECIE FROM RACAS A INNER JOIN ESPECIES  B ON (B.ID_ESPECIE = A.ID_ESPECIE) limit 1</extendedmodel>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Racas" procname="" desc ="Obtêm todos os registros de raças cadastrados" remarks="">
+				<query>
+					<![CDATA[SELECT ID_RACA, NOME_RACA, A.ID_ESPECIE,B.NOME_ESPECIE FROM RACAS A INNER JOIN ESPECIES  B ON (B.ID_ESPECIE = A.ID_ESPECIE)]]>
+				</query>
+
+			</item>
+		</selectallcommand>
+
+	</item>
+
+	<item create="true"  id="65" name="ESPECIES" api="true" apiname="Especies" friendlyname="Especies" modelversion="3" descriptor="Especies" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel></extendedmodel>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Especies" procname="" desc ="Obtêm todos os registros de especies cadastrados" remarks="">
+				<query>
+					<![CDATA[SELECT * from especies a]]>
+				</query>
+
+			</item>
+		</selectallcommand>
+
+	</item>
+
+
+	<item create="true"  id="66" name="ORCAMENTOS" api="true" apiname="Orcamentos" friendlyname="Orcamentos" modelversion="3" descriptor="Orcamentos" roles="">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel></extendedmodel>
+
+
+		<insertcommand script="false" webtype="Post"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="id" method="Insert" processcode="10" procname="PRCADORCINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+		<updatecommand script="false" webtype="Post"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="id" method="Update" processcode="10" procname="PRCADORCUPD">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="select" processcode="100" method="Select" return="Orcamentos" procname="" desc ="Obtêm os dados de um registro especifico de orçamento">
+				<query>
+					<![CDATA[SELECT * FROM orcamentos A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Registro" name="ID" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Orcamentos" procname="" desc ="Obtêm todos os registros de orçamento de um animal" remarks="">
+				<query>
+					<![CDATA[SELECT * from orcamentos a]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código do Animal" name="CODIGO_ANI" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+
+			</item>
+			<item script="true" alias="A." sql="" method="GetOrcRel" type="List" return="Orcamentos" procname="" desc ="Obtêm todos os registros de orçamento de um animal" remarks="">
+				<query>
+					<![CDATA[select 	result.ANIKEY,
+    	VETPCD,
+        VETORC,
+        DATPCD, 
+        DATORC, 
+        CONCAT ('01', RIGHT(CONCAT('0000000',CODPCD),7)) AS PCDKEY, 
+        VLRPCD, 
+        VLRPGT,
+        VLRORC,
+        result.EMPKEY,
+        result.EMPKEY AS UNIKEY
+        
+    
+   from (select CONCAT ('01', RIGHT(CONCAT('0000000',CODANI),7)) AS ANIKEY,
+                MAX(VETPCD) AS VETPCD,
+                MAX(VETORC) AS VETORC,
+                max(DATPCD) as DATPCD, 
+                max(DATORC) as DATORC, 
+                a.CODPCD, 
+                sum(VLRPCD) as VLRPCD, 
+                SUM(VLRPGT) as VLRPGT,
+                sum(VLRORC) as VLRORC,
+                #max(b.tipo_proced) as TIPPCD,
+                max(b.sub_categ) as SUBCAT,
+                #max(b.descricao_proced) as DSCPCD,
+                max(EMPKEY) as EMPKEY
+           from (select l.codigo_ani           AS CODANI, 
+                        l.vet                  as VETPCD,
+					    ' '                    AS VETORC,
+                        date_format(l.data_proced,'%Y-%m-%d') as DATPCD, 
+                        null                   as DATORC,
+                        codigo_proced          AS CODPCD,
+                        sum(l.valor_proced)    AS VLRPCD,
+					    sum(l.valor_pago)      AS VLRPGT,
+                        0                      as VLRORC,
+                        ID_EMP_EXEC 		   AS EMPKEY
+                  from cli.lanc_proced l
+                 where l.data_proced >= adddate(now(), interval -12 month) 
+                   and l.codigo_ani in (select codigo_ani from cli.orcamentos)
+                 group by l.codigo_ani, date_format(l.data_proced,'%Y-%m-%d'), codigo_proced
+                 union
+                 select orc.codigo_ani      AS CODANI, 
+                        ' '                 AS VETPCD,
+                        orc.vet             AS VETORC,
+                        null 	           AS DATPCD,
+                        date_format(orc.data_orcamento,'%Y-%m-%d') as DATORC, 
+                        ite.codigo_proced   AS CODPCD, 
+                        0 				   as VLRPCD,
+                        0 				   AS VLRPGT,
+                        sum(ite.valor_lanc) as VLRORC,
+                        0                   AS EMPKEY
+				   from cli.orcamentos orc
+                  inner join cli.orcamentos_lanc ite on (ite.id_orcamento = orc.id)
+                  where  orc.data_orcamento >= adddate(now(), interval -12 month) 
+                  group by orc.codigo_ani, date_format(orc.data_orcamento,'%Y-%m-%d'), ite.codigo_proced
+				 ) a inner join cli.ref_proced b on (b.codigo_proced = a.CODPCD)
+            group by a.CODANI, A.CODPCD
+            ) result
+	
+   where lower(SUBCAT) like '%cirur%' 
+     and DATORC is not null;]]>
+				</query>
+			</item>
+
+			<item script="true" alias="A." sql="" method="GetOrcUnitsRel" type="List" return="Units" procname="" desc ="Obtêm todos os registros de orçamento de um animal" remarks="">
+				<query>
+					<![CDATA[SET @row:=0;
+	SET @ANIKEY:=0;
+	SELECT ANIKEY, EMPKEY FROM (
+	SELECT  @Row:=(CASE WHEN (ANIKEY =@ANIKEY) THEN @row+1  ELSE 1  END ) AS NUMROW,
+	   ANIKEY,
+	   EMPKEY,
+	  (@ANIKEY := ANIKEY)
+	   FROM ( SELECT CONCAT ('01', RIGHT(CONCAT('0000000',CODIGO_ANI),7)) AS ANIKEY,
+				id_emp_exec AS EMPKEY, MAX(DATA_PROCED) AS DATPCD
+				FROM cli.lanc_proced 
+			   where data_proced >= adddate(now(), interval -36 month)
+				 AND data_proced < adddate(now(), interval -12 month)
+			   group by codigo_ani, ID_EMP_EXEC
+			   order by codigo_ani, data_proced asc) A
+	) A1 WHERE A1.NUMROW=1 ORDER BY 1;
+END //]]>
+				</query>
+			</item>
+		</selectallcommand>
+
+
+
+	</item>
+
+
+	<item create="true"  id="67" name="ORCAMENTOS_LANC" api="true" apiname="OrcamentosLancamentos" friendlyname="OrcamentosLancamentos" modelversion="3" descriptor="Orcamentos Lançamentos" roles="">
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel></extendedmodel>
+
+
+		<insertcommand script="false" webtype="Post"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="id" method="Insert" processcode="10" procname="PRCADORCLANINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+		<updatecommand script="false" webtype="Post"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="id" method="Update" processcode="10" procname="PRCADORCLANUPD">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="select" processcode="100" method="Select" return="OrcamentosLancamentos" procname="" desc ="Obtêm os dados de um registro especifico de lançamento de orçamento">
+				<query>
+					<![CDATA[SELECT * FROM orcamentos A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Registro" name="ID_LANC" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="OrcamentosLancamentos" procname="" desc ="Obtêm todos os registros de lançamentos de orçamento de um respectivo orçamento" remarks="">
+				<query>
+					<![CDATA[SELECT * from orcamentos a]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="ID do Orçamento" name="ID_ORCAMENTO" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+
+			</item>
+
+		</selectallcommand>
+
+	</item>
+
+
+
+	<item create="true"  id="200" name="TBCADUSU" api="true" apiname="UsuariosAuth" friendlyname="UsuariosAuth" modelversion="3" descriptor="Usuários Autenticação" roles="Admin">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+
+		<objectclass>
+			<item script="true" alias="A." sql="" method="UsersRegistered" return="int" returnmode="1" procname="" desc ="Objeto de Retenção de Informações de Usuários cadastrados" returnvalue="1">
+				<query>
+					<![CDATA[
+SELECT A.CODUSU, CASE WHEN STAREC=1 THEN 'ATIVO' ELSE 'INATIVO' END AS DSCREC, LGNUSU, IFNULL(DESROL,'N/D') AS DESROL FROM TBCADUSU a
+LEFT JOIN RLUSUROL B ON (B.CODUSU = A.CODUSU)
+LEFT JOIN TBCADROL C ON (C.CODROL = B.CODROL) LIMIT 1
+        ]]>
+
+				</query>
+			</item>
+		</objectclass>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um novo usuário de login">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="get" processcode="100" method="GetUserByCmf" return="UsuariosAuth" procname="" desc ="Localiza um usuário a partir do código de contribuinte do ministério da fazenda">
+				<query>
+					<![CDATA[SELECT * FROM TBCADUSU A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código CMF" name="CODCMF" type="System.String"  size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql="" route="get" processcode="100" method="GetUserByNick" return="UsuariosAuth" procname="" desc ="Localiza um usuário a partir do apelido">
+				<query>
+					<![CDATA[SELECT * FROM TBCADUSU A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Nick Name" name="LGNUSU" type="System.String"  size="50" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" route="listall" method="SelectAll" type="List" return="UsersRegistered" procname="" desc ="Obtêm uma lista completa do cadastro de pet's">
+				<query order="LGNUSU">
+					<![CDATA[SELECT A.CODUSU, CASE WHEN STAREC=1 THEN 'ATIVO' ELSE 'INATIVO' END AS DSCREC, LGNUSU, IFNULL(DESROL,'N/D') AS DESROL FROM TBCADUSU a
+LEFT JOIN RLUSUROL B ON (B.CODUSU = A.CODUSU)
+LEFT JOIN TBCADROL C ON (C.CODROL = B.CODROL)]]>
+				</query>
+			</item>
+		</selectallcommand>
+	</item>
+
+	<item create="true"  id="201" name="TBCADROL" api="true" apiname="RolesAuth" friendlyname="RolesAuth" modelversion="3" descriptor="Regras de Autenticação" roles="Admin">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona uma nova role">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+
+	</item>
+
+
+	<item create="true"  id="202" name="RLUSUROL" api="true" apiname="UsersRolesAuth" friendlyname="UserRolesAuth" modelversion="3" descriptor="Associação de Usuário x Regras de Autenticação" roles="Admin">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel>select codusu, a.codrol, b.desrol from rlusurol a inner join tbcadrol b on (b.codrol = a.codrol) limit 1</extendedmodel>
+
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um nova relacionamento de usuario x role">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="get" processcode="100" type="List" method="Select" return="UserRolesAuth" procname="" desc ="Localiza a primeira 'role' associada a um usuario">
+				<query>
+					<![CDATA[select codusu, a.codrol, b.desrol from rlusurol a inner join tbcadrol b on (b.codrol = a.codrol)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código CMF" name="CODUSU" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+	</item>
+
+
+	<actions>
+
+
+	</actions>
+
+</root>

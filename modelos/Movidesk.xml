@@ -1,0 +1,578 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+
+	<item create="true"  id="1" name="TBCADTIK" api="true" apiname="" friendlyname="Tickets" modelversion="3" descriptor="Cadastro de Tickets">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+
+		<insertcommand script="true" key="Key" fieldreturn="NIDTIK" exceptionparamns="'DATUPD'" procname="PRCADTIKINS" method="Insert">
+			<maxfield field="NIDTIK"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(EXISTS(SELECT 1 FROM TBCADTIK (NOLOCK) WHERE CODTIK=@CODTIK))
+   SELECT @RETURN_VALUE = -2;
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="NIDTIK" exceptionparamns="" procname="PRCADTIKUPD" method="Update">
+			<maxfield field="NIDTIK"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET @DATUPD = GETDATE();
+IF(NOT EXISTS(SELECT 1 FROM TBCADTIK (NOLOCK) WHERE CODTIK=@CODTIK))
+   SELECT @RETURN_VALUE = -2;
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-2" message="" error="RECORDNOTFOUND"></return>
+			</returns>
+		</updatecommand>
+
+		<methods>
+			
+		
+		<item script="true" alias="A." sql="" method="HasRecord" return="int" returnmode="2" procname="PRGETNIDTIK" desc ="Verifica se o registro existe para a base informada" returnvalue="0">
+			<query>
+				<![CDATA[DECLARE @RETURN_VALUE INT = 0;
+IF(EXISTS (SELECT 1 FROM TBCADTIK (NOLOCK) WHERE CODTIK=@CODTIK))
+     SELECT @RETURN_VALUE = NIDTIK FROM TBCADTIK (NOLOCK) WHERE CODTIK=@CODTIK
+RETURN ISNULL(@RETURN_VALUE,0)]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" omit="true" desc ="Código do Ticket" name="CODTIK" type="System.String" size="10" default="" output="" null=""/>
+				<parameter input="false" apply="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="" inputmode="4"/>
+
+			</parameters>
+		</item>
+		</methods>
+		<view>
+			<item owner="" script="true" definer="" name="VWCADTIK" desc ="View de Pesquisa de Tickets">
+				<query>
+					<![CDATA[SELECT A.CODTIK,
+	     A.DSCASS,
+	     B.DSCCAT,
+	     A.DSCURG,
+	     A.DSCSTA,
+	     A.DSCJUS,
+	     F.DSCORI,
+       G.DSCTYP,
+	     A.DATCAD,
+	     H.DSCTIM,
+	     I.DSCSRV AS DSCSRV1,
+	     J.DSCSRV AS DSCSRV2,
+	     K.DSCSRV AS DSCSRV3,
+	     A.DATRES,
+	     A.DATFEC,
+	     L.NOMRSP,
+	     M.DSCPES AS PESRSP,
+	     N.DSCPFL AS PFLRSP,
+	     P.NOMCLI,
+	     Q.DSCPES AS PESCLI,
+	     R.DSCPFL AS PFLCLI,
+	     S.NOMORG,
+       T.DSCEMP,
+	     U.DSCPES AS PESORG,
+	     V.DSCPFL AS PFLORG
+FROM TBCADTIK A
+	INNER JOIN RFTIKCAT B ON (B.CODCAT = A.CODCAT)
+
+	INNER JOIN RFTIKORI F ON (F.CODORI = A.CODORI)
+  INNER JOIN RFTIKTYP G ON (G.CODTYP = A.CODTYP)
+	INNER JOIN RFTIMRSP H ON (H.CODTIM = A.CODTIM)
+	INNER JOIN RFTIKSRV I ON (I.CODSRV = A.CODSRV)
+	INNER JOIN RFTIKSRV J ON (J.CODSRV = I.CODDIR)
+	INNER JOIN RFTIKSRV K ON (K.CODSRV = J.CODDIR)
+	INNER JOIN TBTIKRSP L ON (L.NIDRSP = A.CODRSP)
+	INNER JOIN RFTIKPES M ON (M.CODPES = L.CODPES)
+	INNER JOIN RFTIKPFL N ON (N.CODPFL = L.CODPFL)
+	INNER JOIN RLTIKCLI O ON (O.NIDTIK = A.NIDTIK)
+	INNER JOIN TBTIKCLI P ON (P.NIDCLI = O.NIDCLI)
+	INNER JOIN RFTIKPES Q ON (Q.CODPES = P.CODPES)
+	INNER JOIN RFTIKPFL R ON (R.CODPFL = P.CODPFL)
+	INNER JOIN TBCLIORG S ON (S.NIDORG = P.CODORG)
+  INNER JOIN TBCLIEMP T ON (T.EMPKEY = S.EMPKEY)
+	INNER JOIN RFTIKPES U ON (U.CODPES = S.CODPES)
+	INNER JOIN RFTIKPFL V ON (V.CODPFL = S.CODPFL)]]>
+				</query>
+			</item>
+
+		</view>
+	</item>
+	<item create="true"  id="2" name="TBTIKRPS" api="true" apiname="" friendlyname="Responsibles" modelversion="3" descriptor="Responsáveis">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand key="Key" fieldreturn="NIDRPS" exceptionparamns="" procname="PRTIKRSPINS" method="Insert">
+			<maxfield field="NIDRPS"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+    IF(NOT ( EXISTS ( SELECT 1 FROM TBTIKRPS (NOLOCK) WHERE NIDRPS = 0)))
+    INSERT INTO TBTIKRPS (NIDRPS,CODRPS,NOMRPS,DSCMAL,NUMTEL,CODPES,CODPFL)  VALUES(0,'N/D','N/D','N/D','N/D',0,0);
+    
+    IF(EXISTS ( SELECT 1 FROM TBTIKRPS  (NOLOCK) WHERE CODRPS=@CODRPS))
+       SELECT @RETURN_VALUE= NIDRPS FROM TBTIKRPS  (NOLOCK) WHERE CODRPS=@CODRPS
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Responsibles" procname="" desc ="Obtêm o registro de um responsável de acordo com o código informado">
+				<query>
+					<![CDATA[SELECT * FROM TBTIKRPS (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="" name="NIDRSP" type="System.Int32"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+
+
+	<item create="true"  id="3" name="RFTIKCAT" api="true" apiname="" friendlyname="Category" modelversion="3" descriptor="Categorias">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand key="Key" fieldreturn="CODCAT" exceptionparamns="" procname="PRTIKCATINS" method="Insert">
+			<maxfield field="CODCAT"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(NOT (EXISTS (SELECT 1 FROM RFTIKCAT (NOLOCK) WHERE CODCAT=0)))
+				            INSERT INTO RFTIKCAT VALUES (0,'N/D');
+IF(EXISTS ( SELECT 1 FROM RFTIKCAT  (NOLOCK) WHERE DSCCAT = @DSCCAT))
+   SELECT @RETURN_VALUE= CODCAT FROM RFTIKCAT  (NOLOCK) WHERE DSCCAT = @DSCCAT
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Category" procname="" desc ="Obtêm o registro de categoria de acordo com o código informado">
+				<query>
+					<![CDATA[SELECT * FROM RFTIKCAT (NOLOCK) A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código da Categoria" name="CODCAT" type="int" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+
+
+	
+
+	
+
+
+	<item create="true"  id="7" name="RFEQPRPS" api="true" apiname="" friendlyname="Team" modelversion="3" descriptor="Equipe Responsável">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand key="Key" fieldreturn="CODEQP" exceptionparamns="" procname="PREQPRPSINS" method="Insert">
+			<maxfield field="CODEQP"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(NOT (EXISTS (SELECT 1 FROM RFEQPRPS (NOLOCK) WHERE CODEQP=0)))
+				            INSERT INTO RFEQPRPS VALUES (0,'N/D');
+							
+	IF(EXISTS ( SELECT 1 FROM RFEQPRPS  (NOLOCK) WHERE DSCEQP = @DSCEQP))
+   SELECT @RETURN_VALUE= CODEQP FROM RFEQPRPS  (NOLOCK) WHERE DSCEQP = @DSCEQP
+							
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Team" procname="" desc ="Obtêm o registro de Equipe responável de acordo com o código informado">
+				<query>
+					<![CDATA[SELECT * FROM RFEQPRPS (NOLOCK) A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Lider" name="CODEQP" type="int"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="8" name="RFSRVLV1" api="true" apiname="" friendlyname="Services" modelversion="3" descriptor="Serviços Nivel 1 de Atendimento">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>SELECT CODSRV, DSCSRV, SRVLVL, CAST(0 AS TINYINT) AS LVLCOD FROM RFSRVLV1 (NOLOCK) WHERE CODSRV=-1</extendedmodel>
+
+
+		<interface>
+			<item script="false" alias="A." sql="" method="Insert" return="ExecutionResponse" returnmode="2" procname="" desc ="Efetua o registro de um serviço de acordo com o o nivel de agregação" returnvalue="0">
+				<query>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código do Serviço" name="pCODSRV" type="System.Int16" default="" output="" null="false"/>
+					<parameter input="true" desc ="Descrição do Serviço" name="pDSCSRV" type="System.String" size="40" default="" output="" null="false"/>
+					<parameter input="true" desc ="Serviço Associado" name="pSRVLVL" type="System.Int16" default="" output="" null="false"/>
+					<parameter input="true" desc ="Nivel de Inserção" name="pLVLCOD" type="System.Byte" default="" output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" method="Select" return="Services" returnmode="2" procname="" desc ="Obtêm o registro de um determinado nivel de serviço" returnvalue="0">
+				<query>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código do Serviço" name="pCODSRV" type="System.Int16" default="" output="" null="false"/>
+					<parameter input="true" desc ="Nivel de Inserção" name="pLVLSRV" type="System.Byte" default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+		</interface>
+
+	
+	</item>
+
+	<item create="true"  id="9" name="TBCLIORG" api="true" apiname="" friendlyname="Organization" modelversion="3" descriptor="Clientes x Organização">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand key="Key" fieldreturn="NIDORG" exceptionparamns="'DATUPD'" procname="PRCLIORGINS" method="Insert">
+			<maxfield field="NIDORG"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+    IF(NOT (EXISTS (SELECT 1 FROM TBCLIORG (NOLOCK) WHERE NIDORG=0)))
+    				            INSERT INTO TBCLIORG VALUES (0,'N/D','N/D',0, 'N/D','N/D', 0,0,getdate());
+    							
+    IF(EXISTS ( SELECT 1 FROM TBCLIORG  (NOLOCK) WHERE CODORG = @CODORG))
+       SELECT @RETURN_VALUE= NIDORG FROM TBCLIORG  (NOLOCK) WHERE CODORG = @CODORG			
+	
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Organization" procname="" desc ="Obtêm o registro de Cliente x Organization de acordo com o código informado">
+				<query>
+					<![CDATA[SELECT * FROM TBCLIORG (NOLOCK) A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código" name="NIDORG" type="int"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="10" name="TBTIKCLI" api="true" apiname="" friendlyname="TicketClient" modelversion="3" descriptor="Ticket x Cliente">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand key="Key" fieldreturn="NIDCLI" exceptionparamns="'DATUPD'" procname="PRTIKCLIINS" method="Insert">
+			<maxfield field="NIDCLI"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				
+IF(NOT (EXISTS (SELECT 1 FROM TBTIKCLI (NOLOCK) WHERE NIDCLI=0)))
+           INSERT INTO TBTIKCLI (NIDCLI,CODCLI,NOMCLI,DSCMAL,NUMTEL,CODPES,CODPFL,CODORG,NIDDPT,EMPKEY) VALUES (0,0,'','','',0,0,0,0,0)
+
+IF(EXISTS ( SELECT 1 FROM TBTIKCLI  (NOLOCK) WHERE CODCLI = @CODCLI))
+	BEGIN
+	     SELECT @NIDCLI = NIDCLI FROM TBTIKCLI (NOLOCK) WHERE CODCLI = @CODCLI;
+		 SET @RETURN_VALUE = -2;
+    END
+	
+			]]>
+
+
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+-- ALTERA O REGISTRO CORRENTE
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE TBTIKCLI
+		   SET CODCLI = @CODCLI
+			   ,NOMCLI = @NOMCLI
+			   ,DSCMAL = @DSCMAL
+			   ,NUMTEL = @NUMTEL
+			   ,CODPES = @CODPES
+			   ,CODPFL  =@CODPFL
+			   ,CODORG = @CODORG
+			   ,DATUPD = GETDATE()
+			   ,NIDDPT = @NIDDPT
+			   ,EMPKEY = @EMPKEY
+		 WHERE NIDCLI=@NIDCLI
+		 IF(@@ERROR=0)
+			 SET @RETURN_VALUE = @NIDCLI;
+	END				
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="TicketClient" procname="" desc ="Obtêm o registro de Cliente x Ticket de acordo com o código informado">
+				<query>
+					<![CDATA[SELECT * FROM TBTIKCLI (NOLOCK) A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código" name="NIDCLI" type="int"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="11" name="TBCLIEMP" api="true" apiname="" friendlyname="Companies" modelversion="3" descriptor="Empresas">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand key="Key" fieldreturn="NIDORG" exceptionparamns="" procname="PRCLIEMPINS" method="Insert">
+			<maxfield field="NIDORG"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(NOT (EXISTS (SELECT 1 FROM TBCLIEMP (NOLOCK) WHERE EMPKEY=0)))
+				            INSERT INTO TBCLIEMP VALUES (0,'N/D');
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Companies" procname="" desc ="Obtêm o registro de Empresa de acordo com o código informado">
+				<query>
+					<![CDATA[SELECT EMPKEY, DSCEMP FROM TBCLIEMP (NOLOCK) A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código" name="EMPKEY" type="System.Byte"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="true" alias="A." sql="" method="Select" return="Companies" procname="PRCLIEMPSELNAM" desc ="Obtêm o registro de Empresa de acordo com o nome da empresa informado">
+				<query>
+					<![CDATA[
+IF(UPPER(@DSCEMP Collate SQL_Latin1_General_Cp1253_CI_AI) = UPPER('BALNEARIO CAMBORIU'))
+      SET @DSCEMP = 'ZOOCARE';
+
+  SELECT EMPKEY, DSCEMP 
+    FROM TBCLIEMP (NOLOCK) A 
+   WHERE UPPER(DSCEMP  Collate SQL_Latin1_General_Cp1253_CI_AI) = UPPER(@DSCEMP Collate SQL_Latin1_General_Cp1253_CI_AI)
+ ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Descrição" name="DSCEMP" type="System.String"  size="30" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+
+
+	<item create="true"  id="12" name="RFTIKORI" api="true" apiname="" friendlyname="Origins" modelversion="3" descriptor="Origens">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand key="Key" fieldreturn="CODORI" exceptionparamns="" procname="PRTIKORIINS" method="Insert">
+			<maxfield field="CODORI"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(NOT (EXISTS (SELECT 1 FROM RFTIKORI (NOLOCK) WHERE CODORI=0)))
+				            INSERT INTO RFTIKORI VALUES (0,'N/D');
+IF(EXISTS ( SELECT 1 FROM RFTIKORI  (NOLOCK) WHERE DSCORI = @DSCORI))
+   SELECT @RETURN_VALUE= CODORI FROM RFTIKORI  (NOLOCK) WHERE DSCORI = @DSCORI						
+			
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Origins" procname="" desc ="Obtêm o registro de origem de acordo com o código informado">
+				<query>
+					<![CDATA[SELECT * FROM RFTIKORI (NOLOCK) A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código" name="CODORI" type="System.Byte" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="13" name="TBCADDEP" api="true" apiname="" friendlyname="Departments" modelversion="3" descriptor="Tabela de Registro de Informações de Departamentos" >
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand key="Key" fieldreturn="NIDDPT" exceptionparamns="'DATUPD','DATCAD'" procname="PRCADDEPINS" method="Insert">
+			<maxfield field="NIDDPT"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+    IF(NOT (EXISTS (SELECT 1 FROM TBCADDEP (NOLOCK) WHERE NIDDPT=0)))
+    				            INSERT INTO TBCADDEP (NIDDPT, CODDPT, NOMDPT,EMPKEY,DSCMAL, NUMTEL,STAREC)
+								              VALUES (     0,  'N/D',  'N/D',     0, 'N/D',  'N/D',     1);
+    							
+   	IF(EXISTS (SELECT 1 FROM TBCADDEP (NOLOCK) WHERE CODDPT = @CODDPT))
+	     SET @RETURN_VALUE = -2;
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+			
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+
+			</returns>
+		</insertcommand>
+
+		<updatecommand key="Key" fieldreturn="NIDDPT" exceptionparamns="'DATUPD','DATCAD'" procname="PRCADDEPUPD" method="Update">
+			<maxfield field="NIDDPT"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+    IF(NOT (EXISTS (SELECT 1 FROM TBCADDEP (NOLOCK) WHERE NIDDPT=0)))
+    				            INSERT INTO TBCADDEP (NIDDPT, CODDPT, NOMDPT,EMPKEY,DSCMAL, NUMTEL,STAREC)
+								              VALUES (     0,  'N/D',  'N/D',     0, 'N/D',  'N/D',     1);
+    							
+   	IF(NOT EXISTS (SELECT 1 FROM TBCADDEP (NOLOCK) WHERE CODDPT = @CODDPT))
+	     SET @RETURN_VALUE = -2;
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+			
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-2" message="" error="RECORDNOT FOUND"></return>
+
+			</returns>
+		</updatecommand>
+	
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Departments" procname="" desc ="Obtêm o registro de Departamento de acordo com o id informado">
+				<query>
+					<![CDATA[SELECT * FROM TBCADDEP (NOLOCK) A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código" name="NIDDPT" type="int"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" method="Find" return="Departments" procname="" desc ="Obtêm o registro de Departamento de acordo com o Código de Departamento o informado">
+				<query>
+					<![CDATA[SELECT * FROM TBCADDEP (NOLOCK) A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código" name="CODDPT" type="System.String"  size="36" default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+			<!--<item script="false" alias="A." sql="" method="Find" return="Departments" procname="" desc ="Obtêm o registro de Departamento de acordo com o NOME do departamento informado">
+				<query>
+					<![CDATA[SELECT * FROM TBCADDEP (NOLOCK) A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código" name="NOMDPT" type="System.String"  size="40" default="" output="" null="false"/>
+				</parameters>
+			</item>-->
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="14" name="RLTIKCLI" api="true" apiname="" friendlyname="AssociationClientTicket" modelversion="3" descriptor="Associação Cliente x Ticket" comments="Esta tabela armazena a associação de um ticket para um cliente numa relação Ticket(1) para Clientes (n)">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','DATCAD'" procname="PRRELTIKCLIINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+    	
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return  operator=">" value="0" message="Inclusão efetuada com sucesso" error="OK"></return>
+				<return  operator=">" value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+	</item>
+
+
+</root>

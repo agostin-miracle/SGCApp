@@ -1,0 +1,669 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root nsw="GoldenEagle.DataLayer">
+  <item create="true"  id="1" name="TBCADCTO" friendlyname="Contatos">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODCAD</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT * FROM VW_TBCADCTO A
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="2" name="TBCADEND" friendlyname="Endereços">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODCAD</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT * FROM VW_TBCADEND A
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="3" name="TBCADGER" friendlyname="Cadastro Geral">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODCAD, CODATR</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT
+      A.CODCAD,
+      A.CODATR,
+      ISNULL(C.DSCTAB,'') AS DSCATR,
+      A.STAREC,
+      ISNULL(B.DSCTAB,'') AS DSCREC,
+      A.UPDUSU,
+      ISNULL(D.LGNNAM,'') AS LGNNAM,
+      A.DATCAD,
+      A.DATUPD,
+      A.TIPPES,
+      A.CODCMF,
+      dbo.FORMAT(A.CODCMF,'CNPJ') AS MSKCMF,
+      A.INSEST,
+      A.NOMFAN,
+      A.DSCNOM
+      FROM TBCADGER (NOLOCK) A
+      LEFT JOIN TBTABGER (NOLOCK) B
+      ON (7 = B.NUMTAB AND A.STAREC = B.KEYCOD)
+      LEFT JOIN TBTABGER (NOLOCK) C
+      ON (37 = C.NUMTAB AND A.CODATR = C.KEYCOD)
+      LEFT JOIN TBCADUSU (NOLOCK) D
+      ON (A.UPDUSU = D.CODUSU)
+    </StringSqlSelectAll>
+    <IdNextNumber>1</IdNextNumber>
+    <SetNextNumber>CODCAD</SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+
+  </item>
+  <item create="true"  id="4" name="TBCADPRO" friendlyname="Produtos">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODPRO</SelectAllList>
+    <StringSqlSelectAll id="false" order="A.NUMPRO">
+      SELECT
+      A.CODPRO,
+      A.CODCAT,
+      [DSCCAT],
+      A.NUMPRO,
+      A.DSCPRO,
+      A.CODBAR,
+      A.UNIMED,
+      DSCUNI,
+      A.VLRCST,
+      A.VLRVEN,
+      A.STAREC,
+      A.DATCAD,
+      A.DATUPD,
+      A.UPDUSU
+      FROM TBCADPRO (NOLOCK) A
+      INNER JOIN TBTIPCAT (NOLOCK) B
+      ON (A.CODCAT = B.CODCAT)
+      INNER JOIN TBUNIMED (NOLOCK) C
+      ON (A.UNIMED = C.UNIMED)
+      LEFT JOIN TBCADUSU (NOLOCK) D
+      ON (A.UPDUSU = D.CODUSU)
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+
+  <item create="true"  id="5" name="TBTABPRC" friendlyname="Tabela de Preço">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111010000</asp>
+    <csharp>1111110000</csharp>
+    <SelectAllList>CODTPC</SelectAllList>
+    <StringSqlSelectAll id="false" order="A.CODTPC, B.NUMPRO,B.DSCPRO">
+      SELECT A.*,
+      B.NUMPRO,
+      B.DSCPRO,
+      ISNULL(D.DSCTAB,'') AS DSCREC,
+      ISNULL(C.LGNNAM,'') AS DSCUPD
+      FROM TBTABPRC (NOLOCK) A
+      INNER JOIN TBCADPRO (NOLOCK) B
+      ON (A.CODPRO = B.CODPRO)
+      LEFT JOIN TBCADUSU (NOLOCK) C
+      ON (A.UPDUSU = C.CODUSU)
+      LEFT JOIN TBTABGER (NOLOCK) D
+      ON (7 = D.NUMTAB AND A.STAREC = D.KEYCOD)
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+    <Exporter>
+      <paramns>
+        <param id="CODCAT" type="Int" default="" isnull="true" description="Código da Categoria"/>
+        <param id="CODMAR" type="Int" default="" isnull="true" description="Código da Marca"/>
+        <param id="CODTPC" type="String" default="" isnull="true" description="Código da Tabela de Preço"/>
+        <param id="TIPEXP" type="Byte" default="1" isnull="false" description="Tipo de Exportação"/>
+      </paramns>
+      <body name="sp_{0}_export" issp="true">
+        SELECT A.CODTPC, B.NUMPRO, B.DSCPRO, B.CODCAT, B.DSCCAT, B.CODMAR, B.DSCMAR, A.VLRVEN, A.VLRDSC
+        FROM TBTABPRC (NOLOCK)_ A
+        INNER JOIN TBCADPRO (NOLOCK) B
+        ON (A.CODPRO = B.CODPRO)
+        INNER JOIN TBTIPCAT (NOLOCK) C
+        ON (B.CODCAT = C.CODCAT)
+        INNER JOIN TBTABER (NOLOCK) D
+        ON (?? = D.NUMTAB AND B.CODMAR = D.KEYCOD)
+        WHERE A.STAREC=1
+        AND (@CODCAT IS NULL OR B.CODCAT = @CODCAT)
+        AND (@CODMAR IS NULL OR B.CODMAR = @CODMAR)
+        AND (@CODTPC IS NULL OR A.CODTPC = @CODTPC)
+        ORDER BY A.NUMPRO
+      </body>
+    </Exporter>
+
+  </item>
+
+  <item create="true"  id="6" name="TBCADPED" friendlyname="Pedidos">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODPED, CODVEN, CODLOJ, CODCAD, TIPPED</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT A.* FROM VW_TBCADPED A
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>
+    </SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+
+  <item create="true"  id="7" name="TBREGSTK" friendlyname="Estoque">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODPED/V</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT * FROM VW_TBREGSTK A
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>
+    </SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="8" name="TBTIPCAT" friendlyname="Categorias">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1101000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODCAT</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT
+      A.CODCAT,
+      A.DSCCAT,
+      A.STAREC,
+      ISNULL(B.DSCTAB,'') AS DSCREC,
+      A.DATCAD,
+      A.DATUPD,
+      A.UPDUSU,
+      ISNULL(C.LGNNAM,'') AS LGNNAM
+      FROM TBTIPCAT (NOLOCK) A
+      INNER JOIN TBTABGER (NOLOCK) B
+      ON (7 = B.NUMTAB AND A.STAREC = B.KEYCOD)
+      LEFT JOIN TBCADUSU (NOLOCK) C
+      ON (A.UPDUSU = C.CODUSU)
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields>CODCAT</MaxFields>
+  </item>
+  <item create="true"  id="9" name="TBTIPEND" friendlyname="Tipo Endereço">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>TIPEND</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT
+      A.TIPEND,
+      A.DSCTEN,
+      A.STAREC,
+      ISNULL(B.DSCTAB,'') AS DSCREC,
+      A.DATCAD,
+      A.DATUPD,
+      A.UPDUSU,
+      ISNULL(C.LGNNAM,'') AS LGNNAM
+      FROM TBTIPEND (NOLOCK) A
+      INNER JOIN TBTABGER (NOLOCK) B
+      ON (7 = B.NUMTAB AND A.STAREC = B.KEYCOD)
+      LEFT JOIN TBCADUSU (NOLOCK) C
+      ON (A.UPDUSU = C.CODUSU)
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields>TIPEND</MaxFields>
+  </item>
+  <item create="true"  id="10" name="TBTIPLOG" friendlyname="Tipo Logradouro">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>TIPLOG</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT
+      A.TIPLOG,
+      A.DSCLOG,
+      A.STAREC,
+      ISNULL(B.DSCTAB,'') AS DSCREC,
+      A.DATCAD,
+      A.DATUPD,
+      A.UPDUSU,
+      ISNULL(C.LGNNAM,'') AS LGNNAM
+      FROM TBTIPLOG (NOLOCK) A
+      INNER JOIN TBTABGER (NOLOCK) B
+      ON (7 = B.NUMTAB AND A.STAREC = B.KEYCOD)
+      LEFT JOIN TBCADUSU (NOLOCK) C
+      ON (A.UPDUSU = C.CODUSU)
+
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields>TIPLOG</MaxFields>
+  </item>
+  <item create="true"  id="11" name="TBTIPMOV" friendlyname="Tipo Movimento">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODMOV</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT
+      A.CODMOV,
+      A.DSCMOV,
+      A.SIGOPE,
+      CASE WHEN A.SIGOPE = 1 THEN 'Entrada'
+      WHEN A.SIGOPE = -1 THEN 'Saida'
+      ELSE 'Sem operação' END AS DSCOPE,
+      A.STAREC,
+      ISNULL(B.DSCTAB,'') AS DSCREC,
+      A.DATCAD,
+      A.DATUPD,
+      A.UPDUSU,
+      ISNULL(C.LGNNAM,'') AS LGNNAM
+      FROM TBTIPMOV (NOLOCK) A
+      INNER JOIN TBTABGER (NOLOCK) B
+      ON (7 = B.NUMTAB AND A.STAREC = B.KEYCOD)
+      LEFT JOIN TBCADUSU (NOLOCK) C
+      ON (A.UPDUSU = C.CODUSU)
+
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields>CODMOV</MaxFields>
+  </item>
+  <item create="true"  id="12" name="TBTABGER" friendlyname="Tabela Geral">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>NUMTAB/V,KEYTAB</SelectAllList>
+    <StringSqlSelectAll id="false" order="A.KEYCOD, A.KEYTXT">
+      SELECT A.*,
+      isnull(B.LGNNAM,'') AS DSCUPD,
+      ISNULL(C.DSCTAB,'') AS DSCREC,
+      CASE A.TIPKEY
+      WHEN 1 THEN 'Código'
+      WHEN 2 THEN 'Texto'
+      ELSE 'N/D' END AS DSCTKY
+      FROM TBTABGER (NOLOCK) A
+      LEFT JOIN TBCADUSU (NOLOCK) B
+      ON (A.UPDUSU = B.CODUSU)
+      INNER JOIN TBTABGER (NOLOCK) C
+      ON (7 = C.NUMTAB AND A.STAREC = C.KEYCOD)
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="13" name="TBTIPPED" friendlyname="Tipo Pedido">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>TIPPED</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT
+      A.TIPPED,
+      A.DSCTPD,
+      A.CODMOV,
+      D.DSCMOV,
+      A.STAREC,
+      ISNULL(B.DSCTAB,'') AS DSCREC,
+      A.DATCAD,
+      A.DATUPD,
+      A.UPDUSU,
+      ISNULL(C.LGNNAM,'') AS LGNNAM
+      FROM TBTIPMOV (NOLOCK) A
+      INNER JOIN TBTABGER (NOLOCK) B
+      ON (7 = B.NUMTAB AND A.STAREC = B.KEYCOD)
+      LEFT JOIN TBCADUSU (NOLOCK) C
+      ON (A.UPDUSU = C.CODUSU)
+      LEFT JOIN TBTIPMOV (NOLOCK) D
+      ON (A.CODMOV = D.CODMOV)
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields>TBTIPPED</MaxFields>
+  </item>
+  <item create="true"  id="14" name="TBTIPMOV" friendlyname="Tipo Movimento">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>TIPMOV</SelectAllList>
+    <StringSqlSelectAll id="false">
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>
+    </SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="15" name="TBCTLPED" friendlyname="Controle Pedido">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1011000000</procedure>
+    <asp>1011000000</asp>
+    <csharp>1011000000</csharp>
+    <SelectAllList>CODPED/V</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT A.* FROM VW_TBCTLPED A
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="16" name="TBCADUSU" friendlyname="Usuario">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODUSU</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT A.*,
+      B.LGNNAM AS DSCUPD,
+      CASE WHEN A.RSTPSW = 0 THEN 'Não' else 'Sim' end AS DSCRST,
+      CASE WHEN A.FLYLOJ = 0 THEN 'Não' else 'Sim' end AS DSCFLY,
+      ISNULL(C.DSCTAB,'') AS DSCTIP
+      FROM TBCADUSU (NOLOCK) A
+      INNER JOIN TBCADUSU (NOLOCK) B
+      ON (A.UPDUSU = B.CODUSU)
+      INNER JOIN TBTABGER (NOLOCK) C
+      ON (3 = C.NUMTAB AND A.TIPUSU = C.KEYCOD)
+      INNER JOIN TBTABGER (NOLOCK) D
+      ON (7 = D.NUMTAB AND A.STAREC = D.KEYCOD)
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="17" name="TBUSULOJ" friendlyname="UsuarioLoja">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODUSU</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT A.*,
+      isnull(B.LGNNAM,'') AS DSCUPD,
+      ISNULL(C.DSCTAB,'') AS DSCREC
+      FROM TBUSULOJ (NOLOCK) A
+      left JOIN TBCADUSU (NOLOCK) B
+      ON (A.UPDUSU = B.CODUSU)
+      left JOIN TBTABGER (NOLOCK) C
+      ON (7 = C.NUMTAB AND A.STAREC = C.KEYCOD)
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="18" name="TBUNIMED" friendlyname="Unidade de Medida">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>UNIMED</SelectAllList>
+    <StringSqlSelectAll id="false">
+      SELECT A.*,
+      isnull(B.LGNNAM,'') AS DSCUPD,
+      ISNULL(C.DSCTAB,'') AS DSCREC
+      FROM TBUNIMED (NOLOCK) A
+      left JOIN TBCADUSU (NOLOCK) B
+      ON (A.UPDUSU = B.CODUSU)
+      INNER JOIN TBTABGER (NOLOCK) C
+      ON (7 = C.NUMTAB AND A.STAREC = C.KEYCOD)
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+
+  <lists>
+    <list queryname="spl_tabelachave" resourcename="TabelaChave" parms="" generateproc="false" description="Tabela Geral Chave" reference="0">
+      select keycod, dsctab from tbtabger (nolock) where numtab=0 and starec=1 order by dsctab
+    </list>
+    <list queryname="spl_tabelachave" resourcename="TabelaChave" parms="NUMTAB int" generateproc="false" description="Tabela Geral Chave" reference="0">
+      select keycod, dsctab from tbtabger (nolock) where numtab=0 and keycod={0} and starec=1 order by dsctab
+    </list>
+
+    <list queryname="spl_produtos" resourcename="Produtos" parms="" generateproc="false" description="Tabela de produtos" reference="0">
+      select codpro, dscpro from tbcadpro (nolock) where starec=1 order by dscpro
+    </list>
+    <list queryname="spl_paises" resourcename="Paises" parms="" generateproc="false" description="Paises" reference="0">
+      select keycod, dsctab from tbtabger (nolock) where numtab=1 and starec=1 order by dsctab
+    </list>
+    <list queryname="spl_statusregistro" resourcename="StatusRegistro" parms="" generateproc="false" description="Status de Registro" reference="0">
+      select keycod, dsctab from tbtabger (nolock) where numtab=7 and starec=1 order by keycod
+    </list>
+    <list queryname="spl_uf" resourcename="UF" parms="" generateproc="false" description="Unidader da Federação" reference="0">
+      select keytxt, dsctab  from tbtabger (nolock) where numtab=2 and starec=1 order by dsctab
+    </list>
+    <list queryname="spl_tipopedido" resourcename="TipoPedido" parms="" generateproc="false" description="Tipo de Pedido" reference="0">
+      select tipped, dsctpd  from tbtipped (nolock) where starec=1 order by dsctpd
+    </list>
+    <list queryname="spl_tipomovimento" resourcename="TipoMovimento" parms="" generateproc="true" description="Tipo de Movimento" reference="0">
+      select codmov, dscmov from tbtipmov (nolock) where starec=1 order by dscmov
+    </list>
+    <list queryname="spl_categorias" resourcename="Categorias" parms="" generateproc="false" description="Categorias" reference="0">
+      select codcat, dsccat from tbtipcat (nolock) where starec&lt;&gt;0 order by dsccat
+    </list>
+    <list queryname="spl_subcategorias" resourcename="SubCategorias" parms="" generateproc="false" description="Sub Categorias" reference="3">
+      select keycod, dsctab from tbtabger (nolock) where starec=1 and numtab=3 order by dsccat
+    </list>
+    <list queryname="spl_marcas" resourcename="Marcas" parms="" generateproc="false" description="Marcas" reference="4">
+      select keycod, dsctab from tbtabger (nolock) where starec&lt;&gt;0 and numtab=4 order by dsccat
+    </list>
+
+    <list queryname="spl_tipoendereco" resourcename="TipoEndereço" parms="" generateproc="false" description="Tipo de Endereço" reference="0">
+      select tipend, dscten from tbtipend (nolock) where starec&lt;&gt;0 order by dscten
+    </list>
+    <list queryname="spl_tipologradouro" resourcename="TipoLogradouro" parms="" generateproc="false" description="Tipo de Logradouro" reference="0">
+      select tiplog, dsclog from tbtiplog (nolock) where starec&lt;&gt;0 order by dsclog
+    </list>
+    <list queryname="spl_operadoras" resourcename="Operadoras" parms="" generateproc="false" description="Tipo de Logradouro" reference="0">
+      select keycod, dsctab from tbtabger (nolock) where numtab=45 and starec=1 order by dsctab
+    </list>
+    <list queryname="spl_tipousuario" resourcename="TipoUsuario" parms="@keycod int =null" generateproc="true" description="Tipo de Usuário" reference="0">
+      select keycod, dsctab from tbtabger (nolock) where numtab=8 and starec=1 and (@keycod is null or keycod>=@keycod) order by KEYCOD
+    </list>
+    <list queryname="spl_tipocontato" resourcename="TipoContato" parms="" generateproc="true" description="Tipo de Contato" reference="0">
+      select keycod, dsctab from tbtabger (nolock) where numtab=47 and starec=1 order by dsctab
+    </list>
+    <list queryname="spl_formapagamento" resourcename="FormaPagamento" parms="" generateproc="false" description="Forma de Pagamento" reference="0">
+      select keycod, dsctab from tbtabger (nolock) where numtab=48 and starec=1 order by dsctab
+    </list>
+    <list queryname="spl_atributos" resourcename="TipoAtributo" parms="" generateproc="false" description="Tipo de Atributo" reference="0">
+      select keycod, dsctab from tbtabger (nolock) where numtab=37 and starec=1 order by keycod
+    </list>
+    <list queryname="spl_cadastrotipo" resourcename="Registers" parms="@codatr int, @codcad int =null" generateproc="true" description="Lista Tipo de Registro do Cadasro Geral" reference="0">
+      select codcad, dscnom from tbcadger (nolock) where starec=1 and (codatr=@codatr) and (@codcad is null or codcad=@codcad) order by dscnom
+    </list>
+    <list queryname="spl_statuspedido" resourcename="StatusPedido" parms="" generateproc="false" description="Status do Pedido" reference="0">
+      select keycod, dsctab from tbtabger (nolock) where numtab=49 and starec=1 order by keycod
+    </list>
+    <list queryname="spl_um" resourcename="UnidadeMedida" parms="" generateproc="false" description="Unidade de Medida" reference="0">
+      select unimed, dscuni from tbunimed (nolock) where starec=1 order by dscuni
+    </list>
+    <list queryname="spl_controlechave" resourcename="ControleChave" parms="" generateproc="false" description="Controle de chave de Registro" reference="0">
+      SELECT 0 AS KEYCOD, 'N/D' AS DSCTAB UNION SELECT 1 AS KEYCOD, 'Código' AS DSCTAB UNION SELECT 2 AS KEYCOD, 'Texto' AS DSCTAB
+    </list>
+    <list queryname="spl_tabelapreco" resourcename="GetPriceList" parms="" generateproc="false" description="Lista as Tabelas de Preço" reference="14">
+      select codtpc, codtpc as dsctab from tbtabprc (nolock) where starec=1 union select keytxt, keytxt as dsctab from tbtabger (nolock) where starec=1 and numtab=14 and isnull(keytxt,'')&lt;&gt;''
+    </list>
+  </lists>
+
+</root>

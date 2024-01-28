@@ -1,0 +1,1007 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<item create="true"  id="1" name="RHCADFUN" api="true" apiname="" friendlyname="Employees" modelversion="3" descriptor="Funcionários" comments="SRA010 - Cadastro de Funcionários">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>SELECT * FROM TPCADFUN (NOLOCK) WHERE NIDFUN=-1</extendedmodel>
+
+		<insertcommand key="Key" fieldreturn="NIDFUN" exceptionparamns="'DATCAD','DATUPD'" procname="RHCADFUNINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE @NUMANO SMALLINT
+SET @NUMANO = YEAR(@DATNAC)
+IF(NOT EXISTS (SELECT 1 FROM RHCADFUN (NOLOCK) WHERE NIDFUN = 0))			
+	BEGIN
+		INSERT INTO RHCADFUN (NIDFUN,FILKEY,CODEMP,CODFIL,NUMMAT,NOMFUN,NOMCMP,CODCMF) VALUES (0,0,0,'','','','','')
+	END
+
+IF(EXISTS (SELECT 1 FROM RHCADFUN (NOLOCK) WHERE FILKEY =@FILKEY AND NUMMAT = @NUMMAT))
+    SET @RETURN_VALUE = -2;
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE = -2)
+	BEGIN
+		UPDATE RHCADFUN
+		   SET NIDFUN = @NIDFUN
+			  ,CODEMP = @CODEMP
+			  ,CODFIL = @CODFIL
+			  ,NOMFUN = @NOMFUN
+			  ,NOMCMP = @NOMCMP
+			  ,CODCMF = @CODCMF
+			  ,DATUPD = GETDATE()
+			  ,TIPGER = @TIPGER
+		 WHERE FILKEY = @FILKEY AND NUMMAT = @NUMMAT
+		 SET @RETURN_VALUE = @NIDFUN
+	END
+				]]>
+			</pos>
+			<returns>
+				<return  operator=">" value="0" message="" error="FAILALL">
+					<![CDATA[
+								if(transferTo >0){
+								
+								if(transferTo==1){
+								EmployeesItemDao WRKOBJ = new EmployeesItemDao();
+                            var respond2 = WRKOBJ.Insert(model);
+                            RETURN_VALUE = (int)respond2.ReturnValue;
+                            respond = respond2;
+                            WRKOBJ = null;
+								}
+								if(transferTo==2){
+								EmployeesMonthlyDao WRKOBJ = new EmployeesMonthlyDao();
+                            var respond2 = WRKOBJ.Insert(model);
+                            RETURN_VALUE = (int)respond2.ReturnValue;
+                            respond = respond2;
+                            WRKOBJ = null;
+								}
+								}
+					
+				]]>
+				</return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+		<methods>
+			<item script="true" alias="" sql="" method="Delete" return="int" returnmode="2" procname="RHREGFUNDEL" desc ="Deleta todos os registros da semana correspondente" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0
+DELETE FROM RHREGFUN WHERE NUMNDS = @NUMNDS 
+SET @RETURN_VALUE = @@ROWCOUNT;
+RETURN @RETURN_VALUE;
+				]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Número da Semana" name="NUMNDS" type="System.Byte"   default="" output="" null="false"/>
+
+					<parameter input="false" apply="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="" inputmode="4"/>
+				</parameters>
+			</item>
+			<item script="true" alias="" sql="" method="DeleteMonthly" return="int" returnmode="2" procname="RHMENFUNDEL" desc ="Deleta todos os registros da semana correspondente" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0
+DELETE FROM RHMENFUN WHERE YEAR(DATBAS) = YEAR(@DATBAS) AND MONTH(DATBAS) = MONTH(@DATBAS)
+SET @RETURN_VALUE = @@ROWCOUNT;
+RETURN @RETURN_VALUE;
+				]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Data Base" name="DATBAS" type="System.DateTime"   default="" output="" null="false"/>
+
+					<parameter input="false" apply="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="" inputmode="4"/>
+				</parameters>
+			</item>
+
+
+		</methods>
+
+	</item>
+
+
+
+	<item create="true"  id="2" name="RHHSTMOV" api="true" apiname="" friendlyname="MovementHistory" modelversion="3" descriptor="SRD010/SRD030 -Histórico de Movimento">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="NIDHMV" exceptionparamns="'DATUPD'" procname="RHHSTMOVINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="Registro inserido com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+		<methods>
+			<item script="true" alias="B." sql="" method="Delete" return="int" returnmode="2" procname="RHHSTMOVDEL" desc ="Deleta todos os registros de Movimento de Histórico" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0
+DELETE FROM RHHSTMOV WHERE MESANO=@MESANO
+SET @RETURN_VALUE = @@ROWCOUNT;
+RETURN @RETURN_VALUE;
+				]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Mês/Ano" name="MESANO" type="System.String" size="6" default="" output="" null="false"/>
+					<parameter input="false" apply="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="" inputmode="4"/>
+				</parameters>
+			</item>
+		</methods>
+
+
+	</item>
+
+
+	<item create="true"  id="3" name="RHREGAFA" api="true" apiname="" friendlyname="Absences" modelversion="3" descriptor="Registros de Afastamento" comments="SR8010/SR8030 - Controle de Ausências">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Key" fieldreturn="NIDAFA" exceptionparamns="'DATUPD'" procname="RHREGAFAINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+		<methods>
+			<item script="true" alias="B." sql="" method="Delete" return="int" returnmode="2" procname="RHREGAFADEL" desc ="Deleta todos os registros de Controle de Ausências" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0
+	BEGIN
+		DELETE FROM RHREGAFA 
+		SET @RETURN_VALUE = @@ROWCOUNT;
+	END
+RETURN @RETURN_VALUE;
+				]]>
+				</query>
+				<parameters>
+					<parameter input="false" apply="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="" inputmode="4"/>
+				</parameters>
+			</item>
+		</methods>
+
+
+	</item>
+
+	<item create="true"  id="4" name="RHREGRSC" api="true" apiname="" friendlyname="Rescissions" modelversion="3" descriptor="Registros de Rescisões" comments="SRG010/SRG030 - Registro de Rescisões">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="RHREGRSCINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(EXISTS ( SELECT 1 FROM RHREGRSC (NOLOCK) WHERE NIDRSC = @NIDRSC))
+	BEGIN
+		UPDATE RHREGRSC
+		   SET CODEMP = @CODEMP
+			  ,NIDFUN = @NIDFUN
+			  ,TIPRSC = @TIPRSC
+			  ,CODFIL = @CODFIL
+			  ,NUMMAT = @NUMMAT
+			  ,DATDSL = @DATDSL
+			  ,SALMES = @SALMES
+			  ,SALDIA = @SALDIA
+			  ,SALHOR = @SALHOR
+		 WHERE NIDRSC = @NIDRSC;
+		 
+		 if(@@ERROR=0)
+			SET @RETURN_VALUE = 1;
+	END
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+
+	</item>
+
+
+	<item create="true"  id="5" name="RHREGAPO" api="true" apiname="" friendlyname="Appointments" modelversion="3" descriptor="Histórico de Apontamentos" comments="SPH010/SPH030 - Histórico de Apontamentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="RHREGAPOINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				
+IF(@MOTABN = '16')
+  SET @MOTABN = '016';
+  
+IF(EXISTS ( SELECT 1 FROM RHREGAPO (NOLOCK) WHERE NIDAPO = @NIDAPO))
+	BEGIN
+		UPDATE RHREGAPO
+		   SET CODEMP = @CODEMP
+              ,CODFIL = @CODFIL
+              ,NUMMAT = @NUMMAT
+              ,DATAPO = @DATAPO
+              ,CODVRB = @CODVRB
+              ,QTDCAL = @QTDCAL
+              ,QTDINF = @QTDINF
+              ,MOTABN = @MOTABN
+              ,QTDABN = @QTDABN
+              ,CODCCU = @CODCCU
+		WHERE NIDAPO = @NIDAPO;
+		
+		IF (@@ERROR=0)
+		    SET @RETURN_VALUE = -2;
+		ELSE
+			SET @RETURN_VALUE = 1;
+	END
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+		<methods>
+			
+			<item script="true" alias="" sql="" method="Delete" return="int" returnmode="2" procname="RHREGAPODEL" desc ="Deleta todos os registros do período informado" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0
+DELETE FROM RHREGAPO WHERE YEAR(DATAPO) = @NUMANO AND MONTH(DATAPO) = @NUMANO
+SET @RETURN_VALUE = @@ROWCOUNT;
+RETURN @RETURN_VALUE;
+				]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ano" name="NUMANO" type="System.Int16"   default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Mês" name="NUMMES" type="System.Byte"   default="" output="" null="false"/>
+
+					<parameter input="false" apply="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="" inputmode="4"/>
+				</parameters>
+			</item>
+
+
+		</methods>
+
+
+	</item>
+
+
+	<item create="true"  id="6" name="RHCADVRB" api="true" apiname="" friendlyname="Sums" modelversion="3" descriptor="Cadastro de Verbas" comments="SRV010/SRV030 - Cadastro de Verbas">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="VRBKEY" exceptionparamns="'DATUPD'" procname="RHCADVRBINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET @RETURN_VALUE=0;
+IF(NOT EXISTS (SELECT 1 FROM RHCADVRB (NOLOCK)  WHERE VRBKEY=0))
+    INSERT INTO RHCADVRB (VRBKEY, CODEMP, CODFIL, CODVRB, DSCVRB) VALUES (0, 0, '','','N/D');
+	
+IF(EXISTS (SELECT 1 FROM RHCADVRB (NOLOCK) WHERE CODEMP = @CODEMP AND CODFIL = @CODFIL AND CODVRB = @CODVRB))
+   SET @RETURN_VALUE=-2;
+
+IF(@RETURN_VALUE=0)
+   SELECT @VRBKEY = COALESCE(MAX(ISNULL(VRBKEY,0)),0) + 1 FROM RHCADVRB (NOLOCK);
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE RHCADVRB
+		   SET DSCVRB =@DSCVRB
+		 WHERE CODEMP = @CODEMP AND CODFIL = @CODFIL AND CODVRB = @CODVRB;
+		 SELECT @VRBKEY = VRBKEY FROM RHCADVRB (NOLOCK) WHERE CODEMP = @CODEMP AND CODFIL = @CODFIL AND CODVRB = @CODVRB;
+		 SET @RETURN_VALUE = @VRBKEY;
+	END
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+
+	</item>
+
+
+	<item create="true"  id="7" name="RHCADFIL" api="true" apiname="" friendlyname="Branches" modelversion="3" descriptor="Cadastro de Filiais" comments="SYS_COMPANY - Tabela otimizada de registro de filiais">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<!--INSERT INTO RHCADFIL (FILKEY, EMPKEY, CODEMP, CODFIL, NOMRED, DSCEMP) VALUES(     0,      0,      0,     '',     '',     '')-->
+
+
+		<insertcommand key="Key" fieldreturn="FILKEY" exceptionparamns="" procname="RHCADFILINS" method="Insert">
+			<maxfield field="FILKEY"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET @RETURN_VALUE=0;
+IF(NOT EXISTS (SELECT 1 FROM RHCADFIL (NOLOCK)  WHERE FILKEY=0))
+    INSERT INTO RHCADFIL (FILKEY, EMPKEY, CODEMP, CODFIL, NOMRED, DSCEMP) VALUES(     0,      0,      0,     '',     '',     '')
+	
+IF(EXISTS (SELECT 1 FROM RHCADFIL (NOLOCK) WHERE CODEMP = @CODEMP AND CODFIL = @CODFIL))
+	BEGIN
+		UPDATE RHCADFIL 
+		   SET NOMRED = @NOMRED
+		      ,DSCEMP = @DSCEMP
+		 WHERE  CODEMP = @CODEMP AND CODFIL = @CODFIL
+		 
+		 SELECT @FILKEY = FILKEY FROM RHCADFIL (NOLOCK) WHERE CODEMP = @CODEMP AND CODFIL = @CODFIL;
+		 SET @RETURN_VALUE = @FILKEY;
+	END
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+
+				]]>
+			</pos>
+			<returns>
+				<return value="0" operator=">=0" message="Registro atualizado com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Get" return="int" procname="" desc ="Obtêm o Id de controle da filial com base no codigo da empresa e da filial externa">
+				<query>
+					<![CDATA[SELECT FILKEY FROM RHCADFIL (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código da Empresa" name="CODEMP" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Código Externo da Filial" name="CODFIL" type="System.String"  size="4" default="" output="" null="false"/>
+
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" method="Select" return="Branches" procname="" desc ="Obtêm o Registro da filial com base no codigo da empresa e da filial externa">
+				<query>
+					<![CDATA[SELECT * FROM RHCADFIL (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código da Empresa" name="CODEMP" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Código Externo da Filial" name="CODFIL" type="System.String"  size="4" default="" output="" null="false"/>
+
+				</parameters>
+			</item>
+		</selectcommand>
+
+
+
+	</item>
+
+	<item create="true"  id="8" name="RHREGFUN" api="true" apiname="" friendlyname="EmployeesItem" friendlynamealternative="Employees" modelversion="3" descriptor="Registro de Ocorrências de Funcionários" comments="Base de origem : SRA010 - Cadastro de Funcionários - Esta tabela conterá o registro de evolução dos funcionários">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<insertcommand key="identity" fieldreturn="NIDREC" exceptionparamns="'DATUPD','DATCAD','CREVRT'" procname="RHREGFUNINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+	
+	
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+
+				]]>
+			</pos>
+			<returns>
+				<return value="0" operator =">" message="REGISTRO ATUALIZADO COM SUCESSO" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-3" message="REGISTRO DE DESLIGAMENTO JA EXISTENTE" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+
+
+	</item>
+
+
+	<item create="true"  id="9" name="RHCADCCU" api="true" apiname="" friendlyname="CostCenters"  modelversion="3" descriptor="Registro de Ocorrências de Funcionários" comments="Base de origem : SRA010 - Cadastro de Funcionários - Esta tabela conterá o registro de evolução dos funcionários">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="CCUKEY" exceptionparamns="'DATUPD'" procname="RHCADCCUINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+ DECLARE @TMPKEY INT =0
+    IF(NOT EXISTS(SELECT 1 FROM RHCADCCU (NOLOCK) WHERE CCUKEY=0))
+        INSERT INTO RHCADCCU (CCUKEY, CODEMP, CODFIL, CODCCU, DSCCCU) VALUES (0,0,'','','N/D');
+    	
+    IF(EXISTS(SELECT 1 
+	            FROM RHCADCCU (NOLOCK) 
+	           WHERE CODEMP =@CODEMP 
+			     AND CODFIL = @CODFIL 
+				 AND CODCCU = @CODCCU))
+    	BEGIN
+    		 SELECT @CCUKEY = CCUKEY 
+			   FROM RHCADCCU (NOLOCK) 
+			  WHERE CODEMP = @CODEMP 
+			    AND CODFIL = @CODFIL 
+				AND CODCCU = @CODCCU;
+			 
+			 IF (@CCUKEY >0 )
+				BEGIN
+					 UPDATE RHCADCCU
+						SET DSCCCU = @DSCCCU
+						   ,CLSCCU = @CLSCCU
+						   ,NORCCU = @NORCCU
+			               ,DATUPD = GETDATE()
+		              WHERE CCUKEY = @CCUKEY
+		  		 
+						IF(@@ERROR=0)
+							SET @RETURN_VALUE = @CCUKEY;
+						ELSE
+						    SET @RETURN_VALUE = -2;
+    			END
+			ELSE
+			    SET @RETURN_VALUE =-3;
+		END
+		
+ IF(@RETURN_VALUE=0)
+	BEGIN
+        SELECT @TMPKEY = COALESCE(MAX( CAST( RIGHT(CCUKEY,7) AS INTEGER)),0) + 1 FROM RHCADCCU WITH (NOLOCK)
+   		SET @CCUKEY = RIGHT('00' + CONVERT(VARCHAR,@CODEMP),2) + RIGHT('0000000' + CONVERT(VARCHAR,@TMPKEY),7)
+	END
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+	</item>
+
+
+	<item create="true"  id="8" name="RHMENFUN" api="true" apiname="" friendlyname="EmployeesMonthly" friendlynamealternative="Employees" modelversion="3" descriptor="Registro de Ocorrências de Funcionários Menssal" comments="Base de origem : SRA010 - Cadastro de Funcionários - Esta tabela conterá o registro de evolução dos funcionários">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<insertcommand key="identity" fieldreturn="NIDREC" exceptionparamns="'DATUPD','DATCAD','CREVRT'" procname="RHMENFUNINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+	
+	
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+
+				]]>
+			</pos>
+			<returns>
+				<return value="0" operator =">" message="REGISTRO ATUALIZADO COM SUCESSO" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-3" message="REGISTRO DE DESLIGAMENTO JA EXISTENTE" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+	</item>
+
+
+
+	<item create="true"  id="10" name="RFCATFUN" api="true" apiname="" friendlyname="EmployeeCategory"  modelversion="3" descriptor="Registro de Categoria de Funcionários" comments="Base de origem : SX5010/SX5030 - Categoria de Funcionários - Tabela 28 -  Esta tabela conterá as categorias dos funcionários">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="RHCATFUNINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE @TMPKEY INT =0
+IF(NOT EXISTS(SELECT 1 FROM RFCATFUN (NOLOCK) WHERE CATKEY=0))
+    INSERT INTO RFCATFUN (CATKEY, CODEMP, CODFIL, CATFUN, DSCCAT, DSCENG) VALUES (0,0,'','','','');
+	
+IF(EXISTS(SELECT 1 FROM RFCATFUN (NOLOCK) WHERE CODEMP =@CODEMP AND CODFIL = @CODFIL AND CATFUN = @CATFUN))
+	BEGIN
+		 SET @RETURN_VALUE=-2;
+	END
+
+IF(@RETURN_VALUE = 0) 
+	BEGIN
+        SELECT @TMPKEY = ISNULL(MAX(CATKEY),0)+1 FROM RFCATFUN WITH (NOLOCK)
+		SET @CATKEY = RIGHT('00' + CONVERT(VARCHAR,@CODEMP),2) + RIGHT('0000000' + CONVERT(VARCHAR,@TMPKEY),7)
+	END
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE RFCATFUN
+		   SET DSCCAT = @DSCCAT
+			  ,DSCENG = @DSCENG
+			  ,DATUPD = GETDATE()
+		 WHERE CODEMP = @CODEMP
+		   AND CODFIL = @CODFIL
+		   AND CATFUN = @CATFUN
+		 
+		 IF(@@ERROR=0)
+			SET @RETURN_VALUE = 2;
+	END
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+	</item>
+
+
+	<item create="true"  id="11" name="RFCODFNC" api="true" apiname="" friendlyname="EmployeeRole"  modelversion="3" descriptor="Registro de Funções de Funcionários" comments="Base de origem : SRJ010/SRJ030 - Funções">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="FNCKEY" exceptionparamns="'DATUPD'" procname="RHCODFNCINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE @TMPKEY INT =0
+IF(NOT EXISTS(SELECT 1 FROM RFCODFNC (NOLOCK) WHERE FNCKEY=0))
+    INSERT INTO RFCODFNC (FNCKEY, CODEMP, CODFIL, CODFNC, DSCFNC) VALUES (0,0,'','','');
+	
+IF(EXISTS(SELECT 1 FROM RFCODFNC (NOLOCK) WHERE CODEMP =@CODEMP AND CODFIL = @CODFIL AND CODFNC = @CODFNC))
+	BEGIN
+		 UPDATE RFCODFNC
+		    SET DSCFNC = @DSCFNC
+			   ,DATUPD = GETDATE()
+		 WHERE CODEMP = @CODEMP
+		   AND CODFIL = @CODFIL
+		   AND CODFNC = @CODFNC
+		 
+		 IF(@@ERROR=0)
+			SET @RETURN_VALUE = 1;
+		
+	END
+
+IF(@RETURN_VALUE = 0) 
+	BEGIN
+	    SELECT @TMPKEY = COALESCE(MAX( CAST( RIGHT(FNCKEY,7) AS INTEGER)),0) + 1 FROM RFCODFNC WITH (NOLOCK)
+		SET @FNCKEY = RIGHT('00' + CONVERT(VARCHAR,@CODEMP),2) + RIGHT('0000000' + CONVERT(VARCHAR,@TMPKEY),7)
+	END
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+	</item>
+
+
+
+	<item create="true"  id="12" name="RHCADDPT" api="true" apiname="" friendlyname="Departments"  modelversion="3" descriptor="Cadastro de Departamentos" comments="Base de origem : SQB010/SQB030 - Departamentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="DPTKEY" exceptionparamns="'DATUPD'" procname="RHCADDPTINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE @TMPKEY INT =0
+IF(NOT EXISTS(SELECT 1 FROM RHCADDPT (NOLOCK) WHERE DPTKEY=0))
+    INSERT INTO RHCADDPT (DPTKEY, CODEMP, CODFIL, CODDPT, DSCDPT, CODCCU) VALUES (0,0,'','','','');
+	
+IF(EXISTS(SELECT 1 FROM RHCADDPT (NOLOCK) WHERE CODEMP =@CODEMP AND CODFIL = @CODFIL AND CODDPT = @CODDPT))
+	BEGIN
+		 SET @RETURN_VALUE=-2;
+		 SELECT @DPTKEY = DPTKEY FROM RHCADDPT (NOLOCK) WHERE CODEMP =@CODEMP AND CODFIL = @CODFIL AND CODDPT = @CODDPT;
+	END
+
+IF(@RETURN_VALUE = 0) 
+	BEGIN
+        SELECT @TMPKEY = ISNULL(MAX(DPTKEY),0)+1 FROM RHCADDPT WITH (NOLOCK)
+		SET @DPTKEY = RIGHT('00' + CONVERT(VARCHAR,@CODEMP),2) + RIGHT('0000000' + CONVERT(VARCHAR,@TMPKEY),7)
+	END
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE RHCADDPT
+		   SET DSCDPT = @DSCDPT
+		      ,CODCCU = @CODCCU
+			  ,DATUPD = GETDATE()
+		 WHERE CODEMP = @CODEMP
+		   AND CODFIL = @CODFIL
+		   AND CODDPT = @CODDPT
+		 
+		 IF(@@ERROR=0)
+			SET @RETURN_VALUE = @DPTKEY;
+	END
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+	</item>
+
+	<item create="true"  id="13" name="RHTIPAFA" api="true" apiname="" friendlyname="AbsencesType" modelversion="3" descriptor="Tipo de Ausências" comments="RCM010/RCM030 - Tipo de ausências">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="RHTIPAFAINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE @TMPKEY INT =0
+IF(NOT EXISTS(SELECT 1 FROM RHTIPAFA (NOLOCK) WHERE AFAKEY=0))
+    INSERT INTO RHTIPAFA (AFAKEY, CODEMP, CODFIL, CODAFA, DSCAFA) VALUES (0,0,'','','N/D');
+	
+IF(EXISTS(SELECT 1 FROM RHTIPAFA (NOLOCK) 
+           WHERE CODEMP =@CODEMP 
+		     AND CODFIL = @CODFIL 
+			 AND CODAFA = @CODAFA))
+	BEGIN
+		 SET @RETURN_VALUE=-2;
+		 SELECT @AFAKEY = AFAKEY FROM RHTIPAFA (NOLOCK) WHERE CODEMP =@CODEMP AND CODFIL = @CODFIL AND CODAFA = @CODAFA;
+	END
+
+IF(@RETURN_VALUE = 0) 
+	BEGIN
+        SELECT @TMPKEY = ISNULL(MAX(AFAKEY),0)+1 FROM RHTIPAFA WITH (NOLOCK)
+		SET @AFAKEY = RIGHT('00' + CONVERT(VARCHAR,@CODEMP),2) + RIGHT('0000000' + CONVERT(VARCHAR,@TMPKEY),7)
+	END
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE RHTIPAFA
+		   SET DSCAFA = @DSCAFA
+			  ,DATUPD = GETDATE()
+		 WHERE CODEMP = @CODEMP
+		   AND CODFIL = @CODFIL
+		   AND CODAFA = @CODAFA
+		 
+		 IF(@@ERROR=0)
+			SET @RETURN_VALUE = 2;
+	END
+				]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error="OK"></return>
+				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+	
+
+	</item>
+
+
+
+	<item create="true"  id="14" name="RFFUNDSL" api="true" apiname="" friendlyname="DismissalUserType" modelversion="3" descriptor="Tipo de Admissões Usário" comments="RCC010/RCC030 - Código S046">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="RHFUNDSLINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE @TMPKEY INT =0
+IF(NOT EXISTS(SELECT 1 FROM RFFUNDSL (NOLOCK) WHERE DSLKEY=0))
+    INSERT INTO RFFUNDSL (DSLKEY, CODEMP, CODFIL, CODDSL, DSCDSL) VALUES (0,0,'','','N/D');
+	
+IF(EXISTS(SELECT 1 FROM RFFUNDSL (NOLOCK) WHERE CODEMP =@CODEMP AND CODFIL = @CODFIL AND CODDSL = @CODDSL))
+	BEGIN
+		 SET @RETURN_VALUE=-2;
+		 SELECT @DSLKEY = DSLKEY FROM RFFUNDSL (NOLOCK) WHERE CODEMP =@CODEMP AND CODFIL = @CODFIL AND CODDSL = @CODDSL;
+	END
+
+IF(@RETURN_VALUE = 0) 
+	BEGIN
+        SELECT @TMPKEY = ISNULL(MAX(DSLKEY),0)+1 FROM RFFUNDSL WITH (NOLOCK)
+		SET @DSLKEY = RIGHT('00' + CONVERT(VARCHAR,@CODEMP),2) + RIGHT('0000000' + CONVERT(VARCHAR,@TMPKEY),7)
+	END
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE RFFUNDSL
+		   SET DSCDSL = @DSCDSL
+			  ,DATUPD = GETDATE()
+		 WHERE CODEMP = @CODEMP
+		   AND CODFIL = @CODFIL
+		   AND CODDSL = @CODDSL
+		 
+		 IF(@@ERROR=0)
+			SET @RETURN_VALUE = 2;
+	END
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="1" message="REGISTRO INCLUIDO COM SUCESSO" error="OK"></return>
+				<return value="2" message="REGISTRO ALTERADO COM SUCESSO" error="OK"></return>
+				<return value="-2" message="" error="FAILWRITE"></return>
+
+			</returns>
+		</insertcommand>
+
+	</item>
+
+
+
+	<item create="true"  id="27" name="RFMOTABN" api="true" apiname="" friendlyname="Allowances" modelversion="3" descriptor="Tipo de Motivo de Abono" comments="SP6010 - Justificativa/Abono">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="RHMOTABNINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="28" name="RFTIPGEN" api="true" apiname="" friendlyname="Generations" modelversion="3" descriptor="Tipo de Geração associada ao funcionário" comments="Tabela customizada com associação de tipo de geração associada ao usuário">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+
+	<item create="true"  id="29" name="RFVRBASS" api="true" apiname="" friendlyname="SumsAssociation" modelversion="3" descriptor="Associação de Verbas" comments="Tabela customizada com associação de verbas e aplicação">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="30" name="RFVLRIMP" api="true" apiname="" friendlyname="ValueTaxes" modelversion="3" descriptor="Valor de Impostos" comments="Tabela customizada de valores de impostos por empresa e filial">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="31" name="RFTIPRSC" api="true" apiname="" friendlyname="TerminationType" modelversion="3" descriptor="Tipo de Rescisão" comments="RCC010/RCC030 - CÓDIGO S043 : Tabela customizada de identificação dos tipos de rescisões">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="RHTIPRSCINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				
+IF( NOT EXISTS (SELECT 1 FROM RFTIPRSC (NOLOCK) WHERE TRSKEY = 0 ))
+	BEGIN
+		INSERT RFTIPRSC
+           ([TRSKEY]
+           ,[CODEMP]
+           ,[CODFIL]
+           ,[TIPRSC]
+           ,[DSCRSC]
+           ,[INIRSC])
+     VALUES
+           (0
+           ,0
+           ,''
+           ,' '
+           ,' '
+           ,' ')
+	
+	END
+				
+IF(EXISTS(SELECT 1 FROM RFTIPRSC WHERE CODEMP = @CODEMP AND CODFIL = @CODFIL AND TIPRSC = @TIPRSC))
+	BEGIN
+		UPDATE RFTIPRSC
+		   SET DSCRSC = @DSCRSC
+		      ,DATUPD = GETDATE()
+		 WHERE CODEMP = @CODEMP AND CODFIL = @CODFIL AND TIPRSC = @TIPRSC	;
+		 
+		 IF(@@ERROR=0)
+			SET @RETURN_VALUE = 1;
+	END
+
+IF(@RETURN_VALUE=0)
+   SELECT @TRSKEY = COALESCE(MAX(ISNULL(TRSKEY,0)),0) + 1 FROM RFTIPRSC (NOLOCK);
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+	</item>
+	<item create="true"  id="32" name="RLEMPRSC" api="true" apiname="" friendlyname="CompanyxTermination" modelversion="3" descriptor="Relação Empresa (Filial) x Rescisão" comments="Tabela customizada de associação de uma empresa - filial x Tipo de rescisão">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="33" name="RFSTAADM" api="true" apiname="" friendlyname="AdmissionStatus" modelversion="3" descriptor="Status de Admissão" comments="Tabela customizada de classificação do funcionário para a semana em avaliação">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+
+	<item create="true"  id="34" name="RFCALNDS" api="true" apiname="" friendlyname="WeeklyCalendar" modelversion="3" descriptor="Calendário Semanal" comments="Tabela customizada de classificação de calendário semanal">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="WeeklyCalendar" procname="" desc ="Obtêm o registro de informações do especifico calendário">
+				<query>
+					<![CDATA[SELECT * FROM RFCALNDS (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true"  desc ="Número da Semana" name="NUMNDS" type="System.Byte"   default="" output="" null="false"/>
+
+					<parameter input="true" apply="true"  desc ="Ano" name="NUMANO" type="System.Int16" default="" output="" null="false"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+
+	</item>
+
+	<actions>
+
+
+		<item modifier="static" script="true" alias="" sql="" route="" processcode="110" method="UpdateReferencesAll" return="int" returnmode="2" procname="RHUPDREFALL" desc ="Atualiza as referencias do RH" remarks="Define e atualizaca as referencias internas de chave estrangeira" timeout="600">
+			<query order="">
+				<![CDATA[
+ 	 DECLARE @RETURN_VALUE INT = 0
+
+	 /* ATUALIZAÇÃO DE CENTRO DE CUSTOS */
+	 UPDATE RHREGFUN
+	    SET CCUKEY = CCU.CCUKEY
+	   FROM RHREGFUN REG
+	  INNER JOIN RHCADFUN (NOLOCK) FUN
+	     ON (FUN.NIDFUN = REG.NIDFUN)
+	  INNER JOIN RHCADCCU (NOLOCK) CCU
+	     ON (CCU.CODEMP = FUN.CODEMP AND CCU.CODFIL = LEFT(trim(FUN.CODFIL),2) AND CCU.CODCCU = REG.CODCCU)
+	  SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+
+     -- CATEGORIA DE FUNCIONARIOS
+	 UPDATE RHREGFUN
+	    SET CATKEY = CAT.CATKEY
+	   FROM RHREGFUN REG
+	  INNER JOIN RHCADFUN (NOLOCK) FUN
+	     ON (FUN.NIDFUN = REG.NIDFUN)
+	  INNER JOIN RFCATFUN (NOLOCK) CAT
+	     ON (CAT.CODEMP = FUN.CODEMP AND CAT.CODFIL = FUN.CODFIL AND CAT.CATFUN = REG.CATFUN)
+	  SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+
+   -- FUNCAO DE FUNCIONARIOS
+	 UPDATE RHREGFUN
+	    SET FNCKEY = FNC.FNCKEY
+	   FROM RHREGFUN REG
+	  INNER JOIN RHCADFUN (NOLOCK) FUN
+	     ON (FUN.NIDFUN = REG.NIDFUN)
+	  INNER JOIN RFCODFNC (NOLOCK) FNC
+	     ON (FNC.CODEMP = FUN.CODEMP AND FNC.CODFIL = LEFT(FUN.CODFIL,2) AND FNC.CODFNC = REG.CODFNC)
+	  SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+
+	 /* DEPARTAMENTOS */
+	 UPDATE RHREGFUN
+	    SET DPTKEY = DPT.DPTKEY
+	   FROM RHREGFUN REG
+	  INNER JOIN RHCADFUN (NOLOCK) FUN
+	     ON (FUN.NIDFUN = REG.NIDFUN)
+	  INNER JOIN RHCADDPT (NOLOCK) DPT
+	     ON (DPT.CODEMP = FUN.CODEMP AND DPT.CODFIL = LEFT(FUN.CODFIL,2) AND DPT.CODDPT = REG.CODDPT)
+	  SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+
+
+     UPDATE RHHSTMOV
+	    SET VRBKEY =VRB.VRBKEY
+	   FROM RHHSTMOV      (NOLOCK) MOV
+	  INNER JOIN RHCADVRB (NOLOCK) VRB
+	     ON (VRB.CODEMP = MOV.CODEMP AND VRB.CODFIL = MOV.CODFIL AND VRB.CODVRB = MOV.CODVRB)
+	  SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+
+
+	 UPDATE RHREGAFA
+	    SET VRBKEY =VRB.VRBKEY
+	   FROM RHREGAFA      (NOLOCK) AFA
+	  INNER JOIN RHCADVRB (NOLOCK) VRB
+	     ON (VRB.CODEMP = AFA.CODEMP AND VRB.CODFIL = AFA.CODFIL AND VRB.CODVRB = AFA.CODVRB)
+	  SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+	  RETURN @RETURN_VALUE;
+				
+				]]>
+			</query>
+			<parameters>
+				<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+			</parameters>
+		</item>
+	</actions>
+</root>

@@ -1,0 +1,706 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+
+	<item create="true"  id="1" name="TBCADPSQ" api="true" apiname="" friendlyname="Cadastro" modelversion="3" descriptor="Tabela de Informações das pesquisas informadas" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand script="true" key="Key" fieldreturn="NIDPSQ" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADPSQINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="NIDPSQ" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADPSQUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+					]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" type="" return="Cadastro" procname="" desc ="Obtêm uma lista de tipos de formularios cadastrados" remarks="">
+				<query>
+					<![CDATA[SELECT * FROM TBCADPSQ (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Formulário" name="TIPFRM" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Ano" name="NUMANO" type="System.Int16" default="" output="" null="false"/>
+
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Cadastro" procname="" desc ="Obtêm uma lista de tipos de formularios cadastrados" remarks="">
+				<query>
+					<![CDATA[SELECT * FROM TBCADPSQ (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Formulário" name="TIPFRM" type="System.Byte" default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+	
+		</selectallcommand>
+	</item>
+
+
+
+	<item create="true"  id="2" name="TBREGPSQ" api="true" apiname="" friendlyname="Pesquisa" modelversion="3" descriptor="Tabela de Registro de Pesquisas" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+
+		<view>
+			<item owner="" script="true" definer="" name="VWREGPSQ" desc ="View de Pesquisa Geral">
+				<query>
+					<![CDATA[
+	SELECT [REG].[NIDPSQ]
+		  ,[FRM].[DSCFRM] AS [NOMPSQ]
+		  ,[DSCMAL]
+		  ,[DSCFUN]
+		  ,[DSCUNI]
+		  ,[CODUFE]
+		  ,[DSCCID]
+		  ,[DSCBAI]
+		  ,[NOMROD]
+		  ,CASE WHEN [HASTUR] = 1 THEN 'SIM'
+                ELSE 'NÃO' END AS [HASTUR]
+		  ,[DSCHSP]
+		  ,[DSCITE]
+		  ,[PSQ].[DSCCTD] AS ITEDSC
+		  ,[VALKLM]
+		  ,[DSCCLI]
+		  ,[DSCVIS]
+		  ,CASE WHEN [NIVEGS] = 1 THEN 'FRACO'
+                WHEN [NIVEGS] = 2 THEN 'MÉDIO'
+                WHEN [NIVEGS] = 3 THEN 'FORTE'
+                ELSE 'N/D' END AS [NIVEGS]
+		  ,[DSCEGS]
+		  ,CASE WHEN [NIVEMD] = 1 THEN 'FRACO'
+                WHEN [NIVEMD] = 2 THEN 'MÉDIO'
+                WHEN [NIVEMD] = 3 THEN 'FORTE'
+                ELSE 'N/D' END AS [NIVEMD]
+		  ,[DSCEMD]
+		  ,CASE WHEN [NIVEVD] = 1 THEN 'FRACO'
+                WHEN [NIVEVD] = 2 THEN 'MÉDIO'
+                WHEN [NIVEVD] = 3 THEN 'FORTE'
+                ELSE 'N/D' END AS [NIVEVD]
+		  ,[DSCEVD]
+		  ,CASE WHEN [NIVETC] = 1 THEN 'FRACO'
+                WHEN [NIVETC] = 2 THEN 'MÉDIO'
+                WHEN [NIVETC] = 3 THEN 'FORTE'
+                ELSE 'N/D' END AS [NIVETC]
+		  ,[DSCETC]
+		  ,CASE WHEN [NIVEES] = 1 THEN 'FRACO'
+                WHEN [NIVEES] = 2 THEN 'MÉDIO'
+                WHEN [NIVEES] = 3 THEN 'FORTE'
+                ELSE 'N/D' END AS [NIVEES]
+		  ,[DSCEES]
+		  ,CASE WHEN [NIVECX] = 1 THEN 'FRACO'
+                WHEN [NIVECX] = 2 THEN 'MÉDIO'
+                WHEN [NIVECX] = 3 THEN 'FORTE'
+                ELSE 'N/D' END AS [NIVECX]
+		  ,[DSCECX]
+		  ,CASE WHEN [NIVEAD] = 1 THEN 'FRACO'
+                WHEN [NIVEAD] = 2 THEN 'MÉDIO'
+                WHEN [NIVEAD] = 3 THEN 'FORTE'
+                ELSE 'N/D' END AS [NIVEAD]
+		  ,[DSCEAD]
+		  ,CASE WHEN [NIVERC] = 1 THEN 'FRACO'
+                WHEN [NIVERC] = 2 THEN 'MÉDIO'
+                WHEN [NIVERC] = 3 THEN 'FORTE'
+                ELSE 'N/D' END AS [NIVERC]
+		  ,[DSCERC]
+		  ,CASE WHEN [NIVEEN] = 1 THEN 'FRACO'
+                WHEN [NIVEEN] = 2 THEN 'MÉDIO'
+                WHEN [NIVEEN] = 3 THEN 'FORTE'
+                ELSE 'N/D' END AS [NIVEEN]
+		  ,[DSCEEN]
+		  ,[DSCVRC]
+		  ,CONVERT(VARCHAR, [PAR].[VLRYTD]) + '%' AS [VLRYTD]
+		  ,[DSCPLN]
+		  ,[DSCPRC]
+		  ,[DSCLOA]
+		  ,[DSCIPC]
+		  ,[DSCNPS]
+		  ,[DSCICE]
+		  ,[DSCIPP]
+		  ,[DSCEZV]
+		  ,[NUMPEZ]
+		  ,[VLRPMD]
+		  ,[DSCIEZ]
+		  ,[DSCSTT]
+		  ,[GODCEN]
+		  ,[BADCEN]
+	  FROM [dbo].[TBREGPSQ] (NOLOCK) REG
+	  INNER JOIN TBCADPSQ (NOLOCK) CAD ON (CAD.CODPSQ = REG.CODPSQ)
+	  INNER JOIN TBPARFRM (NOLOCK) PAR ON (PAR.EMPKEY = REG.EMPKEY AND PAR.TIPFRM = CAD.TIPFRM)
+      INNER JOIN RFTIPFRM (NOLOCK) FRM ON (FRM.TIPFRM = CAD.TIPFRM)
+	  INNER JOIN RFPSQGER (NOLOCK) PSQ ON (PSQ.NIDPSQ = REG.NIDPSQ)
+	  INNER JOIN RFTIPITE (NOLOCK) ITE ON (ITE.TIPITE = PSQ.TIPITE)
+      WHERE REG.STAREC = 1
+					]]>
+				</query>
+			</item>
+
+			<item owner="" script="true" definer="" name="VWCONSOLIDACAO" desc ="View de Pesquisa Geral e consolidação de movimentos">
+				<query>
+					<![CDATA[
+SELECT TOP (1000) REG.NIDPSQ
+      ,REG.CODPSQ
+      ,REG.EMPKEY
+	  ,PAR.DSCUNI
+      ,DSCMAL
+	  ,FRM.DSCFRM
+      ,CAD.DSCPSQ
+      ,RSPPSQ
+      ,DATPSQ
+      ,NOMROD
+      ,NOMRSP
+      ,DSCFUN
+      ,HASTUR
+      ,DSCHSP
+      ,DSCCLI
+      ,DSCVIS
+      ,NIVEMD
+      ,DSCEMD
+      ,NIVEAD
+      ,DSCEAD
+      ,NIVEGS
+      ,DSCEGS
+      ,NIVERC
+      ,DSCERC
+      ,NIVEEN
+      ,DSCEEN
+      ,DSCVRC
+      ,DSCRCT
+      ,NIVPRC
+      ,DSCPRC
+      ,NIVLOA
+      ,DSCLOA
+      ,DSCIPC
+      ,DSCNPS
+      ,REG.DSCCTD
+      ,DSCIPP
+      ,NUMPEZ
+      ,VLRPMD
+      ,DSCEZV
+      ,DSCSTT
+      ,BADCEN
+      ,GODCEN
+
+      ,DSCPLN
+      ,DSCICE
+      ,DSCIEZ
+	  ,PAR.VLRYTD
+	        ,REG.DATCAD
+      ,REG.DATUPD
+	  ,ITE.DSCITE
+	  ,PSQ.NIDITE
+	  ,PSQ.DSCCTD ITEDSC
+	  ,PSQ.VALKLM
+	  ,PSQ.DATCAD AS [ITECAD]
+	  ,PSQ.DATUPD AS [ITEUPD]
+  FROM TBREGPSQ (NOLOCK) REG
+  LEFT JOIN TBCADPSQ (NOLOCK) CAD ON (CAD.CODPSQ = REG.CODPSQ)
+  INNER JOIN TBPARFRM (NOLOCK) PAR ON (PAR.EMPKEY = REG.EMPKEY AND PAR.TIPFRM = CAD.TIPFRM)
+  LEFT JOIN RFTIPFRM (NOLOCK) FRM ON (FRM.TIPFRM = CAD.TIPFRM)
+  LEFT JOIN RFPSQGER (NOLOCK) PSQ ON (PSQ.NIDPSQ = REG.NIDPSQ)
+  LEFT JOIN RFTIPITE (NOLOCK) ITE ON (ITE.TIPITE = PSQ.TIPITE)
+  WHERE REG.STAREC=1
+					]]>
+				</query>
+			</item>
+			
+		</view>
+		<insertcommand script="true" key="identity" fieldreturn="NIDPSQ" exceptionparamns="'DATCAD','DATUPD'" procname="PRREGPSQINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="identity" fieldreturn="NIDPSQ" exceptionparamns="'DATCAD','DATUPD'" procname="PRREGPSQUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Pesquisa" procname="" desc ="Obtêm o registro com base no id da pesquisa">
+				<query>
+					<![CDATA[SELECT * FROM TBREQPSQ A (NOLOCK)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID da Pesquisa" name="NIDPSQ" type="System.Int16" default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+
+			<item script="false" alias="A." sql="" method="Select" return="Pesquisa" procname="" desc ="Obtêm o registro com base nos parâmetros informados">
+				<query>
+					<![CDATA[SELECT * FROM TBREQPSQ A (NOLOCK)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código da Pesquisa" name="CODPSQ" type="System.Int16" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Empresaa" name="EMPKEY" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="e-mail" name="DSCMAL" type="System.String" size="100" default="" output="" null="false"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+	</item>
+
+	<item create="true"  id="3" name="TBREGCTT" api="true" apiname="" friendlyname="Contratacoes" modelversion="3" descriptor="Tabela de Registro de DESENVOLVIMENTO DE PESSOAS E CONTRATAÇÕES" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<view>
+			<item owner="" script="true" definer="" name="VWREGCTT" desc ="View de Pesquisa de Contratações">
+				<query>
+					<![CDATA[
+	SELECT [REG].[NIDPSQ]
+	      ,[NIDITE]
+		  ,[FNC].[DSCFNC] AS TIPFNC
+		  ,[CTT].[DSCFNC]
+		  ,[VLRSAL]
+		  ,[CTT].[MESANO] AS MESADM
+		  ,[JSTDES]
+	  FROM [dbo].[TBREGPSQ] (NOLOCK) REG
+	  INNER JOIN TBREGCTT (NOLOCK) CTT ON (CTT.NIDPSQ = REG.NIDPSQ)
+	  INNER JOIN RFTIPFNC (NOLOCK) FNC ON (FNC.TIPFNC = CTT.TIPFNC)
+      INNER JOIN RFTIPITE (NOLOCK) ITE ON (ITE.TIPITE = CTT.TIPITE)
+      WHERE REG.STAREC = 1
+					]]>
+				</query>
+			</item>
+		</view>
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRREGCTTINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET @TIPITE = 18
+IF(EXISTS(SELECT 1 FROM TBREGCTT (NOLOCK) WHERE NIDPSQ = @NIDPSQ  AND NIDITE = @NIDITE))
+	BEGIN
+		UPDATE TBREGCTT
+		   SET TIPITE = 18
+			  ,TIPFNC = @TIPFNC
+			  ,DSCFNC = @DSCFNC
+			  ,VLRSAL = @VLRSAL
+			  ,MESANO = @MESANO
+			  ,JSTDES = @JSTDES
+		 WHERE NIDPSQ = @NIDPSQ AND NIDITE = @NIDITE
+		IF (@@ERROR = 0)
+		    SET @RETURN_VALUE = @NIDITE
+	END
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Contratacoes" procname="" desc ="Obtêm o registro com base no id da pesquisa">
+				<query>
+					<![CDATA[SELECT * FROM TBREGCTT A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID da Pesquisa" name="NIDPSQ" type="System.Int16" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Item" name="NIDITE" type="System.Byte" default="" output="" null="false"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Contratacoes" procname="" desc ="Obtêm uma lista de contratações com base no id da pesquisa" remarks="">
+				<query order="NIDITE">
+					<![CDATA[SELECT * FROM TBREGCTT (NOLOCK) A]]>
+				</query>
+
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID da Pesquisa" name="NIDPSQ" type="System.Int16" default="" output="" null="false"/>
+				</parameters>
+
+			</item>
+		</selectallcommand>
+	</item>
+
+
+	<item create="true"  id="4" name="RFPSQGER" api="true" apiname="" friendlyname="PesquisaDetalhe" modelversion="3" descriptor="Tabela de Informações de Complementares a Pesquisa" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand script="true" key="Identity" fieldreturn="NIDITE" exceptionparamns="'DATCAD','DATUPD'" procname="PRPSQGERINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+	IF(EXISTS ( SELECT 1 FROM RFPSQGER (NOLOCK) WHERE NIDPSQ = @NIDPSQ AND TIPITE = @TIPITE AND NIDITE = @NIDITE))
+	   BEGIN
+			UPDATE RFPSQGER
+			   SET DSCCTD = @DSCCTD
+			      ,VALKLM = @VALKLM
+			      ,DATUPD = GETDATE()
+			 WHERE NIDPSQ = @NIDPSQ AND TIPITE = @TIPITE AND NIDITE = @NIDITE
+			
+			IF(@@ERROR=0)
+				SET @RETURN_VALUE = 1
+			ELSE
+				SET @RETURN_VALUE =-1
+	   END
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+
+		<methods>
+			<item script="true" alias="A." sql="" method="Remove" return="int" returnmode="2" procname="PRPSQGERDEL" desc ="Remove o item de REFERENCIA da Pesquisa Detalhe" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0
+DELETE FROM RFPSQGER WHERE NIDPSQ = @NIDPSQ AND TIPITE = @TIPITE AND NIDITE = @NIDITE	
+SET @RETURN_VALUE = @@ROWCOUNT;
+RETURN @RETURN_VALUE;
+					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="ID da Pesquisa" name="NIDPSQ" type="System.Int16" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Tipo de Iteração" name="TIPITE" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="ID de Iteração" name="NIDITE" type="System.Int16" default="" output="" null=""/>
+
+					<parameter input="false" apply="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="" inputmode="4"/>
+				</parameters>
+			</item>
+
+		</methods>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="PesquisaDetalhe" procname="" desc ="Obtêm o registro com base no id da pesquisa">
+				<query>
+					<![CDATA[SELECT * FROM RFPSQGER A (NOLOCK)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="ID da Pesquisa" name="NIDPSQ" type="System.Int16" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="ID de Iteração" name="NIDITE" type="System.Int16" default="" output="" null=""/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+		<selectallcommand>
+			<!-- Query otimizada -->
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="PesquisaDetalhe" procname="" desc ="Obtêm uma lista de contratações com base no id da pesquisa" remarks="">
+				<query order="NIDITE">
+					<![CDATA[SELECT * FROM RFPSQGER (NOLOCK) A]]>
+				</query>
+
+				<parameters>
+					<parameter input="true" apply="true" omit="false" desc ="ID da Pesquisa" name="NIDPSQ" type="System.Int16" default="" output="" null=""/>
+				</parameters>
+
+			</item>
+		</selectallcommand>
+
+	</item>
+
+	<item create="true"  id="5" name="TBREGINV" api="true" apiname="" friendlyname="Investimentos" modelversion="3" descriptor="Tabela de Registro de PLANO DE INVESTIMENTO" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+
+		<view>
+			<item owner="" script="true" definer="" name="VWREGINV" desc ="View de Pesquisa de Investimentos">
+				<query>
+					<![CDATA[
+	SELECT [REG].[NIDPSQ]
+	      ,[NIDITE]
+		  ,[TIV].[DSCINV] AS TIPINV
+		  ,[NUMQTD]
+		  ,[INV].[DSCINV]
+		  ,[VLRINV]
+		  ,[INV].[MESANO]
+		  ,[JSTINV]
+	  FROM [dbo].[TBREGPSQ] (NOLOCK) REG
+	  INNER JOIN TBREGINV (NOLOCK) INV ON (INV.NIDPSQ = REG.NIDPSQ)
+	  INNER JOIN RFTIPINV (NOLOCK) TIV ON (TIV.TIPINV = INV.TIPINV)
+	  INNER JOIN RFTIPITE (NOLOCK) ITE ON (ITE.TIPITE = INV.TIPITE)
+      WHERE REG.STAREC = 1				
+					]]>
+				</query>
+			</item>
+		</view>
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRREGINVINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(EXISTS(SELECT 1 FROM TBREGINV (NOLOCK) WHERE NIDPSQ = @NIDPSQ AND NIDITE = @NIDITE))
+	BEGIN
+		UPDATE TBREGINV
+		   SET TIPINV = @TIPINV
+			  ,DSCINV = @DSCINV
+			  ,VLRINV = @VLRINV
+			  ,NUMQTD = @NUMQTD
+			  ,MESANO = @MESANO
+			  ,JSTINV = @JSTINV
+		 WHERE NIDPSQ = @NIDPSQ
+		   AND NIDITE = @NIDITE
+		IF (@@ERROR = 0)
+		    SET @RETURN_VALUE = @NIDITE
+	END
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Investimentos" procname="" desc ="Obtêm o registro com base no id da pesquisa">
+				<query>
+					<![CDATA[SELECT * FROM TBREGINV A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID da Pesquisa" name="NIDPSQ" type="System.Int16" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID de Iteração" name="NIDITE" type="System.Int16" default="" output="" null=""/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+		<selectallcommand>
+			<!-- Query otimizada -->
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Investimentos" procname="" desc ="Obtêm uma lista de investimentos com base no id da pesquisa" remarks="">
+				<query order="NIDITE">
+					<![CDATA[SELECT * FROM TBREGINV (NOLOCK) A]]>
+				</query>
+
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID da Pesquisa" name="NIDPSQ" type="System.Int16" default="" output="" null="false"/>
+				</parameters>
+
+			</item>
+		</selectallcommand>
+	</item>
+
+
+	<item create="true"  id="6" name="TBPARFRM" api="true" apiname="" friendlyname="Parameters" modelversion="3" descriptor="Tabela de Registro de Parâmetros de Formulários por unidade" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRPARFRMINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(EXISTS(SELECT 1 FROM TBPARFRM (NOLOCK) WHERE EMPKEY=@EMPKEY AND TIPFRM = @TIPFRM))
+	BEGIN
+		UPDATE TBPARFRM
+		   SET DSCUNI = @DSCUNI
+			  ,CODUFE = @CODUFE
+			  ,DSCCID = @DSCCID
+			  ,DSCBAI = @DSCBAI
+			  ,VLRYTD = @VLRYTD
+			  ,STAREC = @STAREC
+			  ,DATUPD = GETDATE()
+		 WHERE EMPKEY = @EMPKEY
+		   AND TIPFRM = @TIPFRM
+		IF (@@ERROR = 0)
+		    SET @RETURN_VALUE = 1
+	END
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Parameters" procname="" desc ="Obtêm o registro com base na empresa e formulário">
+				<query>
+					<![CDATA[SELECT * FROM TBPARFRM A (NOLOCK) ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Empresa" name="EMPKEY" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Formulário" name="TIPFRM" type="System.Byte" default="" output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" method="Select" return="Parameters" procname="" desc ="Obtêm o registro com base na empresa e formulário">
+				<query>
+					<![CDATA[SELECT * FROM TBPARFRM A (NOLOCK) ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Empresa" name="EMPKEY" type="System.Byte" default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+		<selectallcommand>
+
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Parameters" procname="" desc ="Obtêm uma lista de parÂmetros de empresas" remarks="">
+				<query>
+					<![CDATA[SELECT * FROM TBPARFRM (NOLOCK) A]]>
+				</query>
+			</item>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Parameters" procname="" desc ="Obtêm uma lista de parÂmetros de empresas" remarks="">
+				<query order="EMPKEY">
+					<![CDATA[SELECT * FROM TBPARFRM (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Formulário" name="TIPFRM" type="System.Byte" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+	</item>
+
+
+	<item create="true"  id="200" type="TABLE" name="RFTIPFRM" api="true" apiname="" friendlyname="FormTypes" modelversion="3" descriptor="Tabela de Referencia de Tipos de Formulários" comments="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="201" type="TABLE" name="RFTIPFNC" api="true" apiname="" friendlyname="Funcoes" modelversion="3" descriptor="Tabela de Referencia de Funções" comments="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="202" type="TABLE" name="RFTIPINV" api="true" apiname="" friendlyname="Investimentos" modelversion="3" descriptor="Tabela de Referencia de Investimentos" comments="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="203" type="TABLE" name="RFTIPITE" api="true" apiname="" friendlyname="Iteracoes" modelversion="3" descriptor="Tabela de Referencia de Iterações de Formulários" comments="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+
+
+	<item create="true"  id="204" type="View" name="VWCONSOLIDACAO" api="true" apiname="" friendlyname="ViewConsolidacao" modelversion="3" descriptor="View de Consolidação de Pesquisas e tabelas relacionadas">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="205" type="View" name="VWREGCTT" api="true" apiname="" friendlyname="ViewContratacoes" modelversion="3" descriptor="View de Resultados de Contratações">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="206" type="View" name="VWREGINV" api="true" apiname="" friendlyname="ViewInvestimentos" modelversion="3" descriptor="View de Resultados de Investimentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="207" type="View" name="VWREGPSQ" api="true" apiname="" friendlyname="ViewPesquisa" modelversion="3" descriptor="View de Resultados de Pesquisas Diversas">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+
+	<lists>
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Funcoes" return="ItemList" procname="" desc ="Obtêm uma lista de funcões">
+			<query>
+				<![CDATA[SELECT TIPFNC AS CODREF, DSCFNC AS DSCREF FROM RFTIPFNC (NOLOCK)]]>
+			</query>
+		</item>
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Investimentos" return="ItemList" procname="" desc ="Obtêm uma lista de investimentos">
+			<query>
+				<![CDATA[SELECT TIPINV AS CODREF, DSCINV AS DSCREF FROM RFTIPINV (NOLOCK)]]>
+			</query>
+		</item>
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Iteracoes" return="ItemList" procname="" desc ="Obtêm uma lista de Iterações de formulários">
+			<query>
+				<![CDATA[SELECT TIPITE AS CODREF, DSCITE AS DSCREF FROM RFTIPITE (NOLOCK)]]>
+			</query>
+		</item>
+
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Forms" return="ItemList" procname="" desc ="Obtêm uma lista de Iterações de formulários">
+			<query>
+				<![CDATA[SELECT TIPFRM AS CODREF, DSCFRM AS DSCREF FROM RFTIPFRM (NOLOCK)]]>
+			</query>
+		</item>
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Units" return="ItemList" procname="" desc ="Obtêm uma lista de Iterações de formulários">
+			<query>
+				<![CDATA[SELECT EMPKEY AS CODREF, DSCUNI AS DSCREF, TIPFRM AS REFAX1 FROM TBPARFRM (NOLOCK) ORDER BY NUMORD]]>
+			</query>
+		</item>
+	</lists>
+</root>

@@ -1,0 +1,1574 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<item create="true"  id="1" name="ORIGENS" api="true" apiname="Origens" friendlyname="Origens" modelversion="3" descriptor="Origens" comments="Tabela que armazena as informações e dados de clínicas associados e ou veterinários que deram origem a relação comercial para o tutor e seus respectivos pet's.">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand script="true" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="id" method="Insert" processcode="10" procname="PRCADORIINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET  pRETURN_VALUE = 0;
+SELECT CASE WHEN CODVET IS NULL THEN 0 ELSE -2 END  INTO pRETURN_VALUE FROM Origens WHERE CODVET = pCODVET AND SRCEMP = pSRCEMP;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-1" message="" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="select" processcode="100" method="Select" return="Origens" procname="" desc ="Seleciona as informações de um registro de origem">
+				<query>
+					<![CDATA[SELECT * FROM origens A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código Veterinário" name="CODVET" type="System.Int32"  size="14" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  size="14" default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql="" route="select" processcode="100" method="Select" return="Origens" procname="" desc ="Seleciona as informações de um registro de origem">
+				<query>
+					<![CDATA[SELECT * FROM origens A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Id do Registro" name="NIDORI" type="System.Int32"  size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Origens" procname="PRCADORISELALL" desc ="Obtêm os registros de origens para o processo de migração" >
+				<query>
+					<![CDATA[	
+    /* PRODUCAO */
+    IF(pCODAMB = 1) THEN
+       SELECT * FROM ORIGENS WHERE SRCEMP= pSRCEMP AND STAREC=pSTAREC AND IDNORI= pIDNORI;
+     ELSE
+		/* HOMOLOGACAO */
+		SELECT * FROM ORIGENS WHERE SRCEMP = pSRCEMP AND STAHOM=pSTAREC AND IDHORI=pIDNORI;
+    END IF;
+        ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID" name="IDNORI" type="System.Int32"   default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+		</selectallcommand>
+		<methods>
+			<item script="true" alias="" sql="" method="UpdateReference" return="int" returnmode="22" procname="PRCADORIUPDREF" desc ="Atualiza o registro de migração de origens" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+/* PRODUCAO */
+IF(pCODAMB = 1) THEN
+	UPDATE ORIGENS 
+	   SET STAREC = pSTAREC
+		  ,IDNORI = pIDEXTE
+	 WHERE NIDORI = pNIDORI;
+END IF;
+/* HOMOLOGACAO */
+IF(pCODAMB = 2) THEN
+	UPDATE ORIGENS 
+	   SET STAHOM = pSTAREC
+		  ,IDHORI = pIDEXTE
+	 WHERE NIDORI = pNIDORI;
+END IF;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID da Origem" name="NIDORI" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID Externo" name="IDEXTE" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="2" name="CLI" api="true" apiname="Tutores" friendlyname="Tutores" modelversion="3" descriptor="Cadastro de Tutores" comments ="Tabela de Armazenamento de informações de tutores">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<extendedmodel>
+			<![CDATA[SELECT CODCMF,
+	HASDUP,
+    NOMCLI,
+    DSCEND,
+    CODCEP,
+    DSCCID,
+    DSCBAI,
+    CODUFE,
+    TELRES,
+    TELCOM,
+    TELCEL,
+    CODSIT,
+    DSCMAL,
+    NOMCJG,
+    NOMRS1,
+    NOMRS2,
+    DATCAD,
+    DSCIND,
+    ENVNEW,
+    DSCCLA,
+    VLRCRD,
+    DATUIN,
+    CODORI,
+    OBSCLI,
+    DATUPD,
+    STAREC,
+    SRCEMP,
+    CODPAR,
+    DATMIG,
+	DATNAC,
+	GENPES,
+	' ' AS TIPFN1,
+    SPACE(15) AS NUMFN1,
+    SPACE(10) AS CPLFN1,
+    	' ' AS TIPFN2,
+    SPACE(15) AS NUMFN2,
+    SPACE(10) AS CPLFN2,
+    	' ' AS TIPFN3,
+    SPACE(15) AS NUMFN3,
+    SPACE(10) AS CPLFN3,
+    	' ' AS TIPFN4,
+    SPACE(15) AS NUMFN4,
+    SPACE(10) AS CPLFN4,
+    SPACE(70) AS DSCMA2,
+    SPACE(15) AS NOMLOG,
+	SPACE(15) AS NUMLOG,
+    SPACE(10) AS DSCLOG,
+    SPACE(70) AS CPLLOG,
+	STAHOM
+FROM cli WHERE CODORI=-1;
+]]>
+		</extendedmodel>
+
+		<insertcommand script="true"  webtype="[HttpPost]"  key="Key" fieldreturn="" exceptionparamns="" method="Insert" processcode="10" procname="PRCADCLIINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET pRETURN_VALUE=0;
+SELECT CASE WHEN CODCMF IS NOT NULL THEN -2 ELSE 0 END  INTO pRETURN_VALUE FROM CLI WHERE CODCMF = pCODCMF AND HASDUP = pHASDUP AND SRCEMP = pSRCEMP LIMIT 1;
+	
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="O TUTOR JA EXISTE" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Tutores" procname="PRCADCLISELALL" desc ="Obtêm os registros de TUTORES para o processo de migração" >
+				<query>
+					<![CDATA[	
+    /* PRODUCAO */
+    IF(pCODAMB = 1) THEN
+       SELECT * FROM CLI WHERE SRCEMP= pSRCEMP AND STAREC=pSTAREC;
+     ELSE
+		/* HOMOLOGACAO */
+		SELECT * FROM CLI WHERE SRCEMP = pSRCEMP AND STAHOM=pSTAREC;
+    END IF;
+        ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte"   default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+		<methods>
+			<item script="true" alias="" sql="" method="UpdateReference" return="int" returnmode="22" procname="PRCADCLIUPDREF" desc ="Atualiza o registro de migração de CLIENTES" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+/* PRODUCAO */
+IF(pCODAMB = 1) THEN
+	UPDATE CLI SET STAREC = pSTAREC WHERE SRCEMP = pSRCEMP AND CODCMF = pCODCMF;
+END IF;
+/* HOMOLOGACAO */
+IF(pCODAMB = 2) THEN
+	UPDATE CLI SET STAHOM = pSTAREC WHERE SRCEMP = pSRCEMP AND CODCMF = pCODCMF;
+END IF;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="CPF" name="CODCMF" type="System.String" size="14" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte" default="" output="" null="false"/>
+
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="3" name="ANIMAIS" api="true" apiname="Animais" friendlyname="Animais" modelversion="3" descriptor="Cadastro de Animais" comments="Tabela de Armazenamento de informações dos Animais">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable>
+
+		</SqlTable>
+
+
+		<insertcommand script="true" webtype="[HttpPost]"  key="identity"  supressidentity="false" fieldreturn="" exceptionparamns="" method="Insert" processcode="10" procname="PRCADANIINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+SET pRETURN_VALUE=0;
+/* VERIFICA SE O CLIENTE EXISTE */
+SELECT CASE WHEN CODCMF IS NULL THEN -2 ELSE 0 END INTO pRETURN_VALUE FROM CLI WHERE CODCMF = pCODCMF AND SRCEMP = pSRCEMP LIMIT 1;
+#IF(pRETURN_VALUE=0) THEN
+   /* VERIFICA SE O CLIENTE E O ANIMAL JÁ ESTÃO CADASTRADOS*/
+ #  SELECT CASE WHEN CODCMF IS NULL THEN 0 ELSE -3 END INTO pRETURN_VALUE FROM ANIMAIS WHERE CODCMF = pCODCMF AND NOMANI = pNOMANI LIMIT 1;
+#END IF;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="TUTOR NAO EXISTENTE" error="RECORDNOTFOUND"/>
+				<return value="-3" message="TUTOR E ANIMAL JÁ EXISTENTE" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+
+			<item script="false" alias="A." sql=""  processcode="100" method="Find" return="int" procname="" desc ="Procura pelo animal e empresa">
+				<query>
+					<![CDATA[SELECT CODANI FROM Animais  A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Código do Animal" name="CODANT" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql=""  processcode="100" method="HasSub" return="int" procname="" desc ="Verifica se existe substituicao de animal">
+				<query>
+					<![CDATA[ SELECT  CODANT FROM ANIMAIS A WHERE SRCEMP = @SRCEMP AND CODCMF = @CODCMF AND NOMANI = @NOMANI LIMIT 1]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="CPF" name="CODCMF" type="System.String"  size="14" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Nome do Animal" name="NOMANI" type="System.String"  size="20" default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql=""  processcode="100" method="CountSub" return="int" procname="" desc ="Verifica o numero de substituicoes existentes">
+				<query>
+					<![CDATA[ SELECT COUNT(*) AS NUMREC FROM ANIMAIS A WHERE SRCEMP = @SRCEMP  AND ( CODANT=@CODANT OR ANISUB=@CODANT)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Codigo Anterior" name="CODANT" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql=""  processcode="100" method="Select" return="Animais" procname="" desc ="Seleciona um registro de animal com base no código de animal">
+				<query>
+					<![CDATA[SELECT * FROM Animais  A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Animal" name="CODANI" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql=""  processcode="101" method="Select" return="Animais" procname="" desc ="Seleciona um registro de animal com base no ID do tutor e Nome do Animal">
+				<query>
+					<![CDATA[SELECT * FROM Animais  A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Tutor" name="CODCMF" type="System.String"  size="14" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Nome do Animal" name="NOMANI" type="System.String"  size="20" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+			<!--<item script="false" alias="A." sql=""  processcode="101" method="GetOrigin" return="int" procname="" desc ="Seleciona um registro de origem com base no codigo do veterinário">
+				<query>
+					<![CDATA[SELECT CASE WHEN @CODAMB=1 THEN IDNORI ELSE IDHORI END AS CODORI FROM Origens A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Empresa" name="SRCEMP" type="System.Byte" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Código Veterinário" name="CODVET" type="System.Int32"  size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>-->
+			<!--<item script="false" alias="A." sql=""  processcode="101" method="GetClient" return="int" procname="" desc ="Obtêm o código de status do cliente migrado">
+				<query>
+					<![CDATA[SELECT CASE WHEN @CODAMB=1 THEN STAREC ELSE STAHOM END AS CODRET FROM Cli A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Empresa" name="SRCEMP" type="System.Byte" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="CPF" name="CODCMF" type="System.String"  size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>-->
+
+
+		</selectcommand>
+
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Animais" procname="PRCADANISELALL" desc ="Obtêm os registros de origens para o processo de migração" >
+				<query>
+					<![CDATA[	
+  SELECT CODANI,
+        ANI.CODCMF,
+        NOMANI,
+        SEXANI,
+        ANI.DATNAC,
+        NUMPES,
+        PESIDE,
+        CASE WHEN DSCRAC='SRD FELINO' THEN '(SRD)' ELSE (CASE WHEN DSCRAC='SRD CANINO' THEN '(SRD)' ELSE DSCRAC END) END AS DSCRAC ,
+        DSCALE,
+        DSCCOR,
+        DSCESP,
+        NUMRGA,
+        HASFAL,
+        HASCAS,
+        OBSANI,
+        COALESCE(CASE WHEN pCODAMB=1 THEN IDNORI ELSE IDHORI END, 0) AS CODORI,
+        DATOBT,
+        CODANT,
+        ANI.DATUPD,
+        ANI.STAREC,
+        IDPANI,
+        ANI.STAHOM,
+        IDHANI,
+        ANI.SRCEMP,
+        ANI.CODVET
+    FROM entimp.animais  ani
+    inner join entimp.cli cli on (cli.srcemp = ani.srcemp and cli.codcmf = ani.codcmf)
+    left join entimp.origens ori on (ori.srcemp = ani.srcemp and ori.codvet = ani.codvet)
+    WHERE ANI.SRCEMP = pSRCEMP
+    AND (CASE WHEN pCODAMB=1 THEN CLI.STAREC ELSE CLI.STAHOM END in (255,3))
+    AND (CASE WHEN pCODAMB=1 THEN ORI.STAREC ELSE ORI.STAHOM END in (255))	
+    AND (CASE WHEN pCODAMB=1 THEN ANI.STAREC ELSE ANI.STAHOM END = pSTAREC);
+					
+					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID" name="CODANI" type="System.Int32"   default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<methods>
+			<item script="true" alias="" sql="" method="UpdateReference" return="int" returnmode="22" procname="PRCADANIUPDREF" desc ="Atualiza o registro de migração de animais" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+/* PRODUCAO */
+IF(pCODAMB = 1) THEN
+	UPDATE ANIMAIS SET STAREC = pSTAREC, IDPANI= pNEWANI WHERE SRCEMP = pSRCEMP AND CODANI = pCODANI;
+END IF;
+/* HOMOLOGACAO */
+IF(pCODAMB = 2) THEN
+	UPDATE ANIMAIS SET STAHOM = pSTAREC,IDHANI = pNEWANI WHERE SRCEMP = pSRCEMP AND CODANI = pCODANI;
+END IF;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID do Animal" name="CODANI" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Novo ID do Animal" name="NEWANI" type="System.Int32" default="" output="" null="false"/>
+
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="4" name="PESO" api="true" apiname="Peso" friendlyname="Peso" modelversion="3" descriptor="Controle de Peso por Animal" comments ="Tabela de armazenamento de informações de controle de pesagem do animal">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="true" webtype="[HttpPost]"  key="Key" fieldreturn="CODANI" exceptionparamns="" method="Insert" processcode="10" procname="PRCADPESINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+SET pRETURN_VALUE=0;
+
+IF(pCODANI=0) THEN
+	SET pRETURN_VALUE=-2;
+END IF;
+IF(pRETURN_VALUE = 0) THEN
+	/* VERIFICA SE O CODIGO DO ANIMAL EXISTE NA TABELA DE ANIMAIS */
+	SELECT CASE WHEN CODANI IS NULL THEN -3 ELSE 0 END INTO pRETURN_VALUE FROM ANIMAIS WHERE CODANI = pCODANI AND SRCEMP = pSRCEMP;
+END IF;
+#IF(pRETURN_VALUE = 0) THEN
+	/* VERIFICA SE O CODIGO DO ANIMAL JA POSSUI LANCAMENTO PARA A DATA */
+#	SELECT CASE WHEN CODANI IS NULL THEN 0 ELSE -4 END INTO pRETURN_VALUE FROM PESO WHERE CODANI = pCODANI AND DATLAN = STR_TO_DATE(pDATLAN, '%Y/%m/%d %H:%i:%s');
+#END IF;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="CODIGO DO ANIMAL" error="INVALIDARGUMENT"/>
+				<return value="-3" message="ANIMAL/EMPRESA NAO EXISTENTE" error="RECORDNOTFOUND"/>
+				<return value="-4" message="ANIMAL E PESO JA CADASTRADO PARA A DATA" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Peso" procname="PRCADPESSELALL" desc ="Obtêm os registros de peso para o processo de migração" >
+				<query>
+					<![CDATA[	
+SELECT
+ PES.CODANI AS PESANT,
+     CASE  WHEN (pCODAMB = 1) THEN IDPANI ELSE IDHANI END AS CODANI,
+      DATLAN,
+      PES.NUMPES,
+      PES.SRCEMP
+FROM ENTIMP.PESO PES
+INNER JOIN ENTIMP.ANIMAIS ANI ON (ANI.CODANT = PES.CODANI AND ANI.SRCEMP = PES.SRCEMP)
+WHERE PES.SRCEMP=pSRCEMP 
+   AND ((CASE WHEN pCODAMB=1 THEN ANI.STAREC ELSE ANI.STAHOM END) IN (255,3))
+    AND ((CASE WHEN pCODAMB=1 THEN PES.STAREC ELSE PES.STAHOM END) = pSTAREC)	
+    AND PES.NUMPES>0;
+        ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte"   default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<methods>
+			<item script="true" alias="" sql="" method="UpdateReference" return="int" returnmode="22" procname="PRCADPESUPDREF" desc ="Atualiza o registro de migração de PESO" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+/* PRODUCAO */
+IF(pCODAMB = 1) THEN
+	UPDATE PESO SET STAREC = pSTAREC WHERE SRCEMP = pSRCEMP AND CODANI = pCODANI AND DATLAN = pDATLAN;
+END IF;
+/* HOMOLOGACAO */
+IF(pCODAMB = 2) THEN
+	UPDATE PESO SET STAHOM = pSTAREC WHERE SRCEMP = pSRCEMP AND CODANI = pCODANI AND DATLAN = pDATLAN;
+END IF;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID do Animal" name="CODANI" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Data de Processamento" name="DATLAN" type="System.String" size="17" default="" output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>
+		</methods>
+
+	</item>
+
+	<item create="true"  id="9" name="FORNECEDORES" api="true" apiname="Fornecedores" friendlyname="Fornecedores" modelversion="3" descriptor="Cadastro de Fornecedores" comments="Tabela de informações de Fornecedores">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand script="true"  webtype="[HttpPost]"  key="Identity" fieldreturn="CODFOR" exceptionparamns="'DATUPD'" method="Insert" processcode="10" procname="PRCADFORINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=0;
+/* VERIFICA SE O FORNECEDOR EXISTE */
+SELECT CASE WHEN CODCMF IS NULL THEN -2 ELSE 0 END INTO pRETURN_VALUE FROM FORNECEDORES WHERE CODCMF = pCODCMF AND SRCEMP = pSRCEMP LIMIT 1;
+
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Fornecedores" procname="" desc ="Retorna o registro com base no código do fornecedor">
+				<query>
+					<![CDATA[SELECT * FROM FORNECEDORES A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Fornecedor" name="CODFOR" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Retorna o código do fornecedor com base no identificador de registro">
+				<query>
+					<![CDATA[SELECT CODIGO FROM FORNECEDORES A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Registro do Fornecedor" name="CODCMF" type="System.String" size="14"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Fornecedores" procname="PRCADFORSELALL" desc ="Obtêm os registros de FORNECEDORES para o processo de migração" >
+				<query>
+					<![CDATA[	
+    /* PRODUCAO */
+    IF(pCODAMB = 1) THEN
+       SELECT * FROM FORNECEDORES WHERE SRCEMP= pSRCEMP AND STAREC=pSTAREC;
+     ELSE
+		/* HOMOLOGACAO */
+		SELECT * FROM FORNECEDORES WHERE SRCEMP = pSRCEMP AND STAHOM=pSTAREC;
+    END IF;
+        ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte"   default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+		<methods>
+			<item script="true" alias="" sql="" method="UpdateReference" return="int" returnmode="22" procname="PRCADFORUPDREF" desc ="Atualiza o registro de migração de FORNECEDORES" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+/* PRODUCAO */
+IF(pCODAMB = 1) THEN
+	UPDATE FORNECEDORES SET STAREC = pSTAREC WHERE CODFOR=@CODFOR;
+END IF;
+/* HOMOLOGACAO */
+IF(pCODAMB = 2) THEN
+	UPDATE FORNECEDORES SET STAHOM = pSTAREC WHERE CODFOR = @CODFOR;
+END IF;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Código do Fornecedor" name="CODFOR" type="System.Int32"  default="" output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="23" name="USUARIOS" api="true" apiname="Usuarios" friendlyname="Usuarios" modelversion="3" descriptor="Usuários"  roles="Corporativo" comments="Tabela de informações de usuários e veterinários do aplicativo, bem como suas definições de perfil e especialidade">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable>
+		</SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  script="true" webtype="[HttpPost]"  key="Identity"  fieldreturn="NIDUSU" exceptionparamns="'IDNUSU','IDHUSU','AG_BT,'AG_OPE','SPTANT','PFLANT','APLSRV','APLLOJ','APLCXA','APLABT','APLCHR','APLCOM'" method="Insert" processcode="10" procname="PRCADUSUINS" remarks="Adiciona um novo usuário">
+			'APLCXA','APLABT','APLCHR','APLCOM'
+
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE = 0;
+
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+				<![CDATA[
+IF(pRETURN_VALUE>0) THEN
+	BEGIN
+	    /* Verifica se o usuário empresa não existe */
+	    SET @EXISTE =0;
+	     SELECT NIDUSU INTO @EXISTE FROM Usuarios_empresas WHERE NIDUSU = pRETURN_VALUE AND CODEMP = pSRCEMP;
+		 IF(@EXISTE =0) THEN
+			INSERT INTO Usuarios_empresas (NIDUSU, CODEMP, STAREC) VALUES (pRETURN_VALUE, pSRCEMP, pSTAREC);
+		 END IF;
+    END;
+END IF;			
+			]]>
+
+
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""/>
+				<return value="-1" message="FALHA DE ATUALIZACAO" error="FAILALL"></return>
+				<return value="-2" message="REGISTRO JA EXISTENTE" error="RECORDFOUND"></return>
+				<return value="-3" message="FALHA NA INCLUSAO DO DEPENDENCIA DO REGISTRO" error="FAILALL"/>
+				<return value="-4" message="FALHA DE ATRIBUICAO OU VALIDACAO DE ATUALIZACAO" error="INTERNALDBOBJECTERROR"/>
+
+			</returns>
+		</insertcommand>
+
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Usuarios" procname="" desc ="Seleciona um registro de usuário com base no id">
+				<query>
+					<![CDATA[SELECT * FROM Usuarios A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Usuário" name="NIDUSU" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="SelectByNick" return="Usuarios" procname="" desc ="Seleciona um registro de usuário com base no apelido">
+				<query>
+					<![CDATA[SELECT * FROM Usuarios A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Apelido" name="APEUSU" type="System.String" size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Retorna o código do usuário com base no apelido">
+				<query>
+					<![CDATA[SELECT NIDUSU FROM USUARIOS A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Apelido" name="APEUSU" type="System.String" size="14"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Retorna o código do usuário com base no codigo de veterinário externo">
+				<query>
+					<![CDATA[SELECT NIDUSU FROM USUARIOS A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Apelido" name="CODVET" type="System.Int32"   default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Usuarios" procname="PRCADUSUSELALL" desc ="Obtêm os registros de USUARIOS para o processo de migração" >
+				<query>
+					<![CDATA[	
+    /* PRODUCAO */
+    IF(pCODAMB = 1) THEN
+       SELECT * FROM USUARIOS WHERE SRCEMP= pSRCEMP AND STAREC=pSTAREC;
+     ELSE
+		/* HOMOLOGACAO */
+		SELECT * FROM USUARIOS WHERE SRCEMP = pSRCEMP AND STAHOM=pSTAREC;
+    END IF;
+        ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte"   default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<methods>
+			<item script="true" alias="" sql="" method="ChangeNick" return="int" returnmode="22" procname="PRCADUSUCHGAPE" desc ="Altera o apelido do usuário" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+UPDATE entimp.usuarios SET APEUSU = pAPEUSU WHERE NIDUSU =	pNIDUSU;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Código do Usuário" name="NIDUSU" type="System.Int32"  default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Apelido" name="APEUSU" type="System.String" size="14"  default="" output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>
+			<item script="true" alias="" sql="" method="UpdateReference" return="int" returnmode="22" procname="PRCADUSUUPDREF" desc ="Atualiza o registro de migração de USUARIOS" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+/* PRODUCAO */
+IF(pCODAMB = 1) THEN
+	UPDATE USUARIOS SET STAREC = pSTAREC, IDNUSU=@CODREF WHERE NIDUSU=@NIDUSU;
+END IF;
+/* HOMOLOGACAO */
+IF(pCODAMB = 2) THEN
+	UPDATE USUARIOS SET STAHOM = pSTAREC, IDHUSU=@CODREF WHERE NIDUSU = @NIDUSU;
+END IF;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Código do Usuário" name="NIDUSU" type="System.Int32"  default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Código Externo" name="CODREF" type="System.Int32"  default="" output="" null="false"/>
+
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="28" name="OS_REGISTROS" api="true" apiname="OS" friendlyname="OS" modelversion="3" descriptor="Ordens de Serviço - Registro" comments="Tabela de informações das ordens de serviços relativas aos lançamentos de procedimentos executados e sua respectiva condição de paga, finalizada ou cancelada">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<insertcommand script="true" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="NUMOSS" exceptionparamns="" method="Insert" processcode="10" procname="PRCADOSSINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="OK"/>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="OS" procname="PRCADOSSSELALL" desc ="Obtêm os registros de ORDENS DE SERVIÇO para o processo de migração" >
+				<query>
+					<![CDATA[	
+SELECT * FROM entimp.OS_REGISTROS OS 
+ WHERE CODEMP=pSRCEMP 
+   AND CODANI>0
+   AND (CASE WHEN pCODAMB=1 THEN OS.STAREC ELSE OS.STAHOM END = pSTAREC);
+			
+					
+        ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte"   default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+		<methods>
+
+
+			<item script="true" alias="" sql="" method="UpdateBaseOs" return="int" returnmode="2" procname="PRCADOSSUPDLAN" desc ="Promove a ATUALIZAÇÃO dos registros de OS para os registros de lancamentos de procedimentos" returnvalue="0">
+				<query>
+					<![CDATA[
+     /* UPDATE LANC_PROCED 
+       SET NUMOSS = 0 
+	 WHERE EMPEXE = pSRCEMP;*/
+  
+     
+    UPDATE ENTIMP.LANC_PROCED LAN
+     /* Efetua a associacao da os com a tabela de animais de acordo com o ambiente,
+        a associação garante que as informações sejam equivalentes e  associa direta
+        mente ao id de procedimento o Id da oss correspondente */
+	 INNER JOIN (
+     	SELECT NIDPCD, CASE WHEN (pCODAMB = 1) then OS.IDNOSS else OS.IDHOSS end AS NUMOSS
+      FROM ENTIMP.LANC_PROCED A
+	 INNER JOIN ENTIMP.ANIMAIS ANI ON (ANI.SRCEMP = A.EMPEXE AND ANI.CODANT = A.CODANI)
+     INNER JOIN ENTIMP.OS_REGISTROS OS ON (OS.KEYARG = 
+                                 RIGHT(CONCAT('0000000',CASE WHEN (pCODAMB = 1) then ANI.IDPANI else ANI.IDHANI end, DATE_FORMAT(A.DATPCD, '%Y%m%d')),15) )
+	 WHERE OS.CODEMP = pSRCEMP) Z
+		ON (Z.NIDPCD = LAN.NIDPCD)
+       SET LAN.NUMOSS = Z.NUMOSS
+     WHERE  (CASE WHEN pCODAMB=1 THEN LAN.STAREC ELSE LAN.STAHOM END = 1) 
+       AND LAN.NUMOSS= 0 
+       AND LAN.EMPEXE = pSRCEMP;
+     
+    SELECT COUNT(*) INTO pRETURN_VALUE FROM LANC_PROCED WHERE EMPEXE = pSRCEMP AND NUMOSS>0;	
+  ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Código da Empresa" name="SRCEMP" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>
+
+			<item script="true" alias="" sql="" method="CreateBaseOS" return="int" returnmode="2" procname="PRCADOSSCRT" desc ="Promove a criação dos registros de OS a partir dos registros de lancamentos de procedimentos" returnvalue="0">
+				<query>
+					<![CDATA[
+     DELETE FROM ENTIMP.os_registros where CODEMP=pSRCEMP;
+        INSERT INTO ENTIMP.os_registros(CODANI, DATABE, DATFEC, CODEMP, INDFIN, FINRSP, STAREC,STAHOM,KEYARG )
+        SELECT CASE WHEN (pCODAMB = 1) then idpani else idhani end  as codani,
+               MAX(DATE_FORMAT(DATPCD, '%Y-%m-%d 00:00:00')),
+        	   MAX(DATE_FORMAT(DATPCD, '%Y-%m-%d 00:00:00')),
+        	   EMPEXE,
+        	   'S',
+        	   'U.MIGRACAO',
+        	   1,
+    		   1,
+               RIGHT(CONCAT('0000000',CASE WHEN (pCODAMB = 1) then idpani else idhani end, DATE_FORMAT(DATPCD, '%Y%m%d')),15)
+          FROM ENTIMP.LANC_PROCED LAN
+          inner join (SELECT IDPANI, IDHANI, SRCEMP, CODANT FROM entimp.animais WHERE CASE WHEN @CODAMB=1 THEN STAREC ELSE STAHOM END in (255,3)) ANI on (ani.srcemp = lan.empexe and ani.codant = lan.codani)
+           left  join (SELECT IDNORI, IDHORI, SRCEMP, CODVET FROM ENTIMP.origens WHERE (CASE WHEN @CODAMB=1 THEN STAREC ELSE STAHOM END = 255)) ori on (ori.srcemp = lan.empexe and ori.codvet = lan.codvet)
+           left  join (SELECT APEUSU, SRCEMP, CODVET FROM ENTIMP.USUARIOS  WHERE CASE WHEN @CODAMB=1 THEN STAREC ELSE STAHOM END IN (255,2)) usu on (usu.srcemp = lan.empexe and usu.codvet = lan.codvet)
+
+        where empexe=pSRCEMP
+    	 AND  CASE WHEN (pCODAMB = 1) then idpani else idhani end  > 0
+         AND NUMOSS=0   	 
+ 
+        GROUP BY CASE WHEN (pCODAMB = 1) then idpani else idhani end , DATE_FORMAT(DATPCD, '%Y-%m-%d 00:00:00')
+    	ORDER BY  DATE_FORMAT(DATPCD, '%Y-%m-%d 00:00:00');
+        SELECT COUNT(*) INTO pRETURN_VALUE FROM ENTIMP.os_registros where CODEMP=pSRCEMP;
+
+  ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="false" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>
+
+			<item script="true" alias="" sql="" method="UpdateReference" return="int" returnmode="22" procname="PRCADOSSUPDREF" desc ="Atualiza o registro de migração de PA" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+/* PRODUCAO */
+IF(pCODAMB = 1) THEN
+	UPDATE OS_REGISTROS 
+	   SET STAREC = pSTAREC
+		  ,IDNOSS = pIDEXTE
+	 WHERE NUMOSS = pNUMOSS;
+END IF;
+/* HOMOLOGACAO */
+IF(pCODAMB = 2) THEN
+	UPDATE OS_REGISTROS 
+	   SET STAHOM = pSTAREC
+		  ,IDHOSS = pIDEXTE
+	 WHERE NUMOSS = pNUMOSS;
+END IF;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID da Origem" name="NUMOSS" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID Externo" name="IDEXTE" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="30" name="LANC_PROCED" api="true" apiname="ProcedimentosLancamentos" friendlyname="ProcedimentosLancamentos" modelversion="3" descriptor="Procedimentos - Lançamentos" roles="Corporativo" comments="Tabela de Informações de lançamentos de procedimentos veterinários">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>f
+		<SqlTable></SqlTable>
+
+
+		<insertcommand script="true" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="CODIGO" exceptionparamns="" method="Insert" processcode="10" procname="PRCADLANINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET pRETURN_VALUE = 0;
+SELECT CASE WHEN NIDPCD IS NULL THEN 0 ELSE -2 END  INTO pRETURN_VALUE FROM LANC_PROCED WHERE PCDANT = pPCDANT AND EMPEXE = pSRCEMP;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="OK"/>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="ProcedimentosLancamentos" procname="PRCADLANSELALL" desc ="Obtêm os registros de LANCAMENTOS DE PROCEDIMENTOS para o processo de migração" >
+				<query>
+					<![CDATA[	
+     SELECT LAN.NIDPCD,
+        CASE WHEN (pCODAMB = 1) then idpani else idhani end  as CODANI,
+        DATPCD,
+        VLRPCD,
+        VLRPGT,
+        case when lan.codvet = 0 then 'U.MIGRACAO' ELSE usu.apeusu END as APEVET,
+        lan.CODVET,
+        CODPCD,
+        OBSPCD,
+        CASE WHEN ANA.CODANT IS NULL THEN 0 ELSE 1 END HASANA,
+        NUMQTD,
+        TIPDCT,
+        IFNULL(CASE WHEN (pCODAMB = 1) then idnori else idhori end, 0)  as CODORI,
+        NIDINT,
+        EMPEXE,
+        EMPVEN,
+        EMPPVE,
+        NUMOSS,
+        lan.CODANT,
+        HASCVN,
+        PCDANT,
+        NIDIND,
+        lan.STAREC,
+        lan.STAHOM,
+        IDNPCD,
+        IDHPCD
+    FROM entimp.lanc_proced lan
+    inner join (SELECT IDPANI, IDHANI, SRCEMP, CODANT FROM entimp.animais WHERE CASE WHEN pCODAMB=1 THEN STAREC ELSE STAHOM END in (255,3)) ANI on (ani.srcemp = lan.empexe and ani.codant = lan.codani)
+    left  join (SELECT IDNORI, IDHORI, SRCEMP, CODVET FROM ENTIMP.origens WHERE (CASE WHEN pCODAMB=1 THEN STAREC ELSE STAHOM END = 255)) ori on (ori.srcemp = lan.empexe and ori.codvet = lan.codvet)
+    left  join (SELECT APEUSU, SRCEMP, CODVET FROM ENTIMP.USUARIOS  WHERE CASE WHEN pCODAMB=1 THEN STAREC ELSE STAHOM END IN (255,2)) usu on (usu.srcemp = lan.empexe and usu.codvet = lan.codvet)
+    left  join (SELECT CODANT from entimp.anamneses WHERE CODANT >0 AND DSCANA<> '') ana on (ana.codant = lan.CODANT)
+    WHERE EMPEXE=pSRCEMP
+    AND (CASE WHEN pCODAMB=1 THEN LAN.STAREC ELSE LAN.STAHOM END =1)
+	AND NUMOSS > 0
+
+
+    ORDER BY LAN.DATPCD;
+					
+        ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte"   default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Retorna o ID do Registro de Procedimento se existir">
+				<query>
+					<![CDATA[SELECT CODANT FROM LANC_PROCED A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Empresa" name="EMPEXE" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="ID do Registro de Procedimento" name="CODANT" type="System.Int32" size="14"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+
+
+		<methods>
+
+			<item script="true" alias="" sql="" method="UpdateProduct" return="int" returnmode="22" procname="PRCADLANUPDPRO" desc ="Atualiza o campo de produto do registro" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+
+IF(pCODPRO >0 AND pCODANT>0) THEN
+	UPDATE entimp.LANC_PROCED SET CODPRO = pCODPRO WHERE CODANT =pCODANT;
+END IF;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="ID da Origem" name="CODPRO" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID Externo" name="CODANT" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+				</parameters>
+			</item>
+
+
+			<!--<item script="true" alias="" sql="" method="UpdateBase" return="int" returnmode="22" procname="PRCADLANUPDBAS" desc ="Atualiza os campos bases de atualização de LANCAMENTOS" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+/* PRODUCAO */
+IF(pCODAMB = 1) THEN
+	   UPDATE entimp.lanc_proced lan
+     inner join entimp.usuarios usu on (lan.codvet = usu.codvet)
+       set lan.apevet = usu.apeusu
+     where lan.STAREC = 1 
+       AND LAN.EMPEXE = pSRCEMP;
+
+   update entimp.lanc_proced LAN
+      set lan.apevet = 'U.MIGRACAO'
+    where lan.STAREC=1 AND LAN.APEVET='' AND LAN.EMPEXE=pSRCEMP;
+
+   UPDATE entimp.lanc_proced lan
+      set STAREC = 13
+    where lan.codani not in (select codant from entimp.animais where stahom=255 and IDHANI>0)
+      AND LAN.EMPEXE = pSRCEMP;
+	  
+		  UPDATE entimp.lanc_proced lan
+  set stahom = 19
+where VLRPCD = 0 AND VLRPGT=0
+AND LAN.EMPEXE = pSRCEMP;
+
+END IF;
+/* HOMOLOGACAO */
+IF(pCODAMB = 2) THEN
+    UPDATE entimp.lanc_proced lan
+     inner join entimp.usuarios usu on (lan.codvet = usu.codvet)
+       set lan.apevet = usu.apeusu
+     where lan.stahom=1
+       AND LAN.EMPEXE = pSRCEMP;
+
+   update entimp.lanc_proced LAN
+      set lan.apevet = 'U.MIGRACAO'
+    where lan.stahom=1 AND LAN.APEVET='' AND LAN.EMPEXE=pSRCEMP;
+
+   UPDATE entimp.lanc_proced lan
+      set stahom = 13
+    where lan.codani not in (select codant from entimp.animais where stahom=255 and IDHANI>0)
+      AND LAN.EMPEXE = pSRCEMP;
+	  
+	  UPDATE entimp.lanc_proced lan
+  set stahom = 19
+where VLRPCD = 0 AND VLRPGT=0
+AND LAN.EMPEXE = pSRCEMP;
+
+END IF;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>-->
+
+			<item script="true" alias="" sql="" method="UpdateReference" return="int" returnmode="22" procname="PRCADLANUPDREF" desc ="Atualiza o registro de migração de LANCAMENTOS" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+/* PRODUCAO */
+IF(pCODAMB = 1) THEN
+	UPDATE LANC_PROCED  
+	   SET STAREC = pSTAREC
+		  ,IDNPCD = pIDEXTE
+	 WHERE NIDPCD = pNIDPCD;
+END IF;
+/* HOMOLOGACAO */
+IF(pCODAMB = 2) THEN
+	UPDATE LANC_PROCED 
+	   SET STAHOM = pSTAREC
+		  ,IDHPCD = pIDEXTE
+	 WHERE NIDPCD = pNIDPCD;
+END IF;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID da Origem" name="NIDPCD" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID Externo" name="IDEXTE" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<!--<item create="true"  id="321" name="VQREGPTR" api="true" apiname="" friendlyname="Enchiridion" modelversion="3" descriptor="Prontuario" comments="">
+
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<insertcommand script="true"  webtype="[HttpPost]"  key="" supressidentity="false" fieldreturn="" exceptionparamns="" method="Insert" processcode="10" procname="PRREGPTRINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				SET pRETURN_VALUE = 0;
+SELECT CASE WHEN CODPTR IS NULL THEN 0 ELSE -2 END  INTO pRETURN_VALUE FROM VQREGPTR WHERE CODPTR = pCODPTR AND CODANI = pCODANI AND CODVET = pCODVET;]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""></return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="REGISTRO EXISTENTE" error="FAILALL"/>
+
+			</returns>
+		</insertcommand>
+
+		<methods>
+			<item script="true" alias="" sql="" method="UpdateReference" return="int" returnmode="22" procname="PRREGPTRUPDREF" desc ="Atualiza o registro de classificação de Prontuários" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+SET pRETURN_VALUE = 0;
+SELECT COALESCE(CODANT,0)  INTO pRETURN_VALUE 
+  FROM VQEXAREQ 
+ WHERE CODANI = pCODANI
+   AND DATEXA = pDATEXA
+   AND CODVET = pCODVET
+   AND SETPTR = 0 LIMIT 1;
+   
+IF(pRETURN_VALUE >0) THEN
+   UPDATE VQREGPTR SET HASPTR=1, CODANT = pRETURN_VALUE WHERE CODPTR = pCODPTR;
+   UPDATE VQEXAREQ SET SETPTR=1 WHERE CODANT = pRETURN_VALUE;
+END IF;
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Prontuário" name="CODPTR" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Animal" name="CODANI" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Data" name="DATEXA" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Veterinário" name="CODVET" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>
+		</methods>
+
+	</item>-->
+
+
+	<item create="true"  id="322" name="VQEXAREQ" api="true" apiname="" friendlyname="RequiredExam" modelversion="3" descriptor="Exame Requisitado" comments="">
+
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<insertcommand script="true"  webtype="[HttpPost]"  key="" supressidentity="false" fieldreturn="" exceptionparamns="" method="Insert" processcode="10" procname="PREXAREQINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[ SET pRETURN_VALUE = 0;]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""></return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="REGISTRO EXISTENTE" error="FAILALL"/>
+
+			</returns>
+		</insertcommand>
+
+	</item>
+	<item create="true"  id="32" name="ANAMNESES" api="true" apiname="Anamneses" friendlyname="Anamneses" modelversion="3" descriptor="Anamneses" comments="A anamnese é o diálogo estabelecido entre profissional de saúde e paciente com o objetivo de ajudá-lo a lembrar de situações e fatos que podem estar relacionados a sua doença. Parte-se de uma queixa principal para entender a doença atual e reconstituir a história clínica daquele paciente.">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<insertcommand script="true"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="NIDANA" exceptionparamns="" method="Insert" processcode="10" procname="PRCADANAINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				SET pRETURN_VALUE = 0;
+SELECT CASE WHEN NIDANA IS NULL THEN 0 ELSE -2 END  INTO pRETURN_VALUE FROM ANAMNESES WHERE NIDPCD = pNIDPCD;]]>
+
+
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="NIDANA" exceptionparamns="" method="Update" processcode="10" procname="PRCADANAUPD">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				SET pRETURN_VALUE = 0;
+SELECT CASE WHEN NIDANA IS NULL THEN -2 ELSE 0 END  INTO pRETURN_VALUE FROM ANAMNESES WHERE NIDPCD = pNIDPCD;]]>
+
+
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA ALTERACAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDNOTFOUND"/>
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Anamneses" procname="PRCADANASELALL" desc ="Obtêm os registros de ANAMNESES para o processo de migração" >
+				<query>
+					<![CDATA[	
+    SELECT ANA.NIDANA,
+        (CASE WHEN pCODAMB=1 THEN LAN.IDNPCD ELSE LAN.IDHPCD END ) AS NIDPCD,
+        ANA.CODANT,
+        ANA.DATANA,
+        USU.APEUSU AS RSPANA,
+        ANA.TIPANA,
+        ANA.DSCANA,
+        ANA.SRCEMP,
+        ANA.STAREC,
+        ANA.STAHOM,
+        ANA.IDHANA,
+        ANA.IDPANA,
+        ANA.CODVET
+    FROM entimp.anamneses ANA 
+    INNER JOIN (SELECT APEUSU,CODVET FROM entimp.usuarios WHERE (CASE WHEN pCODAMB=1 THEN STAREC ELSE STAHOM END IN (255,2))) USU ON (USU.CODVET = ANA.CODVET)
+    INNER JOIN (SELECT IDNPCD, IDHPCD, CODANT FROM entimp.lanc_proced WHERE (CASE WHEN pCODAMB=1 THEN STAREC ELSE STAHOM END IN (255,2))) LAN ON (LAN.CODANT = ANA.CODANT)
+       WHERE ANA.SRCEMP=pSRCEMP
+         AND ANA.CODANT>0
+         AND ANA.DSCANA <>''
+		 AND MODINP IN (1,2);
+ 			
+					
+        ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte"   default="255"  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+		<methods>
+			<item script="true" alias="" sql="" method="UpdateReference" return="int" returnmode="22" procname="PRCADANAUPDREF" desc ="Atualiza o registro de migração de ANAMNESES" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+/* PRODUCAO */
+IF(pCODAMB = 1) THEN
+	UPDATE ANAMNESES 
+	   SET STAREC = pSTAREC
+		  ,IDPANA = pIDEXTE
+		  ,MODINP = 9
+	 WHERE NIDANA = pNIDANA;
+END IF;
+/* HOMOLOGACAO */
+IF(pCODAMB = 2) THEN
+	UPDATE ANAMNESES 
+	   SET STAHOM = pSTAREC
+		  ,IDHANA = pIDEXTE
+		  ,MODINP =9
+	 WHERE NIDANA = pNIDANA;
+END IF;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID da Anamnese" name="NIDANA" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID Externo" name="IDEXTE" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>
+		</methods>
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Anamneses" procname="" desc ="Obtêm um registro de anamneses com base no prontuario">
+				<query>
+					<![CDATA[SELECT * FROM Anamneses A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="ID do Procedimento" name="NIDPCD" type="System.Int32"   default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Exists" return="int" procname="" desc ="Retorna o ID do Registro de Anamneses se existir">
+				<query>
+					<![CDATA[SELECT CODANT FROM Anamneses A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="ID do Procedimento" name="NIDPCD" type="System.Int32"   default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Retorna o ID do Registro de Procedimento se existir">
+				<query>
+					<![CDATA[SELECT CODANT FROM Anamneses A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="ID do Registro de Procedimento" name="CODANT" type="System.Int32"   default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="46" name="USUARIOS_COMISSOES" api="true" apiname="UsuariosComissoes" friendlyname="UsuariosComissoes" modelversion="3" descriptor="Registro de Comissões por Usuário e procedimento" roles="Corporativo" comments="Tabela de informações referente a associação de veterinários e associação de comissões por procedimentos veterinários">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  script="true" webtype="[HttpPost]"  key="Identity"  fieldreturn="" exceptionparamns="'DATUPD'" method="Insert" processcode="10" procname="PRUSUCOMINS" remarks="Adiciona um novo usuário de usuarios comissões">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE = 0;
+SELECT CASE WHEN NIDUSU IS NULL THEN 0 ELSE -2 END INTO pRETURN_VALUE FROM USUARIOS_COMISSOES WHERE NIDUSU = pNIDUSU AND CODPCD = pCODPCD AND SRCEMP = pSRCEMP;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+
+			</returns>
+		</insertcommand>
+
+
+	</item>
+
+	<item create="true"  id="61" name="ORIGEM_BASE_RELAC" api="true" apiname="OrigemBaseRelacionamento" friendlyname="OrigemBaseRelacionamento" modelversion="3" descriptor="Registro de Origem Base - Relacionadas" comments="Tabela de informações relativas ao inicio de promoção de relação comercial entre uma clinica veterinária ou veterinário e o promotor de vendas associado">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<insertcommand script="true"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="NIDORL" exceptionparamns="'DATUPD'" method="Insert" processcode="10" procname="PRCADORLINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE = 0;
+SELECT CASE WHEN NIDORL IS NULL THEN 0 ELSE -2 END INTO pRETURN_VALUE FROM ORIGEM_BASE_RELAC WHERE CODVET = pCODVET AND SRCEMP = pSRCEMP;
+  
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""/>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="35" name="OBS_PROCED" api="true" apiname="ObservacoesProcedimento" friendlyname="ObservacoesProcedimento" modelversion="3" descriptor="Registro de Observacoes Procedimentos" comment="Tabela de informações de registros de laudos técnicos por procedimento no formato de RTF">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<insertcommand script="true"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="NIDPCD" exceptionparamns="'DATUPD'" method="Insert" processcode="10" procname="PROBSPCDINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET GLOBAL max_allowed_packet = 16777216;				
+SET pRETURN_VALUE = 0;
+SELECT CASE WHEN NIDPCD IS NULL THEN 0 ELSE -2 END INTO pRETURN_VALUE FROM OBS_PROCED WHERE NIDPCD = pNIDPCD AND SRCEMP = pSRCEMP;
+  
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""/>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+
+		<methods>
+			<item script="true" alias="" sql="" method="UpdateReference" return="int" returnmode="22" procname="PROBSPCDUPDREF" desc ="Atualiza o registro de migração de OBS_PROCED" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+/* PRODUCAO */
+IF(pCODAMB = 1) THEN
+	UPDATE OBS_PROCED 
+	   SET STAREC = pSTAREC
+	 WHERE NIDPCD = pNIDPCD;
+END IF;
+/* HOMOLOGACAO */
+IF(pCODAMB = 2) THEN
+	UPDATE OBS_PROCED 
+	   SET STAHOM = pSTAREC
+	 WHERE NIDPCD = pNIDPCD;
+END IF;
+SELECT ROW_COUNT() INTO pRETURN_VALUE;					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="ID do Procedimento" name="NIDPCD" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>
+
+			<item script="true" alias="" sql="" method="GetNextReport" return="int" returnmode="22" procname="PROBSPGETNXTRPT" desc ="Obtêm o próximo laudo para atualização da OBS_PROCED" returnvalue="0">
+				<query merge="true">
+					<![CDATA[SELECT NIDPCD INTO pRETURN_VALUE FROM OBS_PROCED WHERE CASE WHEN pCODAMB=1 THEN STAREC ELSE STAHOM END = 1 ORDER BY DESC]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="2"/>
+
+				</parameters>
+			</item>
+		</methods>
+		<selectcommand>
+
+
+			<item script="true" alias="A." sql="" method="Select" type="" return="ObservacoesProcedimento" procname="PROBSPCDSEL" desc ="Obtêm o registro de OBS_PROCED para o processo de migração" >
+				<query>
+					<![CDATA[	
+    SELECT (CASE WHEN pCODAMB=1 THEN LAN.IDNPCD ELSE LAN.IDHPCD END ) AS NIDPCD,
+		OBS.SRCEMP,
+		OBS.DSCEXA,
+		OBS.HASMIG,
+		OBS.STAREC,
+		OBS.STAHOM,
+		CASE WHEN USU.APEUSU IS NULL THEN 'U.MIGRACAO' ELSE USU.APEUSU END AS ULTRSP
+		
+    FROM entimp.obs_proced OBS 
+    INNER JOIN (SELECT APEUSU,CODVET FROM entimp.usuarios WHERE (CASE WHEN pCODAMB=1 THEN STAREC ELSE STAHOM END IN (255,2))) USU ON (USU.CODVET = OBS.CODVET)
+    INNER JOIN (SELECT IDNPCD, IDHPCD, CODANT FROM entimp.lanc_proced WHERE (CASE WHEN pCODAMB=1 THEN STAREC ELSE STAHOM END IN (255,2))) LAN ON (LAN.CODANT = OBS.NIDPCD)
+       WHERE OBS.SRCEMP=pSRCEMP AND OBS.NIDPCD = pNIDPCD AND COALESCE(OBS.DSCEXA,'')<>'';
+ 			
+					
+        ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Id de Registro" name="NIDPCD" type="System.Int32"  default=""  output="" null="false"/>
+
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte"   default="255"  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="ObservacoesProcedimento" procname="PROBSPCDSELALL" desc ="Obtêm o registro de OBS_PROCED para o processo de migração" >
+				<query order="NIDPCD DESC;">
+					<![CDATA[SELECT NIDPCD FROM entimp.obs_proced OBS WHERE OBS.SRCEMP=pSRCEMP AND (CASE WHEN pCODAMB=1 THEN STAREC ELSE STAHOM END =pSTAREC)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Ambiente" name="CODAMB" type="System.Byte"   default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="SRCEMP" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Status" name="STAREC" type="System.Byte"   default="1"  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectallcommand>
+	</item>
+</root>

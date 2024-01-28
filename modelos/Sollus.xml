@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+
+	<item create="true"  id="1" name="TBCADCCU" api="true" apiname="" friendlyname="CentroCusto" modelversion="3" descriptor="Tabela de Informações de Centros de Custo" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+
+	<item create="true"  id="2" name="TBCADCTD" api="true" apiname="" friendlyname="Plano de Contas" modelversion="3" descriptor="Tabela de Informações de Plano de Contas" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+
+	<item create="true"  id="3" name="TBCADMAT" api="true" apiname="" friendlyname="Materiais" modelversion="3" descriptor="Tabela de Informações de Materiais" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+
+	<item create="true"  id="4" name="TBCADPCD" api="true" apiname="" friendlyname="Procedimentos Veterinarios" modelversion="3" descriptor="Tabela de Informações de Procedimentos Veterinarios" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+	<item create="true"  id="5" name="TBCADSAL" api="true" apiname="" friendlyname="Saldos" modelversion="3" descriptor="Tabela de Informações de Saldos Contábeis" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+
+	<item create="true"  id="6" name="TBRAZCON" api="true" apiname="" friendlyname="RazaoContabil" modelversion="3" descriptor="Tabela de Informações do Razão Contabil" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+	<item create="true"  id="7" name="TBREGFIN" api="true" apiname="" friendlyname="Vendas" modelversion="3" descriptor="Tabela de Informações de Vendas" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+
+	<item create="true"  id="8" name="TBRESVEN" api="true" apiname="" friendlyname="ResumoVendas" modelversion="3" descriptor="Tabela de Resumo de Vendas" remarks="" comments="Esta tabela não faz parte das integrações SOLLUS, contém informações de vendas agrupadas por empresa, filial, ano e mes">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+
+	<item create="true"  id="9" name="DPCADCTD" api="true" apiname="" friendlyname="DeParaContas" modelversion="3" descriptor="Tabela de DePara de Contas Tecsa" remarks="" comments="Esta tabela não faz parte das integrações sollus, contém informações sobre o depara de contas contábeis">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+	<item create="true"  id="10" name="TBCADFIL" api="true" apiname="" friendlyname="Filiais" modelversion="3" descriptor="Tabela de Filiais" remarks="" comments="Esta tabela não faz parte das integrações SOLLUS, contém informações sobre as filiais existentes">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+
+</root>
+
+

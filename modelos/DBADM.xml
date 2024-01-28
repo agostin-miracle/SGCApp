@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+
+	<item create="true"  id="1" name="TBCADFAG" api="true" apiname="" friendlyname="ServiceFlow" modelversion="3" descriptor="Tabela de Fluxo de Atendimento">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<view>
+			<item owner="dbo" script="true" name="VWCADFAG_ATENDIMENTO" desc ="View de Pesquisa de Fluxo de Atendimento">
+				<query>
+					<![CDATA[SELECT 1 AS TIPREL, FLACOD AS CODANI, MONTH(FLAFIN) AS NUMMES, YEAR(FLAFIN) AS NUMANO, A.ORGBAS, A.CODEMP, B.CODCMF
+, CASE WHEN FLAPC1 LIKE '%internação%' THEN 'INTERNACAO' ELSE 'OUTROS' END AS TIPATD
+, SUM(NUMTES) AS VLRTPO
+FROM TBCADFAG A
+INNER JOIN TBCADANI B ON (B.ANIKEY = A.ANIKEY)
+WHERE STAREC = 1 AND FLACOD > 0 AND (FLAINI IS NOT NULL AND FLAFIN IS NOT NULL ) AND FLAATD = 1 
+GROUP BY MONTH(FLAFIN), YEAR(FLAFIN), FLACOD, A.ORGBAS, A.CODEMP, CASE WHEN FLAPC1 LIKE '%internação%' THEN 'INTERNACAO' ELSE 'OUTROS' END, B.CODCMF
+
+UNION
+
+SELECT 2 AS TIPREL, FLACOD AS CODANI, MONTH(FLAOUT) AS NUMMES, YEAR(FLAOUT) AS NUMANO, A.ORGBAS, A.CODEMP, B.CODCMF
+, CASE WHEN FLAPC1 LIKE '%internação%' THEN 'INTERNACAO' ELSE 'OUTROS' END AS TIPATD
+, SUM(NUMTAD) AS VLRTPO
+FROM TBCADFAG A
+INNER JOIN TBCADANI B ON (B.ANIKEY = A.ANIKEY)
+WHERE STAREC = 1 AND FLACOD > 0 AND (FLADCI IS NOT NULL AND FLAOUT IS NOT NULL ) AND FLAATD = 1 
+GROUP BY MONTH(FLAOUT), YEAR(FLAOUT), FLACOD, A.ORGBAS, A.CODEMP, CASE WHEN FLAPC1 LIKE '%internação%' THEN 'INTERNACAO' ELSE 'OUTROS' END, B.CODCMF
+]]>
+				</query>
+			</item>
+
+			<item owner="dbo" script="true" name="VWFLUXOATENDIMENTO" desc ="View de Fluxo de Atendimento">
+				<query>
+					<![CDATA[SELECT B.CODANI, FLAINI, FLAFIN, FLAOUT, A.CODEMP AS EMPKEY
+, CASE WHEN FLAPC1 LIKE '%internação%' THEN 'INTERNACAO' ELSE 'OUTROS' END AS TIPATD,  NUMTES, NUMTAD
+FROM TBCADFAG A 
+INNER JOIN TBCADANI B ON (B.ANIKEY = A.ANIKEY)
+WHERE STAREC = 1 AND FLACOD > 0 AND (FLAINI IS NOT NULL AND FLAFIN IS NOT NULL ) AND FLAATD = 1]]>
+				</query>
+			</item>
+
+			<item owner="dbo" script="true" name="VWFLUXOATENDIMENTOIBI" desc ="View de Fluxo de Atendimento - Ibirapuera">
+				<query>
+					<![CDATA[SELECT B.CODANI, FLAINI, FLAFIN, FLAOUT, A.CODEMP AS EMPKEY
+, CASE WHEN FLAPC1 LIKE '%internação%' THEN 'INTERNACAO' ELSE 'OUTROS' END AS TIPATD,  NUMTES, NUMTAD
+FROM TBCADFAG A 
+INNER JOIN TBCADANI B ON (B.ANIKEY = A.ANIKEY)
+WHERE STAREC = 1 AND FLACOD > 0 AND (FLAINI IS NOT NULL AND FLAFIN IS NOT NULL ) AND FLAATD = 1  AND CODEMP=2]]>
+				</query>
+			</item>
+			<item owner="dbo" script="true" name="VWFLUXOATENDIMENTOJDS" desc ="View de Fluxo de Atendimento - Jardins">
+				<query>
+					<![CDATA[SELECT B.CODANI, FLAINI, FLAFIN, FLAOUT, A.CODEMP AS EMPKEY
+, CASE WHEN FLAPC1 LIKE '%internação%' THEN 'INTERNACAO' ELSE 'OUTROS' END AS TIPATD,  NUMTES, NUMTAD
+FROM TBCADFAG A 
+INNER JOIN TBCADANI B ON (B.ANIKEY = A.ANIKEY)
+WHERE STAREC = 1 AND FLACOD > 0 AND (FLAINI IS NOT NULL AND FLAFIN IS NOT NULL ) AND FLAATD = 1  AND CODEMP=5]]>
+				</query>
+			</item>
+			<item owner="dbo" script="true" name="VWFLUXOATENDIMENTOMRB" desc ="View de Fluxo de Atendimento - Morumbi">
+				<query>
+					<![CDATA[SELECT B.CODANI, FLAINI, FLAFIN, FLAOUT, A.CODEMP AS EMPKEY
+, CASE WHEN FLAPC1 LIKE '%internação%' THEN 'INTERNACAO' ELSE 'OUTROS' END AS TIPATD,  NUMTES, NUMTAD
+FROM TBCADFAG A 
+INNER JOIN TBCADANI B ON (B.ANIKEY = A.ANIKEY)
+WHERE STAREC = 1 AND FLACOD > 0 AND (FLAINI IS NOT NULL AND FLAFIN IS NOT NULL ) AND FLAATD = 1  AND CODEMP=4
+GO]]>
+				</query>
+			</item>
+			<item owner="dbo" script="true" name="VWFLUXOATENDIMENTOPCD" desc ="View de Fluxo de Atendimento - Pacaembu">
+				<query>
+					<![CDATA[SELECT B.CODANI, FLAINI, FLAFIN, FLAOUT, A.CODEMP AS EMPKEY
+, CASE WHEN FLAPC1 LIKE '%internação%' THEN 'INTERNACAO' ELSE 'OUTROS' END AS TIPATD,  NUMTES, NUMTAD
+FROM TBCADFAG A 
+INNER JOIN TBCADANI B ON (B.ANIKEY = A.ANIKEY)
+WHERE STAREC = 1 AND FLACOD > 0 AND (FLAINI IS NOT NULL AND FLAFIN IS NOT NULL ) AND FLAATD = 1  AND CODEMP=1
+GO]]>
+				</query>
+			</item>
+			<item owner="dbo" script="true" name="VWFLUXOATENDIMENTOTTP" desc ="View de Fluxo de Atendimento - Tatuapé">
+				<query>
+					<![CDATA[SELECT B.CODANI, FLAINI, FLAFIN, FLAOUT, A.CODEMP AS EMPKEY
+, CASE WHEN FLAPC1 LIKE '%internação%' THEN 'INTERNACAO' ELSE 'OUTROS' END AS TIPATD,  NUMTES, NUMTAD
+FROM TBCADFAG A 
+INNER JOIN TBCADANI B ON (B.ANIKEY = A.ANIKEY)
+WHERE STAREC = 1 AND FLACOD > 0 AND (FLAINI IS NOT NULL AND FLAFIN IS NOT NULL ) AND FLAATD = 1  AND CODEMP=3
+GO]]>
+				</query>
+			</item>
+		</view>
+
+		<insertcommand key="Key" fieldreturn="NIDTAD" exceptionparamns="'DATUPD'" procname="PRCADFAGINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				
+IF(@FLAINI IS NULL AND @FLAFIN IS NULL AND @FLADCI IS NULL AND @FLAOUT IS NULL)
+   SET @STAREC=0;
+
+      ]]>
+
+
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+    
+      ]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<methods>
+			<item script="true" alias="" sql="" method="Delete" return="int" returnmode="1" procname="PRCADFAGDEL" desc ="Remove um período de processamento" returnvalue="0">
+				<query merge="true">
+					<![CDATA[DECLARE @RETURN_VALUE INT = 0;
+					DELETE FROM TBCADFAG WHERE ORGBAS=@ORGBAS AND CODEMP=@CODEMP AND NUMMES =@NUMMES AND NUMANO = @NUMANO
+					SET @RETURN_VALUE=@@ROWCOUNT;
+					RETURN @RETURN_VALUE]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true"  omit="true" desc ="Código da Empresa" name="CODEMP" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true"  omit="true" desc ="Mes de Processamento" name="NUMMES" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true"  desc ="Ano de Processamento" name="NUMANO" type="System.Int16" default="" output="" null="false"/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+
+			<item script="true" alias="" sql="" method="UpdateReferences" return="int" returnmode="2" procname="PRCADFAGUPDREF" desc ="Atualiza as referencias do Fluxo de Atendimento com as bases relacionadas" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT =0;				
+UPDATE TBCADFAG SET ANIKEY = B.ANIKEY FROM TBCADFAG A INNER JOIN TBCADANI B ON (B.CODANI = A.FLACOD AND B.ORGBAS = A.ORGBAS);
+SET @RETURN_VALUE = @@ROWCOUNT;
+RETURN @RETURN_VALUE;
+]]>
+				</query>
+
+				<parameters>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+				</parameters>
+			</item>
+		</methods>
+
+	</item>
+
+	<item create="true"  id="2" name="TBREGAGE" api="true" apiname="" friendlyname="Agendas" modelversion="3" descriptor="Tabela de Registro de Controle de Agendas">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Identity" fieldreturn="NIDAGE" exceptionparamns="" procname="PRREGAGEINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+			</returns>
+		</insertcommand>
+
+
+		<view>
+			<item owner="" script="true" definer="" name="VWAGENDA" desc ="View de Pesquisa de Agendas">
+				<query>
+					<![CDATA[
+SELECT DSCSTR,
+       CODVER,
+       DSCSMY,
+       DSCBAS,
+       DATAGE,
+       CONVERT(DATE, DATAGE) AS [DATA],
+       CONVERT(TIME, DATAGE) AS HORA,
+       B.SGLEMP,
+       C.DSCSPT,
+       D.DSCSTA
+FROM TBREGAGE A
+    INNER JOIN TBCADEMP B ON (B.EMPKEY = A.CODEMP)
+    INNER JOIN TBAGESPT C ON (C.CODSPT = A.CODSPT)
+    INNER JOIN TBAGESTA D ON (D.CODSTA = A.CODSTA);					
+					
+					]]>
+				</query>
+			</item>
+		</view>
+
+		<methods>
+			<item script="true" alias="" sql="" method="Delete" return="int" returnmode="2" procname="PRREGAGEDELVER" desc ="Deleta uma versão de registros do controle de registros de agendas" returnvalue="0">
+				<query merge="true">
+					<![CDATA[DECLARE @RETURN_VALUE INT =0;
+					DELETE FROM TBREGAGE CODVER = @CODVER AND AGEORI = @AGEORI;
+					SET @RETURN_VALUE = @@ROWCOUNT;
+					RETURN @RETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true"  omit="true" desc ="Código da Versão" name="CODVER" type="System.Int32" default="" output="" null=""/>
+					<parameter input="true" apply="true"  omit="true" desc ="Código de Origem" name="AGEORI" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+			<item script="true" alias="" sql="" method="Delete" return="int" returnmode="2" procname="PRREGAGEDELVEREMP" desc ="Deleta uma versão de registros de uma empresa informada do controle de registros de agenda" returnvalue="0">
+				<query merge="true">
+					<![CDATA[DECLARE @RETURN_VALUE INT =0;
+					DELETE FROM TBREGAGE WHERE CODVER = @CODVER AND CODEMP = @CODEMP AND AGEORI = @AGEORI;
+					SET @RETURN_VALUE = @@ROWCOUNT;
+					RETURN @RETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true"  omit="true" desc ="Código da Versão" name="CODVER" type="System.Int32" default="" output="" null=""/>
+					<parameter input="true" apply="true"  omit="true" desc ="Código da Empresa" name="CODEMP" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true"  omit="true" desc ="Código de Origem" name="AGEORI" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+	
+			</parameters>
+			</item>
+		</methods>
+
+		<selectcommand>
+
+			<item script="false" alias="A." sql="" method="GetSpecialty" return="AgendaEspecialidades" procname="" desc ="Obtêm o registro com base na descrição da especialidade">
+				<query>
+					<![CDATA[SELECT CODSPT, DSCSPT FROM TBAGESPT A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Descrição da Especialidade" name="DSCSPT" type="string" size="255" default="" output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" method="GetStatus" return="AgendaStatus" procname="" desc ="Obtêm o registro com base na descrição do status">
+				<query>
+					<![CDATA[SELECT CODSTA, DSCSTA FROM TBAGESTA A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Descrição do Status" name="DSCSTA" type="string" size="70" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="3" name="TBAGESPT" api="true" apiname="" friendlyname="AgendaEspecialidades" modelversion="3" descriptor="Tabela de Registro de Agendas Especialidades">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="CODSPT" exceptionparamns="" procname="PRAGESPTINS" method="Insert">
+			<maxfield field="CODSPT"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(NOT EXISTS(SELECT 1 FROM TBAGESPT (NOLOCK) WHERE CODSPT=0))
+				  INSERT INTO TBAGESPT(CODSPT,DSCSPT) VALUES (0,'N/D');]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+			</returns>
+		</insertcommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="AgendaEspecialidades" procname="" desc ="Obtêm o registro com base na descrição da especialidade">
+				<query>
+					<![CDATA[SELECT CODSPT, DSCSPT FROM TBAGESPT (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Descrição da Especialidade" name="DSCSPT" type="string" size="255" default="" output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" method="Select" return="AgendaEspecialidades" procname="" desc ="Obtêm o registro com base no código da especialidade">
+				<query>
+					<![CDATA[SELECT CODSPT, DSCSPT FROM TBAGESPT (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código da  Especialidade" name="CODSPT" type="System.Int16"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+	</item>
+
+	<item create="true"  id="4" name="TBAGESTA" api="true" apiname="" friendlyname="AgendaStatus" modelversion="3" descriptor="Tabela de Registro de Agendas Status">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="CODSTA" exceptionparamns="" procname="PRAGESTAINS" method="Insert">
+			<maxfield field="CODSTA"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(NOT EXISTS(SELECT 1 FROM TBAGESTA (NOLOCK) WHERE CODSTA=0))
+				  INSERT INTO TBAGESTA(CODSTA,DSCSTA) VALUES (0,'N/D');]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+			</returns>
+		</insertcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="AgendaStatus" procname="" desc ="Obtêm o registro com base na descrição do status">
+				<query>
+					<![CDATA[SELECT CODSTA, DSCSTA FROM TBAGESTA (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Descrição do Status" name="DSCSTA" type="string" size="70" default="" output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" method="Select" return="AgendaStatus" procname="" desc ="Obtêm o registro com base no código do status">
+				<query>
+					<![CDATA[SELECT CODSTA, DSCSTA FROM TBAGESTA (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Status" name="CODSTA" type="System.Int16"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+	</item>
+
+	<item create="true"  id="17" name="TBCADEMP" api="true" apiname="" friendlyname="Companies" modelversion="3" descriptor="Tabela de Informações de Empresas">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Companies" procname="" desc ="Obtêm o registro com base na descrição da empresa">
+				<query>
+					<![CDATA[SELECT * FROM TBCADEMP (NOLOCK) A ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Descrição da Empresa" name="DSCEMP" type="string" size="25" default="" output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" method="Select" return="Companies" procname="" desc ="Obtêm o registro com base no código do empresa">
+				<query>
+					<![CDATA[SELECT * FROM TBCADEMP (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código da Empresa" name="EMPKEY" type="System.Byte"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+</root>

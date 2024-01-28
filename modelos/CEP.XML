@@ -1,0 +1,470 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<item create="true"  id="1" name="TBCADCEP" api="false" apiname="" friendlyname="CEP" modelversion="3" descriptor="CEP" comments="Armazenar informações de cep e localização">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+		<![CDATA[SELECT CODCEP
+      ,CEP.CODLOG
+	  ,LOC.DSCLOG
+      ,LOGLIG
+      ,DSCEND
+      ,DSCCPL
+      ,CODUFE
+      ,DSCCID
+      ,DSCBAI
+      ,LATITU
+      ,LONGIT
+      ,NIIBGE
+      ,NUMGIA
+      ,NUMDDD
+      ,NSIAFI
+      ,CEP.CODZON
+	  ,ZON.NOMZON 
+      ,STAREC
+      ,CHGUSR
+      ,LATBAI
+      ,BAILAT
+      ,BAILGT
+      ,USRNAM
+      ,VIALOC
+      ,DATUPD
+  FROM TBCADCEP (NOLOCK) CEP
+  INNER JOIN TBTIPLOG (NOLOCK) LOC ON (LOC.CODLOG = CEP.CODLOG) 
+INNER JOIN TBCADZON (NOLOCK) ZON ON (ZON.CODZON = CEP.CODZON)
+WHERE CEP.CODCEP='0'
+]]>
+		</extendedmodel>
+
+		<objectclass>
+			<item acess="" modifier="" name="GeoLocationData" inherit="" desc ="Objeto de Tratamento de Informações de Geolocalização" remarks="">
+				<query>
+					<![CDATA[SELECT CODCEP, LATITU, LONGIT, LATBAI FROM TBCADCEP WHERE CODCEP = 'A']]>
+				</query>
+			</item>
+		</objectclass>
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'LOGLIG','DATUPD'" procname="PRCADCEPINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE @POSICAO INT =0 
+DECLARE @TMPLAT DECIMAL (18,9)    -- LATITUDE DO BAIRRO
+DECLARE @TMPLGT DECIMAL (18,9)    -- LONGITUDE DO BAIRRO
+SET @DSCEND= UPPER(TRIM(@DSCEND))
+
+SELECT @POSICAO = CHARINDEX (' ', @DSCEND)
+IF(@POSICAO >0)
+   SELECT @CODLOG = CODLOG FROM TBTIPLOG WHERE DSCLOG = SUBSTRING(@DSCEND, 1, @POSICAO-1);
+   
+IF(@CODLOG>0)
+  SET @DSCEND = LTRIM(SUBSTRING(@DSCEND+ REPLICATE(' ',70),@POSICAO,70));
+
+SET @CODZON = dbo.GetZone(@CODCEP);
+
+/* SE A LATITUDE DO BAIRRO FOR INVALIDA, PROCURA A LAT/LONG DE UM  MESMO BAIRRO JA EXISTENTE */
+IF(@BAILAT=0 OR @BAILGT=0)
+    BEGIN
+		IF(EXISTS (SELECT 1 FROM TBCADCEP (NOLOCK) WHERE DSCBAI = @DSCBAI AND CODUFE = @CODUFE AND BAILAT<>0))
+			BEGIN
+				SELECT TOP 1 @TMPLAT = BAILAT, @TMPLGT = BAILGT FROM  TBCADCEP (NOLOCK) WHERE DSCBAI = @DSCBAI AND CODUFE = @CODUFE AND BAILAT<>0
+				SET @BAILAT = @TMPLAT;
+				SET @BAILGT = @TMPLGT;
+			END
+    END
+			]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+	]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="" exceptionparamns="'LOGLIG'," procname="PRCADCEPUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE @POSICAO INT =0 
+DECLARE @TMPLAT DECIMAL (18,9)    -- LATITUDE DO BAIRRO
+DECLARE @TMPLGT DECIMAL (18,9)    -- LONGITUDE DO BAIRRO
+SET @DSCEND= UPPER(TRIM(@DSCEND))
+SET @DATUPD = GETDATE();
+
+SELECT @POSICAO = CHARINDEX (' ', @DSCEND)
+IF(@POSICAO >0)
+   SELECT @CODLOG = CODLOG FROM TBTIPLOG WHERE DSCLOG = SUBSTRING(@DSCEND, 1, @POSICAO-1);
+   
+IF(@CODLOG>0)
+  SET @DSCEND = LTRIM(SUBSTRING(@DSCEND+ REPLICATE(' ',70),@POSICAO,70));
+ SET @CODZON = dbo.GetZone(@CODCEP);
+IF(@BAILAT=0 OR @BAILGT=0)
+    BEGIN
+		IF(EXISTS (SELECT 1 FROM TBCADCEP (NOLOCK) WHERE DSCBAI = @DSCBAI AND CODUFE = @CODUFE AND BAILAT<>0))
+			BEGIN
+				SELECT TOP 1 @TMPLAT = BAILAT, @TMPLGT = BAILGT FROM  TBCADCEP (NOLOCK) WHERE DSCBAI = @DSCBAI AND CODUFE = @CODUFE AND BAILAT<>0
+				SET @BAILAT = @TMPLAT;
+				SET @BAILGT = @TMPLGT;
+			END
+    END
+  ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+		<view>
+			<item owner="" script="true" definer="" name="VWCADCEP" desc ="View de Pesquisa de CEPS">
+				<query>
+					<![CDATA[
+SELECT CODCEP 
+	  ,CEP.CODLOG
+	  ,LOC.DSCLOG
+      ,LOGLIG
+      ,DSCEND
+      ,DSCCPL
+      ,CODUFE
+      ,DSCCID
+      ,DSCBAI
+      ,LATITU
+      ,LONGIT
+      ,NIIBGE
+      ,NUMGIA
+      ,NUMDDD
+      ,NSIAFI
+      ,STAREC
+      ,CHGUSR
+      ,LATBAI
+      ,BAILAT
+      ,BAILGT
+	  ,USRNAM
+	  ,CEP.CODZON
+	  ,ZON.NOMZON
+	  ,DATUPD
+  FROM dbo.TBCADCEP CEP
+ INNER JOIN TBTIPLOG LOC ON (LOC.CODLOG = CEP.CODLOG)
+ INNER JOIN TBCADZON ZON ON (ZON.CODZON = CEP.CODZON)
+]]>
+				</query>
+			</item>
+
+		</view>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="CEP" procname="" desc ="Obtêm o registro com base no código do cep">
+				<query>
+					<![CDATA[SELECT * FROM VWCADCEP A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="CEP" name="CODCEP" type="string" size="8" default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+	
+		</selectcommand>
+
+		<methods>
+
+			<item script="true" alias="A." sql="" method="RedefineClientCep" return="int" returnmode="2" procname="PRCADCEPUPDCLI" desc ="Atualiza o código de cep de substiuição vinculado ao cliente" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT =0
+IF(@CODCMF <>'' AND @AVACEP <> '')
+	BEGIN
+		UPDATE DL.DBO.CVCADCLI
+		   SET AVACEP = @AVACEP
+		      ,USRNAM = @USRNAM
+		 WHERE CODCMF = @CODCMF
+		SET @RETURN_VALUE = @@ROWCOUNT;
+	END
+RETURN @RETURN_VALUE;
+				]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="CPF" name="CODCMF" type="System.String"  size="14"  default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="CEP" name="AVACEP" type="System.String"  size="8" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Usuário" name="USRNAM" type="System.String"  size="40" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+			<item script="true" alias="A." sql="" method="RedefineKeyCep" return="int" returnmode="2" procname="PRCADCEPUPDKEY" desc ="Atualiza a latitude e longitude de uma chave (UF + CIDADE + BAIRRO)" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT =0
+
+	BEGIN
+		UPDATE TBCADCEP
+		   SET BAILAT = @BAILAT
+		      ,BAILGT = @BAILGT
+			  ,USRNAM = @USRNAM
+		 WHERE CODUFE = @CODUFE
+		   AND DSCCID = @DSCCID
+		   AND DSCBAI = @DSCBAI
+		SET @RETURN_VALUE = @@ROWCOUNT;
+	END
+RETURN @RETURN_VALUE;
+				]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="UF" name="CODUFE" type="System.String"  size="2"  default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Cidade" name="DSCCID" type="System.String"  size="70" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Bairro" name="DSCBAI" type="System.String"  size="70" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Latitude" name="BAILAT" type="System.Double"   default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Longitude" name="BAILGT" type="System.Double"  default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Usuário" name="USRNAM" type="System.String"  size="40" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+			<item script="true" alias="A." sql="" method="ChangeGeoLocation" return="int" returnmode="2" procname="PRCADCEPCHGGEOLOC" desc ="Atualiza as coordenaadas de geolocalização de um cep" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT =0
+IF(@LATITU <>0 AND @LONGIT<>0)
+	BEGIN
+		UPDATE TBCADCEP
+		   SET LATITU = @LATITU,
+			   LONGIT = @LONGIT,
+			   LATBAI = UPPER(ISNULL(@LATBAI,DSCBAI))
+		 WHERE CODCEP = @CODCEP
+		SET @RETURN_VALUE = @@ROWCOUNT;
+	END
+RETURN @RETURN_VALUE;
+				]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="CEP" name="CODCEP" type="System.String"  size="8" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Bairro" name="LATBAI" type="System.String"  size="70"  default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Latitude" name="LATITU" type="System.Double"   default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Longitude" name="LONGIT" type="System.Double"   default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+
+			<item script="true" alias="A." sql="" method="ChangeGeoLocation" return="int" returnmode="2" procname="PRCADCEPCHGNEILOC" desc ="Atualiza as coordenadas de geolocalização de um cep com base no ENDEREÇO associado ao bairro" returnvalue="0">
+				<query>
+					<![CDATA[
+ DECLARE @RETURN_VALUE INT =0
+ IF(@DSCEND<>'')
+     BEGIN
+ 		UPDATE TBCADCEP 
+ 		   SET BAILAT = @LATITU,
+  		       BAILGT =@LONGIT 
+  		 WHERE UPPER(DSCBAI + REPLACE(DSCCID,' ','') + CODUFE + 'Brasil') Collate SQL_Latin1_General_Cp1253_CI_AI  = @DSCEND AND CHGUSR=0;
+   		SET @RETURN_VALUE = @@ROWCOUNT;
+   	END
+ RETURN @RETURN_VALUE;
+				]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Endereço" name="DSCEND" type="System.String"  size="255" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Latitude" name="LATITU" type="System.Double"   default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Longitude" name="LONGIT" type="System.Double"   default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+			<item script="true" alias="A." sql="" method="ChangeByNeighborhood" return="int" returnmode="2" procname="PRCADCEPCHGNEIUSR" desc ="Atualiza as coordenadas de geolocalização de um cep com base no bairro diretamente" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT =0
+IF(@DSCBAI<>'')
+    BEGIN
+		UPDATE TBCADCEP 
+		   SET BAILAT = @LATITU,
+		       BAILGT = @LONGIT,
+			   CHGUSR = 1
+		 WHERE UPPER(DSCBAI) = UPPER(@DSCBAI) AND UPPER(CODUFE)=UPPER(@CODUFE);
+		SET @RETURN_VALUE = @@ROWCOUNT;
+	END
+RETURN @RETURN_VALUE;
+				]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true"  desc ="Bairro" name="DSCBAI" type="System.String"  size="70" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true"  desc ="UF" name="CODUFE" type="System.String"  size="2" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true"  desc ="Latitude" name="LATITU" type="System.Double"   default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true"  desc ="Longitude" name="LONGIT" type="System.Double"   default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+			<item script="true" alias="A." sql="" method="ClearGeoLocation" return="int" returnmode="2" procname="PRCADCEPCLEGEOLOC" desc ="Remove as definições de geolocalização a partir de um cep" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT =0
+UPDATE TBCADCEP
+   SET LATITU = 0,
+       LONGIT = 0,
+	   LATBAI = ''
+ WHERE CODCEP = @CODCEP;
+	SET @RETURN_VALUE = @@ROWCOUNT;
+
+RETURN @RETURN_VALUE;
+				]]>
+				</query>
+				<parameters>
+
+					<parameter input="true" apply="true" omit="true" desc ="CEP" name="CODCEP" type="System.String"  size="8" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="2" name="TBTIPLOG" api="true" apiname="" friendlyname="PublicPlacesTypes" modelversion="3" descriptor="Tipo de Logradouro">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+		<insertcommand script="true" key="Identity" fieldreturn="CODLOG" exceptionparamns="" procname="PRTIPLOGINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+	]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Identity" fieldreturn="" exceptionparamns="" procname="PRTIPLOGUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="PublicPlacesTypes" procname="" desc ="Obtêm o registro com base no id de registro do tipo de logradouro">
+				<query>
+					<![CDATA[SELECT * FROM TBTIPLOG (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Id de Registro" name="CODLOG" type="System.Int16"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="PublicPlacesTypes" procname="" desc ="Obtêm todos os registros de tipo de logradouro" remarks="">
+				<query>
+					<![CDATA[SELECT * FROM TBTIPLOG (NOLOCK) A]]>
+				</query>
+
+			</item>
+		</selectallcommand>
+	</item>
+
+
+	<item create="true"  id="3" name="TBCADZON" api="true" apiname="" friendlyname="Zones" modelversion="3" descriptor="Zonas de Localização">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+
+		<insertcommand script="true" key="key" fieldreturn="CODZON" exceptionparamns="" procname="PRCADZONINS" method="Insert">
+			<maxfield field="CODZON"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+	]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="key" fieldreturn="CODZON" exceptionparamns="" procname="PRCADZONUPD" method="Update">
+			<maxfield field="CODZON"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+	
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Zones" procname="" desc ="Obtêm o registro com base no código da zona informada">
+				<query>
+					<![CDATA[SELECT * FROM TBCADZON (NOLOCK)A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código da Zona" name="CODZON" type="System.Byte" default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Zones" procname="" desc ="Obtêm todos os registros de zonas de localização" remarks="">
+				<query>
+					<![CDATA[SELECT * FROM TBCADZON (NOLOCK) A]]>
+				</query>
+
+			</item>
+		</selectallcommand>
+	</item>
+
+	
+	<item create="true"  id="200" type="VIEW" name="VWCADCEP" api="true" apiname="" friendlyname="ViewCep" modelversion="3" descriptor="View de Informaçãoes de CEP" comments="Uso geral de consulta de informações">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	
+	<lists>
+		<item reference="" script="false" alias="A." sql="" type="List" method="PublicPlaces" return="ItemValue" procname="" desc ="Obtêm uma lista de todos os logradouros">
+			<query>
+				<![CDATA[select codlog as KeyValue, tiplog + ' - ' + dsclog as KeyText from tbtiplog (nolock) order by 1]]>
+			</query>
+		</item>
+		<item reference="" script="false" alias="A." sql="" type="List" method="Zones" return="ItemValue" procname="" desc ="Obtêm uma lista de todas zonas de localização">
+			<query>
+				<![CDATA[select codzon as KeyValue, nomzon as KeyText from tbcadzon (nolock) order by 1]]>
+			</query>
+		</item>
+	</lists>
+
+
+
+</root>

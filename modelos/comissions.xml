@@ -1,0 +1,2918 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+
+	<item create="true"  id="1" name="RFPFLVET" api="true" apiname="VetProfile" friendlyname="VetProfile" modelversion="3" descriptor="Tabela de Perfil do Veterinário" comments="Tabela de Informações de Perfil de Veterinários">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.*, DSCREC= ISNULL(B.DSCTAB,''), LGNUSU = ISNULL(C.LGNUSU,'')
+  FROM RFPFLVET (NOLOCK) A
+INNER JOIN TBTABGER (NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+ LEFT JOIN TBCADUSU (NOLOCK) C ON (C.CODUSU = A.UPDUSU) WHERE A.CODPFL=-1]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="PRPFLVETINS" method="Insert">
+			<maxfield field="CODPFL"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="" exceptionparamns="" procname="PRPFLVETUPD" method="Update">
+			<maxfield field="CODPFL"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="VetProfile" procname="PRPFLVETSELALL" desc ="Obtêm todos os registros de perfil de veterinários existentes" remarks="">
+				<query >
+					<![CDATA[
+SELECT A.*, DSCREC= ISNULL(B.DSCTAB,''), LGNUSU = ISNULL(C.LGNUSU,'')
+  FROM RFPFLVET (NOLOCK) A
+INNER JOIN TBTABGER (NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+ LEFT JOIN TBCADUSU (NOLOCK) C ON (C.CODUSU = A.UPDUSU)]]>
+				</query>
+
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="VetProfile" procname="PRPFLVETSEL" desc ="Seleciona um registro de perfil de veterinário com base no id">
+				<query>
+					<![CDATA[SELECT * FROM RFPFLVET (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Perfil" name="CODPFL" type="System.Int16"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="2" name="RFSPTVET" api="true" apiname="VetSpecialty" friendlyname="VetSpecialty" modelversion="3" descriptor="Tabela de Especialidade do Veterinário">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.*, ISNULL(B.DSCTAB,'') AS DSCREC, ISNULL(C.LGNUSU,'') AS LGNUSU FROM RFSPTVET (NOLOCK) A
+INNER JOIN TBTABGER (NOLOCK) B ON (B.CODTAB=7 AND B.KEYCOD = A.STAREC)
+LEFT JOIN TBCADUSU (NOLOCK) C ON (C.CODUSU = A.UPDUSU) WHERE A.CODSPT=-1
+		]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="PRSPTVETINS" method="Insert">
+			<maxfield field="CODSPT"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="" exceptionparamns="" procname="PRSPTVETUPD" method="Update">
+			<maxfield field="CODSPT"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List"  return="VetSpecialty" procname="PRSPTVETSELALL" desc ="Obtêm todos os registros de perfil de veterinários existentes" remarks="">
+				<query >
+					<![CDATA[
+SELECT A.*, ISNULL(B.DSCTAB,'') AS DSCREC, ISNULL(C.LGNUSU,'') AS LGNUSU FROM RFSPTVET (NOLOCK) A
+INNER JOIN TBTABGER (NOLOCK) B ON (B.CODTAB=7 AND B.KEYCOD = A.STAREC)
+LEFT JOIN TBCADUSU (NOLOCK) C ON (C.CODUSU = A.UPDUSU)]]>
+				</query>
+
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="VetSpecialty" procname="PRSPTVETSEL" desc ="Seleciona um registro de perfil de veterinário com base no id">
+				<query>
+					<![CDATA[SELECT * FROM RFSPTVET (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Perfil" name="CODSPT" type="System.Int16"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="3" name="RFPFLUSU" api="true" apiname="UserProfile" friendlyname="UserProfile" modelversion="3" descriptor="Tabela de Perfil de Usuários em Geral">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.*, ISNULL(B.DSCTAB, '') AS DSCREC, ISNULL(C.LGNUSU, '') AS LGNUSU
+FROM RFPFLUSU (NOLOCK) A
+INNER JOIN TBTABGER (NOLOCK) B ON (B.CODTAB = 7  AND B.KEYCOD = A.STAREC)
+LEFT JOIN TBCADUSU (NOLOCK) C  ON (C.CODUSU = A.UPDUSU)
+WHERE A.PFLUSU = -1]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRPFLUSUINS" method="Insert">
+			<maxfield field="PFLUSU"/>
+			<nextnumber field="" id="" />
+			<pre>
+
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="Perfil de usuário já existe" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRPFLUSUUPD" method="Update">
+			<maxfield field="PFLUSU"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(NOT EXISTS (SELECT 1 FROM RFPFLUSU (NOLOCK) WHERE PFLUSU = @PFLUSU))
+				             SET @RETURN_VALUE=-2;]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="Perfil de usuário NÃO existe" error="RECORDNOTFOUND"/>
+
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="UserProfile" procname="PRPFLUSUSELALL" desc ="Obtêm todos os registros de perfil de veterinários existentes" remarks="">
+				<query >
+					<![CDATA[
+SELECT A.*,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU
+FROM RFPFLUSU(NOLOCK) A
+INNER JOIN TBTABGER (NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+ LEFT JOIN TBCADUSU (NOLOCK) C ON (C.CODUSU = A.UPDUSU)
+]]>
+				</query>
+
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="UserProfile" procname="PRPFLUSUSEL" desc ="Seleciona um registro de perfil de veterinário com base no id">
+				<query>
+					<![CDATA[SELECT * FROM RFPFLUSU (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Perfil" name="PFLUSU" type="System.Int16"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="4" name="RFUSUMAL" api="true" apiname="UserMail" friendlyname="UserMail" modelversion="3" descriptor="Tabela de emails vinculados ao usuário" comments="Tabela de informações com a associação de emails de usuários com o objetivo de controlar os envios de emails e promover um sincronismo rápido das informações dos usuários utilizadores do aplicativo de comissões">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.NIDMAL, A.CODUSU, D.NOMUSU, A.ORDSND, A.DSCMAL, A.STAREC, ISNULL(B.DSCTAB,'') AS DSCREC, A.HASFUN,  A.DATCAD, A.DATUPD, A.UPDUSU, ISNULL(C.LGNUSU,'') AS LGNUSU
+   FROM RFUSUMAL (NOLOCK) A
+    INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+    INNER JOIN TBCADUSU(NOLOCK) D ON (D.CODUSU = A.CODUSU)
+    LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)
+	WHERE A.NIDMAL=-1]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Identity" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRUSUMALINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				
+				IF(EXISTS(SELECT 1 FROM RFUSUMAL (NOLOCK) WHERE DSCMAL =@DSCMAL AND CODUSU =@CODUSU))
+				            SET @RETURN_VALUE =-2;
+IF ( @DSCMAL LIKE '%petcare.com%')							
+   SET @HASFUN=1;					
+			
+			]]>
+
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="Registro existente" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Identity" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRUSUMALUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(NOT EXISTS(SELECT 1 FROM RFUSUMAL (NOLOCK) WHERE NIDMAL =@NIDMAL))
+				            SET @RETURN_VALUE =-2;
+IF ( @DSCMAL LIKE '%petcare.com%')							
+   SET @HASFUN=1;	
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="Registro não existente" error="RECORDNOTFOUND"/>
+
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="UserMail" procname="PRUSUMALSELALL" desc ="Obtêm todos os registros de email de um ou de todos os usuários" remarks="">
+				<query >
+					<![CDATA[
+SELECT A.NIDMAL, A.CODUSU, D.NOMUSU, A.ORDSND, A.DSCMAL, A.STAREC, ISNULL(B.DSCTAB,'') AS DSCREC, A.HASFUN, A.DATCAD, A.DATUPD, A.UPDUSU, ISNULL(C.LGNUSU,'') AS LGNUSU
+   FROM RFUSUMAL(NOLOCK) A
+    INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+    INNER JOIN TBCADUSU(NOLOCK) D ON (D.CODUSU = A.CODUSU)
+    LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Usuário" name="CODUSU" type="System.Int32"  default=""  output="" null="true"/>
+				</parameters>
+
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="UserMail" procname="PRUSUMALSEL" desc ="Seleciona um registro de email vinculado a um usuário com base no id de registro">
+				<query>
+					<![CDATA[SELECT * FROM RFUSUMAL (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Id de Registro do Email" name="NIDMAL" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="5" name="TBCADFER" api="true" apiname="Holidays" friendlyname="Holidays" modelversion="3" descriptor="Tabela de feriados">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.*,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU,
+  ISNULL(D.DSCTAB, '') AS DSCDAY,
+  ISNULL(E.DSCTAB, '') AS DSCORG
+FROM TBCADFER(NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B  ON (B.CODTAB = 7  AND B.KEYCOD = A.STAREC)
+INNER JOIN TBTABGER(NOLOCK) D  ON (D.CODTAB = 96 AND D.KEYCOD = A.DATCLA)
+INNER JOIN TBTABGER(NOLOCK) E  ON (E.CODTAB = 1  AND E.KEYCOD = A.ORGBAS)
+ LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)
+WHERE NIDFER=-1]]>
+		</extendedmodel>
+
+		<interface>
+			<item script="false" alias="A." sql="" method="ICreateCalendar" responsemode="1" return="ExecutionResponse" returnmode="2" procname="" desc ="Executa a importação de dados de calendários" returnvalue="0" remarks="">
+				<query>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Data Inicial" name="DATINI" type="System.DateTime"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Data Final" name="DATFIN" type="System.DateTime"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Código do Usuário" name="UPDUSU" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>>
+			</item>
+		</interface>
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADFERINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(EXISTS(SELECT 1 FROM TBCADFER (NOLOCK) WHERE ORGBAS =@ORGBAS AND DATCAL = @DATCAL))
+				            SET @RETURN_VALUE=-2;
+							
+IF(@RETURN_VALUE=0)
+	BEGIN
+	    DECLARE @DOW INT = 1;
+		SET @DOW = DATEPART(WEEKDAY, @DATCAL);
+		IF(@DOW=1 OR @DOW=7)
+			SET @DATCLA=2;
+	END
+]]>
+
+
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRCADFERUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(NOT EXISTS(SELECT 1 FROM TBCADFER (NOLOCK) WHERE ORGBAS =@ORGBAS AND DATCAL = @DATCAL))
+				            SET @RETURN_VALUE=-2;]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="Holidays" procname="PRCADFERSELALL" desc ="Obtêm todos os registros de perfil de veterinários existentes" remarks="">
+				<query order="DATCAL">
+					<![CDATA[SELECT A.*,	
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU,
+  ISNULL(D.DSCTAB, '') AS DSCDAY,
+  ISNULL(E.DSCTAB, '') AS DSCORG
+FROM TBCADFER(NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B  ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+INNER JOIN TBTABGER(NOLOCK) D  ON (D.CODTAB = 96 AND D.KEYCOD = A.DATCLA)
+INNER JOIN TBTABGER(NOLOCK) E  ON (E.CODTAB = 1  AND E.KEYCOD = A.ORGBAS)
+ LEFT JOIN TBCADUSU(NOLOCK) C   ON (C.CODUSU = A.UPDUSU)
+WHERE ORGBAS = @ORGBAS 
+AND MONTH(A.DATCAL)= @NUMMES
+AND YEAR(A.DATCAL) = @NUMANO
+
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="false" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Data" name="NUMMES" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="false" omit="true" desc ="Data" name="NUMANO" type="System.Int16"  default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="Holidays" procname="PRCADFERSEL" desc ="Seleciona um registro de perfil de veterinário com base no id">
+				<query>
+					<![CDATA[SELECT * FROM TBCADFER (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="NIDFER" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+
+		<methods>
+			<item script="false" alias="" sql="" responsemode="1" method="CreateCalendar" return="int" returnmode="4" procname="" desc ="Efetua a inclusão de um calendário baseado em uma data" returnvalue="0">
+				<query/>
+				<scriptbody>
+					<![CDATA[respond = ICreateCalendar(pORGBAS, pDATINI, pDATFIN, pUPDUSU);]]>
+				</scriptbody>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Data Inicial" name="DATINI" type="System.DateTime"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Data Final" name="DATFIN" type="System.DateTime"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Código do Usuário" name="UPDUSU" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+
+		</methods>
+	</item>
+
+
+
+	<item create="true"  id="6" name="TBCADPCD" api="true" apiname="Procedures" friendlyname="Procedures" modelversion="3" descriptor="Tabela de Procedimentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.*
+	  ,DSCREC = ISNULL(T07.DSCTAB,'')
+	  ,LGNUSU = ISNULL(USU.LGNUSU,'')
+	  ,TIP.TIPPCD
+	  ,CAT.SUBCAT
+ FROM TBCADPCD (NOLOCK) A
+ INNER JOIN TBPCDTIP (NOLOCK) TIP ON (TIP.NIDTIP = A.NIDTIP)
+ INNER JOIN TBPCDCAT (NOLOCK) CAT ON (CAT.NIDTIP = A.NIDTIP AND CAT.NIDCAT = A.NIDCAT)
+ INNER JOIN TBTABGER (NOLOCK) T07 ON (T07.CODTAB= 7 AND T07.KEYCOD = A.STAREC)
+  LEFT JOIN TBCADUSU (NOLOCK) USU ON (USU.CODUSU = A.UPDUSU)
+   
+ 
+WHERE A.ORGBAS=-1]]>
+		</extendedmodel>
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADPCDINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(NOT EXISTS(SELECT 1 FROM TBCADPCD (NOLOCK) WHERE ORGBAS=0 AND CODPCD=0))
+	BEGIN
+		INSERT INTO TBCADPCD (ORGBAS,CODPCD,NIDTIP,NIDCAT,DSCPCD,VLRREF,CODOPE,STAREC,UPDUSU) VALUES (0,0,0,0,'',0,0,2,1)
+	END
+			
+			]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="key" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRCADPCDUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="Procedures" procname="PRCADPCDSELALL" desc ="Obtêm todos os registros de procedimentos" remarks="">
+				<query order="A.CODPCD, TIP.TIPPCD, CAT.SUBCAT, DSCPCD">
+					<![CDATA[
+					
+IF(@NIDTIP <=0)
+   SET @NIDTIP = NULL;
+IF(@NIDCAT <=0)
+   SET @NIDCAT = NULL;
+
+/* CAMPO STAREC:  TINIYINT, NÃO ACEITA VALOR MENOR QUE 0 */
+IF(@STAREC <0)
+   SET @STAREC = NULL;
+    
+SELECT A.*
+	  ,DSCREC=ISNULL(T07.DSCTAB,'')
+	  ,LGNUSU = ISNULL(USU.LGNUSU,'')
+	  ,TIP.TIPPCD
+	  ,CAT.SUBCAT
+	
+  FROM TBCADPCD (NOLOCK) A
+ INNER JOIN TBPCDTIP (NOLOCK) TIP ON (TIP.NIDTIP = A.NIDTIP)
+ INNER JOIN TBPCDCAT (NOLOCK) CAT ON (CAT.NIDTIP = A.NIDTIP AND CAT.NIDCAT = A.NIDCAT)
+ INNER JOIN TBTABGER (NOLOCK) T07 ON (T07.CODTAB= 7 AND T07.KEYCOD = A.STAREC)
+  LEFT JOIN TBCADUSU (NOLOCK) USU ON (USU.CODUSU = A.UPDUSU)
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" islike="true" desc ="Tipo Procedimento" name="NIDTIP" type="System.Int32"  default=""  output="" null="true"/>
+					<parameter input="true" apply="true" islike="true" desc ="Categoria Procedimento" name="NIDCAT" type="System.Int32"   default=""  output="" null="true"/>
+					<parameter input="true" apply="true" islike="true" desc ="Descrição do Procedimento" name="DSCPCD" type="System.String" size="100" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" islike="true" desc ="Status do Registro" name="STAREC" type="System.Int16"  default=""  output="" null="true"/>
+
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Procedures" procname="" desc ="Seleciona um registro de perfil de veterinário com base no id">
+				<query>
+					<![CDATA[ SELECT A.*
+    	  ,DSCREC=ISNULL(T07.DSCTAB,'')
+    	  ,LGNUSU = ISNULL(USU.LGNUSU,'')
+    	  ,TIP.TIPPCD
+    	  ,CAT.SUBCAT
+     FROM TBCADPCD (NOLOCK) A
+     INNER JOIN TBPCDTIP (NOLOCK) TIP ON (TIP.NIDTIP = A.NIDTIP)
+     INNER JOIN TBPCDCAT (NOLOCK) CAT ON (CAT.NIDTIP = A.NIDTIP AND CAT.NIDCAT = A.NIDCAT)
+     INNER JOIN TBTABGER (NOLOCK) T07 ON (T07.CODTAB= 7 AND T07.KEYCOD = A.STAREC)
+      LEFT JOIN TBCADUSU (NOLOCK) USU ON (USU.CODUSU = A.UPDUSU)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Procedimento" name="CODPCD" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<methods>
+			<!--<item script="true" alias="" sql="" responsemode="1" method="UpdateLevel" return="int" returnmode="2" procname="PRCADPCDUPDLVL" desc ="Atualiza o nível de comissão das referencias do Cadastro de Procedimentos" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @AUDSRC VARCHAR(2000)=N'';
+DECLARE @AUDCHG VARCHAR(2000)=N'';
+DECLARE @RETURN_VALUE INT = 0
+  
+BEGIN TRY
+  IF(@ORGBAS IS NOT NULL)
+    SET @AUDSRC = @AUDSRC + 'Origem : ' + CONVERT(VARCHAR, @ORGBAS);
+  IF(@TIPPCD IS NOT NULL)
+    SET @AUDSRC = @AUDSRC + ';Tipo: ' + TRIM(@TIPPCD);
+  IF(@SUBCAT IS NOT NULL)
+    SET @AUDSRC = @AUDSRC + ';Categoria : ' + TRIM(@SUBCAT);
+  IF(@DSCPCD IS NOT NULL)
+    SET @AUDSRC = @AUDSRC + ';Descrição : ' + TRIM(@DSCPCD);
+  IF(@NIVCOM IS NOT NULL)
+    SET @AUDSRC = @AUDSRC + ';Nivel: ' +CONVERT(VARCHAR, @NIVCOM);
+  IF(@UPDUSU IS NOT NULL)
+    SET @AUDSRC = @AUDSRC + ';Usuário: ' +CONVERT(VARCHAR, @UPDUSU);
+
+     IF(@TIPPCD = '')
+        SET @TIPPCD = NULL;
+    IF(@TIPPCD IS NOT NULL)
+        SET @TIPPCD = '%' +  TRIM(@TIPPCD) +'%';
+    IF(@SUBCAT = '')
+        SET @SUBCAT = NULL;
+    IF(@SUBCAT IS NOT NULL)
+        SET @SUBCAT = '%' +  TRIM(@SUBCAT) +'%';
+    IF(@DSCPCD = '')
+        SET @DSCPCD = NULL;
+    IF(@DSCPCD IS NOT NULL)
+        SET @DSCPCD = '%' +  TRIM(@DSCPCD) +'%';
+
+
+  BEGIN TRANSACTION
+
+	UPDATE TBCADPCD
+	   SET NIVCOM = @NIVCOM, UPDUSU = @UPDUSU
+     WHERE (ORGBAS=@ORGBAS) 
+	   AND (@TIPPCD IS NULL OR TRIM(TIPPCD) LIKE @TIPPCD) 
+	   AND (@SUBCAT IS NULL OR TRIM(SUBCAT) LIKE @SUBCAT) 
+	   AND (@DSCPCD IS NULL OR TRIM(DSCPCD) LIKE @DSCPCD)
+
+	 IF (@@ERROR=0 AND @@ROWCOUNT>0)
+		BEGIN
+		    SET @AUDCHG = 'FORAM ALTERADOS ' + CONVERT(VARCHAR, @@ROWCOUNT) + ' REGISTROS';
+			INSERT INTO dbo.TBAUDDAT (AUDDAT,AUDKEY,AUDIDR,AUDIMS
+		   ,AUDOBJ,AUDSRC,AUDCHG,NIDTOK
+		   ,NUMIPA,UPDUSU)
+			VALUES
+			   (GETDATE(),6,0,10
+			   ,OBJECT_NAME(@@PROCID),@AUDSRC,@AUDCHG,0
+			   ,'',@UPDUSU)
+		END
+		SET @RETURN_VALUE=1
+		COMMIT TRAN;
+
+	END TRY
+
+	BEGIN CATCH  
+	      SET @AUDCHG = 'ERRO NO PROCESSAMENTO DA TRANSACAO';
+		  SET @AUDCHG = @AUDCHG + 'Numero :' + CONVERT(VARCHAR, ERROR_NUMBER())
+		  SET @AUDCHG = @AUDCHG + ';Severidade' + CONVERT(VARCHAR, ERROR_SEVERITY())
+		  SET @AUDCHG = @AUDCHG + ';Estado :' + CONVERT(VARCHAR, ERROR_STATE())
+		  SET @AUDCHG = @AUDCHG + ';Procedure' + CONVERT(VARCHAR, ERROR_PROCEDURE())
+		  SET @AUDCHG = @AUDCHG + ';Linha :' + CONVERT(VARCHAR, ERROR_LINE())
+		  SET @AUDCHG = @AUDCHG + ';Mensagem' + CONVERT(VARCHAR, ERROR_MESSAGE())
+			
+	      IF (@@TRANCOUNT > 0)
+		       ROLLBACK TRAN
+
+			INSERT INTO dbo.TBAUDDAT (AUDDAT,AUDKEY,AUDIDR,AUDIMS
+		   ,AUDOBJ,AUDSRC,AUDCHG,NIDTOK
+		   ,NUMIPA,UPDUSU)
+			VALUES (GETDATE(),6,0,12
+			   ,OBJECT_NAME(@@PROCID),@AUDSRC,@AUDCHG,0
+			   ,'',@UPDUSU);
+
+		SET @RETURN_VALUE=-1;
+
+	END CATCH
+	
+RETURN @RETURN_VALUE;
+				]]>
+				</query>
+
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" islike="true" desc ="Tipo Procedimento" name="TIPPCD" type="System.String"  size="50" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" omit="true" islike="true" desc ="Categoria Procedimento" name="SUBCAT" type="System.String"  size="50" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" omit="true" islike="true" desc ="Descrição do Procedimento" name="DSCPCD" type="System.String"  size="100" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" omit="true" desc ="Nivel de Comissão" name="NIVCOM" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Atualizador" name="UPDUSU" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+
+				<returns>
+					<return operator=">" value="0" message="Nível de Comissionamento alterado com sucesso" error="OK"/>
+				</returns>
+			</item>
+
+			<item script="true" alias="" sql="" responsemode="1" method="UpdateComission" return="int" returnmode="2" procname="PRCADPCDUPDCOM" desc ="Atualiza o percentual de comissão das referencias do Cadastro de Procedimentos" returnvalue="0">
+				<query>
+					<![CDATA[DECLARE @AUDSRC VARCHAR(2000)=N'';
+DECLARE @AUDCHG VARCHAR(2000)=N'';
+DECLARE @RETURN_VALUE INT = 0
+  
+BEGIN TRY
+  IF(@ORGBAS IS NOT NULL)
+    SET @AUDSRC = @AUDSRC + 'Origem : ' + CONVERT(VARCHAR, @ORGBAS);
+  IF(@TIPPCD IS NOT NULL)
+    SET @AUDSRC = @AUDSRC + ';Tipo: ' + TRIM(@TIPPCD);
+  IF(@SUBCAT IS NOT NULL)
+    SET @AUDSRC = @AUDSRC + ';Categoria : ' + TRIM(@SUBCAT);
+  IF(@DSCPCD IS NOT NULL)
+    SET @AUDSRC = @AUDSRC + ';Descrição : ' + TRIM(@DSCPCD);
+  IF(@PCTCOM IS NOT NULL)
+    SET @AUDSRC = @AUDSRC + ';% Comissao: ' +CONVERT(VARCHAR, @PCTCOM);
+  IF(@UPDUSU IS NOT NULL)
+    SET @AUDSRC = @AUDSRC + ';Usuário: ' +CONVERT(VARCHAR, @UPDUSU);
+
+     IF(@TIPPCD = '')
+        SET @TIPPCD = NULL;
+    IF(@TIPPCD IS NOT NULL)
+        SET @TIPPCD = '%' +  TRIM(@TIPPCD) +'%';
+    IF(@SUBCAT = '')
+        SET @SUBCAT = NULL;
+    IF(@SUBCAT IS NOT NULL)
+        SET @SUBCAT = '%' +  TRIM(@SUBCAT) +'%';
+    IF(@DSCPCD = '')
+        SET @DSCPCD = NULL;
+    IF(@DSCPCD IS NOT NULL)
+        SET @DSCPCD = '%' +  TRIM(@DSCPCD) +'%';
+
+
+  BEGIN TRANSACTION
+
+	UPDATE TBCADPCD
+	   SET PCTCOM = @PCTCOM, UPDUSU = @UPDUSU
+     WHERE (ORGBAS=@ORGBAS) 
+	   AND (@TIPPCD IS NULL OR TRIM(TIPPCD) LIKE @TIPPCD) 
+	   AND (@SUBCAT IS NULL OR TRIM(SUBCAT) LIKE @SUBCAT) 
+	   AND (@DSCPCD IS NULL OR TRIM(DSCPCD) LIKE @DSCPCD)
+
+	 IF (@@ERROR=0 AND @@ROWCOUNT>0)
+		BEGIN
+		    SET @AUDCHG = 'FORAM ALTERADOS ' + CONVERT(VARCHAR, @@ROWCOUNT) + ' REGISTROS';
+			INSERT INTO dbo.TBAUDDAT (AUDDAT,AUDKEY,AUDIDR,AUDIMS
+		   ,AUDOBJ,AUDSRC,AUDCHG,NIDTOK
+		   ,NUMIPA,UPDUSU)
+			VALUES
+			   (GETDATE(),6,0,11
+			   ,OBJECT_NAME(@@PROCID),@AUDSRC,@AUDCHG,0
+			   ,'',@UPDUSU)
+		END
+		SET @RETURN_VALUE=1
+		COMMIT TRAN;
+
+	END TRY
+
+	BEGIN CATCH  
+	      SET @AUDCHG = 'ERRO NO PROCESSAMENTO DA TRANSACAO';
+		  SET @AUDCHG = @AUDCHG + 'Numero :' + CONVERT(VARCHAR, ERROR_NUMBER())
+		  SET @AUDCHG = @AUDCHG + ';Severidade' + CONVERT(VARCHAR, ERROR_SEVERITY())
+		  SET @AUDCHG = @AUDCHG + ';Estado :' + CONVERT(VARCHAR, ERROR_STATE())
+		  SET @AUDCHG = @AUDCHG + ';Procedure' + CONVERT(VARCHAR, ERROR_PROCEDURE())
+		  SET @AUDCHG = @AUDCHG + ';Linha :' + CONVERT(VARCHAR, ERROR_LINE())
+		  SET @AUDCHG = @AUDCHG + ';Mensagem' + CONVERT(VARCHAR, ERROR_MESSAGE())
+			
+	      IF (@@TRANCOUNT > 0)
+		       ROLLBACK TRAN
+
+			INSERT INTO dbo.TBAUDDAT (AUDDAT,AUDKEY,AUDIDR,AUDIMS
+		   ,AUDOBJ,AUDSRC,AUDCHG,NIDTOK
+		   ,NUMIPA,UPDUSU)
+			VALUES (GETDATE(),6,0,13
+			   ,OBJECT_NAME(@@PROCID),@AUDSRC,@AUDCHG,0
+			   ,'',@UPDUSU);
+
+		SET @RETURN_VALUE=-1;
+
+	END CATCH
+	
+	RETURN @RETURN_VALUE;
+
+
+ 					
+				]]>
+				</query>
+
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" islike="true" desc ="Tipo Procedimento" name="TIPPCD" type="System.String"  size="50" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" omit="true" islike="true" desc ="Categoria Procedimento" name="SUBCAT" type="System.String"  size="50" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" omit="true" islike="true" desc ="Descrição do Procedimento" name="DSCPCD" type="System.String"  size="100" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" omit="true" desc ="% Comissão" name="PCTCOM" type="System.Double"  default=""  output="" null="true"/>
+					<parameter input="true" apply="true" omit="true" desc ="Atualizador" name="UPDUSU" type="System.Int32"  default=""  output="" null="false"/>
+
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+				<returns>
+					<return operator=">" value="0" message="Percentual de Comissão alterado com sucesso" error="OK"/>
+				</returns>
+			</item>-->
+
+
+
+
+			<item script="false" alias="" sql="" responsemode="1" method="GetDataFromSource" return="int" returnmode="4" procname="" desc ="Efetua a importação de informações de procedimentos dos sistemas de origem" returnvalue="0">
+				<query/>
+				<scriptbody>
+					<![CDATA[respond = ExtrairCadastroProcedimentos(pORGBAS,pUPDUSU);]]>
+				</scriptbody>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Atualizador" name="UPDUSU" type="System.Int32"  default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+
+
+		</methods>
+	</item>
+
+
+	<item create="true"  id="7" name="RLUSUVET" api="true" apiname="UserxVet" friendlyname="UserxVet" modelversion="3" descriptor="Tabela de usuários x veterinários">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<objectclass>
+			<item acess="" modifier="" name="UserxVetList" inherit="" desc ="Objeto de Tratamento para exibição de usuarios x veterinarios" remarks="">
+				<query>
+					<![CDATA[SELECT
+  A.CODUSU,
+  D.NOMUSU,
+  A.VETKEY,
+  E.APEVET,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU
+FROM RLUSUVET(NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B
+  ON (B.CODTAB = 7
+  AND B.KEYCOD = A.STAREC)
+INNER JOIN TBCADUSU(NOLOCK) D
+  ON (D.CODUSU = A.CODUSU)
+INNER JOIN TBCADVET(NOLOCK) E
+  ON (E.VETKEY = A.VETKEY)
+LEFT JOIN TBCADUSU(NOLOCK) C
+  ON (C.CODUSU = A.UPDUSU)
+ WHERE A.CODUSU=-1;
+]]>
+				</query>
+			</item>
+		</objectclass>
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="PRUSUVETINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(EXISTS (SELECT 1 FROM RLUSUVET (NOLOCK) FROM CODUSU=@CODUSU AND VETKEY =@VETKEY))
+				            SET @RETURN_VALUE=-2;]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return operator="=" value="-2" message="A relação usuário x vetrinário já existe" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="" exceptionparamns="" procname="PRUSUVETUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(NOT EXISTS (SELECT 1 FROM RLUSUVET (NOLOCK) FROM CODUSU=@CODUSU AND VETKEY =@VETKEY))
+				            SET @RETURN_VALUE=-2;]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+				<return operator="=" value="-2" message="A relação usuário x vetrinário não existe" error="RECORDNOTFOUND"/>
+
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="UserxVetList" procname="PRUSUVETSELALL" desc ="Obtêm todos os registros de usuarios x veterinarios" remarks="">
+				<query >
+					<![CDATA[SELECT
+  A.CODUSU,
+  D.NOMUSU,
+  A.VETKEY,
+  E.APEVET,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU
+FROM RLUSUVET(NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B
+  ON (B.CODTAB = 7
+  AND B.KEYCOD = A.STAREC)
+INNER JOIN TBCADUSU(NOLOCK) D
+  ON (D.CODUSU = A.CODUSU)
+INNER JOIN TBCADVET(NOLOCK) E
+  ON (E.VETKEY = A.VETKEY)
+LEFT JOIN TBCADUSU(NOLOCK) C
+  ON (C.CODUSU = A.UPDUSU)
+]]>
+				</query>
+
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="UserxVet" procname="PRUSUVETSEL" desc ="Seleciona um registro de usuário x veterinario">
+				<query>
+					<![CDATA[SELECT * FROM RLUSUVET (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Usuário" name="CODUSU" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Código do Veterinário" name="VETKEY" type="System.Int16"  default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="8" name="TBCADUSU" api="true" apiname="Users" friendlyname="Users" modelversion="3" descriptor="Tabela de usuários">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.*,
+       PFL.DSCPFU,
+       ISNULL(B.DSCTAB, '') AS DSCREC,
+       ISNULL(C.LGNUSU, '') AS CHGUSU,
+	  NUMMAL = COALESCE(MAL.NUMREC,0)
+FROM TBCADUSU(NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7  AND B.KEYCOD = A.STAREC)
+INNER JOIN RFPFLUSU(NOLOCK) PFL ON (PFL.PFLUSU = A.PFLUSU)
+LEFT JOIN TBCADUSU(NOLOCK) C ON (C.CODUSU = A.UPDUSU)
+	INNER JOIN (SELECT CODUSU, COUNT(*) AS NUMREC FROM RFUSUMAL (NOLOCK) GROUP BY CODUSU) MAL ON (MAL.CODUSU = A.CODUSU)
+WHERE A.CODUSU = -1;]]>
+		</extendedmodel>
+
+		<insertcommand script="true" key="Key" fieldreturn="CODUSU" exceptionparamns="'DATUPD'" procname="PRCADUSUINS" method="Insert">
+			<maxfield field="CODUSU"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+			
+IF(NOT EXISTS( SELECT 1 FROM TBCADUSU (NOLOCK) WHERE CODUSU=0))
+     BEGIN
+		INSERT INTO dbo.TBCADUSU(CODUSU,LGNUSU,NOMUSU,PFLUSU,PSWUSU,PSWRST,ULTACE,STAREC) VALUES(0,'','',0,'',0,null,2)
+	 END
+IF( EXISTS(SELECT 1 FROM TBCADUSU (NOLOCK) WHERE LGNUSU =@LGNUSU))
+      SET @RETURN_VALUE=-2
+
+SET @PSWUSU = N'Mudar123';
+    			   ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="O usuário já existe" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="CODUSU" exceptionparamns="" procname="PRCADUSUUPD" method="Update">
+			<maxfield field="CODUSU"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF( NOT EXISTS(SELECT 1 FROM TBCADUSU (NOLOCK) WHERE LGNUSU =@LGNUSU))
+			                 SET @RETURN_VALUE=-2
+				
+			IF(@STAREC=2)
+				SET @RETURN_VALUE = -3;
+				
+			
+			IF(@RETURN_VALUE=0)
+			   BEGIN
+			        IF(@PSWRST=1)
+					   SET @PSWUSU = N'Mudar123';
+			   END]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="O usuário não existe" error="RECORDNOTFOUND"/>
+				<return operator="==" value="-3" message="Este registro não é editável, ele faz parte dos controles internos do aplicativo" error=""/>
+
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="Users" procname="PRCADUSUSELALL" desc ="Obtêm todos os registros de usuarios" remarks="">
+				<query order="A.LGNUSU" >
+					<![CDATA[
+SELECT A.*,
+       PFL.DSCPFU,
+       ISNULL(B.DSCTAB, '') AS DSCREC,
+       ISNULL(C.LGNUSU, '') AS CHGUSU,
+	   NUMMAL = COALESCE(MAL.NUMREC,0)
+  FROM TBCADUSU(NOLOCK) A
+ INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7  AND B.KEYCOD = A.STAREC)
+ INNER JOIN RFPFLUSU(NOLOCK) PFL ON (PFL.PFLUSU = A.PFLUSU)
+  LEFT JOIN TBCADUSU(NOLOCK) C ON (C.CODUSU = A.UPDUSU)
+  LEFT JOIN (SELECT CODUSU, COUNT(*) AS NUMREC FROM RFUSUMAL (NOLOCK) GROUP BY CODUSU) MAL ON (MAL.CODUSU = A.CODUSU)
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" islike="true" desc ="Login" name="LGNUSU" type="System.String"  size="50" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" islike="true" desc ="Nome" name="NOMUSU" type="System.String"  size="50" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" islike="true" desc ="Nome" name="PFLUSU" type="System.Byte"  sysnull="true" default=""  output="" null="true"/>
+
+				</parameters>
+
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="Users" procname="PRCADUSUSEL" desc ="Seleciona um registro de usuário a partir do código do usuário">
+				<query>
+					<![CDATA[SELECT * FROM TBCADUSU (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Usuário" name="CODUSU" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Users" procname="" desc ="Seleciona um registro de usuário a partir do nome do usuário">
+				<query>
+					<![CDATA[SELECT * FROM TBCADUSU (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Nome do Usuário" name="NOMUSU" type="System.String"  size="70"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="9" name="TBCADVET" api="true" apiname="Veterinarians" friendlyname="Veterinarians" modelversion="3" descriptor="Tabela de Veterinários" remarks ="Armazena as informações de veterinários e define o níel de comissionamento e assinalamento de coordenação ">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[
+SELECT A.VETKEY
+      ,A.ORGBAS
+      ,A.APEVET
+      ,A.DATADM
+      ,A.NOMVET
+      ,A.NIVCOM
+      ,A.NOMSPT
+      ,A.CODSPT
+      ,A.CODPFL
+      ,A.PFLUSU
+      ,A.HASCOO
+      ,A.STAREC
+      ,A.DATCAD
+      ,A.DATUPD
+      ,A.UPDUSU
+	  ,A.CODUSU
+      ,ISNULL(T07.DSCTAB, '') AS DSCREC
+      ,ISNULL(LGN.LGNUSU, '') AS LGNUSU
+      ,DSCPFL = ISNULL(PFL.DSCTAB, '')
+      ,DSCSPT = ISNULL(SPT.DSCTAB, '')
+      ,ISNULL(ORG.DSCTAB, '') AS DSCORG 
+      ,A.CODSUP
+      ,ISNULL(SUP.APEVET, '') AS DSCSUP 
+  FROM TBCADVET (NOLOCK) A
+ INNER JOIN TBTABGER (NOLOCK) T07 ON (T07.CODTAB = 7 AND T07.KEYCOD = A.STAREC)
+  LEFT JOIN TBCADUSU (NOLOCK) LGN ON (LGN.CODUSU = A.UPDUSU)
+ INNER JOIN TBTABGER (NOLOCK) PFL ON (PFL.CODTAB = 103 AND PFL.KEYCOD = A.CODPFL)
+ INNER JOIN TBTABGER (NOLOCK) SPT ON (SPT.CODTAB = 102 AND SPT.KEYCOD = A.CODSPT)
+ INNER JOIN TBTABGER (NOLOCK) ORG ON (ORG.CODTAB = 1 AND ORG.KEYCOD = A.ORGBAS)
+ INNER JOIN TBCADVET (NOLOCK) SUP ON (SUP.ORGBAS = A.ORGBAS AND SUP.VETKEY = A.VETKEY)
+WHERE A.VETKEY=-1
+		]]>
+		</extendedmodel>
+
+		<view>
+			<item owner="" script="true" definer="" name="VWCADVET" desc ="View Base de Veterinarios">
+				<query>
+					<![CDATA[
+SELECT A.VETKEY
+      ,A.ORGBAS
+      ,A.APEVET
+      ,A.DATADM
+      ,A.NOMVET
+      ,A.NIVCOM
+      ,A.NOMSPT
+      ,A.CODSPT
+      ,A.CODPFL
+      ,A.PFLUSU
+      ,A.HASCOO
+      ,A.STAREC
+      ,A.DATCAD
+      ,A.DATUPD
+      ,A.UPDUSU
+	  ,A.CODUSU
+      ,ISNULL(T07.DSCTAB, '') AS DSCREC
+      ,ISNULL(LGN.LGNUSU, '') AS LGNUSU
+      ,DSCPFL = ISNULL(PFL.DSCTAB, '')
+      ,DSCSPT = ISNULL(SPT.DSCTAB, '')
+      ,ISNULL(ORG.DSCTAB, '') AS DSCORG 
+      ,A.CODSUP
+      ,ISNULL(SUP.APEVET, '') AS DSCSUP 
+  FROM TBCADVET (NOLOCK) A
+ INNER JOIN TBTABGER (NOLOCK) T07 ON (T07.CODTAB = 7 AND T07.KEYCOD = A.STAREC)
+  LEFT JOIN TBCADUSU (NOLOCK) LGN ON (LGN.CODUSU = A.UPDUSU)
+ INNER JOIN TBTABGER (NOLOCK) PFL ON (PFL.CODTAB = 103 AND PFL.KEYCOD = A.CODPFL)
+ INNER JOIN TBTABGER (NOLOCK) SPT ON (SPT.CODTAB = 102 AND SPT.KEYCOD = A.CODSPT)
+ INNER JOIN TBTABGER (NOLOCK) ORG ON (ORG.CODTAB = 1 AND ORG.KEYCOD = A.ORGBAS)
+ INNER JOIN TBCADVET (NOLOCK) SUP ON (SUP.ORGBAS = A.ORGBAS AND SUP.VETKEY = A.VETKEY)
+ 
+			]]>
+				</query>
+			</item>
+		</view>
+
+		<insertcommand script="true" key="key" fieldreturn="" exceptionparamns="'DATUPD'" procname="PRCADVETINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(@VETKEY=0)
+   SET @RETURN_VALUE = -3;
+IF(@APEVET='')
+   SET @RETURN_VALUE = -4;			
+IF(@RETURN_VALUE =0) AND (EXISTS (SELECT 1 FROM TBCADVET (NOLOCK) WHERE ORGBAS=@ORGBAS AND APEVET = @APEVET))
+	SET @RETURN_VALUE=-2;
+IF(@NOMVET = '' OR @NOMVET IS NULL) 
+    SET @NOMVET = ' ';
+IF(@NOMSPT = '' OR @NOMSPT IS NULL) 
+    SET @NOMSPT = ' ';	
+			
+			]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="Veterinário já existe" error="RECORDFOUND"/>
+				<return operator="==" value="-3" error="INVALIDARGUMENT" replaces="ID DO VETERINÁRIO"/>
+								<return operator="==" value="-4" error="INVALIDARGUMENT" replaces="APELIDO DO VETERINÁRIO"/>
+
+
+
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="key" fieldreturn="" exceptionparamns="'DATCAD','CODSUP','NIVCOM','HASCOO'" procname="PRCADVETUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET @DATUPD=GETDATE();
+IF(@VETKEY=0)
+   SET @RETURN_VALUE = -3;
+IF(@APEVET='')
+   SET @RETURN_VALUE = -4;					
+				
+IF(@RETURN_VALUE =0 ) AND (NOT EXISTS (SELECT 1 FROM TBCADVET (NOLOCK) WHERE ORGBAS=@ORGBAS AND APEVET = @APEVET))
+	SET @RETURN_VALUE=-2;
+IF(@NOMVET = '' OR @NOMVET IS NULL) 
+    SET @NOMVET = ' ';
+IF(@NOMSPT = '' OR @NOMSPT IS NULL) 
+    SET @NOMSPT = ' ';				
+			]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="Veterinário não existe" error="RECORDNOTFOUND"/>
+							<return operator="==" value="-3" error="INVALIDARGUMENT" replaces="ID DO VETERINÁRIO"/>
+								<return operator="==" value="-4" error="INVALIDARGUMENT" replaces="APELIDO DO VETERINÁRIO"/>
+
+
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="Veterinarians" procname="PRCADVETSELALL" desc ="Obtêm todos os registros de veterinários conforme os parâmetros de pesquisa" remarks="">
+				<query >
+					<![CDATA[SELECT * FROM VWCADVET A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Apelido" islike="true" name="APEVET" type="System.String" size="50" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" desc ="Nome" islike="true" name="NOMVET" type="System.String" size="70" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Int16" sysnull="true"  default=""  output="" null="true"/>
+					<parameter input="true" apply="true" desc ="Status" name="STAREC" type="System.Int16" sysnull="true" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" desc ="Nível" name="NIVCOM" type="System.Byte" sysnull="true" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" desc ="Perfil" islike="true" name="DSCPFL" type="System.String" size="50" sysnull="true" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" desc ="Especialidade" islike="true" name="DSCSPT" type="System.String" size="50" sysnull="true" default=""  output="" null="true"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Veterinarians" procname="PRCADVETSEL" desc ="Seleciona um registro de Veterinário">
+				<query>
+					<![CDATA[SELECT TOP 1 * FROM TBCADVET (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Veterinário" name="VETKEY" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Localiza um veterinário">
+				<query>
+					<![CDATA[IF(EXISTS (SELECT 1 FROM TBCADVET (NOLOCK) A WHERE ORGBAS = @ORGBAS AND APEVET = @APEVET))
+					             SELECT VETKEY FROM TBCADVET (NOLOCK) A WHERE ORGBAS = @ORGBAS AND APEVET = @APEVET
+							 ELSE
+							     SELECT 0 AS VETKEY
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Apelido" name="APEVET" type="System.String" size="50"  default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+
+		<methods>
+			<item script="false" alias="" sql="" responsemode="1" method="GetDataFromSource" return="int" returnmode="4" procname="" desc ="Efetua a importação de informações dos veterinários das bases de origem" returnvalue="0">
+				<query/>
+				<scriptbody>
+					<![CDATA[respond = IGetDataFromSource(pORGBAS,pUPDUSU);]]>
+				</scriptbody>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Usuário" name="UPDUSU" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="10" name="TBNIVCOM" api="true" apiname="ComissionFactor" friendlyname="ComissionFactor" modelversion="3" descriptor="Tabela de Fator de Comissionamento">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.*,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU
+FROM TBNIVCOM(NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU) WHERE NIVCOM=-1]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRNIVCOMINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+if(not( exists(select 1 from tbnivcom (nolock) where nivcom=-1)))
+	insert into tbnivcom (nivcom, starec,pcthno, valhno, pcthpl, valhpl) values (-1,1,0,0,0,0);		
+				
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRNIVCOMUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="ComissionFactor" procname="PRNIVCOMSELALL" desc ="Obtêm todos os registros de fator de comissão" remarks="">
+				<query >
+					<![CDATA[
+SELECT A.*,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU
+FROM TBNIVCOM(NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)]]>
+				</query>
+
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="ComissionFactor" procname="PRNIVCOMSEL" desc ="Seleciona um registro de fator de comissão com base no id">
+				<query>
+					<![CDATA[SELECT * FROM TBNIVCOM (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Perfil" name="NIVCOM" type="System.Byte"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="11" name="TBPARCOM" api="true" apiname="Parameters" friendlyname="Parameters" modelversion="3" descriptor="Tabela de Parametros de Calculo de Comissão">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT  A.*,
+  ISNULL(D.DSCTAB, '') AS DSCORG,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU,
+    ISNULL(E.DSCTAB, '') AS DSCEXE
+FROM TBPARCOM (NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+INNER JOIN TBTABGER(NOLOCK) D ON (D.CODTAB = 1 AND D.KEYCOD = A.ORGBAS)
+LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)
+INNER JOIN TBTABGER(NOLOCK) E ON (E.CODTAB = 95 AND E.KEYCOD = A.STAEXE)
+WHERE A.ORGBAS=-1]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Identity" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRPARCOMINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(EXISTS (SELECT 1 FROM TBPARCOM (NOLOCK) WHERE ORGBAS=@ORGBAS AND NUMMES =@NUMMES AND NUMANO=@NUMANO))
+				         SET @RETURN_VALUE=-2;]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="Período de comissão já existe" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Identity" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRPARCOMUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(NOT EXISTS (SELECT 1 FROM TBPARCOM (NOLOCK) WHERE ORGBAS=@ORGBAS AND NUMMES =@NUMMES AND NUMANO=@NUMANO))
+				         SET @RETURN_VALUE=-2;]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="Período de comissão NÃO existe" error="RECORDNOTFOUND"/>
+
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="Parameters" procname="PRPARCOMSELALL" desc ="Obtêm todos os registros de parâmetro de comissão" remarks="">
+				<query order="A.NUMANO DESC, A.NUMMES DESC" >
+					<![CDATA[
+SELECT  A.*,
+  ISNULL(D.DSCTAB, '') AS DSCORG,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU,
+    ISNULL(E.DSCTAB, '') AS DSCEXE
+FROM TBPARCOM (NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+INNER JOIN TBTABGER(NOLOCK) D ON (D.CODTAB = 1 AND D.KEYCOD = A.ORGBAS)
+LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)
+INNER JOIN TBTABGER(NOLOCK) E ON (E.CODTAB = 95 AND E.KEYCOD = A.STAEXE)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte" sysnull="true" default=""  output="" null="true"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="Parameters" procname="PRPARCOMSEL" desc ="Seleciona um registro de parâmetro de comissão de acordo com o Id de Registro">
+				<query>
+					<![CDATA[SELECT * FROM TBPARCOM (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Parâmetro" name="NIDPAR" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="12" name="TBPCDLAN" api="true" apiname="Entry" friendlyname="Entry" modelversion="3" descriptor="Tabela de Registro de Lançamentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT NIDPCD, NUMDIF
+          ,STAAGL
+		  ,DSCAGL = ISNULL(F.DSCTAB,'')
+          ,A.ORGBAS
+          ,NUMMES
+          ,NUMANO
+          ,CODANI
+          ,DATPCD
+          ,VLRPCD
+          ,VLRPGT
+          ,APEVET
+          ,NIDVET
+          ,NUMQTD
+          ,A.CODPCD
+    	  ,E.DSCPCD
+          ,CODEMP
+          ,NUMOSS
+          ,A.STAREC
+          ,A.DATCAD
+          ,A.DATUPD
+          ,A.UPDUSU
+    	  ,DSCREC = ISNULL(B.DSCTAB,'')
+    	  ,DSCORG = ISNULL(C.DSCTAB,'')
+    	  ,LGNUSU = ISNULL(D.LGNUSU,'')
+		  ,DATFEC
+		  ,STAOSS
+		  ,DATPRO
+      FROM TBPCDLAN (NOLOCK) A
+      INNER JOIN TBTABGER (NOLOCK) B ON (B.CODTAB= 7 AND B.KEYCOD = A.STAREC)
+      INNER JOIN TBTABGER (NOLOCK) C ON (C.CODTAB= 1 AND C.KEYCOD = A.ORGBAS)
+	  INNER JOIN TBTABGER (NOLOCK) F ON (F.CODTAB= 97 AND F.KEYCOD = A.STAAGL)
+      LEFT JOIN TBCADUSU (NOLOCK) D ON (D.CODUSU = A.UPDUSU)
+      LEFT JOIN TBCADPCD (NOLOCK) E ON (E.ORGBAS = A.ORGBAS AND E.CODPCD = A.CODPCD)
+  WHERE A.NIDPCD=-1]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRPCDLANINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRPCDLANUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="Entry" procname="PRPCDLANSELALL" desc ="Obtêm todos os registros de parâmetro de comissão" remarks="">
+				<query >
+					<![CDATA[
+    SELECT NIDPCD
+	      ,NUMDIF
+          ,STAAGL
+		  ,DSCAGL = ISNULL(F.DSCTAB,'')
+          ,A.ORGBAS
+          ,NUMMES
+          ,NUMANO
+          ,CODANI
+          ,DATPCD
+          ,VLRPCD
+          ,VLRPGT
+          ,APEVET
+          ,NIDVET
+          ,NUMQTD
+          ,A.CODPCD
+    	  ,E.DSCPCD
+          ,CODEMP
+          ,NUMOSS
+          ,A.STAREC
+          ,A.DATCAD
+          ,A.DATUPD
+          ,A.UPDUSU
+    	  ,DSCREC = ISNULL(B.DSCTAB,'')
+    	  ,DSCORG = ISNULL(C.DSCTAB,'')
+    	  ,LGNUSU = ISNULL(D.LGNUSU,'')
+      FROM TBPCDLAN (NOLOCK) A
+      INNER JOIN TBTABGER (NOLOCK) B ON (B.CODTAB= 7 AND B.KEYCOD = A.STAREC)
+      INNER JOIN TBTABGER (NOLOCK) C ON (C.CODTAB= 1 AND C.KEYCOD = A.ORGBAS)
+	  INNER JOIN TBTABGER (NOLOCK) F ON (F.CODTAB= 97 AND F.KEYCOD = A.STAAGL)
+
+      LEFT JOIN TBCADUSU (NOLOCK) D ON (D.CODUSU = A.UPDUSU)
+      LEFT JOIN TBCADPCD (NOLOCK) E ON (E.ORGBAS = A.ORGBAS AND E.CODPCD = A.CODPCD)
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Mês" name="NUMMES" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Ano" name="NUMANO" type="System.Int16"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="ID do Veterinário" name="NIDVET" type="System.Int32"  sysnull="true" default=""  output="" null="true"/>
+					<parameter input="true" apply="true" desc ="ID do Procedimento" name="CODPCD" type="System.Int32"  sysnull="true" default=""  output="" null="true"/>
+
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="Entry" procname="PRPCDLANSEL" desc ="Seleciona um registro de Lançamento com base no Id do Procedimento">
+				<query>
+					<![CDATA[SELECT * FROM TBPCDLAN (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID" name="NIDPCD" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Sequencia" name="NUMDIF" type="System.Byte"  default="1"  output="" null="false"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+		<methods>
+			<item script="false" alias="" sql="" responsemode="1" method="GetDataFromSource" return="int" returnmode="4" procname="" desc ="Efetua a importação de informações de procedimentos dos sistemas de origem" returnvalue="0">
+				<query/>
+				<scriptbody>
+					<![CDATA[respond = ExtrairLancamentos(pDATPRO, pORGBAS,pUPDUSU, pOPEMOD);]]>
+				</scriptbody>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Data de Processamento" name="DATPRO" type="System.DateTime"  default=""  output="" null="false"/>
+
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Atualizador" name="UPDUSU" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Operacao" name="OPEMOD" type="System.Byte"  default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+
+		</methods>
+
+
+
+	</item>
+
+
+	<item create="true"  id="13" name="TBCADEMP" api="true" apiname="Companies" friendlyname="Companies" modelversion="3" descriptor="Tabela de Empresas" comments="Tabela de Informações de controle das empresas e locais sujeitos ao processo de cálculo de comissão">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT EMPKEY
+      ,CODEMP
+      ,ORGBAS
+	  , DSCORG = ISNULL(ORG.DSCTAB,'')
+      ,DSCEMP
+      ,SGLEMP
+      ,CODUFE
+      ,CODFIL
+      ,HASCOM
+      ,A.STAREC
+	  , DSCREC = ISNULL(STA.DSCTAB,'')
+      ,A.DATCAD
+      ,A.DATUPD
+      ,A.UPDUSU
+	  , LGNUSU = ISNULL(USU.LGNUSU,'')
+  FROM TBCADEMP (NOLOCK) A
+ INNER JOIN TBTABGER (NOLOCK) ORG ON (ORG.CODTAB = 1 AND ORG.KEYCOD = A.ORGBAS)
+ INNER JOIN TBTABGER (NOLOCK) STA ON (STA.CODTAB = 7 AND STA.KEYCOD = A.STAREC)
+  LEFT JOIN TBCADUSU (NOLOCK) USU ON (USU.CODUSU = A.UPDUSU) WHERE EMPKEY=-1]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADEMPINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRCADEMPUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="Companies" procname="PRCADEMPSELALL" desc ="Obtêm todos os registros de EMPRESAS" remarks="">
+				<query >
+					<![CDATA[
+SELECT EMPKEY
+      ,CODEMP
+      ,ORGBAS
+	  , DSCORG = ISNULL(ORG.DSCTAB,'')
+      ,DSCEMP
+      ,SGLEMP
+      ,CODUFE
+      ,CODFIL
+      ,HASCOM
+      ,A.STAREC
+	  , DSCREC = ISNULL(STA.DSCTAB,'')
+      ,A.DATCAD
+      ,A.DATUPD
+      ,A.UPDUSU
+	  , LGNUSU = ISNULL(USU.LGNUSU,'')
+  FROM TBCADEMP (NOLOCK) A
+ INNER JOIN TBTABGER (NOLOCK) ORG ON (ORG.CODTAB = 1 AND ORG.KEYCOD = A.ORGBAS)
+ INNER JOIN TBTABGER (NOLOCK) STA ON (STA.CODTAB = 7 AND STA.KEYCOD = A.STAREC)
+  LEFT JOIN TBCADUSU (NOLOCK) USU ON (USU.CODUSU = A.UPDUSU)
+]]>
+				</query>
+
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+				</parameters>
+
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="Companies" procname="PRCADEMPSEL" desc ="Seleciona um registro de EMPRESA com base no id da empresa">
+				<query>
+					<![CDATA[SELECT * FROM TBCADEMP (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID" name="EMPKEY" type="System.Byte"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="14" name="TBREGCOM" api="true" apiname="ComissionData" friendlyname="ComissionData" modelversion="3" descriptor="Tabela de Registro de Cálculo de Comissões">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[select 
+    A.ORGBAS,
+	DSCORG= ISNULL(ORG.DSCTAB,''),
+	A.CODEMP,
+	EMP.SGLEMP,
+	A.VETKEY,
+	PERFEC = RIGHT('00' + CONVERT(VARCHAR,NUMMES),2) +'/' + RIGHT('0000' + CONVERT(VARCHAR,NUMANO),4),
+	DATPCD,
+	A.CODPCD,
+	DSCPCD,
+	VLRPGT,
+	A.APEVET,
+	NOMVET,
+	DATCLA,
+	DSCCLA= ISNULL(FER.DSCTAB,''),
+	A.NIVCOM,
+	CLACOM,
+	A.PCTCOM,
+	VLRCOM
+ from TBREGCOM (NOLOCK) A
+  INNER JOIN TBCADPCD (NOLOCK) PCD ON (PCD.ORGBAS = A.ORGBAS AND PCD.CODPCD= A.CODPCD)
+    INNER JOIN TBTABGER (NOLOCK) ORG ON (ORG.CODTAB =1 AND ORG.KEYCOD = A.ORGBAS)
+    INNER JOIN TBTABGER (NOLOCK) FER ON (FER.CODTAB =96 AND FER.KEYCOD = A.DATCLA)
+    INNER JOIN TBCADEMP (NOLOCK) EMP ON (EMP.EMPKEY = A.CODEMP)  
+	INNER JOIN TBCADVET (NOLOCK) VET ON (VET.VETKEY = A.VETKEY)
+	WHERE A.ORGBAS=-1
+]]>
+		</extendedmodel>
+
+		<view>
+			<item owner="" script="true" definer="" name="VWBASECOM1" desc ="View Base de comissão por veterinário">
+				<query>
+					<![CDATA[
+SELECT
+	 COM.VETKEY,
+	 VET.NOMVET,
+	 SUM(CASE WHEN CODEMP= 1 then vlrcom else 0 end) EMP001,
+	 	 SUM(CASE WHEN CODEMP= 2 then vlrcom else 0 end) EMP002,
+		 	 SUM(CASE WHEN CODEMP= 3 then vlrcom else 0 end) EMP003,
+			 	 SUM(CASE WHEN CODEMP= 4 then vlrcom else 0 end) EMP004
+from TBREGCOM COM
+INNER JOIN TBCADVET (NOLOCK) VET  ON (VET.ORGBAS= COM.ORGBAS AND VET.VETKEY = COM.VETKEY)
+GROUP BY COM.VETKEY, VET.NOMVET]]>
+				</query>
+			</item>
+		</view>
+
+
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="ComissionData" procname="PRREGCOMSELALL" desc ="Obtêm todos os registros de parâmetro de comissão" remarks="">
+				<query  order="	A.ORGBAS, A.CODEMP, A.VETKEY">
+					<![CDATA[
+select 
+    A.ORGBAS,
+	DSCORG= ISNULL(ORG.DSCTAB,''),
+	A.CODEMP,
+	EMP.SGLEMP,
+	A.VETKEY,
+	PERFEC = RIGHT('00' + CONVERT(VARCHAR,NUMMES),2) +'/' + RIGHT('0000' + CONVERT(VARCHAR,NUMANO),4),
+	DATPCD,
+	A.CODPCD,
+	DSCPCD,
+	VLRPGT,
+	A.APEVET,
+	NOMVET,
+	DATCLA,
+	DSCCLA= ISNULL(FER.DSCTAB,''),
+	A.NIVCOM,
+	CLACOM,
+	A.PCTCOM,
+	VLRCOM
+ from TBREGCOM (NOLOCK) A
+  INNER JOIN TBCADPCD (NOLOCK) PCD ON (PCD.ORGBAS = A.ORGBAS AND PCD.CODPCD= A.CODPCD)
+    INNER JOIN TBTABGER (NOLOCK) ORG ON (ORG.CODTAB =1 AND ORG.KEYCOD = A.ORGBAS)
+    INNER JOIN TBTABGER (NOLOCK) FER ON (FER.CODTAB =96 AND FER.KEYCOD = A.DATCLA)
+    INNER JOIN TBCADEMP (NOLOCK) EMP ON (EMP.EMPKEY = A.CODEMP)  
+	INNER JOIN TBCADVET (NOLOCK) VET ON (VET.VETKEY = A.VETKEY)
+
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="true"/>
+					<parameter input="true" apply="true" desc ="Empresa" name="CODEMP" type="System.Byte"  default=""  output="" null="true"/>
+					<parameter input="true" apply="true" desc ="Veterinário" name="VETKEY" type="System.Byte"  default=""  output="" null="true"/>
+
+				</parameters>
+
+
+
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="ComissionData" procname="PRREGCOMSEL" desc ="Seleciona um registro de gravação de comissões">
+				<query>
+					<![CDATA[SELECT * FROM TBREGCOM (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID" name="NIDCOM" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="15" name="TBAUDDAT" friendlyname="Auditoria" modelversion="3" descriptor="Tabela de Registro de Auditoria" comments="Tabela de Informações de Registro de Auditoria">
+		<UpdateKey>Key</UpdateKey>
+		<audit>FALSE</audit>
+		<keyaudit></keyaudit>
+		<FilterSelect>False</FilterSelect>
+		<listselect></listselect>
+		<CSharpPartial>true</CSharpPartial>
+		<SqlTable></SqlTable>
+		<fieldreturn></fieldreturn>
+		<procedure>100000000</procedure>
+		<asp>100000000</asp>
+		<csharp>10000000</csharp>
+
+
+
+		<insertcommand key="Identity" exceptionparamns="'DATCAD','DATUPD'">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre></pre>
+			<body></body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+
+	<item create="true"  id="16" name="TBCADCOO" api="true" apiname="ComissionCoord" friendlyname="ComissionCoord" modelversion="3" descriptor="Tabela de Comissão dos Coordenadores">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.*,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU,
+  D.NOMVET
+FROM TBCADCOO (NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)
+INNER JOIN TBCADVET (NOLOCK) D ON (D.VETKEY = A.CODCOO)
+WHERE A.CODCOO=-1]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADCOOINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRCADCOOUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="ComissionCoord" procname="PRCADCOOSELALL" desc ="Obtêm todos os registros de fator de comissão" remarks="">
+				<query >
+					<![CDATA[
+SELECT A.*,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU,
+  D.NOMVET
+FROM TBCADCOO (NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)
+INNER JOIN TBCADVET (NOLOCK) D ON (D.VETKEY = A.CODCOO)
+
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID" name="CODCOO"  sysnull="true" type="System.Int32"  default=""  output="" null="true"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="ComissionCoord" procname="PRNIVCOMSEL" desc ="Seleciona um registro de fator de comissão com base no id">
+				<query>
+					<![CDATA[SELECT * FROM TBCADCOO (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID" name="CODCOO"  sysnull="true" type="System.Int32"  default=""  output="" null="true"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="17" name="TBPCDCOR" api="true" apiname="ComissionCoordPCD" friendlyname="ComissionCoordPCD" modelversion="3" descriptor="Tabela de Comissão dos Coordenadores relacionados a procedimentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[      SELECT A.*,
+      ISNULL(B.DSCTAB, '') AS DSCREC,
+      ISNULL(C.LGNUSU, '') AS LGNUSU,
+      D.NOMVET,
+	     ISNULL(F.DSCTAB, '') AS DSCAPL,
+		 RIGHT('000000' + convert(varchar, E.CODPCD),6) + ' ' +  right('        ' + trim(TIP.TIPPCD),7) + ' : ' + CAT.SUBCAT + ' : ' + E.DSCPCD  AS DSCREF
+
+    FROM TBPCDCOR (NOLOCK) A
+    INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+    LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)
+    INNER JOIN TBCADVET (NOLOCK) D ON (D.VETKEY = A.VETKEY)
+	INNER JOIN TBCADPCD (NOLOCK) E ON (E.CODPCD = A.CODPCD)
+	INNER JOIN TBPCDTIP (NOLOCK) TIP ON (TIP.NIDTIP = E.NIDTIP)
+	INNER JOIN TBPCDCAT (NOLOCK) CAT ON (CAT.NIDCAT = E.NIDCAT)
+	INNER JOIN TBTABGER(NOLOCK) F ON (F.CODTAB = 94 AND F.KEYCOD = A.FMTAPL)
+
+WHERE A.VETKEY=-1]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Identity" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRPCDCORINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Identity" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRPCDCORUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="Registro não existe" error="RECORDNOTFOUND"/>
+
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="ComissionCoordPCD" procname="PRPCDCORSELALL" desc ="Obtêm todos os registros de ASSOCIADO de coordenador com produto" remarks="">
+				<query >
+					<![CDATA[
+      SELECT A.*,
+      ISNULL(B.DSCTAB, '') AS DSCREC,
+      ISNULL(C.LGNUSU, '') AS LGNUSU,
+      D.NOMVET,
+	     ISNULL(F.DSCTAB, '') AS DSCAPL,
+		 RIGHT('000000' + convert(varchar, E.CODPCD),6) + ' ' +  right('        ' + trim(TIP.TIPPCD),7) + ' : ' + CAT.SUBCAT + ' : ' + E.DSCPCD  AS DSCREF
+
+    FROM TBPCDCOR (NOLOCK) A
+    INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+    LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)
+    INNER JOIN TBCADVET (NOLOCK) D ON (D.VETKEY = A.VETKEY)
+	INNER JOIN TBCADPCD (NOLOCK) E ON (E.CODPCD = A.CODPCD)
+	INNER JOIN TBPCDTIP (NOLOCK) TIP ON (TIP.NIDTIP = E.NIDTIP)
+	INNER JOIN TBPCDCAT (NOLOCK) CAT ON (CAT.NIDCAT = E.NIDCAT)
+	INNER JOIN TBTABGER(NOLOCK) F ON (F.CODTAB = 94 AND F.KEYCOD = A.FMTAPL)
+
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID" name="VETKEY"  sysnull="true" type="System.Int32"  default=""  output="" null="true"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="ComissionCoordPCD" procname="PRPCDCORSEL" desc ="Seleciona um registro de associação de coordenador x procedimento">
+				<query>
+					<![CDATA[SELECT * FROM TBPCDCOR (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID" name="NIDCPC"  sysnull="true" type="System.Int32"  default=""  output="" null="true"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+
+	<item create="true"  id="18" name="RLCOOVET" api="true" apiname="CoordxVet" friendlyname="CoordxVet" modelversion="3" descriptor="Tabela de Relacionamento Coordenador x Veterinário" comments="Tabela de Informações de Relacionamento entre coordenadores e veterinários, a preferência de relacionamento direto se baseia na especialidade">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.*, 
+       F.APEVET,
+	   (D.APEVET + ' ' + D.NOMVET) AS NOMVET,
+       DSCREC= ISNULL(B.DSCTAB,''), 
+	   LGNUSU = ISNULL(C.LGNUSU,''),
+       DSCSPT
+  FROM RLCOOVET (NOLOCK) A
+INNER JOIN TBTABGER (NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+INNER JOIN TBCADVET (NOLOCK) D ON (D.VETKEY = A.VETKEY)
+INNER JOIN RFSPTVET (NOLOCK) E ON (E.CODSPT = D.CODSPT)
+INNER JOIN TBCADVET (NOLOCK) F ON (F.VETKEY = A.CODCOO)
+ LEFT JOIN TBCADUSU (NOLOCK) C ON (C.CODUSU = A.UPDUSU)
+ WHERE A.CODCOO=-1]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Identity" fieldreturn="" exceptionparamns="'DATUPD'" procname="PRCOOVETINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				
+IF(@CODCOO = @VETKEY)
+   SET @RETURN_VALUE = -4;
+   
+   
+IF(@RETURN_VALUE=0)
+   BEGIN
+		IF(EXISTS (SELECT 1 FROM RLCOOVET (NOLOCK) WHERE CODCOO <> @CODCOO AND VETKEY = @VETKEY AND STAREC = 1))
+		    SET @RETURN_VALUE = -5;
+   END
+   
+IF (@RETURN_VALUE=0)
+	BEGIN
+		IF(EXISTS (SELECT 1 FROM RLCOOVET (NOLOCK) WHERE CODCOO = @CODCOO AND VETKEY = @VETKEY))
+		   BEGIN
+				IF(EXISTS (SELECT 1 FROM RLCOOVET (NOLOCK) WHERE CODCOO = @CODCOO AND VETKEY = @VETKEY AND STAREC<>1))
+					 BEGIN
+						UPDATE RLCOOVET SET STAREC = 1, UPDUSU = @UPDUSU WHERE CODCOO = @CODCOO AND VETKEY = @VETKEY AND STAREC<>1;
+						SET @RETURN_VALUE=-3;
+					 END
+				ELSE
+					 SET @RETURN_VALUE =-2;
+		   END
+	END		 
+				            ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="Registro já existe" error="RECORDFOUND"/>
+				<return operator="==" value="-3" message="Registro reintegrado ao coordenador" error="OK"/>
+				<return operator="==" value="-4" message="O coordenador não pode ser associado a ele mesmo" error="FAILUREUPDATEREGISTER"/>
+				<return operator="==" value="-5" message="Este veterinário já está associado à uma outra coordenação" error="FAILUREUPDATEREGISTER"/>
+
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Identity" fieldreturn="" exceptionparamns="" procname="PRCOOVETUPD" method="Update">
+			<maxfield field="CODPFL"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(@CODCOO = @VETKEY)
+   SET @RETURN_VALUE = -4;
+
+IF(@RETURN_VALUE=0)
+   BEGIN
+		IF(EXISTS (SELECT 1 FROM RLCOOVET (NOLOCK) WHERE CODCOO <> @CODCOO AND VETKEY = @VETKEY AND STAREC = 1))
+		    SET @RETURN_VALUE = -5;
+   END
+ 
+ IF (@RETURN_VALUE=0)
+	BEGIN
+		IF(NOT (EXISTS (SELECT 1 FROM RLCOOVET (NOLOCK) WHERE CODCOO = @CODCOO AND VETKEY = @VETKEY AND STAREC = 1)))
+			 SET @RETURN_VALUE =-2;
+
+	END	
+   
+   
+			]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="Registro não existe" error="RECORDNOTFOUND"/>
+				<return operator="==" value="-4" message="O coordenador não pode ser associado a ele mesmo" error="FAILWRITE"/>
+				<return operator="==" value="-5" message="Este veterinário já está associado à uma outra coordenação" error="FAILUREUPDATEREGISTER"/>
+
+
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="CoordxVet" procname="PRCOOVETSELALL" desc ="Obtêm todos os registros de coordenação x veterinarios para o veterinario informado" remarks="">
+				<query >
+					<![CDATA[
+SELECT A.*, 
+       F.APEVET,
+	   (D.APEVET + ' ' + D.NOMVET) AS NOMVET,
+       DSCREC= ISNULL(B.DSCTAB,''), 
+	   LGNUSU = ISNULL(C.LGNUSU,''),
+       DSCSPT
+  FROM RLCOOVET (NOLOCK) A
+INNER JOIN TBTABGER (NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+INNER JOIN TBCADVET (NOLOCK) D ON (D.VETKEY = A.VETKEY)
+INNER JOIN RFSPTVET (NOLOCK) E ON (E.CODSPT = D.CODSPT)
+INNER JOIN TBCADVET (NOLOCK) F ON (F.VETKEY = A.CODCOO)
+ LEFT JOIN TBCADUSU (NOLOCK) C ON (C.CODUSU = A.UPDUSU)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID" name="CODCOO"  sysnull="true" type="System.Int32"  default=""  output="" null="true"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="CoordxVet" procname="PRCOOVETSEL" desc ="Seleciona um registro de coordenação x veterinario com base no id">
+				<query>
+					<![CDATA[SELECT * FROM RLCOOVET (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Perfil" name="NIDCVT" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+
+	<item create="true"  id="19" name="TBPCDTIP" api="true" apiname="" friendlyname="ProcedureType" modelversion="3" descriptor="Tabela de Tipos de Procedimentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.*,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU
+FROM TBPCDTIP (NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)
+WHERE A.NIDTIP=-1]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRPCDTIPINS" method="Insert">
+			<maxfield field="NIDTIP"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(NOT (EXISTS ( SELECT 1 FROM TBPCDTIP (NOLOCK) WHERE NIDTIP=0)))
+	INSERT INTO TBPCDTIP (NIDTIP,TIPPCD,STAREC) VALUES (0,'',2);
+	
+IF(EXISTS (SELECT 1 FROM TBPCDTIP (NOLOCK) WHERE TIPPCD = @TIPPCD))
+    SET @RETURN_VALUE=-2;
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return operator="==" value="-2" message="Tipo de Procedimento já existente" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRPCDTIPUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="ProcedureType" procname="PRPCDTIPSELALL" desc ="Obtêm todos os registros de Tipo de Procedimento" remarks="">
+				<query >
+					<![CDATA[
+SELECT A.*,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU
+FROM TBPCDTIP (NOLOCK) A
+INNER JOIN TBTABGER(NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)
+
+]]>
+				</query>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="ProcedureType" procname="" desc ="Seleciona um registro de Tipo de Procedimento com base no id">
+				<query>
+					<![CDATA[SELECT * FROM TBPCDTIP (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID" name="NIDTIP"  sysnull="true" type="System.Int32"  default=""  output="" null="true"/>
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Localiza um tipo de procedimento de acordo com a origem">
+				<query>
+					<![CDATA[SELECT NIDTIP FROM TBPCDTIP (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" islike="true" desc ="Procedimento" name="TIPPCD" type="System.String"  size="50" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+
+		</selectcommand>
+
+
+	</item>
+
+
+	<item create="true"  id="20" name="TBPCDCAT" api="true" apiname="" friendlyname="ProcedureCategory" modelversion="3" descriptor="Tabela de Categorias de Procedimentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.*,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU,
+  TIP.TIPPCD
+FROM TBPCDCAT (NOLOCK) A
+INNER JOIN TBTABGER (NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+INNER JOIN TBPCDTIP (NOLOCK) TIP ON (TIP.NIDTIP = A.NIDTIP)
+LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)
+WHERE A.NIDCAT=-1]]>
+		</extendedmodel>
+
+
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRPCDCATINS" method="Insert">
+			<maxfield field="NIDCAT"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(NOT(EXISTS (SELECT 1 FROM TBPCDCAT (NOLOCK) WHERE NIDCAT=0)))
+     INSERT INTO dbo.TBPCDCAT(ORGBAS,NIDTIP,NIDCAT,SUBCAT,STAREC) VALUES (0,0,0,'',2);
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATCAD','SUBCAT','NIDTIP','ORGBAS'" procname="PRPCDCATUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[SET @DATUPD = GETDATE();]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
+			</returns>
+		</updatecommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="ProcedureCategory" procname="PRPCDCATSELALL" desc ="Obtêm todos os registros de Categoria de Procedimento" remarks="">
+				<query >
+					<![CDATA[
+SELECT A.*,
+  ISNULL(B.DSCTAB, '') AS DSCREC,
+  ISNULL(C.LGNUSU, '') AS LGNUSU,
+  TIP.TIPPCD
+FROM TBPCDCAT (NOLOCK) A
+INNER JOIN TBTABGER (NOLOCK) B ON (B.CODTAB = 7 AND B.KEYCOD = A.STAREC)
+INNER JOIN TBPCDTIP (NOLOCK) TIP ON (TIP.NIDTIP = A.NIDTIP)
+LEFT JOIN TBCADUSU(NOLOCK) C  ON (C.CODUSU = A.UPDUSU)]]>
+				</query>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" route="" processcode="100" method="Select" return="ProcedureCategory" procname="" desc ="Seleciona um registro de Categoria de Procedimento com base no id">
+				<query>
+					<![CDATA[SELECT * FROM TBPCDCAT (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID" name="NIDTIP"  sysnull="true" type="System.Int32"  default=""  output="" null="true"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="ProcedureCategory" procname="" desc ="Seleciona uma categoria de procedimento de acordo com o tipo de procedimento e origem">
+				<query>
+					<![CDATA[SELECT * FROM TBPCDCAT (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Tipo de Procedimento" name="NIDTIP" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Categoria" name="NIDCAT" type="System.Int32"  default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Obtêm o id de  uma categoria de procedimento de acordo com o tipo de procedimento e origem">
+				<query>
+					<![CDATA[SELECT NIDCAT FROM TBPCDCAT (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Tipo de Procedimento" name="NIDTIP" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" islike="true" desc ="Categoria" name="SUBCAT" type="System.String"  size="50" default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="21" name="TBPCDCOM" friendlyname="CommissionProcedure" modelversion="3" descriptor="Tabela de Comissão por Procedimento" comments="Tabela de Informações de Comissão por procedimento com qualificadores de aplicação de comissão">
+
+		<listselect></listselect>
+		<CSharpPartial>true</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT COM.ORGBAS
+	,ISNULL(T01.DSCTAB, '') AS DSCORG
+	,COM.CODPCD
+	,DSCPCD
+	,QUACOM
+	,ISNULL(T98.DSCTAB, '') AS DSCQUA
+	,COM.STAREC
+	,ISNULL(T07.DSCTAB, '') AS DSCREC
+	,FTCOM0
+	,FTCOM1
+	,FTCOM2
+	,FTCOM3
+	,FTCOM4
+	,FTCOM5
+	,FTCOM6
+	,FTCOM7
+	,FTCOM8
+	,COM.DATUPD
+	,COM.UPDUSU
+	,ISNULL(LGN.LGNUSU, '') AS LGNUSU
+FROM TBPCDCOM(NOLOCK) COM
+INNER JOIN TBTABGER(NOLOCK) T01 ON (T01.CODTAB = 1 AND T01.KEYCOD = COM.ORGBAS)
+INNER JOIN TBCADPCD(NOLOCK) PCD ON (PCD.ORGBAS = COM.ORGBAS	AND PCD.CODPCD = COM.CODPCD)
+INNER JOIN TBTABGER(NOLOCK) T07 ON (T07.CODTAB = 7 AND T07.KEYCOD = COM.STAREC)
+INNER JOIN TBTABGER(NOLOCK) T98 ON (T98.CODTAB = 98	AND T98.KEYCOD = COM.QUACOM)
+LEFT JOIN TBCADUSU(NOLOCK) LGN ON (LGN.CODUSU = COM.UPDUSU)	WHERE COM.CODPCD=-1]]>
+		</extendedmodel>
+
+		<insertcommand key="key" exceptionparamns="'DATUPD'" method="Insert" procname="PRPCDCOMINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre><![CDATA[
+IF(EXISTS (SELECT 1 FROM TBPCDCOM (NOLOCK) WHERE ORGBAS=@ORGBAS AND CODPCD = @CODPCD AND QUACOM = @QUACOM))
+    SET @RETURN_VALUE = -2;
+			
+			]]>
+
+			</pre>
+			<body></body>
+			<pos>
+			</pos>
+			<returns>
+								<return value="0" operator=">" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand key="key" exceptionparamns="" method="Update" procname="PRPCDCOMUPD">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre><![CDATA[
+SET @DATUPD = GETDATE();			
+IF(NOT EXISTS (SELECT 1 FROM TBPCDCOM (NOLOCK) WHERE ORGBAS=@ORGBAS AND CODPCD = @CODPCD AND QUACOM = @QUACOM))
+    SET @RETURN_VALUE = -2;			
+			]]>
+
+			</pre>
+			<body></body>
+			<pos>
+			</pos>
+			<returns>
+												<return value="0" operator=">" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDNOTFOUND"/>
+			</returns>
+		</updatecommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="CommissionProcedure" procname="" desc ="Seleciona um registro de comissão x procedimento">
+				<query>
+					<![CDATA[SELECT * FROM TBPCDCOM (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true"  desc ="Código do Procedimento" name="CODPCD" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true"  desc ="Qualificador de Comissão" name="QUACOM" type="System.Byte"   default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="List" type="List" return="CommissionProcedure" procname="PRPCDCOMSELALL" desc ="Obtêm todos os registros de comissão por procedimento" remarks="">
+				<query order="COM.ORGBAS, COM.CODPCD">
+					<![CDATA[
+SELECT COM.ORGBAS
+	,ISNULL(T01.DSCTAB, '') AS DSCORG
+	,COM.CODPCD
+	,DSCPCD
+	,QUACOM
+	,ISNULL(T98.DSCTAB, '') AS DSCQUA
+	,COM.STAREC
+	,ISNULL(T07.DSCTAB, '') AS DSCREC
+	,FTCOM0
+	,FTCOM1
+	,FTCOM2
+	,FTCOM3
+	,FTCOM4
+	,FTCOM5
+	,FTCOM6
+	,FTCOM7
+	,FTCOM8
+	,COM.DATUPD
+		,COM.UPDUSU
+	,ISNULL(LGN.LGNUSU, '') AS LGNUSU
+FROM TBPCDCOM(NOLOCK) COM
+INNER JOIN TBTABGER(NOLOCK) T01 ON (T01.CODTAB = 1 AND T01.KEYCOD = COM.ORGBAS)
+INNER JOIN TBCADPCD(NOLOCK) PCD ON (PCD.ORGBAS = COM.ORGBAS	AND PCD.CODPCD = COM.CODPCD)
+INNER JOIN TBTABGER(NOLOCK) T07 ON (T07.CODTAB = 7 AND T07.KEYCOD = COM.STAREC)
+INNER JOIN TBTABGER(NOLOCK) T98 ON (T98.CODTAB = 98	AND T98.KEYCOD = COM.QUACOM)
+LEFT JOIN TBCADUSU(NOLOCK) LGN ON (LGN.CODUSU = COM.UPDUSU)			
+
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" alias="COM." desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" alias="COM."  islike="true" desc ="Qualificador de Comissão" name="QUACOM" type="System.Byte"   default=""  output="" null="true"/>
+					<parameter input="true" apply="true" alias="PCD." islike="true" desc ="Descrição do Procedimento" name="DSCPCD" type="System.String"  size="100" default=""  output="" null="true"/>
+
+				</parameters>
+			</item>
+		</selectallcommand>
+
+	</item>
+
+	<lists>
+		<item reference="1" procbase="" script="false" alias="A." sql="" type="List" method="Origins" return="ItemList" procname="" desc ="Obtêm uma lista de Origens de Dados">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER (NOLOCK) A WHERE A.CODTAB= 1 AND A.STAREC=1 AND KEYCOD > 0]]>
+			</query>
+		</item>
+		<item reference="7" procbase="" script="false" alias="A." sql="" type="List" method="RegistrationStatus" return="ItemList" procname="" desc ="Obtêm uma lista de Status de Registro">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER (NOLOCK) A WHERE CODTAB=7 AND A.STAREC=1]]>
+			</query>
+		</item>
+		<item reference="94" procbase="" script="false" alias="A." sql="" type="List" method="ApplicationForms" return="ItemList" procname="" desc ="Obtêm uma lista de Formas de Aplicação de Comissionamento Coordenação">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER (NOLOCK) A WHERE CODTAB=94 AND A.STAREC=1]]>
+			</query>
+		</item>
+
+		<item reference="95" procbase="" script="false" alias="A." sql="" type="List" method="ClosingStatus" return="ItemList" procname="" desc ="Obtêm uma lista de Status de Fechamento de Período">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER (NOLOCK) A WHERE CODTAB=95 AND A.STAREC=1]]>
+			</query>
+		</item>
+		<item reference="96" procbase="" script="false" alias="A." sql="" type="List" method="DaysWork" return="ItemList" procname="" desc ="Obtêm uma lista de Classificação de Datas">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER A WHERE CODTAB=96 AND STAREC=1]]>
+			</query>
+		</item>
+
+		<item reference="98" procbase="" script="false" alias="A." sql="" type="List" method="ComissionQualifier" return="ItemList" procname="" desc ="Obtêm uma lista de Qualificadores de Comissão">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER (NOLOCK) A WHERE CODTAB=98 AND STAREC=1]]>
+			</query>
+		</item>
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Users" return="ItemList" procname="" desc ="Obtêm uma lista de Usuários">
+			<query>
+				<![CDATA[SELECT CODUSU AS CODREF, NOMUSU AS DSCREF FROM TBCADUSU (NOLOCK) A WHERE STAREC IN (1,2)]]>
+			</query>
+		</item>
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Users" return="ItemList" procname="" desc ="Obtêm uma lista de Usuários">
+			<query>
+				<![CDATA[SELECT CODUSU AS CODREF, NOMUSU AS DSCREF FROM TBCADUSU (NOLOCK) A WHERE STAREC IN (1,2)]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" desc ="Código Usuário" name="CODUSU" type="System.Int32"  default=""  output="" null="false"/>
+			</parameters>
+		</item>
+
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="UsersProfile" return="ItemList" procname="" desc ="Obtêm uma lista de Perfil de usuários">
+			<query>
+				<![CDATA[SELECT PFLUSU AS CODREF,DSCPFU AS DSCREF FROM RFPFLUSU (NOLOCK) WHERE STAREC IN (1,2)]]>
+			</query>
+		</item>
+
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Companies" return="ItemList" procname="" desc ="Obtêm uma lista de Empresas">
+			<query>
+				<![CDATA[SELECT EMPKEY AS CODREF, DSCEMP AS DSCREF FROM TBCADEMP (NOLOCK) A WHERE STAREC=1]]>
+			</query>
+		</item>
+
+		<item reference="0" procbase="" script="true" alias="A." sql="" type="List" method="Veterinarians" return="ItemList" procname="PRCADVETLSTVET" desc ="Obtêm uma lista de Veterinários por Apelido">
+			<query>
+				<![CDATA[SELECT VETKEY AS CODREF, APEVET AS DSCREF FROM TBCADVET (NOLOCK) A WHERE STAREC=1]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="false"/>
+				<parameter input="true" apply="true" desc ="Status" name="STAREC" type="System.Byte"  default=""  output="" null="false"/>
+				<parameter input="true" apply="true" desc ="Especialidade" name="CODSPT" type="System.Byte" sysnull="true" default=""  output="" null="true"/>
+
+			</parameters>
+		</item>
+
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="VeterinariansCoord" return="ItemList" procname="" desc ="Obtêm uma lista de Veterinários Coordenadores">
+			<query>
+				<![CDATA[SELECT VETKEY AS CODREF, APEVET AS DSCREF FROM TBCADVET (NOLOCK) A WHERE STAREC=1 AND HASCOO=1]]>
+			</query>
+		</item>
+
+		<item reference="103" procbase="" script="false" alias="A." sql="" type="List" method="VeterinaryProfiles" return="ItemList" procname="" desc ="Obtêm uma lista de Perfil de Veterinários">
+			<query order ="">
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER (NOLOCK) A WHERE STAREC=1 AND CODTAB=103 ORDER BY DSCTAB]]>
+			</query>
+		</item>
+
+		<item reference="102" procbase="" script="false" alias="A." sql="" type="List" method="VeterinarySpecialties" return="ItemList" procname="" desc ="Obtêm uma lista de Especialides de Veterinários">
+			<query order="">
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER (NOLOCK) A WHERE STAREC=1 AND CODTAB= 102 ORDER BY DSCTAB]]>
+			</query>
+		</item>
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="VeterinayMails" return="ItemList" procname="" desc ="Obtêm uma lista de e-mails vinculados ao usuário">
+			<query>
+				<![CDATA[ SELECT CODUSU AS CODREF, DSCMAL AS DSCREF, ORDSND AS REFAX1 FROM RFUSUMAL (NOLOCK) A WHERE STAREC=1]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" desc ="Usuário" name="CODUSU" type="System.Int32"  default=""  output="" null="true"/>
+			</parameters>
+		</item>
+
+
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="ProcedureTypes" return="ItemList" procname="" desc ="Obtêm uma lista de Tipos de Procedimentos (TBPCDTIP)">
+			<query order="TRIM(TIPPCD)">
+				<![CDATA[SELECT NIDTIP AS CODREF, TRIM(TIPPCD) AS DSCREF FROM TBPCDTIP (NOLOCK) A WHERE STAREC=1]]>
+			</query>
+		</item>
+
+
+		<item reference="0" procbase="" script="true" alias="A." sql="" type="List" method="ProcedureCategories" return="ItemList" procname="" desc ="Obtêm uma lista de SubCategorias (TBPCDCAT)">
+			<query order="TRIM(SUBCAT)">
+				<![CDATA[SELECT NIDCAT AS CODREF, TRIM(SUBCAT) AS DSCREF, NIDTIP AS REFAX1 FROM TBPCDCAT (NOLOCK) A WHERE STAREC=1]]>
+			</query>
+		</item>
+		<item reference="0" procbase="" script="true" alias="A." sql="" type="List" method="ProcedureCategories" return="ItemList" procname="" desc ="Obtêm uma lista de SubCategorias por tipo de Procedimento)">
+			<query order="TRIM(SUBCAT)">
+				<![CDATA[SELECT A.NIDCAT AS CODREF
+				               ,TRIM(SUBCAT) AS DSCREF
+							   ,A.NIDTIP AS REFAX1 
+						   FROM TBPCDCAT (NOLOCK) A 
+						  WHERE A.STAREC=1]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" desc ="Tipo de Atendimdento"  name="NIDTIP" type="System.Int32" default="" output="" null="true"/>
+			</parameters>
+		</item>
+
+		
+
+		<item reference="0" procbase="" script="true" alias="A." sql="" type="List" method="Procedures" return="ItemList" procname="PRCADPCDLSTPCD" desc ="Obtêm uma lista de Procedimentos com base no tipo de procedimento e categoria">
+			<query order="TRIM(DSCPCD)">
+				<![CDATA[SELECT CODPCD AS CODREF, right('000000' + convert(varchar, codpcd),6) + ' ' + TRIM(DSCPCD) AS DSCREF FROM TBCADPCD (NOLOCK) A]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default="" sysnull="true" output="" null="true"/>
+				<parameter input="true" apply="true" desc ="Tipo de Atendimdento"  name="NIDTIP" type="System.Int32" default="" output="" null="true"/>
+				<parameter input="true" apply="true" desc ="Código da Categoria" name="NIDCAT" type="System.Int32" default="" output="" null="true"/>
+			</parameters>
+		</item>
+
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Procedures" return="ItemList" procname="" desc ="Obtêm uma lista de Procedimentos (TBCADPCD)">
+			<query order="TRIM(DSCPCD)">
+				<![CDATA[  SELECT CODPCD AS CODREF, right('000000' + convert(varchar, CODPCD),6) + ' ' + TRIM(DSCPCD) AS DSCREF FROM TBCADPCD (NOLOCK) A ]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default="" sysnull="true" output="" null="true"/>
+			</parameters>
+		</item>
+
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="ProceduresExt" return="ItemList" procname="" desc ="Obtêm uma lista de Procedimentos (TBCADPCD) extendida">
+			<query order="">
+				<![CDATA[select codref, dscref from (
+select 0 as codref, ' ' as dscref
+union
+
+select nidpro as codref,
+
+right('000000' + convert(varchar, codpcd),6) + ' ' +  right('        ' + trim(tippcd),7) + ' : ' + subcat + ' : ' + dscpcd  as dscref 
+from tbcadpcd (nolock) where starec=1 and orgbas=@orgbas) a order by 2]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" omit="true" desc ="Origem" name="ORGBAS" type="System.Byte"  default="" sysnull="true" output="" null="true"/>
+			</parameters>
+		</item>
+		<item reference="0" procbase="" script="false" alias="LAN." sql="" type="List" method="ProceduresInUse" return="ItemList" procname="" desc ="Obtêm uma lista de Procedimentos em uso (TBLANPCD)">
+			<query order="TRIM(PCD.DSCPCD)">
+				<![CDATA[ SELECT DISTINCT LAN.CODPCD AS CODREF, TRIM(PCD.DSCPCD) AS DSCREF FROM TBPCDLAN (NOLOCK) LAN
+  INNER JOIN TBCADPCD (NOLOCK) PCD ON (PCD.ORGBAS = LAN.ORGBAS AND PCD.CODPCD = LAN.CODPCD)]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" alias="LAN." desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="true"/>
+			</parameters>
+		</item>
+		<item reference="0" procbase="" script="false" alias="LAN." sql="" type="List" method="VeterinariansInUse" return="ItemList" procname="" desc ="Obtêm uma lista de Procedimentos em uso (TBLANPCD)">
+			<query order="APEVET">
+				<![CDATA[ SELECT DISTINCT LAN.NIDVET AS CODREF, APEVET AS DSCREF FROM TBPCDLAN (NOLOCK) LAN ]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" alias="LAN." desc ="Origem" name="ORGBAS" type="System.Byte"  default=""  output="" null="true"/>
+			</parameters>
+		</item>
+
+
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="MonthsInUse" return="ItemList" procname="" desc ="Obtêm uma lista de Meses em Uso">
+			<query order="month(datpcd)">
+				<![CDATA[select distinct month(datpcd) as codref,  FORMAT(datpcd, 'MMMM', 'pt-br')  as dscref from tbpcdlan (nolock)]]>
+			</query>
+
+		</item>
+
+
+
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Months" return="ItemList" procname="" desc ="Obtêm uma lista de Meses do Ano">
+			<query order="month(datpcd)">
+				<![CDATA[select m as CODREF, n as DSCREF FROM (
+select 1 as m, 'Janeiro' as n
+union
+select 2 as m, 'Fevereiro' as n
+union
+select 3 as m, 'Março' as n
+union
+select 4 as m, 'Abril' as n
+union
+select 5 as m, 'Maio' as n
+union
+select 6 as m, 'Junho' as n
+union
+select 7 as m, 'Julho' as n
+union
+select 8 as m, 'Agosto' as n
+union
+select 9 as m, 'Setembro' as n
+union
+select 10 as m, 'Outubro' as n
+union
+select 11 as m, 'Novembro' as n
+union
+select 12 as m, 'Dezembro' as n) A]]>
+			</query>
+
+		</item>
+
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Years" return="ItemList" procname="" desc ="Obtêm uma lista de Anos a partir de 2023">
+			<query order="">
+				<![CDATA[WITH R(N) AS
+(
+    SELECT 0
+    UNION ALL
+    SELECT N+1
+    FROM R
+    WHERE N < 10
+)
+
+SELECT N+2023 AS CODREF, CONVERT(VARCHAR,N+2023) AS DSCREF  FROM R]]>
+			</query>
+
+		</item>
+
+
+
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="YearsInUse" return="ItemList" procname="" desc ="Obtêm uma lista de Anos em Uso">
+			<query order="year(datpcd) desc">
+				<![CDATA[select distinct year(datpcd) as codref,  convert(varchar,year(datpcd)) as dscref from tbpcdlan (nolock)]]>
+			</query>
+
+		</item>
+
+		<item reference="2" procbase="" script="false" alias="A." sql="" type="List" method="UF" return="ItemList" procname="" desc ="Obtêm uma lista de Unidades Federativas">
+			<query order="KEYTXT">
+				<![CDATA[SELECT TRIM(KEYTXT) AS TXTREF, DSCTAB AS DSCREF FROM TBTABGER (NOLOCK) A WHERE CODTAB=2 AND A.STAREC=1]]>
+			</query>
+
+		</item>
+	</lists>
+
+	<actions>
+
+		<item  modifier="static" script="true" alias="" sql="" method="Logout" return="int" returnmode="2" procname="PRCADUSULOGOUT" desc ="Efetua o logout de usuário" returnvalue="0">
+			<query>
+				<![CDATA[
+	DECLARE @RETURN_VALUE INT = 0;
+	IF(EXISTS (SELECT 1 FROM RGLOGACE WHERE NIDLOG = @NIDLOG)) 
+       BEGIN
+			UPDATE RGLOGACE SET STAREC =0, DATOUT = GETDATE() WHERE NIDLOG = @NIDLOG AND STAREC = 1;
+            IF(@@ERROR=0)  
+               SET @RETURN_VALUE = 1;
+           
+       END
+    RETURN @RETURN_VALUE;
+]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" omit="true" desc ="ID de Logon" name="NIDLOG" type="System.Int32" default="" output="" null="false"/>
+				<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+			</parameters>
+
+
+		</item>
+
+		<item modifier="static" script="true" alias="" sql="" responsemode="1" method="Login" return="int" returnmode="2" procname="PRCADUSULGN" desc ="Efetua o login de usuário" returnvalue="1">
+			<query>
+				<![CDATA[
+    DECLARE @CODUSU  INT = 0;
+    DECLARE @RETURN_VALUE INT =0;
+ 
+    IF(@LGNUSU IS NULL OR @LGNUSU= '')
+       BEGIN
+           SET @RETURN_VALUE=-3;
+       END
+      
+    IF(COALESCE(@PSWUSU,'')='') 
+       BEGIN
+           SET @RETURN_VALUE=-5;
+       END
+ 
+    
+    IF(@RETURN_VALUE=0) 
+       BEGIN
+    		IF(NOT EXISTS (SELECT 1 FROM TBCADUSU (NOLOCK) A WHERE LGNUSU = @LGNUSU AND STAREC=1 )) 
+    			 BEGIN
+    				 SET @RETURN_VALUE=-2;
+    			 END
+    	
+       END
+    
+    IF(@RETURN_VALUE=0) 
+       BEGIN
+            SELECT @RETURN_VALUE = COALESCE(CODUSU,0)
+    		  FROM TBCADUSU (NOLOCK) A
+    		 WHERE PSWUSU = @PSWUSU AND LGNUSU = @LGNUSU AND STAREC=1
+    	
+    		   
+    		   IF(@RETURN_VALUE > 0) 
+    				BEGIN
+                        SET @CODUSU = @RETURN_VALUE;
+    					--REGISTRA O LOGIN
+    					 INSERT INTO RGLOGACE(CODUSU,  NUMIPA,  STAREC) VALUES (@RETURN_VALUE, @NUMIPA, 1);
+      					SET @RETURN_VALUE=@@IDENTITY;
+                        --REGISTRA O ULTIMO ACESSO
+                        IF(@RETURN_VALUE>0)
+                           BEGIN
+                               UPDATE TBCADUSU SET ULTACE = GETDATE() WHERE CODUSU = @CODUSU;
+                           END
+						
+						 /* Registers not logged out */
+						DELETE FROM RGLOGACE 
+						 WHERE CODUSU=@CODUSU AND DATOUT IS NULL AND DATCAD < DATEADD(DAY, -1, GETDATE())
+    				 END
+    				
+    		   ELSE
+    			    SET @RETURN_VALUE=-4;
+    	
+        END
+		
+	
+    RETURN @RETURN_VALUE;	
+					
+ ]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" omit="true" desc ="Login do Usuário" name="LGNUSU" type="System.String" size="255" default="" output="" null="false"/>
+				<parameter input="true" apply="true" omit="true" desc ="Senha de Usuário" name="PSWUSU" type="System.String" size="255" default="" output="" null="false"/>
+				<parameter input="true" apply="true" omit="true" desc ="IP" name="NUMIPA" type="System.String" size="255" default="" output="" null="false"/>
+				<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+			</parameters>
+
+			<returns>
+				<return value="0" operator=">" message="LOGIN EFETUADO COM SUCESSO" error=""></return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="" error="USERNOTFOUND"/>
+				<return value="-3" message="" error="LOGINBLANK"/>
+				<return value="-4" message="" error="LOGINFAILREAD" />
+				<return value="-5" message="" error="PASSWORDEMPTY" />
+			</returns>
+		</item>
+
+		<item modifier="static" script="true" alias="" sql="" responsemode="1" method="ChangePassword" return="int" returnmode="2" procname="PRCADUSUCHGPSW" desc ="Altera a senha do usuário" returnvalue="1">
+			<query>
+				<![CDATA[
+DECLARE @RETURN_VALUE INT = 0;
+DECLARE @AUDCHG VARCHAR(2048) = N'';
+
+IF(NOT EXISTS (SELECT 1 FROM TBCADUSU (NOLOCK)  WHERE CODUSU=@CODUSU)) 
+   BEGIN
+       SET @RETURN_VALUE=-2;
+   END
+
+IF((@RETURN_VALUE=0) AND COALESCE(@PSWUSU,'')='')
+		BEGIN
+			SET @RETURN_VALUE=-3;
+		END
+
+IF(@RETURN_VALUE=0) 
+    BEGIN
+		IF(NOT EXISTS (SELECT 1 FROM TBCADUSU (NOLOCK) WHERE CODUSU=@CODUSU AND STAREC=1)) 
+			BEGIN
+				SET @RETURN_VALUE=-4;
+			END
+	END
+IF(@RETURN_VALUE =0) 
+    BEGIN
+	       /* Altera senha somente de usuários ativos */
+	       SET @AUDCHG = 'Trocou a senha para ' + @PSWUSU;
+		UPDATE TBCADUSU
+		   SET PSWUSU = @PSWUSU,
+		       UPDUSU = @UPDUSU,
+   			   PSWRST = CASE WHEN  (@CODUSU = @UPDUSU) THEN 0 ELSE 1 END
+
+		 WHERE CODUSU = @CODUSU
+		   AND STAREC = 1;
+		   
+		   IF(@@ERROR= 0) 
+		      /* senha efetivamente alterada, retorna o id de auditoria da alteração */
+			  
+		      BEGIN
+			    --registra auditoria
+					INSERT INTO TBAUDDAT(AUDDAT,    AUDKEY,        AUDIDR,  AUDIMS,           AUDOBJ,  AUDSRC,  AUDCHG,  NUMIPA,  UPDUSU)
+                                 VALUES (GETDATE(),     8, @RETURN_VALUE,       2, 'PRCADUSUCHGPSW',      '', @AUDCHG,     '' , @RETURN_VALUE);
+					SET @RETURN_VALUE=@@IDENTITY;
+			  END
+		   
+	END	
+ RETURN @RETURN_VALUE;
+]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" omit="true" desc ="ID do usuário" name="CODUSU" type="System.Int32" default="" output="" null="false"/>
+				<parameter input="true" apply="true" omit="true" desc ="Senha do Usuário" name="PSWUSU" type="System.String" size="255" default="" output="" null="false"/>
+				<parameter input="true" apply="true" omit="true" desc ="Usuário de Atualização" name="UPDUSU" type="System.Int32" default="" output="" null="false"/>
+				<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+			</parameters>
+
+			<returns>
+				<return value="0" operator=">" message="SENHA ALTERADA COM SUCESSO" error=""></return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="" error="USERNOTFOUND"/>
+				<return value="-3" message="" error="INVALIDARGUMENT" replaces="SENHA"/>
+				<return value="-4" message="ESTA OPERAÇÃO NÃO PODE SER REALIZADA, O USUÁRIO ESTÁ INATIVO" error="" replaces="SENHA"/>
+			</returns>
+		</item>
+
+
+		<item modifier="static" script="true" alias="AUD." sql="" route="" processcode="110" method="GetUserLogged" return="UserLogged" returnmode="2" procname="PRLOGACEGET" desc ="Retorna informações do id de login informado" remarks="O sistema liga o ID de usuario com o ID de Chave de Associação de auditoria">
+			<query order="AUD.DATCAD DESC">
+				<![CDATA[
+   SELECT TOP 1
+          NIDLOG,
+          usr.LGNUSU,
+          usr.CODUSU,
+		  usr.NOMUSU,
+           '' AS NUMTEL,
+           ''  AS DSCMAL,
+           0 as CODEMP,
+           ''  AS NOMEMP,
+           ''  AS NOMPAI,
+		   USR.PFLUSU,
+		   DSCPFU,
+		   PSWRST
+    FROM RGLOGACE (NOLOCK) AUD
+   INNER JOIN TBCADUSU (NOLOCK) USR ON (USR.CODUSU = AUD.CODUSU)
+   INNER JOIN RFPFLUSU (NOLOCK) PFL ON (PFL.PFLUSU = USR.PFLUSU)
+]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" desc ="ID de Login" alias="AUD." name="NIDLOG" type="System.Int32"   default=""  output="" null="false"/>
+			</parameters>
+		</item>
+
+
+		<item modifier="static" script="true" alias="" sql="" route="" processcode="110" method="GetVeterinariansNumber" return="int" returnmode="2" procname="PRCADVETGETNUM" desc ="Retorna o número de veterinários cadastrados" remarks="O sistema apura o número de veterinários de forma distinta em relação ao apelido ou login do veterinário">
+			<query order="">
+				<![CDATA[DECLARE @RETURN_VALUE INT = 0;
+				SELECT @RETURN_VALUE = COUNT(DISTINCT APEVET) FROM TBCADVET (NOLOCK) A WHERE STAREC=1;
+				RETURN @RETURN_VALUE;]]>
+			</query>
+			<parameters>
+				<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+			</parameters>
+		</item>
+
+		<item modifier="static" script="true" alias="" sql="" route="" processcode="110" method="GetUsersLoggedCount" return="int" returnmode="2" procname="PRCADUSULOGCNT" desc ="Retorna o número de usuários logados" remarks="">
+			<query order="">
+				<![CDATA[DECLARE @RETURN_VALUE INT = 0;
+				SELECT @RETURN_VALUE = COUNT(DISTINCT(CODUSU)) FROM RGLOGACE (NOLOCK) A WHERE STAREC=1;
+				RETURN @RETURN_VALUE;]]>
+			</query>
+			<parameters>
+				<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+			</parameters>
+		</item>
+	</actions>
+</root>

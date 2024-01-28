@@ -1,0 +1,4062 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<item create="true"  id="1" name="RGLOGACE" api="true" apiname="AccessLog" friendlyname="AccessLog" modelversion="3" descriptor="Log de Acesso">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<insertcommand script="true" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="CODATR" exceptionparamns="'DATCAD','DATUPD'" method="Insert" processcode="10" procname="PRLOGACEINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+    SET pRETURN_VALUE =0;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""></return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+	</item>
+
+
+	<item create="true"  id="2" name="TBAUDDAT" api="true" apiname="Audit" friendlyname="Audit" modelversion="3" descriptor="Registro de Auditoria" roles="Admin">
+
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<insertcommand script="true"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="NIDAUD" exceptionparamns="" method="Insert" processcode="10" procname="PRAUDDATINS" remarks="Adiciona um registro de auditoria">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="3" name="TBTABGER" apiname="GeneralTable" friendlyname="GeneralTable" modelversion="3" descriptor="Tabela Geral do Sistema">
+
+		<SqlTable></SqlTable>
+
+		<selectcommand>
+			<item script="true" alias="A." sql="" method="Select" return="TabelaGeral" procname="" desc ="Seleciona o registro de acordo com o id de registro da tabela geral">
+				<query>
+					<![CDATA[SELECT * FROM TBTABGER A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID de Registro da Tabela" name="KEYTAB" type="int" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+		<methods>
+			<item script="true" alias="A." sql="" method="FindKey" return="int" returnmode="2" procname="PRTABGERFNDKEY" desc ="Localiza uma chave de registro com base no codigo chave" returnvalue="0">
+				<query merge="true">
+					<![CDATA[SELECT COALESCE(ISNULL(KEYTAB,0),0) FROM TBTABGER A WHERE STAREC=1]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código do Tabela" name="NUMTAB" type="int" default="" output="" null="false"/>
+					<parameter input="true" desc ="Código Numérico da Chave" name="KEYCOD" type="int" default="" output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="true" alias="A." sql="" method="FindKeyText" return="int" returnmode="2" procname="PRTABGERFNDTXT" desc ="Localiza uma chave de registro com base no texto chave" returnvalue="0">
+				<query merge="true">
+					<![CDATA[SELECT COALESCE(ISNULL(KEYTAB,0),0) FROM TBTABGER A WHERE STAREC=1]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código do Tabela" name="NUMTAB" type="int" default="" output="" null="false"/>
+					<parameter input="true" desc ="Código Texto da Chave" name="KEYTXT" type="System.String" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</methods>
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" return="GeneralTable" procname="" desc ="Seleciona todos os registros da tabela geral">
+				<query order="A.NUMTAB, A.KEYCOD">
+					<![CDATA[
+SELECT A.KEYTAB, A.STAREC,
+	   COALESCE(B.DSCTAB,'') DSCREC,	
+	   A.NUMTAB,
+	   A.KEYCOD,
+	   COALESCE(A.KEYTXT,'') KEYTXT,
+	   A.NUMREF,
+	   A.DSCTAB,
+	   A.DSCCPL,
+	   COALESCE(C.LGNUSU,'') DSCUPD
+  FROM TBTABGER (NOLOCK) A
+ INNER JOIN TBTABGER (NOLOCK) B ON (7 = B.NUMTAB AND A.STAREC = B.KEYCOD)
+  LEFT JOIN RFCADUSU (NOLOCK) C ON (A.UPDUSU = C.CODUSU)          
+          ]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Número da Tabela" name="NUMTAB" sysnull="true" type="System.Int32" default="" output="" null="true"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+		<insertcommand key="Identity" exceptionparamns="'DATCAD','DATUPD'" procname="PRTABGERINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre></pre>
+			<body></body>
+			<pos></pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+		<updatecommand key="Identity" exceptionparamns="'DATCAD','DATUPD'" procname="PRTABGERUPD" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+			</pre>
+			<body></body>
+			<pos></pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+	</item>
+
+
+	<item create="true"  id="4" name="TBCADATR" api="true" apiname="Attributes" friendlyname="Attributes" modelversion="3" descriptor="Atributos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmode>
+			<![CDATA[SELECT  ATR.*, COALESCE(USR.APEUSU,'') AS LGNUSU, COALESCE(T07.DSCTAB,'') AS DSCREC FROM TBCADATR ATR
+			INNER JOIN TBTABGER T07 ON (T07.NUMTAB = 7 AND T07.KEYCOD = ATR.STAREC)
+			LEFT JOIN RFCADUSU USR ON (USR.CODUSU = ATR.UPDUSU) WHERE CODATR=-1]]>
+
+		</extendedmode>
+
+		<insertcommand script="true" webtype="[HttpPost]"  key="Key" supressidentity="false" fieldreturn="CODATR" exceptionparamns="'DATCAD','DATUPD'" method="Insert" processcode="10" procname="PRCADATRINS">
+			<maxfield field="CODATR"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+    SET pRETURN_VALUE =0;
+IF(pRETURN_VALUE=0) THEN
+	IF(EXISTS (SELECT 1 FROM TBCADATR WHERE DSCATR = pDSCATR)) THEN
+			SET pRETURN_VALUE =-2;
+	END IF;
+END IF;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""></return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" webtype="[HttpPost]"  key="Key" supressidentity="false" fieldreturn="CODATR" exceptionparamns="'DATCAD','DATUPD'" method="Update" processcode="20" procname="PRCADATRUPD">
+			<maxfield field="CODATR"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+    SET pRETURN_VALUE =0;
+IF(pRETURN_VALUE=0) THEN
+	IF(EXISTS (SELECT 1 FROM TBCADATR WHERE DSCATR = pDSCATR)) THEN
+			SET pRETURN_VALUE =-2;
+	END IF;
+END IF;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""></return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+
+			</returns>
+		</updatecommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="select" processcode="100" method="Select" return="Attributes" returnmode="2" procname="" desc ="Obtêm um registro de atributos através do código">
+				<query>
+					<![CDATA[SELECT * FROM TBCADATR A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Atributo" name="CODATR" type="System.Int16" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+		<selectallcommand>
+			<item script="true" alias="A." sql="" route="listall" method="SelectAll" type="List" return="Attributes" procname="" desc ="Obtêm uma lista completa do cadastro de atributos">
+				<query order="CODATR">
+					<![CDATA[SELECT  CODATR, DSCATR, COALESCE(USR.APEUSU,'') AS LGNUSU, COALESCE(T07.DSCTAB,'') AS DSCREC FROM TBCADATR ATR
+INNER JOIN TBTABGER T07 ON (T07.NUMTAB = 7 AND T07.KEYCOD = ATR.STAREC)
+LEFT JOIN RFCADUSU USR ON (USR.CODUSU = ATR.UPDUSU)]]>
+				</query>
+			</item>
+		</selectallcommand>
+	</item>
+
+	<item create="true"  id="5" name="TBCADGER" api="true" apiname="Address Book" friendlyname="Address Book" modelversion="3" descriptor="Cadastro Geral">
+
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<insertcommand script="true" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="NIDGER" exceptionparamns="'DATCAD'" method="Insert" processcode="10" procname="PRCADGERINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+SET pRETURN_VALUE=0;
+
+       ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="NIDGER" exceptionparamns="'DATCAD','DATUPD'" method="Update" processcode="20" procname="PRCADGERUPD">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+
+ET pRETURN_VALUE=0;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error=""></return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDNOTFOUND"/>
+			</returns>
+		</updatecommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="select" processcode="100" method="Select" return="AddressBook" returnmode="0" procname="" desc ="Obtêm um registro do Cadastro Geral">
+				<query>
+					<![CDATA[SELECT * FROM TBCADGER A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Cadastro" name="NIDGER" type="System.Int32" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<methods>
+			<item script="true" alias="A." sql="" method="Find" return="int" returnmode="2" procname="PRCADGERFND" desc ="Localiza um ATRIBUTO e um CPF/CNPJ  com base nos parâmetros fornecidos" returnvalue="1">
+				<query>
+					<![CDATA[
+SET pRETURN_VALUE = 0;
+SELECT NIDGER INTO pRETURN_VALUE FROM TBCADGER WHERE CODATR = pCODATR AND CODCMF = pCODCMF;  
+          ]]>
+				</query>
+
+				<parameters>
+					<parameter input="true" desc ="Atributo" name="CODATR" type="System.Int16" default="" output="" null="false"/>
+					<parameter input="true" desc ="CPF/CNPJ" name="CODCMF" type="System.String" size="14" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="6" name="TBCADEND" friendlyname="Addresses" modelversion="3" descriptor="Endereços">
+
+		<CSharpPartial>true</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[
+SELECT A.CODEND,
+       G.CODATR,
+		A.NIDGER,
+		A.REGATV,
+		A.TIPEND,
+        COALESCE(B.DSCTAB,'' ) AS DSCTEN,
+		A.TIPLOG,
+        COALESCE(C.DSCTAB,'' ) AS DSCLOG,
+		A.CODUFE,
+		A.DSCEND,
+		A.DSCCPL,
+		A.NUMEND,
+		A.DSCCID,
+		A.DSCBAI,
+		A.CODCEP,
+        CONCAT (COALESCE(DSCEND,'') , 
+                CASE WHEN COALESCE(NUMEND,0) =0 THEN '' ELSE CONCAT(',',NUMEND) END,
+				CASE WHEN COALESCE(DSCCPL,'')='' THEN '' ELSE CONCAT(' - ',DSCCPL) END,
+				CASE WHEN COALESCE(DSCCID,'')='' THEN '' ELSE CONCAT(' - ',DSCCID) END,
+				CASE WHEN COALESCE(DSCBAI,'')='' THEN '' ELSE CONCAT(' - ',DSCBAI) END) AS FULEND,
+		A.CODPAI,
+         COALESCE(D.DSCTAB,'' ) AS DSCPAI,
+		COALESCE(A.LATITU,0) AS LATITU,
+		COALESCE(A.LONGIT,0) AS LONGIT,
+		A.DSCOBS,
+		A.DATCAD,
+		A.DATUPD,
+		A.STAREC,
+        COALESCE(F.DSCTAB,'')  AS DSCREC, 
+		A.UPDUSU,
+        COALESCE(E.APEUSU,'')  AS LGNUSU
+  FROM TBCADEND A
+ INNER JOIN TBTABGER B ON (199 = B.NUMTAB AND A.TIPEND = B.KEYCOD)
+ INNER JOIN TBTABGER C ON ( 81 = C.NUMTAB AND A.TIPLOG = C.KEYCOD)
+ INNER JOIN TBTABGER D ON (  1 = D.NUMTAB AND A.CODPAI = D.KEYCOD)
+  LEFT JOIN RFCADUSU E ON (A.UPDUSU = E.CODUSU)
+ INNER JOIN TBTABGER F ON (  7 = F.NUMTAB AND A.STAREC = F.KEYCOD) 
+ INNER JOIN TBCADGER G ON (G.NIDGER = A.NIDGER) 
+ WHERE CODEND=-1]]>
+		</extendedmodel>
+
+
+		<view>
+			<item script="true" alias="A." sql="" name="VWCADEND" return="" desc ="View de Consulta de Endereços">
+				<query>
+					<![CDATA[
+SELECT A.CODEND,
+       G.CODATR,
+		A.NIDGER,
+		A.REGATV,
+		A.TIPEND,
+        COALESCE(B.DSCTAB,'' ) AS DSCTEN,
+		A.TIPLOG,
+        COALESCE(C.DSCTAB,'' ) AS DSCLOG,
+		A.CODUFE,
+		A.DSCEND,
+		A.DSCCPL,
+		A.NUMEND,
+		A.DSCCID,
+		A.DSCBAI,
+		A.CODCEP,
+        CONCAT (COALESCE(DSCEND,'') , 
+                CASE WHEN COALESCE(NUMEND,0) =0 THEN '' ELSE CONCAT(',',NUMEND) END,
+				CASE WHEN COALESCE(DSCCPL,'')='' THEN '' ELSE CONCAT(' - ',DSCCPL) END,
+				CASE WHEN COALESCE(DSCCID,'')='' THEN '' ELSE CONCAT(' - ',DSCCID) END,
+				CASE WHEN COALESCE(DSCBAI,'')='' THEN '' ELSE CONCAT(' - ',DSCBAI) END) AS FULEND,
+		A.CODPAI,
+         COALESCE(D.DSCTAB,'' ) AS DSCPAI,
+		COALESCE(A.LATITU,0) AS LATITU,
+		COALESCE(A.LONGIT,0) AS LONGIT,
+		A.DSCOBS,
+		A.DATCAD,
+		A.DATUPD,
+		A.STAREC,
+        COALESCE(F.DSCTAB,'')  AS DSCREC, 
+		A.UPDUSU,
+        COALESCE(E.APEUSU,'')  AS LGNUSU
+  FROM TBCADEND A
+ INNER JOIN TBTABGER B ON (199 = B.NUMTAB AND A.TIPEND = B.KEYCOD)
+ INNER JOIN TBTABGER C ON ( 81 = C.NUMTAB AND A.TIPLOG = C.KEYCOD)
+ INNER JOIN TBTABGER D ON (  1 = D.NUMTAB AND A.CODPAI = D.KEYCOD)
+  LEFT JOIN RFCADUSU E ON (A.UPDUSU = E.CODUSU)
+ INNER JOIN TBTABGER F ON (  7 = F.NUMTAB AND A.STAREC = F.KEYCOD) 
+ INNER JOIN TBCADGER G ON (G.NIDGER = A.NIDGER) 
+        ]]>
+				</query>
+			</item>
+		</view>
+		<insertcommand script ="true" key="Identity" exceptionparamns="'DATCAD','DATUPD'" method="Insert" processcode="10" procname="PRCADENDINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET pRETURN_VALUE=0  ;      
+IF(pDSCEND IS NULL OR pDSCEND='') THEN
+   SET pRETURN_VALUE=-3;
+END IF;
+
+	SET pDSCEND = pDSCEND + '          ';  
+IF(pRETURN_VALUE=0) THEN
+  BEGIN
+        if (LEFT(pDSCEND,4)= 'RUA ') THEN
+          SET pTIPLOG = 33;
+		END IF;
+        if (LEFT(pDSCEND,8) = 'AVENIDA ') THEN
+          SET pTIPLOG = 4;
+		END IF;
+        if (LEFT(pDSCEND, 6) = 'PRACA ') THEN
+          SET pTIPLOG = 28;
+		END IF;
+        if (LEFT(pDSCEND,8) = 'ALAMEDA ') THEN
+          SET pTIPLOG = 2;
+		END IF;
+   END;
+END IF;
+
+SET pDSCEND=LTRIM(RTRIM(pDSCEND));
+
+CALL PRCADENDFND (pCODUSU, pCODATR, pDSCEND, pTIPEND, pUSUATR, pRETURN_VALUE);
+
+IF(pRETURN_VALUE = 0) THEN
+   BEGIN
+      IF(pTIPEND NOT IN (3,4,0)) THEN
+        BEGIN
+          IF((pCODCEP='00000000') OR (pCODUFE='')) THEN
+              SET pSTAREC=13;
+		  END IF;
+        END;
+	  END IF;
+  END ; 
+END IF;
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+          IF(pRETURN_VALUE>0 AND pREGATV=1 AND pSTAREC=1) THEN
+              BEGIN
+                UPDATE TBCADEND
+                   SET REGATV = 0
+                 WHERE CODUSU = pCODUSU
+                   AND TIPEND = pTIPEND
+                   AND CODEND <> pRETURN_VALUE
+                   AND STAREC = 1
+                   AND pREGATV = 1;
+              END;
+		  END IF;
+        ]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-3" message="" error="INVALIDADDRESS"/>
+			</returns>
+		</insertcommand>
+		<updatecommand script="true" key="Identity" exceptionparamns="'DATCAD'" procname="PRCADENDUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET pDATUPD=NOW();
+IF(pDSCEND IS NULL OR pDSCEND='') THEN
+   SET pRETURN_VALUE=-3;
+END IF;
+SET pDSCEND = pDSCEND + '          ';
+IF(pRETURN_VALUE=0) THEN
+   BEGIN
+        if (LEFT(pDSCEND,4)= 'RUA ') THEN
+          SET pTIPLOG = 33;
+		END IF;
+        if (LEFT(pDSCEND,8) = 'AVENIDA ') THEN
+          SET pTIPLOG = 4;
+		END IF;
+        if (LEFT(pDSCEND, 6) = 'PRACA ') THEN
+          SET pTIPLOG = 28;
+		END IF;
+        if (LEFT(pDSCEND,8) = 'ALAMEDA ') THEN
+          SET pTIPLOG = 2;
+		END IF;
+   END;
+END IF;
+SET pDSCEND=LTRIM(RTRIM(pDSCEND)) ; 
+]]>
+
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+          IF(pRETURN_VALUE>0 AND pREGATV=1) THEN
+              BEGIN
+                UPDATE TBCADEND
+                   SET REGATV = 0
+                 WHERE NIDGER = pNIDGER
+                   AND TIPEND = pTIPEND
+                   AND CODEND <> pRETURN_VALUE
+                   AND STAREC = 1
+                   AND pREGATV = 1;
+              END;
+		  END IF;
+        ]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDNOTFOUND"/>
+				<return value="-3" message="" error="INVALIDADDRESS"/>
+			</returns>
+		</updatecommand>
+		<selectcommand>
+			<item script="true" alias="A." sql="" method="Select" return="Addresses" procname="PRCADENDSEL" desc ="Seleciona o registro de acordo com o código do cadastro de endereços">
+				<query>
+					<![CDATA[SELECT * FROM VWCADEND A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Endereço" name="CODEND" type="int" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Addresses" procname="PRCADENDSELALL" desc ="Obtêm o registro de endereço de acordo com os parâmetros informados">
+				<query>
+					<![CDATA[SELECT * FROM VWCADEND A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" islike ="true" likeoperator="&lt;=" desc ="ID do Cadastro" name="NIDGER" type="int" default="" output="" null="false" sysnull="true"/>
+					<parameter input="true" apply="true" islike="true"  likeoperator="&lt;=" desc ="Tipo de Endereço" name="TIPEND" type="System.Byte" default="" output="" null="false" sysnull="true"/>
+					<parameter input="true" apply="true" islike="true"  likeoperator="&lt;=" desc ="Registro Ativo" name="REGATV" type="System.Byte" output="" null="false" sysnull="true"/>
+					<parameter input="true" apply="true" islike="true"  likeoperator="&lt;" desc ="Status de Registro" name="STAREC" type="System.Byte" output="" null="false" sysnull="true"/>
+					<parameter input="true" apply="true" islike="true"  desc ="Endereço" name="FULEND" type="System.String" size="255" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+		<methods>
+			<item script="true" alias="A." sql="" method="Find" return="int" returnmode="2" procname="PRCADENDFND" desc ="Localiza um endereço com base nos parâmetros fornecidos" returnvalue="1">
+				<query>
+					<![CDATA[
+SET pRETURN_VALUE = 0;
+SELECT COALESCE(CODEND,0) 
+  INTO pRETURN_VALUE
+  FROM TBCADEND 
+ WHERE STAREC = 1
+   AND CODUSU = pCODUSU  
+   AND DSCEND = pDSCEND
+	 AND TIPEND = pTIPEND;   
+ 
+          ]]>
+				</query>
+
+				<parameters>
+					<parameter input="true" desc ="ID do Cadastro" name="NIDGER" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" desc ="Endereco" name="DSCEND" type="System.String" size="70" default="" output="" null="false"/>
+					<parameter input="true" desc ="Tipo de Endereço" name="TIPEND" type="System.Byte" default="" output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="true" alias="A." sql="" method="Find" return="int" returnmode="2" procname="PRCADENDFNDBAS" desc ="Localiza um endereço com base nos parâmetros fornecidos" returnvalue="1">
+				<query>
+					<![CDATA[
+SET pRETURN_VALUE = 0;
+SELECT COALESCE(CODEND,0) 
+  INTO pRETURN_VALUE
+  FROM TBCADEND
+ WHERE STAREC = 1
+   AND NIDGER = pNIDGER
+  AND TIPEND = pTIPEND    
+  AND REGATV = pREGATV;      
+          ]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="ID do Cadastro" name="NIDGER" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" desc ="Tipo de Endereço" name="TIPEND" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" desc ="Indicador de Atividade do Registro" name="REGATV" type="System.Byte" default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="true" alias="A." sql="" method="SetMasterRecord" return="int" returnmode="2" procname="PRCADENDVALREGATIV" desc ="Define o registro de endereço como principal conforme os parãmetros fornecidos" returnvalue="1">
+				<query>
+					<![CDATA[
+SET pRETURN_VALUE = 0;          
+UPDATE TBCADEND 
+   SET REGATV = 0,
+       UPDUSU = pUPDUSU
+ WHERE NIDGER= pCODUSU AND TIPEND =pTIPEND;
+IF(ROW_COUNT()>0) THEN
+		BEGIN
+			UPDATE TBCADEND 
+			   SET REGATV = 1, UPDUSU = pUPDUSU
+			 WHERE CODUSU = pCODUSU 
+			   AND TIPEND = pTIPEND 
+			   AND CODEND = pCODEND;
+			IF(ROW_COUNT()>0) THEN
+				SET pRETURN_VALUE = 1;
+			END IF;
+		END;
+END IF;
+
+          ]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="ID do Cadastro" name="NIDGER" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" desc ="Tipo de Endereço" name="TIPEND" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" desc ="ID do Endereço" name="CODEND" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" desc ="Usuário" name="UPDUSU" type="System.Int32" default="" output="" null="false"/>
+
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="7" name="TBCADCTO" friendlyname="Contacts" modelversion="3" descriptor="Contatos">
+		<CSharpPartial>true</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel>
+			<![CDATA[
+SELECT A.CODCTO,
+       G.CODATR,
+	   A.NIDGER,
+       A.CODEND,
+	   A.REGATV,
+       CASE WHEN A.REGATV=1 THEN 'Principal' ELSE '' END AS DSCATV,
+	   A.TIPCTO,
+       COALESCE(B.DSCTAB,'' ) AS DSCCTO,
+	   A.CODOPR,
+       COALESCE(C.DSCTAB,'' ) AS DSCOPR,
+       A.CODPAI,
+       A.NUMDDD,
+       A.NUMTEL,
+       COALESCE(D.DSCTAB,'' ) AS DSCPAI,
+		A.DSCOBS,
+		A.DATCAD,
+		A.DATUPD,
+		A.STAREC,
+        A.ISWHAT,
+        COALESCE(F.DSCTAB,'')  AS DSCREC, 
+		A.UPDUSU,
+        COALESCE(E.APEUSU,'')  AS LGNUSU
+  FROM TBCADCTO A
+ INNER JOIN TBTABGER B ON (198 = B.NUMTAB AND A.TIPCTO = B.KEYCOD)
+ INNER JOIN TBTABGER C ON ( 45 = C.NUMTAB AND A.CODOPR = C.KEYCOD)
+ INNER JOIN TBTABGER D ON (  1 = D.NUMTAB AND A.CODPAI = D.KEYCOD)
+  LEFT JOIN RFCADUSU E ON (A.UPDUSU = E.CODUSU)
+ INNER JOIN TBTABGER F ON (  7 = F.NUMTAB AND A.STAREC = F.KEYCOD) 
+ INNER JOIN TBCADGER G ON (G.NIDGER = A.NIDGER) 
+ WHERE CODCTO=-1;]]>
+		</extendedmodel>
+
+		<view>
+			<item script="true" alias="A." sql="" name="VWCADCTO" return="" desc ="View de Consulta de Contatos">
+				<query>
+					<![CDATA[
+SELECT A.CODCTO,
+       G.CODATR,
+	   A.NIDGER,
+       A.CODEND,
+	   A.REGATV,
+       CASE WHEN A.REGATV=1 THEN 'Principal' ELSE '' END AS DSCATV,
+	   A.TIPCTO,
+       COALESCE(B.DSCTAB,'' ) AS DSCCTO,
+	   A.CODOPR,
+       COALESCE(C.DSCTAB,'' ) AS DSCOPR,
+       A.CODPAI,
+       A.NUMDDD,
+       A.NUMTEL,
+       COALESCE(D.DSCTAB,'' ) AS DSCPAI,
+		A.DSCOBS,
+		A.DATCAD,
+		A.DATUPD,
+		A.STAREC,
+        A.ISWHAT,
+        COALESCE(F.DSCTAB,'')  AS DSCREC, 
+		A.UPDUSU,
+        COALESCE(E.APEUSU,'')  AS LGNUSU
+  FROM TBCADCTO A
+ INNER JOIN TBTABGER B ON (198 = B.NUMTAB AND A.TIPCTO = B.KEYCOD)
+ INNER JOIN TBTABGER C ON ( 45 = C.NUMTAB AND A.CODOPR = C.KEYCOD)
+ INNER JOIN TBTABGER D ON (  1 = D.NUMTAB AND A.CODPAI = D.KEYCOD)
+  LEFT JOIN RFCADUSU E ON (A.UPDUSU = E.CODUSU)
+ INNER JOIN TBTABGER F ON (  7 = F.NUMTAB AND A.STAREC = F.KEYCOD) 
+ INNER JOIN TBCADGER G ON (G.NIDGER = A.NIDGER) 
+
+        ]]>
+				</query>
+			</item>
+		</view>
+		<insertcommand script="true" key="Identity" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADCTOINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET pRETURN_VALUE=0;
+IF(EXISTS(SELECT 1 FROM TBCADCTO 
+           WHERE CODPAI = pCODPAI
+		     AND CODOPR = pCODOPR
+			 AND NUMDDD = pNUMDDD
+			 AND NUMTEL = pNUMTEL
+			 AND TIPCTO = pTIPCTO
+			 AND NIDGER = pNIDGER
+			 AND CODEND = pCODEND)) THEN
+	BEGIN
+		SELECT COALESCE(CODCTO,0) 
+		  INTO pRETURN_VALUE
+      FROM TBCADCTO    
+     WHERE NUMPAI = pNUMPAI
+  	   AND CODOPR = pCODOPR
+			 AND NUMDDD = pNUMDDD
+			 AND NUMTEL = pNUMTEL
+			 AND CODATR = pCODATR
+			 AND TIPCTO = pTIPCTO
+			 AND USUATR = pUSUATR
+			 AND NIDGER = pNIDGER
+			 AND CODEND = pCODEND;
+	END;
+END IF;
+      ]]>
+
+
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+        IF(pRETURN_VALUE>0)
+            BEGIN
+                UPDATE TBCADCTO 
+                   SET REGATV = 0 
+                 WHERE NIDGER = pNIDGER
+                   AND TIPCTO = pTIPCTO
+                   AND USUATR = pUSUATR
+                   AND CODCTO <> pRETURN_VALUE
+                   AND STAREC = 1
+                   AND pREGATV = 1;
+            END;
+		END IF;
+      ]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+		<updatecommand script="true" key="Identity" exceptionparamns="'DATCAD'" procname="PRCADCTOUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				SET pDATUPD=NOW();
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+        IF(pRETURN_VALUE>0) THEN
+          BEGIN
+              UPDATE TBCADCTO
+                 SET REGATV = 0
+               WHERE NIDGER = pNIDGER
+                 AND TIPCTO = pTIPCTO
+                 AND CODCTO <> pRETURN_VALUE
+                 AND STAREC = 1
+                 AND pREGATV = 1;
+          END;
+		END IF;]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDNOTFOUND"/>
+			</returns>
+		</updatecommand>
+		<selectcommand>
+			<item script="true" alias="A." sql="" method="Select" return="Contacts" procname="PRCADCTOSEL" desc ="Seleciona o registro de acordo com o código do cadastro de contatos">
+				<query>
+					<![CDATA[SELECT * FROM VWCADCTO A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Registro de Contato" name="CODCTO" type="int" default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Contacts" procname="PRCADCTOSELALL" desc ="Seleciona todos os registros de contato do id de cadastro fornecido">
+				<query>
+					<![CDATA[SELECT * FROM VWCADCTO A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" islike ="true" likeoperator="&lt;=" desc ="ID do Cadastro" name="NIDGER" type="int" default="" output="" null="false" sysnull="true"/>
+					<parameter input="true" apply="true" islike="true"  likeoperator="&lt;=" desc ="Tipo de Contato" name="TIPCTO" type="System.Byte" default="" output="" null="false" sysnull="true"/>
+					<parameter input="true" apply="true" islike="true"  likeoperator="&lt;=" desc ="Registro Ativo" name="REGATV" type="System.Byte" output="" null="false" sysnull="true"/>
+					<parameter input="true" apply="true" islike="true"  likeoperator="&lt;" desc ="Status de Registro" name="STAREC" type="System.Byte" output="" null="false" sysnull="true"/>
+					<parameter input="true" apply="true" islike="true"  desc ="Telefone" name="NUMTEL" type="System.String" size="25" output="" null="false"/>
+				</parameters>
+
+			</item>
+		</selectallcommand>
+		<methods>
+			<item script="true" alias="A." sql="" method="Find" return="int" returnmode="2" procname="PRCADCTOFIN" desc ="Localiza um contato com base nos parâmetros fornecidos" returnvalue="1">
+				<query>
+					<![CDATA[
+SET pRETURN_VALUE = 0;
+SELECT COALESCE(CODCTO,0) 
+  INTO pRETURN_VALUE
+  FROM TBCADCTO  
+ WHERE STAREC = 1
+   AND CODPAI = pCODPAI
+	 AND CODOPR = pCODOPR
+	 AND NUMDDD = pNUMDDD
+	 AND NUMTEL = pNUMTEL
+	 AND TIPCTO = pTIPCTO
+	 AND NIDGER = pNIDGER
+	 AND CODEND = pCODEND;    
+          ]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Número do País" name="CODPAI" type="System.Int16" default="" output="" null="false"/>
+					<parameter input="true" desc ="Código da Operadora" name="CODOPR" type="System.Int16" default="" output="" null="false"/>
+					<parameter input="true" desc ="Número do DDD" name="NUMDDD" type="System.String" size="4" default="" output="" null="false"/>
+					<parameter input="true" desc ="Telefone" name="NUMTEL" type="System.String" size="15" default="" output="" null="false"/>
+					<parameter input="true" desc ="Tipo de Contato" name="TIPCTO" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" desc ="ID do Cadastro" name="NIDGER" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" desc ="ID do Endereço" name="CODEND" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="true" alias="A." sql="" method="Find" return="int" returnmode="2" procname="PRCADCTOFINBAS" desc ="Localiza um contato com base nos parâmetros fornecidos" returnvalue="1">
+				<query>
+					<![CDATA[
+SET pRETURN_VALUE = 0;
+ SELECT COALESCE(CODCTO,0) 
+   INTO pRETURN_VALUE
+   FROM TBCADCTO
+  WHERE STAREC=1
+	  AND NIDGER = pNIDGER 
+	  AND CODEND = pCODEND
+	  AND TIPCTO = pTIPCTO
+	  AND REGATV = pREGATV;   
+          ]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="ID do Cadastro" name="CODUSU" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" desc ="ID do Endereço" name="CODEND" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" desc ="Tipo de Contato" name="TIPCTO" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" desc ="Indicador de Atividade do Registro" name="REGATV" type="System.Byte" default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="true" alias="A." sql="" method="SetMasterRecord" return="int" returnmode="2" procname="PRCADCTOVALREGATIV" desc ="Define o registro de contato como principal conforme os parãmetros fornecidos" returnvalue="1">
+				<query>
+					<![CDATA[
+SET pRETURN_VALUE=0;       
+UPDATE TBCADCTO 
+   SET REGATV = 0, DATUPD = NOW(), UPDUSU = pUPDUSU
+ WHERE NIDGER = pNIDGER 
+   AND TIPCTO = pTIPCTO;
+   
+IF(ROW_COUNT()>0) THEN
+	BEGIN
+		UPDATE TBCADCTO 
+		   SET REGATV = 1, DATUPD = NOW(), UPDUSU = pUPDUSU
+		 WHERE NIDGER = pNIDGER
+		   AND TIPCTO = pTIPCTO
+		   AND CODCTO = pCODCTO;
+		IF(ROW_COUNT()>0) THEN
+				SET pRETURN_VALUE = 1;
+		END IF;
+	END;
+END IF;]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="ID do Cadastro" name="NIDGER" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" desc ="Tipo de Contato" name="TIPCTO" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" desc ="ID do Contato" name="CODCTO" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" desc ="Usuário" name="UPDUSU" type="System.Int32" default="" output="" null="false"/>
+
+				</parameters>
+			</item>
+			<item script="true" alias="A." sql="" method="GetContactID" return="int" returnmode="2" procname="PRCADCTOGETCODCTO" desc ="Obtêm o ID do Registro de Contato Principal e ativo de acordo com os parâmetros fornecidos" returnvalue="1">
+				<query>
+					<![CDATA[
+SET pRETURN_VALUE = 0;
+SELECT COALESCE(CODCTO,0)
+  INTO pRETURN_VALUE
+  FROM TBCADCTO 
+ WHERE STAREC=1
+   AND REGATV=1
+   AND TIPCTO = pTIPCTO
+   AND NIDGER = pNIDGER
+   LIMIT 1;
+          ]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Tipo de Contato" name="TIPCTO" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" desc ="ID do Cadastro" name="NIDGER" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+
+	<item create="true"  id="8" name="RFCADUSU" api="true" apiname="Users" friendlyname="Users" modelversion="3" descriptor="Usuários"  roles="Corporativo">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable/>
+
+		<extendedmodel>
+			<![CDATA[
+SELECT GER.CODATR,
+       GER.RAZSOC,
+       GER.CODCMF,
+       GER.CODANT,
+       USR.*,
+       COALESCE(E1.CNT001,0) AS CNTEND,
+       COALESCE(E2.CNT001,0) AS CNTCTO,
+	   coalesce(pfl.dscpfl,'') as dscpfl, 
+		coalesce(spt.dsctab,'') as dscspt, 
+		coalesce(tus.dsctab,'') as dsctus,
+		coalesce(sta.dsctab,'') as dscrec,
+		coalesce(typ.dsctab,'') as dsccmf,
+		coalesce(LGN.APEUSU,'') as lgnusu 
+from TBCADGER GER
+inner join RFCADUSU USR ON (USR.CODUSU = GER.NIDGER)
+inner join tbcadpfl pfl on (pfl.codpfl = usr.codpfl)
+inner join tbtabger spt on (spt.numtab=196 and spt.keycod = usr.codspt)
+inner join tbtabger tus on (tus.numtab=195 and tus.keycod = usr.tipusu)
+INNER JOIN TBTABGER TYP ON (TYP.NUMTAB =194 AND TYP.KEYCOD = GER.TYPCMF)
+inner join tbtabger sta on (sta.numtab=7 and sta.keycod = GER.starec)
+ LEFT join RFCADUSU LGN on (LGN.CODUSU = GER.UPDUSU)
+ LEFT JOIN (SELECT NIDGER, COUNT(*) AS CNT001 FROM TBCADEND WHERE STAREC=1 GROUP BY NIDGER) E1 ON (E1.NIDGER = USR.CODUSU)
+ LEFT JOIN (SELECT NIDGER, COUNT(*) AS CNT001 FROM TBCADCTO WHERE STAREC=1 GROUP BY NIDGER) E2 ON (E2.NIDGER = USR.CODUSU)
+ AND GER.NIDGER=-1;
+]]>
+		</extendedmodel>
+
+		<objectclass>
+			<item script="true" alias="A." sql="" name="UserLogged" return="int" returnmode="1" procname="" desc ="Objeto de Retenção de Informações do usuário logado" returnvalue="1">
+				<query>
+					<![CDATA[
+SELECT 
+      NIDLOG,
+      APEUSU,
+      usr.CODUSU,
+	   ger.RAZSOC NOMUSU, 
+       COALESCE(cto.NUMTEL,' ') AS NUMTEL,
+       COALESCE(adr.DSCEND,'') AS DSCMAL,
+       uem.CODEMP,
+       emp.RAZSOC as NOMEMP,
+              COALESCE(PAI.DSCTAB,' ') AS NOMPAI,
+       COALESCE(tab.dsctab,'') AS DSCTUS
+FROM RGLOGACE AUD 
+inner join RFCADUSU usr on (usr.CODUSU = AUD.CODUSU) 
+inner join TBCADGER ger on (ger.NIDGER = USR.CODUSU) 
+LEFT join TBCADEND adr on (adr.NIDGER = usr.CODUSU AND adr.STAREC =1 AND adr.TIPEND=3 AND adr.REGATV=1) 
+LEFT join TBCADCTO cto on (cto.NIDGER = usr.CODUSU AND cto.STAREC =1 AND cto.TIPCTO=3 AND cto.REGATV=1) 
+LEFT join TBTABGER tab on (tab.NUMTAB= 195 AND TAB.KEYCOD = usr.TIPUSU) 
+LEFT join RLUSUEMP UEM on (UEM.CODUSU = USR.CODUSU) 
+LEFT JOIN TBCADGER EMP ON (EMP.NIDGER = UEM.CODEMP)
+LEFT join TBTABGER PAI on (PAI.NUMTAB= 1 AND PAI.KEYCOD = COALESCE(CTO.CODPAI,55)) WHERE GER.CODATR=2 AND AUD.NIDLOG=-1;
+]]>
+				</query>
+			</item>
+		</objectclass>
+
+		<view>
+			<item script="true" alias="A." sql="" name="VWCADUSU" return="" desc ="View de Consulta de Usuários">
+				<query>
+					<![CDATA[
+SELECT GER.CODATR,
+       GER.RAZSOC,
+       GER.CODCMF,
+       GER.CODANT,
+       USR.*,
+       COALESCE(E1.CNT001,0) AS CNTEND,
+       COALESCE(E2.CNT001,0) AS CNTCTO,
+	   coalesce(pfl.dscpfl,'') as dscpfl, 
+		coalesce(spt.dsctab,'') as dscspt, 
+		coalesce(tus.dsctab,'') as dsctus,
+		coalesce(sta.dsctab,'') as dscrec,
+		coalesce(typ.dsctab,'') as dsccmf,
+		coalesce(LGN.APEUSU,'') as lgnusu 
+from TBCADGER GER
+inner join RFCADUSU USR ON (USR.CODUSU = GER.NIDGER)
+inner join tbcadpfl pfl on (pfl.codpfl = usr.codpfl)
+inner join tbtabger spt on (spt.numtab=196 and spt.keycod = usr.codspt)
+inner join tbtabger tus on (tus.numtab=195 and tus.keycod = usr.tipusu)
+INNER JOIN TBTABGER TYP ON (TYP.NUMTAB =194 AND TYP.KEYCOD = GER.TYPCMF)
+inner join tbtabger sta on (sta.numtab=7 and sta.keycod = GER.starec)
+ LEFT join RFCADUSU LGN on (LGN.CODUSU = GER.UPDUSU)
+ LEFT JOIN (SELECT NIDGER, COUNT(*) AS CNT001 FROM TBCADEND WHERE STAREC=1 GROUP BY NIDGER) E1 ON (E1.NIDGER = USR.CODUSU)
+ LEFT JOIN (SELECT NIDGER, COUNT(*) AS CNT001 FROM TBCADCTO WHERE STAREC=1 GROUP BY NIDGER) E2 ON (E2.NIDGER = USR.CODUSU)
+
+WHERE GER.CODATR=2 ;
+        ]]>
+				</query>
+			</item>
+		</view>
+
+		<insertcommand  script="true" webtype="[HttpPost]"  key="Key"  fieldreturn="CODUSU" exceptionparamns="'DATCAD','DATUPD'" method="Insert" processcode="10" procname="PRCADUSUINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+DECLARE EXIT HANDLER FOR 1062
+BEGIN
+      SET pRETURN_VALUE =-2;
+END;
+SET pRETURN_VALUE=0;
+
+IF(EXISTS (SELECT 1 FROM RFCADUSU WHERE APEUSU = APEUSU)) THEN
+   BEGIN
+       SET pRETURN_VALUE=-2;
+   END;
+END IF;
+
+IF(NOT (EXISTS (SELECT 1 FROM TBTABGER WHERE NUMTAB = 196 AND KEYCOD = pCODSPT))) THEN
+   BEGIN
+       SET pRETURN_VALUE=-3;
+   END;
+END IF;
+
+IF(NOT ( EXISTS (SELECT 1 FROM TBCADPFL WHERE CODPFL = pCODPFL))) THEN
+   BEGIN
+       SET pRETURN_VALUE=-4;
+   END;
+END IF;
+
+IF(NOT ( EXISTS (SELECT 1 FROM TBTABGER WHERE NUMTAB=195 AND KEYCOD = pTIPUSU))) THEN
+   BEGIN
+       SET pRETURN_VALUE=-5;
+   END;
+END IF;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="APELIDO JÁ EXISTENTE" error="RECORDFOUND"/>
+				<return value="-3" message="" error="INVALIDARGUMENT" replaces="ESPECIALIDADE"/>
+				<return value="-4" message="" error="INVALIDARGUMENT" replaces="PERFIL"/>
+				<return value="-5" message="" error="INVALIDARGUMENT" replaces="TIPO DE USUARIO"/>
+
+			</returns>
+		</insertcommand>
+		<updatecommand  script="true" webtype="[HttpPost]"  key="Key"  fieldreturn="CODUSU" exceptionparamns="'DATCAD','DATUPD'" method="Update" processcode="15" procname="PRCADUSUUPD" remarks="Altera o usuário">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+DECLARE EXIT HANDLER FOR 1062
+BEGIN
+      SET pRETURN_VALUE =-2;
+END;
+
+SET pRETURN_VALUE=0;
+IF ( EXISTS (SELECT 1 FROM RFCADUSU WHERE APEUSU = APEUSU AND CODUSU <> pCODUSU)) THEN
+   BEGIN
+       SET pRETURN_VALUE=-2;
+   END;
+END IF;
+
+IF(NOT ( EXISTS (SELECT 1 FROM TBCADPFL WHERE CODPFL = pCODPFL))) THEN
+   BEGIN
+       SET pRETURN_VALUE=-4;
+   END;
+END IF;
+
+IF(NOT ( EXISTS (SELECT 1 FROM TBTABGER WHERE NUMTAB=197 AND KEYCOD = pCODPFL))) THEN
+   BEGIN
+       SET pRETURN_VALUE=-4;
+   END;
+END IF;
+
+IF(NOT ( EXISTS (SELECT 1 FROM TBTABGER WHERE NUMTAB=195 AND KEYCOD = pTIPUSU))) THEN
+   BEGIN
+       SET pRETURN_VALUE=-5;
+   END;
+END IF;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="APELIDO JÁ EXISTENTE" error="RECORDFOUND"/>
+				<return value="-3" message="" error="INVALIDARGUMENT" replaces="ESPECIALIDADE"/>
+				<return value="-4" message="" error="INVALIDARGUMENT" replaces="PERFIL"/>
+				<return value="-5" message="" error="INVALIDARGUMENT" replaces="TIPO DE USUARIO"/>
+			</returns>
+		</updatecommand>
+
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Users" procname="PRCADUSUSELALL" desc ="Obtêm uma lista de todos os usuários">
+				<query order="NOME">
+					<![CDATA[SELECT * FROM VWCADUSU A]]>
+				</query>
+				<parameters>
+					<parameter input="true" islike="true" desc ="Nome/Razão Social" name="RAZSOC" type="System.String" size="70" default="" output="" null="false"/>
+					<parameter input="true" islike="true" desc ="Tipo de Usuário" name="TIPUSU" type="System.Byte"  default="" output="" null="false" sysnull="true"/>
+
+					<parameter input="true" apply="true" islike="true"  likeoperator="&lt;" desc ="Status de Registro" name="STAREC" type="System.Byte" output="" null="false" sysnull="true"/>
+
+				</parameters>
+			</item>
+		</selectallcommand>
+
+		<methods>
+			
+			
+			<item script="true" alias="" sql="" responsemode="1" method="Login" return="int" returnmode="2" procname="PRCADUSULGN" desc ="Efetua o login de usuário" returnvalue="1">
+				<query>
+					<![CDATA[
+    DECLARE pCODUSU  INT UNSIGNED  DEFAULT 0;
+    SET pRETURN_VALUE=0;
+ 
+    IF(COALESCE(pLGNUSU,'')='') THEN
+       BEGIN
+           SET pRETURN_VALUE=-3;
+       END;
+    END IF;
+    
+    IF(COALESCE(pPSWUSU,'')='') THEN
+       BEGIN
+           SET pRETURN_VALUE=-5;
+       END;
+    END IF;
+    
+    IF(pRETURN_VALUE=0) THEN
+       BEGIN
+    		IF(NOT EXISTS (SELECT 1 
+                             FROM RFCADUSU A
+							INNER JOIN TBCADGER B ON (B.NIDGER = A.CODUSU) 
+                            WHERE APEUSU= pLGNUSU 
+                              AND B.STAREC=1)) THEN
+    			 BEGIN
+    				 SET pRETURN_VALUE=-2;
+    			END;
+    		END IF;
+       END;
+    END IF;
+    
+    IF(pRETURN_VALUE=0) THEN
+       BEGIN
+            SELECT COALESCE(CODUSU,0)
+    		  INTO pRETURN_VALUE 
+    		  FROM RFCADUSU A
+             INNER JOIN TBCADGER B ON (B.NIDGER = A.CODUSU) 
+    		 WHERE PSWUSU= MD5(pPSWUSU) 
+    		   AND APEUSU = pLGNUSU
+    		   AND B.STAREC = 1;
+    		   
+    		   IF(pRETURN_VALUE > 0) THEN 
+    				BEGIN
+                        #CODIGO DO USUARIO
+						SET pCODUSU = pRETURN_VALUE;
+    					#REGISTRA O LOGIN
+    					 INSERT INTO RGLOGACE(LGNTYP, CODUSU,  NUMIPA,  STAREC)
+                             VALUES (pLGNTYP, pRETURN_VALUE, pNUMIPA, 1);
+      					SET pRETURN_VALUE=LAST_INSERT_ID();
+                        #REGISTRA O ULTIMO ACESSO
+                        if(pRETURN_VALUE>0) THEN 
+                           BEGIN
+                               UPDATE RFCADUSU SET ULTACE = NOW() WHERE CODUSU = pCODUSU;
+                           END;
+						 END IF;
+    				END;
+    				
+    		   ELSE
+    			    SET pRETURN_VALUE=-4;
+    		   END IF;
+        END;
+    END IF;			
+					
+ ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Tipo de Login" name="LGNTYP" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Login do Usuário" name="LGNUSU" type="System.String" size="255" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Senha de Usuário" name="PSWUSU" type="System.String" size="255" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="IP" name="NUMIPA" type="System.String" size="255" default="" output="" null="false"/>
+
+				</parameters>
+
+				<returns>
+					<return value="0" operator=">" message="LOGIN EFETUADO COM SUCESSO" error=""></return>
+					<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+					<return value="-2" message="" error="USERNOTFOUND"/>
+					<return value="-3" message="" error="LOGINBLANK"/>
+					<return value="-4" message="" error="LOGINFAILREAD" />
+					<return value="-5" message="" error="PASSWORDEMPTY" />
+				</returns>
+			</item>
+			<item script="true" alias="" sql="" responsemode="1" method="ChangePassword" return="int" returnmode="2" procname="PRCADUSUCHGPSW" desc ="Altera a senha do usuário" returnvalue="1">
+				<query>
+					<![CDATA[
+DECLARE pAUDCHG VARCHAR(2048);
+SET pRETURN_VALUE=0;	
+SET pAUDCHG = '';
+IF(NOT EXISTS (SELECT 1 FROM RFCADUSU WHERE CODUSU=pCODUSU)) THEN
+   BEGIN
+       SET pRETURN_VALUE=-2;
+   END;
+END IF;
+
+IF(pRETURN_VALUE=0) THEN
+	IF(COALESCE(pPSWUSU,'')='') THEN
+		BEGIN
+			SET pRETURN_VALUE=-3;
+		END;
+	END IF;
+END IF;
+
+IF(pRETURN_VALUE=0) THEN
+	IF(NOT EXISTS (SELECT 1 FROM RFCADUSU WHERE CODUSU=pCODUSU AND STAREC=1)) THEN
+		BEGIN
+			SET pRETURN_VALUE=-4;
+		END;
+	END IF;
+END IF;
+
+IF(pRETURN_VALUE =0) THEN
+    BEGIN
+	       /* Altera senha somente de usuários ativos */
+	       SET pAUDCHG = 'Trocou a senha para ' + pPSWUSU;
+		UPDATE RFCADUSU
+		   SET PSWUSU = MD5(pPSWUSU),
+		       UPDUSU = pUPDUSU,
+			   RSTPSW = (CODUDU <> pUPDUSU)
+		 WHERE CODUSU = pCODUSU
+		   AND STAREC = 1;
+		   
+		   IF(ROW_COUNT()>0) THEN
+		      /* senha efetivamente alterada, retorna o id de auditoria da alteração */
+			  
+		      BEGIN
+			    #registra auditoria
+					INSERT INTO TBAUDDAT(AUDDAT,  AUDKEY,        AUDIDR,  AUDIMS,           AUDOBJ,  AUDSRC,  AUDCHG,  NUMIPA,  UPDUSU)
+                                 VALUES ( NOW(),      23, pRETURN_VALUE,       2, 'PRCADUSUCHGPSW',      '', pAUDCHG,     SUBSTRING_INDEX(USER(), '@', -1) , pRETURN_VALUE);
+					SET pRETURN_VALUE=LAST_INSERT_ID();
+			  END;
+		   END IF;
+		   
+	END;	
+END IF;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do usuário" name="CODUSU" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Senha do Usuário" name="PSWUSU" type="System.String" size="255" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Usuário de Atualização" name="UPDUSU" type="System.Int32" default="" output="" null="false"/>
+
+				</parameters>
+
+				<returns>
+					<return value="0" operator=">" message="SENHA ALTERADA COM SUCESSO" error=""></return>
+					<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+					<return value="-2" message="" error="USERNOTFOUND"/>
+					<return value="-3" message="" error="INVALIDARGUMENT" replaces="SENHA"/>
+					<return value="-4" message="ESTA OPERAÇÃO NÃO PODE SER REALIZADA, O USUÁRIO ESTÁ INATIVO" error="" replaces="SENHA"/>
+				</returns>
+			</item>
+		
+		
+		</methods>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Users" procname="PRCADUSUSEL" desc ="Obtêm um registro de usuário de acordo com o id correspondente">
+				<query>
+					<![CDATA[SELECT * FROM VWCADUSU A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Usuario" name="CODUSU" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="105" method="SelectByNick" return="Users" procname="" desc ="Obtêm um registro de usuário de acordo com o apelido correspondente">
+				<query>
+					<![CDATA[SELECT * FROM VWCADUSU A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Apelido" name="APEUSU" type="System.String" size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="true" alias="AUD." sql="" route="" processcode="110" method="GetUserLogged" return="UserLogged" procname="PRLOGACEGET" desc ="Retorna informações do id de login informado" remarks="O sistema liga o ID de usuario com o ID de Chave de Associação de auditoria">
+				<query>
+					<![CDATA[
+SELECT 
+      NIDLOG,
+      APEUSU,
+      usr.CODUSU,
+	   ger.RAZSOC NOMUSU, 
+       COALESCE(cto.NUMTEL,' ') AS NUMTEL,
+       COALESCE(adr.DSCEND,'') AS DSCMAL,
+       uem.CODEMP,
+       emp.RAZSOC as NOMEMP,
+       COALESCE(PAI.DSCTAB,' ') AS NOMPAI,
+       COALESCE(tab.dsctab,'') AS DSCTUS
+FROM RGLOGACE AUD 
+inner join RFCADUSU usr on (usr.CODUSU = AUD.CODUSU) 
+inner join TBCADGER ger on (ger.NIDGER = USR.CODUSU) 
+LEFT join TBCADEND adr on (adr.NIDGER = usr.CODUSU AND adr.STAREC =1 AND adr.TIPEND=3 AND adr.REGATV=1) 
+LEFT join TBCADCTO cto on (cto.NIDGER = usr.CODUSU AND cto.STAREC =1 AND cto.TIPCTO=3 AND cto.REGATV=1) 
+LEFT join TBTABGER tab on (tab.NUMTAB= 195 AND TAB.KEYCOD = usr.TIPUSU) 
+LEFT join RLUSUEMP UEM on (UEM.CODUSU = USR.CODUSU) 
+LEFT JOIN TBCADGER EMP ON (EMP.NIDGER = UEM.CODEMP)
+LEFT join TBTABGER PAI on (PAI.NUMTAB= 1 AND PAI.KEYCOD = COALESCE(CTO.CODPAI,55))
+WHERE AUD.STAREC=1 AND GER.CODATR=2
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID de Login" alias="AUD." name="NIDLOG" type="System.Int32"   default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+
+
+	<item create="true"  id="9" name="RFCADCLI" api="true" apiname="Customers" friendlyname="Customers" modelversion="3" descriptor="Clientes"  roles="Corporativo">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable/>
+
+		<extendedmodel>
+			<![CDATA[
+SELECT A.*,B.*, 
+       coalesce(E.dsctab,'*') as DSCCMF, 
+       coalesce(C.dsctab,'') as DSCREC,
+       coalesce(D.APEUSU,'') as LGNUSU, 
+       COALESCE(E1.CNT001,0) AS CNTEND,
+       COALESCE(E2.CNT001,0) AS CNTCTO,
+	   COALESCE(E3.CNT001,0) AS CNTASS,
+	   COALESCE(E4.CNT001,0) AS CNTANI
+from  TBCADGER A
+inner join RFCADCLI B ON (B.CODCLI = A.NIDGER)
+inner join tbtabger C on (C.numtab=7 and C.keycod = A.STAREC)
+inner join tbtabger E on (E.numtab=194 and E.keycod = A.TYPCMF)
+ LEFT join RFCADUSU D on (D.CODUSU = A.UPDUSU)
+ LEFT JOIN (SELECT NIDGER, COUNT(*) AS CNT001 FROM TBCADEND WHERE STAREC=1 GROUP BY NIDGER) E1 ON (E1.NIDGER = A.NIDGER)
+ LEFT JOIN (SELECT NIDGER, COUNT(*) AS CNT001 FROM TBCADCTO WHERE STAREC=1 GROUP BY NIDGER) E2 ON (E2.NIDGER = A.NIDGER)
+LEFT JOIN (SELECT NIDRSP, COUNT(*) AS CNT001 FROM TBCADASS WHERE STAREC=1 GROUP BY NIDRSP) E3 ON (E3.NIDRSP = A.NIDGER)
+LEFT JOIN (SELECT CODCLI, COUNT(*) AS CNT001  FROM TBCADANI WHERE STAREC=1 AND HASFAL=1 GROUP BY CODCLI)  E4 ON (E4.CODCLI = A.NIDGER)
+WHERE A.CODATR=4 AND A.NIDGER=-1;
+]]>
+		</extendedmodel>
+
+		<view>
+			<item script="true" alias="A." sql="" name="VWCADCLI" return="" desc ="View de Consulta de CLIENTES">
+				<query>
+					<![CDATA[
+SELECT A.*,B.*, 
+       coalesce(E.dsctab,'*') as DSCCMF, 
+       coalesce(C.dsctab,'') as DSCREC,
+       coalesce(D.APEUSU,'') as LGNUSU, 
+       COALESCE(E1.CNT001,0) AS CNTEND,
+       COALESCE(E2.CNT001,0) AS CNTCTO,
+	   COALESCE(E3.CNT001,0) AS CNTASS,
+	   COALESCE(E4.CNT001,0) AS CNTANI
+from  TBCADGER A
+inner join RFCADCLI B ON (B.CODCLI = A.NIDGER)
+inner join tbtabger C on (C.numtab=7 and C.keycod = A.STAREC)
+inner join tbtabger E on (E.numtab=194 and E.keycod = A.TYPCMF)
+ LEFT join RFCADUSU D on (D.CODUSU = A.UPDUSU)
+ LEFT JOIN (SELECT NIDGER, COUNT(*) AS CNT001 FROM TBCADEND WHERE STAREC=1 GROUP BY NIDGER) E1 ON (E1.NIDGER = A.NIDGER)
+ LEFT JOIN (SELECT NIDGER, COUNT(*) AS CNT001 FROM TBCADCTO WHERE STAREC=1 GROUP BY NIDGER) E2 ON (E2.NIDGER = A.NIDGER)
+LEFT JOIN (SELECT NIDRSP, COUNT(*) AS CNT001 FROM TBCADASS WHERE STAREC=1 GROUP BY NIDRSP) E3 ON (E3.NIDRSP = A.NIDGER)
+LEFT JOIN (SELECT CODCLI, COUNT(*) AS CNT001  FROM TBCADANI WHERE STAREC=1 GROUP BY CODCLI)  E4 ON (E4.CODCLI = A.NIDGER)
+WHERE A.CODATR=4;
+        ]]>
+				</query>
+			</item>
+		</view>
+
+		<insertcommand  script="true" webtype="[HttpPost]"  key="Key"  fieldreturn="CODCLI" exceptionparamns="'DATCAD','DATUPD'" method="Insert" processcode="10" procname="PRCADCLIINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+SET pRETURN_VALUE=0;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+		<updatecommand  script="true" webtype="[HttpPost]"  key="Key"  fieldreturn="CODCLI" exceptionparamns="'DATCAD','DATUPD'" method="Update" processcode="15" procname="PRCADCLIUPD" remarks="Altera o usuário">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=0;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Customers" procname="PRCADCLISELALL" desc ="Obtêm uma lista de todos os Clientes">
+				<query order="RAZSOC">
+					<![CDATA[
+IF(pSTAREC<0) THEN
+   SET pSTAREC=NULL;
+END IF;
+				
+					SELECT * FROM VWCADCLI A]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Razão Social"  islike="true" name="RAZSOC" type="System.String"  size="70" default="" output="" null="false"/>
+					<parameter input="true" desc ="CMF"  islike="true" name="CODCMF" type="System.String"  size="14" default="" output="" null="false"/>
+					<parameter input="true" desc ="Indicação"  islike="true" name="DSCIND" type="System.String"  size="50" default="" output="" null="false"/>
+					<parameter input="true" desc ="Classificação" islike="true" name="DSCCLA" type="System.String"  size="45" default="" output="" null="false"/>
+					<parameter input="true" desc ="Status do Registro"  name="STAREC" type="System.Byte"  sysnull="true"  default="" output="" null="true"/>
+
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Customers" procname="PRCADCLISEL" desc ="Obtêm um registro de CLIENTE de acordo com o id correspondente">
+				<query>
+					<![CDATA[SELECT * FROM VWCADCLI A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do CLIENTE" name="CODCLI" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="105" method="Select" return="Customers" procname="PRCADCLISEL" desc ="Obtêm um registro de CLIENTE de acordo com o cpf/cnpj informado">
+				<query>
+					<![CDATA[SELECT * FROM VWCADCLI A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="CPF do cliente" name="CODCMF" type="System.String" size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="10" name="RFCADEMP" api="true" apiname="Companies" friendlyname="Companies" modelversion="3" descriptor="Empresas"  roles="Corporativo">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable/>
+
+		<extendedmodel>
+			<![CDATA[SELECT B.CODANT,
+B.CODCMF,
+coalesce(E.dsctab,'*') as DSCCMF,
+B.RAZSOC,
+B.NOMFAN, 
+B.INSEST,
+B.INSMUN, 
+coalesce(C.dsctab,'') as dscrec,
+coalesce(D.APEUSU,'') as LGNUSU, A.*
+from RFCADEMP A
+inner join TBCADGER B ON (B.NIDGER = A.CODEMP)
+inner join tbtabger C on (C.numtab=7 and C.keycod = B.starec)
+inner join tbtabger E on (E.numtab=194 and E.keycod = B.TYPCMF)
+LEFT join RFCADUSU D on (D.CODUSU = B.UPDUSU)
+WHERE B.CODATR=1 AND A.CODEMP=-1;
+]]>
+		</extendedmodel>
+
+		<view>
+			<item script="true" alias="A." sql="" name="VWCADEMP" return="" desc ="View de Consulta de EMPRESAS">
+				<query>
+					<![CDATA[
+SELECT B.CODANT,
+B.CODCMF,
+coalesce(E.dsctab,'*') as DSCCMF,
+B.RAZSOC,
+B.NOMFAN, 
+B.INSEST,
+B.INSMUN, 
+coalesce(C.dsctab,'') as dscrec,
+coalesce(D.APEUSU,'') as LGNUSU, A.*
+from RFCADEMP A
+inner join TBCADGER B ON (B.NIDGER = A.CODEMP)
+inner join tbtabger C on (C.numtab=7 and C.keycod = B.starec)
+inner join tbtabger E on (E.numtab=194 and E.keycod = B.TYPCMF)
+LEFT join RFCADUSU D on (D.CODUSU = B.UPDUSU)
+WHERE B.CODATR=1;
+
+        ]]>
+				</query>
+			</item>
+		</view>
+
+		<insertcommand  script="true" webtype="[HttpPost]"  key="Key"  fieldreturn="CODEMP" exceptionparamns="'DATCAD','DATUPD'" method="Insert" processcode="10" procname="PRCADEMPINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+SET pRETURN_VALUE=0;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+		<updatecommand  script="true" webtype="[HttpPost]"  key="Key"  fieldreturn="CODUSU" exceptionparamns="'DATCAD','DATUPD'" method="Update" processcode="15" procname="PRCADEMPUPD" remarks="Altera a empresa">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=0;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Companies" procname="PRCADEMPSELALL" desc ="Obtêm uma lista de todos as Empresas">
+				<query order="NOME">
+					<![CDATA[SELECT * FROM VWCADEMP A]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código" name="TIPUSU" type="System.Byte"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Companies" procname="PRCADEMPSEL" desc ="Obtêm um registro de EMPRESA de acordo com o id correspondente">
+				<query>
+					<![CDATA[SELECT * FROM VWCADEMP A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Usuario" name="CODUSU" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="11" name="RLUSUEMP" api="true" apiname="UserxCompany" friendlyname="UserxCompany" modelversion="3" descriptor="Associação de Usuário x Empresa" roles="Admin">
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT UEM.CODUSU, UEM.CODEMP, EMP.RAZSOC , EMP.NOMFAN, USU.RAZSOC AS NOMUSU
+FROM RLUSUEMP UEM 
+INNER JOIN TBCADGER EMP ON (EMP.NIDGER = UEM.CODEMP AND EMP.CODATR=1)
+INNER JOIN TBCADGER USU ON (USU.NIDGER = UEM.CODUSU AND USU.CODATR=2)]]>
+		</extendedmodel>
+
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="'DATCAD','DATUPD'" method="Insert" processcode="10" procname="" remarks="Adiciona um nova relacionamento de usuario x role">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+		<selectallcommand>
+			<item script="true" alias="UEM." sql="" method="SelectAll"  type="List" return="UserxCompany" procname="" desc ="Seleciona todos os registros de espécies">
+				<query order="A.CODESP">
+					<![CDATA[
+SELECT UEM.CODUSU, UEM.CODEMP, EMP.RAZSOC , EMP.NOMFAN, USU.RAZSOC AS NOMUSU
+FROM RLUSUEMP UEM 
+INNER JOIN TBCADGER EMP ON (EMP.NIDGER = UEM.CODEMP AND EMP.CODATR=1)
+INNER JOIN TBCADGER USU ON (USU.NIDGER = UEM.CODUSU AND USU.CODATR=2)   
+          ]]>
+				</query>
+			</item>
+		</selectallcommand>
+
+	</item>
+	<item create="true"  id="12" name="TBCADASS" api="true" apiname="Associations" friendlyname="Associations" modelversion="3" descriptor="Associações"  roles="Corporativo">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable/>
+
+		<extendedmodel>
+			<![CDATA[
+SELECT A.*,
+C.DSCATR,
+B.CODANT,
+B.CODCMF,
+B.RAZSOC,
+COALESCE(D.DSCTAB,'') AS DSCASS,
+COALESCE(F.APEUSU,'') AS LGNUSU,
+COALESCE(E.DSCTAB,'') AS DSCREC
+FROM TBCADASS A
+INNER JOIN TBCADGER B ON (B.NIDGER = A.CODRSP)
+INNER JOIN TBCADATR C ON (C.CODATR = B.CODATR)
+INNER JOIN TBTABGER D ON (D.NUMTAB  = 192 AND D.KEYCOD = A.TIPASS)
+INNER JOIN TBTABGER E ON (E.NUMTAB  = 7 AND E.KEYCOD = A.STAREC)
+ LEFT JOIN RFCADUSU F ON (F.CODUSU = A.UPDUSU)
+where A.NIDRSP=-1;
+]]>
+		</extendedmodel>
+
+		<view>
+			<item script="true" alias="A." sql="" name="VWCADASS" return="" desc ="View de Consulta de ASSOCIACOES">
+				<query>
+					<![CDATA[
+SELECT A.*,
+C.DSCATR,
+B.CODANT,
+B.CODCMF,
+B.RAZSOC,
+COALESCE(D.DSCTAB,'') AS DSCASS,
+COALESCE(F.APEUSU,'') AS LGNUSU,
+COALESCE(E.DSCTAB,'') AS DSCREC
+FROM TBCADASS A
+INNER JOIN TBCADGER B ON (B.NIDGER = A.CODRSP)
+INNER JOIN TBCADATR C ON (C.CODATR = B.CODATR)
+INNER JOIN TBTABGER D ON (D.NUMTAB  = 192 AND D.KEYCOD = A.TIPASS)
+INNER JOIN TBTABGER E ON (E.NUMTAB  = 7 AND E.KEYCOD = A.STAREC)
+ LEFT JOIN RFCADUSU F ON (F.CODUSU = A.UPDUSU)
+        ]]>
+				</query>
+			</item>
+		</view>
+
+		<insertcommand  script="true" webtype="[HttpPost]"  key="Identity"  fieldreturn="NIDRSP" exceptionparamns="'DATCAD','DATUPD'" method="Insert" processcode="10" procname="PRCADASSINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+SET pRETURN_VALUE=0;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+		<updatecommand  script="true" webtype="[HttpPost]"  key="Identity"  fieldreturn="NIDRSP" exceptionparamns="'DATCAD','DATUPD'" method="Update" processcode="15" procname="PRCADASSUPD" remarks="Altera a associação">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=0;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+
+			</returns>
+		</updatecommand>
+
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="Associations" procname="PRCADASSSELALL" desc ="Obtêm uma lista de todos AS ASSOCIAÇÕES do id correspondente">
+				<query order="NOMRSP">
+					<![CDATA[SELECT * FROM VWCADASS A]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="ID do Cadastro" name="CODRSP" type="System.Int32"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Associations" procname="PRCADASSSEL" desc ="Obtêm um registro de ASSOCIACAO de acordo com o id correspondente">
+				<query>
+					<![CDATA[SELECT * FROM VWCADASS A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Associação" name="NIDRSP" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+	</item>
+
+
+	<item create="true"  id="13" name="TBCADESP" apiname="Species" friendlyname="Species" modelversion="3" descriptor="Espécies">
+
+		<SqlTable></SqlTable>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Species" procname="" desc ="Seleciona o registro de ESPECIE de acordo com o id especificado">
+				<query>
+					<![CDATA[SELECT * FROM TBCADESP A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código da Espécie" name="CODESP" type="System.Int16" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll"  type="List" return="Species" procname="" desc ="Seleciona todos os registros de espécies">
+				<query order="A.CODESP">
+					<![CDATA[
+SELECT * FROM TBCADESP A   
+          ]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código da Espécie" name="CODESP" sysnull="true" type="System.Int16" default="" output="" null="true"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+		<insertcommand key="key"  fieldreturn="CODESP" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADESPINS">
+			<maxfield field="CODESP"/>
+			<nextnumber field="" id="" />
+			<pre></pre>
+			<body></body>
+			<pos></pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+		<updatecommand key="Key" fieldreturn="CODESP" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADESPUPD" >
+			<maxfield field="CODESP"/>
+			<nextnumber field="" id="" />
+			<pre>
+			</pre>
+			<body></body>
+			<pos></pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+	</item>
+
+
+
+	<item create="true"  id="14" name="TBCADCOR" apiname="Colors" friendlyname="Colors" modelversion="3" descriptor="Cores">
+
+		<SqlTable></SqlTable>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Colors" procname="" desc ="Seleciona o registro de COR de acordo com o id especificado">
+				<query>
+					<![CDATA[SELECT * FROM TBCADCOR A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código da Cor" name="CODCOR" type="System.Int16" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll"  type="List" return="Colors" procname="PRCADCORSELALL" desc ="Seleciona todos os registros de CORES">
+				<query order="A.CODESP">
+					<![CDATA[
+SELECT * FROM TBCADESP A   
+          ]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código da Cor" name="CODCOR" sysnull="true" type="System.Int16" default="" output="" null="true"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+		<insertcommand key="key"  fieldreturn="CODCOR" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADCORINS">
+			<maxfield field="CODCOR"/>
+			<nextnumber field="" id="" />
+			<pre></pre>
+			<body></body>
+			<pos></pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+		<updatecommand key="Key" fieldreturn="CODCOR" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADCORUPD" >
+			<maxfield field="CODCOR"/>
+			<nextnumber field="" id="" />
+			<pre>
+			</pre>
+			<body></body>
+			<pos></pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+	</item>
+
+
+
+	<item create="true"  id="15" name="TBCADRAC" apiname="Breeds" friendlyname="Breeds" modelversion="3" descriptor="Raça Animal">
+
+		<SqlTable></SqlTable>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="Breeds" procname="" desc ="Seleciona o registro de Raça Animal de acordo com o id especificado">
+				<query>
+					<![CDATA[SELECT * FROM TBCADCOR A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código da Raça" name="CODRAC" type="System.Int16" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" method="SelectAll"  type="List" return="Breeds" procname="PRCADRACSELALL" desc ="Seleciona todos os registros de RAÇA ANIMAL">
+				<query order="A.CODRAC">
+					<![CDATA[SELECT * FROM TBCADRAC A]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código da Raça" name="CODRAC" sysnull="true" type="System.Int16" default="" output="" null="true"/>
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql="" method="SelectAll"  type="List" return="Breeds" procname="" desc ="Seleciona todos os registros de RAÇA ANIMAL através da pesquisa por nome">
+				<query order="A.CODRAC">
+					<![CDATA[SELECT * FROM TBCADRAC A]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Nome da Raça" name="NOMRAC" islike="true" size="35" type="System.String" default="" output="" null="true"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+		<insertcommand key="key"  fieldreturn="CODRAC" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADRACINS">
+			<maxfield field="CODRAC"/>
+			<nextnumber field="" id="" />
+			<pre></pre>
+			<body></body>
+			<pos></pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+		<updatecommand key="Key" fieldreturn="CODRAC" exceptionparamns="'DATCAD','DATUPD'" procname="PRCADRACUPD" >
+			<maxfield field="CODRAC"/>
+			<nextnumber field="" id="" />
+			<pre>
+			</pre>
+			<body></body>
+			<pos></pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+	</item>
+
+
+
+
+	<item create="true"  id="16" name= "TBCADANI" api="true" apiname="Animals" friendlyname="Animals" modelversion="3" descriptor="Cadastro de Animais" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel>
+			<![CDATA[SELECT A.*,
+    CLI.CODCMF,
+    CLI.RAZSOC,
+    RAC.NOMRAC,
+    ESP.NOMESP,
+    COR.NOMCOR,
+    COALESCE(T07.DSCTAB, '') AS DSCREC,
+    COALESCE(USU.APEUSU, '') AS LGNUSU
+FROM TBCADANI A
+INNER JOIN TBCADGER CLI ON (CLI.NIDGER = A.CODCLI)
+INNER JOIN TBCADRAC RAC ON (RAC.CODRAC = A.CODRAC)
+INNER JOIN TBCADESP ESP ON (ESP.CODESP = A.CODESP)
+INNER JOIN TBCADCOR COR ON (COR.CODCOR = A.CODCOR)
+INNER JOIN TBTABGER T07 ON (T07.NUMTAB = 7 AND T07.KEYCOD = A.STAREC)
+ LEFT JOIN RFCADUSU USU ON (USU.CODUSU = A.UPDUSU) WHERE CODANI=-1]]>
+		</extendedmodel>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="true" webtype="[HttpPost]" route="insert"  key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" method="Insert" processcode="10" procname="" remarks="Adiciona um novo pet">
+			<maxfield field="CODANI"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="true" webtype="[HttpPost]" route="update"  key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" method="Update" processcode="10" procname="" remarks="Altera o Registro do Animal">
+			<maxfield field="CODANI"/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+			</returns>
+		</updatecommand>
+
+		<view>
+			<item script="true" alias="A." sql="" name="VWCADANI" return="" desc ="View de Consulta de ANIMAIS">
+				<query>
+					<![CDATA[
+SELECT A.*,
+    CLI.CODCMF,
+    CLI.RAZSOC,
+    RAC.NOMRAC,
+    ESP.NOMESP,
+    COR.NOMCOR,
+    COALESCE(T07.DSCTAB, '') AS DSCREC,
+    COALESCE(USU.APEUSU, '') AS LGNUSU
+FROM TBCADANI A
+INNER JOIN TBCADGER CLI ON (CLI.NIDGER = A.CODCLI)
+INNER JOIN TBCADRAC RAC ON (RAC.CODRAC = A.CODRAC)
+INNER JOIN TBCADESP ESP ON (ESP.CODESP = A.CODESP)
+INNER JOIN TBCADCOR COR ON (COR.CODCOR = A.CODCOR)
+INNER JOIN TBTABGER T07 ON (T07.NUMTAB = 7 AND T07.KEYCOD = A.STAREC)
+ LEFT JOIN RFCADUSU USU ON (USU.CODUSU = A.UPDUSU)
+        ]]>
+				</query>
+			</item>
+		</view>
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Animals" procname="" desc ="Obtêm um registro com base no código de identificação do pet">
+				<query>
+					<![CDATA[SELECT * FROM VWCADANI A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Animal" name="CODANI" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="101" type="List" method="FindByIdName" return="Animals" procname="" desc ="Obtêm um registro com base no código do tutor e o nome do animal">
+				<query>
+					<![CDATA[SELECT * FROM VWCADANI A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Tutor" name="CODANI" type="System.String"  size="14" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Nome do Animal" name="NOMANI" type="System.String"  size="20" default="''"  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="true" alias="A." sql="" route="listall" method="SelectAll" type="List" return="Animals" procname="" desc ="Obtêm uma lista completa do cadastro de pet's">
+				<query order="CODANI, NOMANI">
+					<![CDATA[SELECT * FROM VWCADANI A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" islike ="true" likeoperator="&lt;=" desc ="Nome do Animal" name="NOMANI" type="System.String" size="20" default="" output="" null="false" sysnull="true"/>
+					<parameter input="true" apply="true" islike="true"  likeoperator="&lt;=" desc ="ID do Tutor" name="CODCMF" type="System.String" size="14" default="" output="" null="false" sysnull="true"/>
+					<parameter input="true" apply="true" islike="true"  likeoperator="&lt;" desc ="Status de Registro" name="STAREC" type="System.Byte" output="" null="false" sysnull="true"/>
+					<parameter input="true" apply="true" islike ="true" likeoperator="&lt;=" desc ="Nome do Tutor" name="RAZSOC" type="System.String" size="70" default="" output="" null="false" sysnull="true"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+
+	</item>
+
+	<item create="true"  id="1" name="ORIGENS" api="true" apiname="Origens" friendlyname="Origens" modelversion="3" descriptor="Origens">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="id" method="Insert" processcode="10" procname="PRDEVORIINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="select" processcode="100" method="Exists" return="int" returnmode="2" procname="" desc ="Verifica se um registro de origem já existe na base de dados">
+				<query translate="true">
+					<![CDATA[
+string SQL="SELECT id FROM origens WHERE"; 
+SQL += " nm_apelido = '" + model.NM_APELIDO + "'";
+SQL += " and nm_rz_social = '" + model.NM_RZ_SOCIAL + "'";
+SQL += " and registro = '" + model.REGISTRO + "'";
+SQL += " and registro_uf = '" + model.REGISTRO_UF + "'";
+SQL += " and cep = '" + model.CEP + "'";
+SQL += " and email = '" + model.EMAIL + "'";
+SQL += " and login = '" + model.LOGIN + "'";
+SQL += " and senha= '" + model.SENHA + "'";
+SQL += " and contato = '" + model.CONTATO + "'";
+SQL += " and site = '" + model.SITE + "'";
+SQL += " and obs = '" + model.OBS + "'";
+SQL += " EmpresaMigrada=" + model.EMPRESAMIGRADA.ToString();
+SQL += " LIMIT 1]]>
+				</query>
+
+				<parameters>
+					<parameter input="false" apply="false" desc ="Objeto Origem" translate="false" name="model" type="Origens"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+
+
+
+
+	<item create="true"  id="4" name="PESO" api="true" apiname="Peso" friendlyname="Peso" modelversion="3" descriptor="Controle de Peso por Animal" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  script="false" webtype="[HttpPost]"  key="Key" fieldreturn="CODIGO" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um novo registro de peso para o pet">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=-2;
+SELECT IFNULL(CODIGO,0) INTO pRETURN_VALUE FROM PESO WHERE CODIGO = pCODIGO AND DATA_LANC_PESO = STR_TO_DATE(pDATA_LANC_PESO, '%Y/%m/%d %H:%i:%s')
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos></pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="ANIMAL E PESO JA CADASTRADO PARA A DATA" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+		<selectallcommand>
+			<item script="false" alias="A." sql="" route="listall" method="SelectAll" type="List" return="Peso" procname="PRDEVPESSELALL" desc ="Seleciona todos os registros de peso de um pet">
+				<query order="DATA_LANC_PESO DESC">
+					<![CDATA[SELECT * FROM PESO A]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código" name="Codigo" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+	</item>
+
+
+
+
+	<item create="true"  id="7" name="GRUPO_PRODUTOS" api="true" apiname="GrupoProdutos" friendlyname="GrupoProdutos" modelversion="3" descriptor="Cadastro de Agrupamento de Produtos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Key" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVAGRPROINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=-2;
+SELECT IFNULL(id,0) INTO pRETURN_VALUE FROM grupo_produtos WHERE descricao= pDESCRICAO;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="EMPRESA JÁ EXISTENTE" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+	</item>
+
+
+	<item create="true"  id="8" name="PRODUTOS" api="true" apiname="Produtos" friendlyname="Produtos" modelversion="3" descriptor="Cadastro de Produtos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Identity" fieldreturn="codigo" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVPROINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+	</item>
+
+	<item create="true"  id="9" name="FORNECEDORES" api="true" apiname="Fornecedores" friendlyname="Fornecedores" modelversion="3" descriptor="Cadastro de Fornecedores">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" fieldreturn="codigo" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVFORINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="Fornecedores" procname="" desc ="Retorna o registro com base no código do fornecedor">
+				<query>
+					<![CDATA[SELECT * FROM Fornecedor A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Fornecedor" name="CODIGO" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Find" return="int" procname="" desc ="Retorna o código do fornecedor com base no identificador de registro">
+				<query>
+					<![CDATA[SELECT CODIGO FROM Fornecedor A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Registro do Fornecedor" name="REGISTRO" type="System.String" size="14"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+
+
+	<item create="true"  id="16" name="CAD_AREAS_INTERNACAO" api="true" apiname="AreasInternacao" friendlyname="AreasInternacao" modelversion="3" descriptor="Áreas de Internação">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" fieldreturn="codigo" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVAREINTINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error=""></return>
+				<return value="-1" message="REGISTRO JA EXISTENTE" error="RECORDFOUND"></return>
+				<return value="-999" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="24" name="INTERNACAO_DADOS" api="true" apiname="Internacao" friendlyname="Internacao" modelversion="3" descriptor="Internação">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" fieldreturn="id_internacao" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVINTINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="28" name="OS_REGISTROS" api="true" apiname="OS" friendlyname="OS" modelversion="3" descriptor="Ordens de Serviço - Registro">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id_os" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+	<item create="true"  id="30" name="LANC_PROCED" api="true" apiname="ProcedimentosLancamentos" friendlyname="ProcedimentosLancamentos" modelversion="3" descriptor="Procedimentos - Lançamentos" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<objectclass>
+			<item script="true" alias="A." sql="" name="EmailRequest" return="int" returnmode="1" procname="" desc ="Objeto de Retenção de Informações de Envio de Email" returnvalue="1">
+				<query>
+					<![CDATA[select 
+       EE.cod_obs as CODPCD, 
+       LP.id_emp_exec as EMPKEY, 
+       CLI.email as EMLCLI, 
+       ORI.email as EMLORI, 
+       case when ifnull(ors.email, '') = ori.email then ' ' else ifnull(ors.email, '') end as EMLSOL,
+       CLI.nome AS NOMCLI, 
+       ANI.nome_ani as NOMANI, 
+       case when ifnull(obs.descricao,' ') = ' ' then ifnull(LC.url,'') else ifnull(OBS.descricao,'')  end as URLLDO,
+       IFNULL(OBS.cod_obs,0) as CODLDO, 
+       IFNULL(LC.id,0) as NIDLDO,
+       emp.email_smtp as EMLUSR, 
+       emp.email_porta as EMLPRT, 
+       emp.email_ssl as EMLSSL, 
+       emp.senha_smtp as EMLPSW, 
+       emp.serv_smtp as EMLHST   
+  from cli.envia_email as EE 
+  left join cli.lanc_proced as LP on (EE.cod_obs = LP.codigo) 
+  left join cli.OBS_PROCED as OBS on (EE.cod_obs = OBS.cod_obs) 
+  left join cli.laudos_conteudo as LC on (EE.cod_obs = LC.cod_sgv) 
+  left join cli.ANIMAIS as ANI on (LP.codigo_ani = ANI.codigo) 
+  left join cli.CLI on (ANI.id = CLI.cpf) 
+  left join cli.origens as ORI on (LP.origem = ORI.id) 
+  left join cli.empresas as EMP on (LP.id_emp_exec = EMP.id_emp) 
+  left join cli.origens as ORS on (ORS.id = lp.ID_INDICACAO) 
+#where EE.status = 'N' and lp.obs=1
+where lp.obs=-1]]>
+				</query>
+			</item>
+
+			<item script="true" alias="LAN." sql="" name="ReportSalesComissionBasis" return="int" returnmode="1" procname="" desc ="Relatório bade de comissão por empresa, vendedor e período de extração" returnvalue="1">
+				<query>
+					<![CDATA[SELECT LAN.data_proced as data,
+ 'S' as tipo,
+ ANI.id as id_cli,
+ LAN.codigo_ani as cod_ani,
+ ANI.nome_ani as nome_ani,
+ REF.tipo_proced as tipo2,
+ REF.descricao_proced as descricao,
+ LAN.valor_proced as valor_bruto,
+ LAN.codigo_proced as codigo_proced,
+ LAN.valor_proced as valor_proced,
+ 0.00 AS COMISSAO
+   FROM cli.LANC_PROCED LAN
+  INNER JOIN cli.REF_PROCED REF ON (LAN.codigo_proced = REF.codigo_proced)
+   LEFT JOIN cli.ANIMAIS ANI ON (LAN.codigo_ani = ANI.codigo)  where LAN.codigo=-1]]>
+				</query>
+			</item>
+		</objectclass>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="CODIGO" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVPROLANINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" route="listall" method="SelectAll" type="List" return="ProcedimentosLancamentos" procname="" desc ="Obtêm todos os registros de procedimento de um pet">
+				<query order="DATA_PROCED DESC">
+					<![CDATA[SELECT * FROM LANC_PROCED A]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código" name="CODIGO_ANI" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+			</item>
+			<!-- SELECT LANC_PROCED.data_proced as data,
+ 'S' as tipo,
+ ANIMAIS.id as id_cli,
+ LANC_PROCED.codigo_ani as cod_ani,
+ ANIMAIS.nome_ani as nome_ani,
+ REF_PROCED.tipo_proced as tipo2,
+ REF_PROCED.descricao_proced as descricao,
+ LANC_PROCED.valor_proced as valor_bruto,
+ LANC_PROCED.codigo_proced as codigo_proced,
+ LANC_PROCED.valor_proced as valor_proced,
+ 0.00 AS COMISSAO
+   FROM cli.LANC_PROCED 
+  INNER JOIN cli.REF_PROCED ON (LANC_PROCED.codigo_proced = REF_PROCED.codigo_proced)
+   LEFT JOIN cli.ANIMAIS ON (LANC_PROCED.codigo_ani = ANIMAIS.codigo) 
+ WHERE LANC_PROCED.id_emp_exec in (7)
+and (LANC_PROCED.VET='L.VALVERDE')
+and (LANC_PROCED.data_proced >='2022-11-28 00:00:00') and (LANC_PROCED.data_proced <='2023-02-02 23:59:59');				
+					-->
+			<item script="false" alias="LAN." sql="" route="" method="GetSalesComissionBasis" type="List" return="ReportSalesComissionBasis" procname="" desc ="Obtêm um relatório de base de comissão para um vendedor">
+				<query>
+					<![CDATA[
+SELECT LAN.data_proced as data,
+ 'S' as tipo,
+ ANI.id as id_cli,
+ LAN.codigo_ani as cod_ani,
+ ANI.nome_ani as nome_ani,
+ REF.tipo_proced as tipo2,
+ REF.descricao_proced as descricao,
+ LAN.valor_proced as valor_bruto,
+ LAN.codigo_proced as codigo_proced,
+ LAN.valor_proced as valor_proced,
+ 0.00 AS COMISSAO
+   FROM cli.LANC_PROCED LAN
+  INNER JOIN cli.REF_PROCED REF ON (LAN.codigo_proced = REF.codigo_proced)
+   LEFT JOIN cli.ANIMAIS ANI ON (LAN.codigo_ani = ANI.codigo)]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Empresa" name="ID_EMP_EXEC" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" desc ="Veterinário" name="VET" type="System.String" size="14" default="" output="" null="false"/>
+					<parameter input="true" desc ="Data Inicial" block="1" fieldname="DATA_PROCED" operator="&gt;=" name="DATA_PROCED1" type="System.DateTime"  default="" output="" null="false"/>
+					<parameter input="true" desc ="Data Final"  block="2" fieldname="DATA_PROCED" operator="&lt;=" name="DATA_PROCED2" type="System.DateTime"  default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="true" alias="A." sql="" route="" method="GetEmailsForSend" type="List" return="EmailRequest" procname="PRGETEMLDTA" desc ="Obtêm os endereços de email para notificação de laudos">
+				<query order="id_emp">
+					<![CDATA[select 
+       EE.cod_obs as CODPCD, 
+       LP.id_emp_exec as EMPKEY, 
+       CLI.email as EMLCLI, 
+       ORI.email as EMLORI, 
+       case when ifnull(ors.email, '') = ori.email then ' ' else ifnull(ors.email, '') end as EMLSOL,
+       CLI.nome AS NOMCLI, 
+       ANI.nome_ani as NOMANI, 
+       case when ifnull(obs.descricao,' ') = ' ' then ifnull(LC.url,'') else ifnull(OBS.descricao,'')  end as URLLDO,
+       IFNULL(OBS.cod_obs,0) as CODLDO, 
+       IFNULL(LC.id,0) as NIDLDO,
+       emp.email_smtp as EMLUSR, 
+       emp.email_porta as EMLPRT, 
+       emp.email_ssl as EMLSSL, 
+       emp.senha_smtp as EMLPSW, 
+       emp.serv_smtp as EMLHST   
+  from cli.envia_email as EE 
+  left join cli.lanc_proced as LP on (EE.cod_obs = LP.codigo) 
+  left join cli.OBS_PROCED as OBS on (EE.cod_obs = OBS.cod_obs) 
+  left join cli.laudos_conteudo as LC on (EE.cod_obs = LC.cod_sgv) 
+  left join cli.ANIMAIS as ANI on (LP.codigo_ani = ANI.codigo) 
+  left join cli.CLI on (ANI.id = CLI.cpf) 
+  left join cli.origens as ORI on (LP.origem = ORI.id) 
+  left join cli.empresas as EMP on (LP.id_emp_exec = EMP.id_emp) 
+  left join cli.origens as ORS on (ORS.id = lp.ID_INDICACAO) 
+#where EE.status = 'N' and lp.obs=1
+where lp.obs=1 ]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código" name="CODIGO_ANI" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+			</item>
+
+
+			<item script="true" alias="A." sql="" type="List" method="GetProcedureRecords" return="DW.Domain.Models.ProcedimentosLancamentos" returnmode="2" procname="DWGETLANPCD" desc ="Obtêm os registros de lançamentos de procedimetos" remarks="A procedure retorna os dados com base retroativo a data fornecida e o id de registro de lancamento superior ao informado, assume o codigo fornecido como origem de base como o padrão de origem" >
+				<query>
+					<![CDATA[SELECT L.codigo as NIDPCD, MONTH(DATA_PROCED) AS NUMMES, YEAR(DATA_PROCED) AS NUMANO
+,A.ID AS CODCMF
+,L.CODIGO_ANI AS CODANI
+,DATA_PROCED AS pDATPCD
+,VALOR_PROCED AS VLRPCD
+,VALOR_PAGO AS VLRPGT
+,VET AS APEVET
+,L.CODIGO_PROCED AS CODPCD
+,L.ORIGEM AS CODORI
+,ID_EMP_EXEC AS CODEMP
+,L.ID_OS AS NUMOSS
+,(VALOR_PROCED - VALOR_PAGO) AS VLRDCT
+,pORGBAS AS ORGBAS
+,IFNULL(C.FINALIZADA, ' ') AS STAOSS
+from lanc_proced L 
+LEFT JOIN cli.ANIMAIS A ON (A.CODIGO = L.CODIGO_ANI)
+LEFT JOIN cli.REF_PROCED B ON (B.CODIGO_PROCED = L.CODIGO_PROCED)
+LEFT JOIN cli.OS_REGISTROS C ON (C.ID_OS = L.ID_OS)
+WHERE DATA_PROCED <= pDATPCD
+AND L.CODIGO > pNIDPCD
+ORDER BY L.CODIGO;   
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="false" desc ="Data Base de Leitura" name="DATPCD" type="System.DateTime" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="ID de Leitura Inicial" name="NIDPCD" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="ID da Base de Origem" name="ORGBAS" type="System.Byte" default="" output="" null="false"/>
+
+				</parameters>
+			</item>
+
+
+			<item script="true" alias="A." sql="" type="List" method="GetCustomerStatus" return="DW.Domain.Models.StatusCliente" returnmode="2" procname="DWGETSTACLI" desc ="Obtêm os registros de classificação de status de clientes por unidade" remarks="" >
+				<query>
+					<![CDATA[
+      SET SQL_SAFE_UPDATES = 0;
+      DELETE FROM CLI.TPSTACLI;
+
+      INSERT INTO CLI.TPSTACLI(CODANI, CODEMP)
+      SELECT DISTINCT 
+             CODIGO_ANI, ID_EMP_EXEC
+        FROM CLI.lanc_proced
+       WHERE codigo_ani in (SELECT codigo 
+                              FROM cli.animais)
+             AND DATA_PROCED <= pDATPRO;
+
+
+      UPDATE CLI.TPSTACLI A
+       INNER JOIN (SELECT CODIGO_ANI AS CODANI
+                         , ID_EMP_EXEC AS CODEMP
+                         , MAX(DATA_PROCED) AS MAX001
+                         , MIN(DATA_PROCED) AS MIN001
+                         , COUNT(*) AS NUM001
+                     FROM cli.lanc_proced b1
+                    where (data_proced >= pDATREF and data_proced <= pDATPRO)
+                      AND b1.codigo_proced not in (SELECT CODIGO_PROCED 
+                                                     FROM cli.ref_proced 
+                                                    WHERE DESCRICAO_PROCED LIKE '%RETORNO%')
+                    GROUP BY CODIGO_ANI, ID_EMP_EXEC) b 
+          ON (a.codani = b.CODANI and a.codemp = b.CODEMP)
+         SET A.PER001 = 1, A.MAX001 = B.MAX001, A.MIN001= B.MIN001, A.NUM001= B.NUM001;
+
+      UPDATE CLI.tpstacli a
+       INNER JOIN (SELECT CODIGO_ANI AS CODANI
+                         , ID_EMP_EXEC AS CODEMP
+                         , MAX(DATA_PROCED) AS MAX002
+                         , MIN(DATA_PROCED) AS MIN002
+                         , COUNT(*) AS NUM002
+                     FROM cli.lanc_proced b1
+                    where (data_proced >= pDATLIM and data_proced <= pDATREF)
+                      AND b1.codigo_proced not in (select CODIGO_PROCED 
+                                              from cli.ref_proced 
+                                             where DESCRICAO_PROCED LIKE '%RETORNO%')
+                    GROUP BY CODIGO_ANI, ID_EMP_EXEC) b 
+          ON (a.codani = b.CODANI and a.codemp = b.CODEMP)
+         SET A.PER002 = 1, A.MAX002 = B.MAX002, A.MIN002= B.MIN002, A.NUM002= B.NUM002;
+
+      UPDATE CLI.tpstacli A
+       INNER JOIN (SELECT CODIGO_ANI as CODANI
+                         ,ID_EMP_EXEC AS CODEMP
+                         , 1 AS PER003 
+                         ,count(*) AS NUM003
+                         , MAX(DATA_PROCED) AS MAXDAT
+                         , MIN(DATA_PROCED) AS MINDAT
+                     FROM  cli.lanc_proced b
+                    where  data_proced < pDATLIM
+                      AND b.codigo_proced not in (select CODIGO_PROCED from cli.ref_proced where DESCRICAO_PROCED LIKE '%RETORNO%')
+                    GROUP BY CODIGO_ANI, ID_EMP_EXEC) B
+          ON (A.CODANI = B.CODANI AND A.CODEMP = B.CODEMP)
+         SET A.PER003 = 1, A.MAX003 = B.MAXDAT, A.MIN003= B.MINDAT, A.NUM003= B.NUM003;
+
+   UPDATE CLI.tpstacli A
+	INNER JOIN (SELECT CODIGO_ANI AS CODANI, ID_EMP_EXEC AS CODEMP, 
+                       SUM(CASE WHEN DESCRICAO_PROCED LIKE '%RETORNO%' THEN 1 ELSE 0 END ) AS CNTRET,
+                       SUM(CASE WHEN DESCRICAO_PROCED NOT LIKE '%RETORNO%' THEN 1 ELSE 0 END ) AS CNTPRO
+                  FROM CLI.LANC_PROCED A
+                 INNER JOIN CLI.REF_PROCED B  ON (B.CODIGO_PROCED= A.CODIGO_PROCED)
+    WHERE DATA_PROCED <= pDATPRO
+    GROUP BY CODIGO_ANI, ID_EMP_EXEC
+    HAVING SUM(CASE WHEN DESCRICAO_PROCED NOT LIKE '%RETORNO%' THEN 1 ELSE 0 END ) =0) B
+      ON (A.CODANI = B.CODANI AND A.CODEMP = B.CODEMP)
+         SET A.STACLI = 7;
+    
+    /* CONDICAO DE RECORRENTE -> RECUPERADO */
+	UPDATE CLI.TPSTACLI
+       SET STACLI = 4
+	 WHERE PER001= 0 AND PER002 = 1 AND PER003= 1 
+       AND (PERIOD_DIFF(DATE_FORMAT(MIN002, '%Y%m'),DATE_FORMAT(MAX003, '%Y%m')) > 18 
+       AND PERIOD_DIFF(DATE_FORMAT(MAX002, '%Y%m'),DATE_FORMAT(MIN002, '%Y%m')) < 2 )
+       AND STACLI = 0;
+       
+   /* CONDICAO DE RECORRENTE -> NOVO */
+	UPDATE CLI.TPSTACLI
+       SET STACLI = 1
+	 WHERE PER001= 0 AND PER002 = 1 AND PER003= 0 
+       AND PERIOD_DIFF(DATE_FORMAT(MAX002, '%Y%m'),DATE_FORMAT(MIN002, '%Y%m')) < 2
+       AND STACLI = 0;
+
+   /* NOVO */
+	UPDATE CLI.TPSTACLI
+       SET STACLI = 1
+	 WHERE PER001= 1 AND PER002 = 0 AND PER003= 0 
+       AND STACLI = 0;
+       
+ /* CONDICAO DE RECORRENTE */
+	UPDATE CLI.TPSTACLI
+       SET STACLI = 2
+	 WHERE ((PER001= 0 AND PER002 = 1 AND PER003= 0) 
+	   OR  (PER001= 0 AND PER002 = 1 AND PER003= 1) 
+       OR  (PER001= 1 AND PER002 = 1 AND PER003= 1) 
+       OR  (PER001= 1 AND PER002 = 1 AND PER003= 0))
+       AND STACLI = 0;
+       
+ /* CONDICAO DE RECUPERADO */
+	UPDATE CLI.TPSTACLI
+       SET STACLI = 4
+	 WHERE (PER001= 1 AND PER002 = 0 AND PER003= 1) 
+	   AND STACLI = 0;
+
+
+ /* CONDICAO DE PERDIDO */
+	UPDATE CLI.TPSTACLI
+       SET STACLI = 5
+	 WHERE PER001= 0 AND PER002 = 0 AND PER003= 1 
+       AND STACLI = 0;
+       
+       
+       SELECT  CONCAT(RIGHT(CONCAT('00',pORGBAS),2), RIGHT(CONCAT('0000000' ,CODANI),7)) AS ANIKEY,
+               CASE WHEN pORGBAS =2 THEN 28 ELSE CODEMP END AS CODEMP,
+               MONTH(pDATPRO) AS NUMMES,
+               YEAR(pDATPRO) AS NUMANO,
+               STACLI
+
+         FROM CLI.TPSTACLI
+     ORDER BY STACLI DESC;
+
+
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="false" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="Data Base de Processamento" name="DATPRO" type="System.DateTime" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="Data Referência" name="DATREF" type="System.DateTime" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="Data Limite" name="DATLIM" type="System.DateTime" default="" output="" null="false"/>
+
+				</parameters>
+			</item>
+
+
+			<!--<item script="true" alias="A." sql="" type="List" method="GetCustomerStatus" return="DW.Domain.Models.ProcedimentosLancamentos" returnmode="2" procname="DWGETLANPCD" desc ="Obtêm os registros de lançamentos de procedimetos" remarks="A procedure retorna os dados com base retroativo a data fornecida e o id de registro de lancamento superior ao informado, assume o codigo fornecido como origem de base como o padrão de origem" >
+				<query>
+					<![CDATA[
+    DELETE FROM CLI.tpstacli;
+      IF(ISDATE(pDATPRO)=1) THEN
+         /* Data Base de Processamento */
+		 SET @DATA_PROC = LAST_DAY(pDATPRO);
+		SET @DATA_PROC = adddate(@DATA_PROC, interval 86399 second);
+		SET @MONTH_PROC = MONTH(@DATA_PROC);
+		SET @YEAR_PROC = YEAR(@DATA_PROC);
+		SET @DATA_ANT = adddate(@DATA_PROC, interval (day(@DATA_PROC) * -1) day);
+		SET @DATA_ANTREG = adddate(@DATA_ANT, interval 1 day);
+
+   		#seleciona todos os registros e insere na tabela temporaria
+		   insert into cli.tpstacli (CODANI, CODEMP, CODVER, NUMMES, NUMANO)
+		  select distinct concat(right(concat('00', pORGBAS),2), right(concat('0000000' ,codigo_ani),7)) AS ANIKEY, ID_EMP_EXEC, pCODVER, @MONTH_PROC, @YEAR_PROC
+			from cli.lanc_proced
+            where DATA_PROCED <= @DATA_PROC;
+     
+		 #classifica o periodo anterior de avaliação
+			  
+		  UPDATE cli.tpstacli  A
+		  inner  join cli.lanc_proced b on (b.codigo_ani = A.CODANI and b.ID_EMP_EXEC = A.CODEMP)
+		  SET PER001=1
+			 where (b.data_proced < adddate(@DATA_ANT, interval -18 month) )
+                      and (pCODVER=2 AND b.codigo_proced not in (select CODIGO_PROCED from cli.ref_proced where DESCRICAO_PROCED LIKE '%RETORNO%'));
+	
+		  #classifica o periodo de intervalo
+		  update cli.tpstacli a
+		   inner join cli.lanc_proced b on (b.codigo_ani = A.CODANI and b.ID_EMP_EXEC = A.CODEMP)
+ 		 set PER002 = 1
+			  where (data_proced >= adddate(@DATA_ANT, interval -18 month) and data_proced <@DATA_ANTREG)
+                and (pCODVER=2 AND b.codigo_proced not in (select CODIGO_PROCED from cli.ref_proced where DESCRICAO_PROCED LIKE '%RETORNO%'));
+	
+		  #classifica o periodo de atual de geração
+			 update cli.tpstacli a
+		   inner join cli.lanc_proced b on (b.codigo_ani = A.CODANI and b.ID_EMP_EXEC = A.CODEMP)
+			set PER003 = 1
+			  where (month(b.data_proced) = @MONTH_PROC and year(b.data_proced) = @YEAR_PROC)
+                       and (pCODVER=2 AND b.codigo_proced not in (select CODIGO_PROCED from cli.ref_proced where DESCRICAO_PROCED LIKE '%RETORNO%'));
+	  END IF;
+      SELECT * FROM cli.tpstacli;
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="false" desc ="Data Base de Processamento" name="DATPRO" type="System.DateTime" default="" output="" null="false"/>
+					<parameter input="true" apply="false" desc ="Versão de Aplicação" name="CODVER" type="System.Byte" default="" output="" null="false"/>
+
+				</parameters>
+			</item>-->
+
+
+		</selectallcommand>
+
+
+		<methods>
+			<item script="false" alias="" sql="" method="UpdateEmailSent" return="int" returnmode="22" procname="" desc ="Atualiza o registro de envio de email" returnvalue="0">
+				<query merge="true">
+					<![CDATA[UPDATE ENVIA_EMAIL SET status = 'S']]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do e-mail" name="COD_OBS" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="31" name="ANAMNESE" api="true" apiname="Anamnese" friendlyname="Anamnese" modelversion="3" descriptor="Anamnese">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable>
+		</SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel></extendedmodel>
+
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Key" supressidentity="true" fieldreturn="COD_ANA_" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+	<item create="true"  id="32" name="ANAMNESES" api="true" apiname="Anamneses" friendlyname="Anamneses" modelversion="3" descriptor="Anamneses">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVANAINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+
+	<item create="true"  id="33" name="RETORNOS" api="true" apiname="Retornos" friendlyname="Retornos" modelversion="3" descriptor="Anamneses">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="34" name="ANAMNESE_LANCAMENTOS" api="true" apiname="AnamnesesLancamentos" friendlyname="AnamnesesLancamentos" modelversion="3" descriptor="Anamneses - Lançamentos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="ID_ANA" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVANALANINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+
+	<item create="true"  id="35" name="OBS_PROCED" api="true" apiname="ObservacoesProcedimento" friendlyname="ObservacoesProcedimento" modelversion="3" descriptor="Observações de Procedimentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Key" supressidentity="true" fieldreturn="COD_OBS" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="43" name="REF_PROCED_VALORES" api="true" apiname="ProcedimentosValores" friendlyname="ProcedimentosValores" modelversion="3" descriptor="Registro de Valores por procedimento/empresa">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="46" name="USUARIOS_COMISSOES" api="true" apiname="UsuariosComissoes" friendlyname="UsuariosComissoes" modelversion="3" descriptor="Registro de Comissões por Usuário e procedimento" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  script="false" webtype="[HttpPost]"  key="Identity"  fieldreturn="" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um novo usuário">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="REGISTRO JA EXISTENTE" error="RECORDFOUND"></return>
+				<return value="-999" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+
+			</returns>
+		</insertcommand>
+
+		<updatecommand  script="false" webtype="[HttpPost]"  key="Identity"  fieldreturn="id_usuario" exceptionparamns="" method="Update" processcode="10" procname="" remarks="Altera o usuário">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+
+				<return value="-1" message="REGISTRO NAO EXISTENTE" error="RECORDNOTFOUND"></return>
+				<return value="-999" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="UsuariosComissoes" procname="" desc ="Seleciona um registro de usuário com base no id">
+				<query>
+					<![CDATA[SELECT * FROM Usuarios_Comissoes A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Usuario" name="ID_USUARIO" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Código do Procedimento" name="ID_PROCED" type="System.Int32"  default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="57" name="PGTOS_TRANSACOES" api="true" apiname="PagamentosTransacoes" friendlyname="PagamentosTransacoes" modelversion="3" descriptor="Registro de Transações de Pagamento">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id_transacao" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="58" name="PGTOS_GRUPOS" api="true" apiname="PagamentosGrupos" friendlyname="PagamentosGrupos" modelversion="3" descriptor="Registro de Pagamento">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id_grupo" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="59" name="PGTO_PROCED" api="true" apiname="PagamentoProcedimentos" friendlyname="PagamentoProcedimentos" modelversion="3" descriptor="Registro de Pagamento de Procedimentos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="61" name="ORIGEM_BASE_RELAC" api="true" apiname="OrigemBaseRelacionamento" friendlyname="OrigemBaseRelacionamento" modelversion="3" descriptor="Registro de Origem x Base">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="63" name="RETORNOS_LANC" api="true" apiname="RetornoLancamentos" friendlyname="RetornoLancamentos" modelversion="3" descriptor="Retorno Lancamentod">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="64" name="RACAS" api="true" apiname="Racas" friendlyname="Racas" modelversion="3" descriptor="Raças" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel>SELECT ID_RACA, NOME_RACA, A.ID_ESPECIE,B.NOME_ESPECIE FROM RACAS A INNER JOIN ESPECIES  B ON (B.ID_ESPECIE = A.ID_ESPECIE) limit 1</extendedmodel>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Racas" procname="" desc ="Obtêm todos os registros de raças cadastrados" remarks="">
+				<query>
+					<![CDATA[SELECT ID_RACA, NOME_RACA, A.ID_ESPECIE,B.NOME_ESPECIE FROM RACAS A INNER JOIN ESPECIES  B ON (B.ID_ESPECIE = A.ID_ESPECIE)]]>
+				</query>
+
+			</item>
+		</selectallcommand>
+
+	</item>
+
+	<item create="true"  id="65" name="ESPECIES" api="true" apiname="Especies" friendlyname="Especies" modelversion="3" descriptor="Especies" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel></extendedmodel>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Especies" procname="" desc ="Obtêm todos os registros de especies cadastrados" remarks="">
+				<query>
+					<![CDATA[SELECT * from especies a]]>
+				</query>
+
+			</item>
+		</selectallcommand>
+
+	</item>
+
+
+	<item create="true"  id="66" name="ORCAMENTOS" api="true" apiname="Orcamentos" friendlyname="Orcamentos" modelversion="3" descriptor="Orcamentos" roles="">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel></extendedmodel>
+
+
+		<insertcommand script="false" webtype="Post"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="id" method="Insert" processcode="10" procname="PRCADORCINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+		<updatecommand script="false" webtype="Post"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="id" method="Update" processcode="10" procname="PRCADORCUPD">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="select" processcode="100" method="Select" return="Orcamentos" procname="" desc ="Obtêm os dados de um registro especifico de orçamento">
+				<query>
+					<![CDATA[SELECT * FROM orcamentos A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Registro" name="ID" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Orcamentos" procname="" desc ="Obtêm todos os registros de orçamento de um animal" remarks="">
+				<query>
+					<![CDATA[SELECT * from orcamentos a]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código do Animal" name="CODIGO_ANI" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+
+			</item>
+			<item script="true" alias="A." sql="" method="GetOrcRel" type="List" return="Orcamentos" procname="" desc ="Obtêm todos os registros de orçamento de um animal" remarks="">
+				<query>
+					<![CDATA[select 	result.ANIKEY,
+    	VETPCD,
+        VETORC,
+        DATPCD, 
+        DATORC, 
+        CONCAT ('01', RIGHT(CONCAT('0000000',CODPCD),7)) AS PCDKEY, 
+        VLRPCD, 
+        VLRPGT,
+        VLRORC,
+        result.EMPKEY,
+        result.EMPKEY AS UNIKEY
+        
+    
+   from (select CONCAT ('01', RIGHT(CONCAT('0000000',CODANI),7)) AS ANIKEY,
+                MAX(VETPCD) AS VETPCD,
+                MAX(VETORC) AS VETORC,
+                max(DATPCD) as DATPCD, 
+                max(DATORC) as DATORC, 
+                a.CODPCD, 
+                sum(VLRPCD) as VLRPCD, 
+                SUM(VLRPGT) as VLRPGT,
+                sum(VLRORC) as VLRORC,
+                #max(b.tipo_proced) as TIPPCD,
+                max(b.sub_categ) as SUBCAT,
+                #max(b.descricao_proced) as DSCPCD,
+                max(EMPKEY) as EMPKEY
+           from (select l.codigo_ani           AS CODANI, 
+                        l.vet                  as VETPCD,
+					    ' '                    AS VETORC,
+                        date_format(l.data_proced,'%Y-%m-%d') as DATPCD, 
+                        null                   as DATORC,
+                        codigo_proced          AS CODPCD,
+                        sum(l.valor_proced)    AS VLRPCD,
+					    sum(l.valor_pago)      AS VLRPGT,
+                        0                      as VLRORC,
+                        ID_EMP_EXEC 		   AS EMPKEY
+                  from cli.lanc_proced l
+                 where l.data_proced >= adddate(now(), interval -12 month) 
+                   and l.codigo_ani in (select codigo_ani from cli.orcamentos)
+                 group by l.codigo_ani, date_format(l.data_proced,'%Y-%m-%d'), codigo_proced
+                 union
+                 select orc.codigo_ani      AS CODANI, 
+                        ' '                 AS VETPCD,
+                        orc.vet             AS VETORC,
+                        null 	           AS DATPCD,
+                        date_format(orc.data_orcamento,'%Y-%m-%d') as DATORC, 
+                        ite.codigo_proced   AS CODPCD, 
+                        0 				   as VLRPCD,
+                        0 				   AS VLRPGT,
+                        sum(ite.valor_lanc) as VLRORC,
+                        0                   AS EMPKEY
+				   from cli.orcamentos orc
+                  inner join cli.orcamentos_lanc ite on (ite.id_orcamento = orc.id)
+                  where  orc.data_orcamento >= adddate(now(), interval -12 month) 
+                  group by orc.codigo_ani, date_format(orc.data_orcamento,'%Y-%m-%d'), ite.codigo_proced
+				 ) a inner join cli.ref_proced b on (b.codigo_proced = a.CODPCD)
+            group by a.CODANI, A.CODPCD
+            ) result
+	
+   where lower(SUBCAT) like '%cirur%' 
+     and DATORC is not null;]]>
+				</query>
+			</item>
+
+			<item script="true" alias="A." sql="" method="GetOrcUnitsRel" type="List" return="Units" procname="" desc ="Obtêm todos os registros de orçamento de um animal" remarks="">
+				<query>
+					<![CDATA[SET @row:=0;
+	SET @ANIKEY:=0;
+	SELECT ANIKEY, EMPKEY FROM (
+	SELECT  @Row:=(CASE WHEN (ANIKEY =@ANIKEY) THEN @row+1  ELSE 1  END ) AS NUMROW,
+	   ANIKEY,
+	   EMPKEY,
+	  (@ANIKEY := ANIKEY)
+	   FROM ( SELECT CONCAT ('01', RIGHT(CONCAT('0000000',CODIGO_ANI),7)) AS ANIKEY,
+				id_emp_exec AS EMPKEY, MAX(DATA_PROCED) AS DATPCD
+				FROM cli.lanc_proced 
+			   where data_proced >= adddate(now(), interval -36 month)
+				 AND data_proced < adddate(now(), interval -12 month)
+			   group by codigo_ani, ID_EMP_EXEC
+			   order by codigo_ani, data_proced asc) A
+	) A1 WHERE A1.NUMROW=1 ORDER BY 1;
+END //]]>
+				</query>
+			</item>
+		</selectallcommand>
+
+
+
+	</item>
+
+
+	<item create="true"  id="67" name="ORCAMENTOS_LANC" api="true" apiname="OrcamentosLancamentos" friendlyname="OrcamentosLancamentos" modelversion="3" descriptor="Orcamentos Lançamentos" roles="">
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel></extendedmodel>
+
+
+		<insertcommand script="false" webtype="Post"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="id" method="Insert" processcode="10" procname="PRCADORCLANINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+		<updatecommand script="false" webtype="Post"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="id" method="Update" processcode="10" procname="PRCADORCLANUPD">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="select" processcode="100" method="Select" return="OrcamentosLancamentos" procname="" desc ="Obtêm os dados de um registro especifico de lançamento de orçamento">
+				<query>
+					<![CDATA[SELECT * FROM orcamentos A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Registro" name="ID_LANC" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="OrcamentosLancamentos" procname="" desc ="Obtêm todos os registros de lançamentos de orçamento de um respectivo orçamento" remarks="">
+				<query>
+					<![CDATA[SELECT * from orcamentos a]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="ID do Orçamento" name="ID_ORCAMENTO" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+
+			</item>
+
+		</selectallcommand>
+
+	</item>
+
+
+
+	<item create="true"  id="200" name="TBCADUSU" api="true" apiname="UsuariosAuth" friendlyname="UsuariosAuth" modelversion="3" descriptor="Usuários Autenticação" roles="Admin">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+
+		<objectclass>
+			<item script="true" alias="A." sql="" method="UsersRegistered" return="int" returnmode="1" procname="" desc ="Objeto de Retenção de Informações de Usuários cadastrados" returnvalue="1">
+				<query>
+					<![CDATA[
+SELECT A.CODUSU, CASE WHEN STAREC=1 THEN 'ATIVO' ELSE 'INATIVO' END AS DSCREC, LGNUSU, IFNULL(DESROL,'N/D') AS DESROL FROM TBCADUSU a
+LEFT JOIN RLUSUROL B ON (B.CODUSU = A.CODUSU)
+LEFT JOIN TBCADROL C ON (C.CODROL = B.CODROL) LIMIT 1
+        ]]>
+
+				</query>
+			</item>
+		</objectclass>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um novo usuário de login">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="get" processcode="100" method="GetUserByCmf" return="UsuariosAuth" procname="" desc ="Localiza um usuário a partir do código de contribuinte do ministério da fazenda">
+				<query>
+					<![CDATA[SELECT * FROM TBCADUSU A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código CMF" name="CODCMF" type="System.String"  size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql="" route="get" processcode="100" method="GetUserByNick" return="UsuariosAuth" procname="" desc ="Localiza um usuário a partir do apelido">
+				<query>
+					<![CDATA[SELECT * FROM TBCADUSU A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Nick Name" name="LGNUSU" type="System.String"  size="50" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" route="listall" method="SelectAll" type="List" return="UsersRegistered" procname="" desc ="Obtêm uma lista completa do cadastro de pet's">
+				<query order="LGNUSU">
+					<![CDATA[SELECT A.CODUSU, CASE WHEN STAREC=1 THEN 'ATIVO' ELSE 'INATIVO' END AS DSCREC, LGNUSU, IFNULL(DESROL,'N/D') AS DESROL FROM TBCADUSU a
+LEFT JOIN RLUSUROL B ON (B.CODUSU = A.CODUSU)
+LEFT JOIN TBCADROL C ON (C.CODROL = B.CODROL)]]>
+				</query>
+			</item>
+		</selectallcommand>
+
+		<methods>
+			<item script="true" alias="" sql="" responsemode="1" method="Login" return="int" returnmode="2" procname="PRCADUSULGN" desc ="Efetua o login de usuário" returnvalue="1">
+				<query>
+					<![CDATA[
+    DECLARE @CODUSU  INT 0;
+    SET @RETURN_VALUE=0;
+ 
+    IF(@LGNUSU IS NULL OR @LGNUSU= '')
+       BEGIN
+           SET @RETURN_VALUE=-3;
+       END
+    END IF
+    
+    IF(COALESCE(@PSWUSU,'')='') 
+       BEGIN
+           SET @RETURN_VALUE=-5;
+       END
+    END IF
+    
+    IF(@RETURN_VALUE=0) THEN
+       BEGIN
+    		IF(NOT EXISTS (SELECT 1 FROM TBCADUSU (NOLOCK) A WHERE LGNUSU = @LGNUSU AND STAREC=1 )) 
+    			 BEGIN
+    				 SET @RETURN_VALUE=-2;
+    			 END
+    	
+       END
+    
+    IF(@RETURN_VALUE=0) 
+       BEGIN
+            SELECT @RETURN_VALUE = COALESCE(CODUSU,0)
+    		  FROM RFCADUSU (NOLOCK) A
+    		 WHERE PSWUSU = @PSWUSU AND LGNUSU = @LGNUSU AND STAREC=1
+    	
+    		   
+    		   IF(@RETURN_VALUE > 0) THEN 
+    				BEGIN
+                        SET @CODUSU = @RETURN_VALUE;
+    					--REGISTRA O LOGIN
+    					 INSERT INTO RGLOGACE(CODUSU,  NUMIPA,  STAREC) VALUES (@RETURN_VALUE, pNUMIPA, 1);
+      					SET @RETURN_VALUE=@@IDENTITY;
+                        --REGISTRA O ULTIMO ACESSO
+                        IF(@RETURN_VALUE>0)
+                           BEGIN
+                               UPDATE TBCADUSU SET ULTACE = GETDATE() WHERE CODUSU = @CODUSU;
+                           END;
+						
+    				 END
+    				
+    		   ELSE
+    			    SET @RETURN_VALUE=-4;
+    	
+        END
+    RETURN @RETURN_VALUE;	
+					
+ ]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Login do Usuário" name="LGNUSU" type="System.String" size="255" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Senha de Usuário" name="PSWUSU" type="System.String" size="255" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="IP" name="NUMIPA" type="System.String" size="255" default="" output="" null="false"/>
+
+				</parameters>
+
+				<returns>
+					<return value="0" operator=">" message="LOGIN EFETUADO COM SUCESSO" error=""></return>
+					<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+					<return value="-2" message="" error="USERNOTFOUND"/>
+					<return value="-3" message="" error="LOGINBLANK"/>
+					<return value="-4" message="" error="LOGINFAILREAD" />
+					<return value="-5" message="" error="PASSWORDEMPTY" />
+				</returns>
+			</item>
+			<item script="true" alias="" sql="" responsemode="1" method="ChangePassword" return="int" returnmode="2" procname="PRCADUSUCHGPSW" desc ="Altera a senha do usuário" returnvalue="1">
+				<query>
+					<![CDATA[
+DECLARE pAUDCHG VARCHAR(2048);
+SET pRETURN_VALUE=0;	
+SET pAUDCHG = '';
+IF(NOT EXISTS (SELECT 1 FROM RFCADUSU WHERE CODUSU=pCODUSU)) THEN
+   BEGIN
+       SET pRETURN_VALUE=-2;
+   END;
+END IF;
+
+IF(pRETURN_VALUE=0) THEN
+	IF(COALESCE(pPSWUSU,'')='') THEN
+		BEGIN
+			SET pRETURN_VALUE=-3;
+		END;
+	END IF;
+END IF;
+
+IF(pRETURN_VALUE=0) THEN
+	IF(NOT EXISTS (SELECT 1 FROM RFCADUSU WHERE CODUSU=pCODUSU AND STAREC=1)) THEN
+		BEGIN
+			SET pRETURN_VALUE=-4;
+		END;
+	END IF;
+END IF;
+
+IF(pRETURN_VALUE =0) THEN
+    BEGIN
+	       /* Altera senha somente de usuários ativos */
+	       SET pAUDCHG = 'Trocou a senha para ' + pPSWUSU;
+		UPDATE RFCADUSU
+		   SET PSWUSU = MD5(pPSWUSU),
+		       UPDUSU = pUPDUSU,
+			   RSTPSW = (CODUDU <> pUPDUSU)
+		 WHERE CODUSU = pCODUSU
+		   AND STAREC = 1;
+		   
+		   IF(ROW_COUNT()>0) THEN
+		      /* senha efetivamente alterada, retorna o id de auditoria da alteração */
+			  
+		      BEGIN
+			    #registra auditoria
+					INSERT INTO TBAUDDAT(AUDDAT,  AUDKEY,        AUDIDR,  AUDIMS,           AUDOBJ,  AUDSRC,  AUDCHG,  NUMIPA,  UPDUSU)
+                                 VALUES ( NOW(),      23, pRETURN_VALUE,       2, 'PRCADUSUCHGPSW',      '', pAUDCHG,     SUBSTRING_INDEX(USER(), '@', -1) , pRETURN_VALUE);
+					SET pRETURN_VALUE=LAST_INSERT_ID();
+			  END;
+		   END IF;
+		   
+	END;	
+END IF;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do usuário" name="CODUSU" type="System.Int32" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Senha do Usuário" name="PSWUSU" type="System.String" size="255" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Usuário de Atualização" name="UPDUSU" type="System.Int32" default="" output="" null="false"/>
+
+				</parameters>
+
+				<returns>
+					<return value="0" operator=">" message="SENHA ALTERADA COM SUCESSO" error=""></return>
+					<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+					<return value="-2" message="" error="USERNOTFOUND"/>
+					<return value="-3" message="" error="INVALIDARGUMENT" replaces="SENHA"/>
+					<return value="-4" message="ESTA OPERAÇÃO NÃO PODE SER REALIZADA, O USUÁRIO ESTÁ INATIVO" error="" replaces="SENHA"/>
+				</returns>
+			</item>
+
+		</methods>
+	</item>
+
+	<item create="true"  id="201" name="TBCADROL" api="true" apiname="RolesAuth" friendlyname="RolesAuth" modelversion="3" descriptor="Regras de Autenticação" roles="Admin">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona uma nova role">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+
+	</item>
+
+
+	<item create="true"  id="202" name="RLUSUROL" api="true" apiname="UsersRolesAuth" friendlyname="UserRolesAuth" modelversion="3" descriptor="Associação de Usuário x Regras de Autenticação" roles="Admin">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel>select codusu, a.codrol, b.desrol from rlusurol a inner join tbcadrol b on (b.codrol = a.codrol) limit 1</extendedmodel>
+
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="false" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um nova relacionamento de usuario x role">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="get" processcode="100" type="List" method="Select" return="UserRolesAuth" procname="" desc ="Localiza a primeira 'role' associada a um usuario">
+				<query>
+					<![CDATA[select codusu, a.codrol, b.desrol from rlusurol a inner join tbcadrol b on (b.codrol = a.codrol)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código CMF" name="CODUSU" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+	</item>
+
+
+
+
+	<lists>
+
+		<item reference="" procbase="" script="false" alias="A." sql="" type="List" method="Users" return="ItemList" procname="" desc ="Obtêm uma lista de Usuários associados ao cadastro geral">
+			<query order ="A.RAZSOC">
+				<![CDATA[SELECT NIDGER AS CODREF, RAZSOC AS DSCREF 
+				FROM TBCADGER A WHERE STAREC=1
+				 AND (@CODATR IS NULL OR A.CODATR = @CODATR)
+				 AND (@NIDGER IS NULL OR A.NIDGER = @NIDGER)
+				 AND (@RAZSOC IS NULL OR (A.RAZSOC LIKE '%@RAZSOC%'))]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="false" desc ="Código do Atributo" name="CODATR" type="System.Int16" default="" output="" null="false"/>
+				<parameter input="true" apply="false" desc ="ID do Cadastro" name="NIDGER" type="System.Int32" default="" output="" null="false"/>
+				<parameter input="true" apply="false" desc ="Razão Social" name="RAZSOC" type="System.String" size="255" default="" output="" null="false"/>
+
+			</parameters>
+
+		</item>
+
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Cadastros" return="ItemList" procname="" desc ="Obtêm uma lista de Cadastro">
+			<query>
+				<![CDATA[SELECT NIDGER AS CODREF, RAZSOC AS DSCREF FROM TBCADGER A WHERE STAREC=1]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" desc ="ID do Cadastro" name="NIDGER" type="System.Int32"  sysnull="true" default="" output="" null="false"/>
+			</parameters>
+		</item>
+		<item reference="0" procbase="" script="false" alias="A." sql="" type="List" method="Atributos" return="ItemList" procname="" desc ="Obtêm uma lista de Atributos">
+			<query>
+				<![CDATA[SELECT CODATR AS CODREF, DSCATR AS DSCREF FROM TBCADATR A WHERE STAREC=1]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" desc ="Código do Atributo" name="CODATR" type="System.Int16" sysnull="true" default="" output="" null="false"/>
+			</parameters>
+		</item>
+		<item reference="196" procbase="" script="false" alias="A." sql="" type="List" method="UsuariosEspecialidades" return="ItemList" procname="" desc ="Obtêm uma lista de especialidades de usuários">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=196 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+
+		<item reference="" procbase="" script="false" alias="A." sql="" type="List" method="PerfilUsuario" return="ItemList" procname="" desc ="Obtêm uma lista de Perfis de Usuários">
+			<query>
+				<![CDATA[SELECT CODPFL AS CODREF, DSCPFL AS DSCREF FROM TBCADPFL WHERE STAREC=1 ORDER BY CODPFL]]>
+			</query>
+		</item>
+		<item reference="" procbase="" script="false" alias="A." sql="" type="List" method="Empresas" return="ItemList" procname="" desc ="Obtêm uma lista de Empresas">
+			<query>
+				<![CDATA[select NIDGER AS CODREF, NOMFAN as DSCREF FROM TBCADGER WHERE STAREC=1 1 AND CODATR=1]]>
+			</query>
+		</item>
+
+		<item reference="195" procbase="" script="false" alias="A." sql="" type="List" method="TipoUsuario" return="ItemList" procname="" desc ="Obtêm uma lista de Tipos de Usuário">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=195 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+		<item reference="1" procbase="" script="false" alias="A." sql="" type="List" method="Paises" return="ItemList" procname="" desc ="Obtêm uma lista de Paises">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=1 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+		<item reference="2" procbase="" script="false" alias="A." sql="" type="List" method="UF" return="ItemList" procname="" desc ="Obtêm uma lista de UF">
+			<query>
+				<![CDATA[SELECT KEYTXT AS TXTREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=2 AND STAREC=1 ORDER BY KEYTXT]]>
+			</query>
+		</item>
+		<item reference="7" procbase="" script="false" alias="A." sql="" type="List" method="StatusRegistro" return="ItemList" procname="" desc ="Obtêm uma lista de Status de Registro">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=7 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+		<item reference="92" procbase="" script="false" alias="A." sql="" type="List" method="PersonalidadeJuridica" return="ItemList" procname="" desc ="Obtêm uma lista de Personalidade Juridica">
+			<query>
+				<![CDATA[SELECT KEYTXT AS TXTREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=92 AND STAREC=1 ORDER BY KEYTXT]]>
+			</query>
+		</item>
+		<item reference="47" procbase="" script="false" alias="A." sql="" type="List" method="OperadorasTelefonia" return="ItemList" procname="" desc ="Obtêm uma lista de Operadoras de Telefonia">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=47 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+		<item reference="194" procbase="" script="false" alias="A." sql="" type="List" method="ValidaCMF" return="ItemList" procname="" desc ="Obtêm uma lista de Tipos de Validação de CMF">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=194 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+		<item reference="198" procbase="" script="false" alias="A." sql="" type="List" method="TiposContato" return="ItemList" procname="" desc ="Obtêm uma lista de Tipos de Contato">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=198 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+		<item reference="199" procbase="" script="false" alias="A." sql="" type="List" method="TiposEndereco" return="ItemList" procname="" desc ="Obtêm uma lista de Tipos de Endereço">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=199 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+		<item reference="196" procbase="" script="false" alias="A." sql="" type="List" method="Especialidades" return="ItemList" procname="" desc ="Obtêm uma lista Especialidades">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=196 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+		<item reference="81" procbase="" script="false" alias="A." sql="" type="List" method="TiposLogradouro" return="ItemList" procname="" desc ="Obtêm uma lista de Tipos de Logradouro">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=81 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+		<item reference="76" procbase="" script="false" alias="A." sql="" type="List" method="EstadoCivil" return="ItemList" procname="" desc ="Obtêm uma lista de Estado Civil">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=76 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+		<item reference="80" procbase="" script="false" alias="A." sql="" type="List" method="Macionalidades" return="ItemList" procname="" desc ="Obtêm uma lista de Nacionalidades">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=80 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+		<item reference="8" procbase="" script="false" alias="A." sql="" type="List" method="GeneroHumano" return="ItemList" procname="" desc ="Obtêm uma lista de Genero Humano">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=8 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+		<item reference="193" procbase="" script="false" alias="A." sql="" type="List" method="GeneroAnimal" return="ItemList" procname="" desc ="Obtêm uma lista de Genero Animal">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=193 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+
+		<item reference="192" procbase="" script="false" alias="A." sql="" type="List" method="Associacoes" return="ItemList" procname="" desc ="Obtêm uma lista de Associações do Cadastro Geral">
+			<query>
+				<![CDATA[SELECT KEYCOD AS CODREF, DSCTAB AS DSCREF FROM TBTABGER WHERE NUMTAB=192 AND STAREC=1 ORDER BY KEYCOD]]>
+			</query>
+		</item>
+
+
+	</lists>
+	<actions>
+
+		<item  modifier="static" script="true" alias="" sql="" responsemode="1" method="Logout" return="int" returnmode="2" procname="PRCADUSULOGOUT" desc ="Efetua o logout de usuário" returnvalue="1">
+			<query>
+				<![CDATA[
+ SET pRETURN_VALUE=0;
+	IF(EXISTS (SELECT 1 FROM RGLOGACE WHERE NIDLOG = pNIDLOG)) THEN
+       BEGIN
+			UPDATE RGLOGACE 
+               SET STAREC =0,
+                   DATOUT = NOW()
+			 WHERE NIDLOG = pNIDLOG 
+               AND STAREC = 1;
+               
+                IF (ROW_COUNT()>0) THEN
+                    SET pRETURN_VALUE=1;
+				END IF;
+       END;
+	END IF;
+]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="false" desc ="ID de Auditoria" name="NIDAUD" type="System.Int32" default="" output="" null="false"/>
+			</parameters>
+
+
+		</item>
+
+	
+	</actions>
+
+</root>
+

@@ -1,0 +1,1167 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root nsw="Maze">
+
+  <item create="true"  id="1" name="TBCADGER" friendlyname="GeneralRegistry" modelversion="3" descriptor="Cadastro Geral">
+    <UpdateKey>Key</UpdateKey>
+    <audit>true</audit>
+    <keyaudit>CODUSU</keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable>SELECT CODUSU,CODATR,SRCUSU,NIVCFA,STAUSU,TIPUSU,TIPPES,CODPJU,NUMIRG,CODCMF,NOMUSU,NOMMAE,DATNAC,ATRPPE,DSCOCO,CODNAC,STAREC,DATCAD,DATUPD,UPDUSU FROM TBCADGER WHERE CODUSU=-1</SqlTable>
+    <fieldreturn>@CODUSU</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <IdNextNumber>1</IdNextNumber>
+    <SetNextNumber>CODUSU</SetNextNumber>
+    <MaxFields></MaxFields>
+
+
+    <insertcommand  webtype="POST"  key="Key" fieldreturn="CODUSU" exceptionparamns="'DATCAD','DATUPD','CTLOPE'" method="Insert">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[
+        SET @CODUSU =0
+        EXEC @CODUSU = PRGETNXTNUM 1
+
+        IF(@CODUSU>0)
+        BEGIN
+            DECLARE @RETORNO INT
+            SELECT @RETORNO = CODUSU
+              FROM TBCADGER (NOLOCK)
+             WHERE CODUSU <> @CODUSU
+               AND LTRIM(RTRIM(CODCMF)) = @CODCMF
+               AND CODATR = @CODATR
+               AND SRCUSU = @SRCUSU
+               AND STAREC = 1
+            if(@RETORNO IS NOT NULL)
+               SET @RETURN_VALUE = -3;
+        END]]>
+      </pre>
+      <body>
+
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+        <return value="-3" message="" error="ALREADYEXISTCMF"/>
+      </returns>
+    </insertcommand>
+    <updatecommand  webtype="POST"  key="key" fieldreturn="CODUSU" exceptionparamns="'DATCAD'" method="Update">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+
+    <view>
+      <item script="true" alias="A." sql="" method="" return="" procname="VWCADGER" desc ="Visualização de Registros da Tabela Geral">
+        <query>
+          <![CDATA[
+SELECT A.*, B.DSCSTA,C.DSCTUS, D.DSCATR, E.DSCTAB AS DSCNAC, ISNULL(F.NOMUSU,'') AS DSCUSU 
+,ISNULL(G.DSCTAB,'') AS DSCREC
+,ISNULL(H.DSCTAB,'') AS DSCPES
+,ISNULL(I.DSCTAB,'') AS DSCPJU
+FROM TBCADGER (NOLOCK) A
+INNER JOIN TBCADSTA (NOLOCK) B ON (B.CODSTA = A.STAUSU)
+INNER JOIN TBTIPUSU (NOLOCK) C ON (C.TIPUSU = A.TIPUSU)
+INNER JOIN TBTIPATR (NOLOCK) D ON (D.CODATR = A.CODATR)
+INNER JOIN TBTABGER (NOLOCK) E ON (E.NUMTAB=1 AND E.KEYCOD= A.CODNAC)
+LEFT JOIN TBCADGER (NOLOCK) F ON (F.CODUSU = A.SRCUSU)
+INNER JOIN TBTABGER (NOLOCK) G ON (G.NUMTAB=7 AND G.KEYCOD= A.STAREC)
+INNER JOIN TBTABGER (NOLOCK) H ON (H.NUMTAB=13 AND H.KEYTXT= A.TIPPES)
+INNER JOIN TBTABGER (NOLOCK) I ON (I.NUMTAB=8 AND I.KEYTXT= A.CODPJU)
+        ]]>
+        </query>
+      </item>
+    </view>
+
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="GeneralRegistry" procname="PRCADGERSEL" desc ="Seleciona o registro de acordo com o Código do Usuário">
+        <query>
+          <![CDATA[SELECT * FROM TBCADGER (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Usuario" name="CODUSU" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" type="List" method="List" return="GeneralRegistry" procname="PRCADGERSELALL" desc ="Seleciona o registro de acordo com o Código do Usuário">
+        <query>
+          <![CDATA[SELECT * FROM TBCADGER (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Atributo" name="CODATR" type="short"  sysnull="true" default="" output="" null="null"/>
+        </parameters>
+      </item>
+      
+      <item script="true" alias="A." sql="" type="List" method="FindByName" return="GeneralRegistry" procname="PRCADGERSELNAM" desc ="Efetua uma busca com base no nome e atributo especifico">
+        <query>
+          <![CDATA[SELECT * FROM TBCADGER (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" islike="true" desc ="Nome ou Parte a Procurar" name="NOMUSU" type="System.String" size="70" default="" output="" null="true"/>
+          <parameter input="true" apply="true" desc ="Código do Atributo" name="CODATR" type="short" sysnull="true" default="" output="" null="true"/>
+        </parameters>
+      </item>
+
+    </selectcommand>
+    <transfercommand>
+      <item script="true" alias="A." sql="" method="" return="GeneralRegisters" procname="" desc ="Obtêm os registros e vinculos do Cadastro Geral">
+        <query>
+          <![CDATA[SELECT * FROM VWCADGER]]>
+        </query>
+      </item>
+    </transfercommand>
+
+    <methods>
+      <item script="true" alias="A." sql="" method="ValidateEntryCMF" return="int" returnmode="2" procname="PRCADGERVALENTRCMF" desc ="Valida um CPF/CNPJ já existente para o mesmo atributo na base de cadastro geral" returnvalue="0">
+        <query>
+          <![CDATA[
+DECLARE @RETURN_VALUE INT =0;
+DECLARE @RETORNO INT
+SELECT @RETORNO = CODUSU 
+  FROM TBCADGER (NOLOCK)
+ WHERE CODUSU <> @CODUSU
+	 AND LTRIM(RTRIM(CODCMF)) = @CODCMF
+	 AND CODATR = @CODATR
+	 AND SRCUSU = @SRCUSU   
+	 AND STAREC = 1
+if(@RETORNO IS NOT NULL)
+	SET @RETURN_VALUE = @RETORNO;
+SELECT @RETURN_VALUE    
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Código do Atributo" name="CODATR" type="short" default="" output="" null="false"/>
+          <parameter input="true" desc ="Código do Usuário" name="CODUSU" type="int" default="" output="" null="false"/>
+          <parameter input="true" desc ="CPF/CNPJ" name="CODCMF"  size="15" type="System.String" default="" output="" null="false"/>
+          <parameter input="true" desc ="Usuário Gestor" name="SRCUSU" type="System.Int32" default="" output="" null="false"/>
+        </parameters>
+      </item>
+
+      <item script="true" alias="A." sql="" method="PesquisarCMF" return="int" returnmode="2" procname="PRCADUSUPSQCMF" desc ="Verifica se já existe um cadastro com o CPF/CNPJ cadastrado, e retorna o id localizado" returnvalue="0">
+        <query>
+          <![CDATA[
+DECLARE @RETURN_VALUE INT =0;
+DECLARE @RETORNO INT 
+SELECT @RETORNO = CODUSU FROM TBCADGER (NOLOCK) 
+ WHERE CODCMF = @CODCMF
+	 AND CODATR = @CODATR
+  if(@RETORNO IS NOT NULL)
+		SET @RETURN_VALUE = @RETORNO;
+	SELECT @RETURN_VALUE    
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Código do Atributo" name="CODATR" type="System.Int16" default="" output="" null="false"/>
+          <parameter input="true" desc ="CPF/CNPJ" name="CODCMF" type="System.String" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </methods>
+  </item>
+
+
+  <item create="true"  id="2" name="TBTIPATR" friendlyname="AttributeType" modelversion="3" descriptor="Tipo de Atributo">
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable>
+      
+    </SqlTable>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <extendedmodel>SELECT A.*, B.DSCTAB AS DSCREC, ISNULL(C.LGNUSU,'') LGNUSU FROM TBTIPATR (NOLOCK) A INNER JOIN TBTABGER (NOLOCK) B ON (B.NUMTAB=7 AND B.KEYCOD = A.STAREC) LEFT JOIN TBLGNUSU (NOLOCK) C ON (C.CODUSU = A.UPDUSU)</extendedmodel>
+
+    <insertcommand key="Key" fieldreturn="CODATR" exceptionparamns="'DATCAD','DATUPD'" method="Insert">
+      <maxfield field="CODATR"/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" fieldreturn="CODATR" exceptionparamns="'DATCAD'" method="Update">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>  
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="AttributeType" procname="PRTIPATRSEL" desc ="Obtêm o registro do tipo de atributo informado">
+        <query>
+          <![CDATA[SELECT * FROM TBTIPATR (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Atributo" name="CODATR" type="short" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" method="List" type="List" return="AttributeType" procname="PRTIPATRLST" desc ="Obtêm todos os registros de tipo de atributo cadastrados">
+        <query order="A.CODATR">
+          <![CDATA[SELECT A.*, DSCTAB AS DSCREC, ISNULL(LGNUSU,'') LGNUSU FROM TBTIPATR (NOLOCK) A
+INNER JOIN TBTABGER (NOLOCK) B ON (B.NUMTAB=7 AND B.KEYCOD = A.STAREC)
+LEFT JOIN TBLGNUSU (NOLOCK) C ON (C.CODUSU = A.UPDUSU)
+]]>
+        </query>
+      </item>
+    </selectcommand>
+  </item>
+
+
+  <item create="true"  id="3" name="TBCADUFE" friendlyname="UnitsFederation" modelversion="3" descriptor="Unidades da Federação">
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable>
+    </SqlTable>
+    <fieldreturn>@CODUSU</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+
+    <insertcommand key="Identity" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" method="Insert">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+
+        IF(EXISTS( SELECT 1 FROM TBCADUFE WHERE CODUFE=@CODUFE))
+          SET @RETURN_VALUE=-2;
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="Identity" fieldreturn="" exceptionparamns="'DATCAD'" method="Update">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="UnitsFederation" procname="PRCADUFESEL" desc ="Obtêm o registro da unidade da Federação">
+        <query><![CDATA[SELECT * FROM TBCADUFE (NOLOCK) A]]></query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Unidade da Federação" name="CODUFE" type="System.String"  size="2" default="" output="" null="false"/>
+        </parameters>
+      </item>
+
+      <item script="true" alias="A." sql="" method="Select" return="UnitsFederation" procname="PRCADUFESELNUM" desc ="Obtêm o registro da unidade da Federação através do ID de Registro">
+        <query><![CDATA[SELECT * FROM TBCADUFE (NOLOCK) A]]></query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Unidade da Federação" name="NUMUFE" type="System.Int32"  default="" output="" null="false"/>
+        </parameters>
+      </item>
+
+      <item script="true" alias="A." sql="" method="List" type="List" return="UnitsFederation" procname="PRCADUFELST" desc ="Obtêm todos os registros de Unidade da Federação">
+        <query order="A.CODUFE">
+          <![CDATA[SELECT * FROM TBCADUFE (NOLOCK) A ]]>
+        </query>
+      </item>
+    </selectcommand>
+  </item>
+
+
+  <item create="true"  id="4" name="TBTIPECV" friendlyname="CivilStatus" modelversion="3" descriptor="Status Civil">
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable>
+      <!--SELECT CODUSU,CODATR,STAREC,STAUSU,DATCAD,DATUPD,UPDUSU,TIPUSU,CODPJU,TIPPES,NUMIRG,CODCMF,KEYUSU,SUPLGN,LGNUSU,PSWRST,PSWUSU,NOMUSU,NOMMAE,DATNAC,ULTACE,SRCUSU,RECAGV,CODUSI,ANTCRC,ADMUSU,NIVCFA FROM dbo.TBCADUSU-->
+    </SqlTable>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+
+    <insertcommand key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" method="Insert">
+      <maxfield field="CODECV"/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" fieldreturn="" exceptionparamns="'DATCAD'" method="Update">
+      <maxfield field="CODECV"/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="CivilStatus" procname="PRCADGERSEL" desc ="Obtêm o registro do Estado Civil fornecido">
+        <query><![CDATA[SELECT * FROM TBTIPECV (NOLOCK) A]]></query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Estado Civil" name="CODECV" type="System.Byte"  size="2" default="" output="" null="false"/>
+        </parameters>
+      </item>
+
+      <item script="true" alias="A." sql="" method="List" type="List" return="CivilStatus" procname="" desc ="Obtêm todos os registros de Estado Civil">
+        <query order="A.CODECV">
+          <![CDATA[SELECT * FROM TBTIPECV (NOLOCK) A ]]>
+        </query>
+      </item>
+    </selectcommand>
+  </item>
+
+  <item create="true"  id="5" name="TBTIPUSU" friendlyname="UserType" modelversion="3" descriptor="Tipo de Usuário">
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable>
+      <!--SELECT CODUSU,CODATR,STAREC,STAUSU,DATCAD,DATUPD,UPDUSU,TIPUSU,CODPJU,TIPPES,NUMIRG,CODCMF,KEYUSU,SUPLGN,LGNUSU,PSWRST,PSWUSU,NOMUSU,NOMMAE,DATNAC,ULTACE,SRCUSU,RECAGV,CODUSI,ANTCRC,ADMUSU,NIVCFA FROM dbo.TBCADUSU-->
+    </SqlTable>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <insertcommand key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" method="Insert">
+      <maxfield field="TIPUSU"/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" fieldreturn="" exceptionparamns="'DATCAD'" method="Update">
+      <maxfield field="TIPUSU"/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="UserType" procname="PRTIPUSUSEL" desc ="Obtêm o registro do Tipo de Usuário fornecido">
+        <query><![CDATA[SELECT * FROM TBTIPUSU (NOLOCK) A]]></query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Tipo de Usuário" name="TIPUSU" type="System.Byte"  size="2" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" method="List" type="List" return="UserType" procname="PRTIPUSUSELALL" desc ="Obtêm todos os registros de Tipo de Usuário">
+        <query order="A.TIPUSU">
+          <![CDATA[SELECT * FROM TBTIPUSU (NOLOCK) A ]]>
+        </query>
+      </item>
+    </selectcommand>
+  </item>
+
+
+  <item create="true"  id="5" name="TBTIPUSU" friendlyname="UserType" modelversion="3" descriptor="Tipo de Usuário">
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable>
+    </SqlTable>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <insertcommand key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" method="Insert">
+      <maxfield field="TIPUSU"/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" fieldreturn="" exceptionparamns="'DATCAD'" method="Update">
+      <maxfield field="TIPUSU"/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="UserType" procname="PRCADGERSEL" desc ="Obtêm o registro do Tipo de Usuário fornecido">
+        <query><![CDATA[SELECT * FROM TBTIPUSU (NOLOCK) A]]></query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Estado Civil" name="CODECV" type="System.Byte"  size="2" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" method="List" type="List" return="UserType" procname="" desc ="Obtêm todos os registros de Tipo de Usuário">
+        <query order="A.TIPUSU">
+          <![CDATA[SELECT * FROM TBTIPUSU (NOLOCK) A ]]>
+        </query>
+      </item>
+    </selectcommand>
+  </item>
+
+
+  <item create="true"  id="6" name="TBLGNUSU" friendlyname="LoginUser" modelversion="3" descriptor="Login de Usuário">
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable></SqlTable>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <insertcommand key="Identity" fieldreturn="LGNNUM" exceptionparamns="'DATCAD','DATUPD'" method="Insert">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+     <![CDATA[
+SET @RETURN_VALUE = 0      
+
+IF(@LGNUSU='')
+   SET @RETURN_VALUE=-2;
+   
+IF(@RETURN_VALUE=0)
+  BEGIN
+    IF(LEN(@LGNUSU)<3)
+       SET @RETURN_VALUE=-3;
+  END
+
+IF(@RETURN_VALUE=0)
+  BEGIN
+    IF(@PSWUSU='')
+       SET @RETURN_VALUE=-5;
+  END
+
+IF(@RETURN_VALUE=0)
+   BEGIN
+      IF(EXISTS( SELECT 1 FROM TBLGNUSU (NOLOCK) WHERE CODUSU<>@CODUSU AND LGNTYP=@LNGTYP AND LGNUSU=@LGNUSU )
+        SET @RETURN_VALUE=-4;
+   END        
+
+IF(@RETURN_VALUE=0)
+   BEGIN
+      IF(EXISTS( SELECT 1 FROM TBLGNUSU (NOLOCK) WHERE CODUSU=@CODUSU AND LGNTYP=@LNGTYP AND PSWUSU=@PSWUSU )
+        SET @RETURN_VALUE=-6;
+   END        
+
+
+      ]]>
+         
+      </pre>
+      <body>
+      </body>
+      <pos>
+        <![CDATA[
+    IF(@RETURN_VALUE>0 AND @REGATV=1 AND @STAREC=1)
+              BEGIN
+                UPDATE TBLGNUSU
+                   SET REGATV = 0
+                 WHERE CODUSU = @CODUSU
+                   AND LGNTYP = @LGNTYP
+                   AND LGNNUM <> @LGNNUM
+                   AND STAREC = 1
+                   AND @REGATV = 1
+              END
+      ]]>
+        
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="LOGINBLANK"/>
+        <return value="-3" message="" error="INVALID_LOGIN"/>        
+        <return value="-4" message="" error="LOGINALREADYEXISTS"/>
+        <return value="-5" message="" error="PASSWORDEMPTY"/>
+        <return value="-6" message="" error="PASSOWRDALREADYEXISTS"/>        
+      </returns>
+    </insertcommand>
+    <updatecommand key="Identity" fieldreturn="LGNNUM" exceptionparamns="'DATCAD'" method="Update">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[
+SET @DATUPD=GETDATE();
+SET @RETURN_VALUE = 0      
+
+IF(@LGNUSU='')
+   SET @RETURN_VALUE=-2;
+   
+IF(@RETURN_VALUE=0)
+  BEGIN
+    IF(LEN(@LGNUSU)<3)
+       SET @RETURN_VALUE=-3;
+  END
+
+IF(@RETURN_VALUE=0)
+  BEGIN
+    IF(@PSWUSU='')
+       SET @RETURN_VALUE=-5;
+  END
+
+IF(@RETURN_VALUE=0)
+   BEGIN
+      IF(EXISTS( SELECT 1 FROM TBLGNUSU (NOLOCK) WHERE CODUSU<>@CODUSU AND LGNTYP=@LNGTYP AND LGNUSU=@LGNUSU )
+        SET @RETURN_VALUE=-4;
+   END        
+
+IF(@RETURN_VALUE=0)
+   BEGIN
+      IF(EXISTS( SELECT 1 FROM TBLGNUSU (NOLOCK) WHERE CODUSU=@CODUSU AND LGNTYP=@LNGTYP AND PSWUSU=@PSWUSU )
+        SET @RETURN_VALUE=-6;
+   END        
+      
+      ]]>
+        
+        
+      </pre>
+      <body>
+      </body>
+      <pos>
+        <![CDATA[
+    IF(@RETURN_VALUE>0 AND @REGATV=1 AND @STAREC=1)
+              BEGIN
+                UPDATE TBLGNUSU
+                   SET REGATV = 0
+                 WHERE CODUSU = @CODUSU
+                   AND LGNTYP = @LGNTYP
+                   AND LGNNUM <> @LGNNUM
+                   AND STAREC = 1
+                   AND @REGATV = 1
+              END
+      ]]>
+
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="LOGINBLANK"/>
+        <return value="-3" message="" error="INVALID_LOGIN"/>
+        <return value="-4" message="" error="LOGINALREADYEXISTS"/>
+        <return value="-5" message="" error="PASSWORDEMPTY"/>
+        <return value="-6" message="" error="PASSOWRDALREADYEXISTS"/>
+      </returns>
+    </updatecommand>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="LoginUser" procname="PRLGNUSUSEL" desc ="Obtêm o registro de Login do Usuário">
+        <query><![CDATA[SELECT * FROM TBLGNUSU (NOLOCK) A]]></query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID de Registro de Login" name="LGNNUM" type="System.Int32"  default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    <methods>
+      
+      
+      <item script="true" alias="A." sql="" method="Login" return="int" returnmode="2" procname="PRLGNUSULOG" desc ="Efetua um login com base nas credenciais de acesso" returnvalue="0" remarks="Códigos de Retorno@          -1 = O Usuário deverá fazer o reset de senha@          -2 = Usuário não existente@          >0 = Id de Registro de Login">
+        <query>
+          <![CDATA[
+DECLARE @RETURN_VALUE INT =0        
+DECLARE @LGNNUM INT=0
+IF(@LGNTYP=1)
+   BEGIN
+       SELECT @LGNNUM = LGNNUM
+                FROM TBLGNUSU (NOLOCK) 
+		           WHERE LGNUSU = @LGNUSU
+				         AND PSWUSU = @PSWUSU
+					       AND STAREC = 1
+                 AND REGATV = 1
+   END
+
+IF(@LGNTYP=4)
+   BEGIN
+       SELECT @LGNNUM = LGNNUM 
+         FROM TBLGNUSU (NOLOCK) L
+        INNER JOIN TBCADUSU (NOLOCK) U ON (U.CODUSU = L.CODUSU)
+        WHERE (U.CODCMF = @LGNUSU AND L.PSWUSU = @PSWUSU AND U.STAUSU = 2 AND U.STAREC = 1)
+          AND (L.STAREC=1 AND L.REGATV=1)
+   END
+
+IF(@LGNTYP=2)
+   BEGIN
+		SELECT @LGNNUM = LGNNUM
+      FROM TBLGNUSU (NOLOCK) L
+	   INNER JOIN TBCADCTO (NOLOCK) E ON (E.CODUSU = L.CODUSU)
+     WHERE (E.DSCEND = @LGNUSU AND L.PSWUSU = @PSWUSU AND E.TIPEND = 3 AND E.REGATV=1 AND E.STAREC=1)
+       AND (L.STAREC = 1 AND L.REGATV = 1)))
+   END 
+
+SET @LGNNUM = ISNULL(@LGNNUM,0) 
+IF(@LGNNUM>0)
+  BEGIN
+    SELECT @RSTPSW = RSTPSW FROM TBLGNUSU(NOLOCK) WHERE LGNNUM=@LGNNUM 
+    IF(@RSTPSW=1)
+        SET @RETURN_VALUE=-1
+    ELSE
+        BEGIN
+          UPDATE TBLGNUSU SET ULTACE = GETDATE() WHERE LGNNUM=@LGNNUM 
+          SET @RETURN_VALUE=@LGNNUM
+        END
+  END
+ELSE
+    SET @RETURN_VALUE=-2;
+   
+RETURN @RETURN_VALUE;   
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Tipo de Acesso" name="LGNTYP" type="System.Byte" default="" output="" null="false"/>
+          <parameter input="true" desc ="Login" name="LGNUSU" type="System.String" size="50"  default="" output="" null="false"/>
+          <parameter input="true" desc ="Senha" name="PSWUSU" type="System.String" size="255" default="" output="" null="false"/>
+        </parameters>
+        <returns>
+          <return value="-1" message="" error="LOGINCREDENTIALNEEDRESET"/>
+          <return value="-2" message="" error="USERNOTFOUND"/>          
+        </returns>
+      </item>
+    </methods>
+  </item>
+
+
+  <item create="true"  id="7" name="TBCADEND" friendlyname="AddressBook" modelversion="3" descriptor="Cadasto de Endereços">
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable>
+      <!--SELECT CODUSU,CODATR,STAREC,STAUSU,DATCAD,DATUPD,UPDUSU,TIPUSU,CODPJU,TIPPES,NUMIRG,CODCMF,KEYUSU,SUPLGN,LGNUSU,PSWRST,PSWUSU,NOMUSU,NOMMAE,DATNAC,ULTACE,SRCUSU,RECAGV,CODUSI,ANTCRC,ADMUSU,NIVCFA FROM dbo.TBCADUSU-->
+    </SqlTable>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <insertcommand key="Key" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" method="Insert">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[
+    DECLARE @DATCAD DATETIME
+    SET @DATCAD = GETDATE()
+    SET @RETURN_VALUE=0        
+    IF(@DSCEND IS NULL OR @DSCEND='')
+       SET @RETURN_VALUE=-3
+       
+    IF(@RETURN_VALUE = 0)
+      EXEC @RETURN_VALUE = PRCADENDFND @CODUSU, @DSCEND, @TIPEND
+    
+    IF(@RETURN_VALUE = 0)
+       BEGIN
+          IF(@TIPEND NOT IN (3,4,0))
+            BEGIN
+              IF((@CODCEP='00000000') OR (@CODUFE=''))
+                SET @STAREC=13
+            END
+      END
+      ]]>
+      </pre>
+      <body>
+      </body>
+      <pos>
+        <![CDATA[
+    IF(@RETURN_VALUE>0 AND @REGATV=1 AND @STAREC=1)
+              BEGIN
+                UPDATE TBCADEND
+                   SET REGATV = 0
+                 WHERE CODUSU = @CODUSU
+                   AND TIPEND = @TIPEND
+                   AND CODEND <> @RETURN_VALUE
+                   AND STAREC = 1
+                   AND @REGATV = 1
+              END
+      ]]>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-3" message="" error="INVALIDADDRESS"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" fieldreturn="" exceptionparamns="'DATCAD'" method="Update">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[
+    SET @DATUPD=GETDATE();
+    SET @RETURN_VALUE=0        
+    IF(@DSCEND IS NULL OR @DSCEND='')
+       SET @RETURN_VALUE=-3
+    
+    IF(@RETURN_VALUE = 0)
+       BEGIN
+          IF(@TIPEND NOT IN (3,4,0))
+            BEGIN
+              IF((@CODCEP='00000000') OR (@CODUFE=''))
+                SET @STAREC=13
+            END
+      END
+      ]]>
+      </pre>
+      <body>
+      </body>
+      <pos>
+        <![CDATA[
+          IF(@RETURN_VALUE>0 AND @REGATV=1)
+              BEGIN
+                UPDATE TBCADEND
+                   SET REGATV = 0
+                 WHERE CODUSU = @CODUSU
+                   AND CODATR = @CODATR
+                   AND TIPEND = @TIPEND
+                   AND USUATR = @USUATR
+                   AND CODEND <> @RETURN_VALUE
+                   AND STAREC = 1
+                   AND @REGATV = 1
+              END
+      ]]>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+        <return value="-3" message="" error="INVALIDADDRESS"/>
+      </returns>
+    </updatecommand>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="AddressBook" procname="PRCADENDSEL" desc ="Obtêm o registro de Endereço">
+        <query><![CDATA[SELECT * FROM TBCADEND (NOLOCK) A]]></query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Endereço" name="CODEND" type="System.Int32"  default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" method="SelectList" type="List" return="AddressBook" procname="PRCADENDSELUSU" desc ="Obtêm uma lista de todos os endereços de um usuário">
+        <query><![CDATA[SELECT * FROM TBCADEND (NOLOCK) A]]></query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Usuário" name="CODUSU" type="System.Int32" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Tipo de Endereço" name="TIPEND" type="System.Byte" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Registro Ativo" name="REGATV" type="System.Byte" default="1" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Status de Registro" name="STAREC" type="System.Byte" default="1" output="" null="false"/>
+        </parameters>
+      </item>
+
+    </selectcommand>
+    <methods>
+      <item script="true" alias="A." sql="" method="Find" return="int" returnmode="2" procname="PRCADENDFND" desc ="Localiza o ID de um endereço com base nos parametros fornecidos" returnvalue="0">
+        <query>
+          <![CDATA[
+DECLARE @RETURN_VALUE INT = 0
+SELECT TOP 1 @RETURN_VALUE = COALESCE(CODEND,0) 
+  FROM TBCADEND (NOLOCK) 
+ WHERE STAREC = 1
+   AND CODUSU = @CODUSU  
+   AND DSCEND = @DSCEND
+	 AND TIPEND = @TIPEND    
+	 AND (@REGATV IS NULL OR REGATV = @REGATV)       
+RETURN @RETURN_VALUE
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Código do Usuário" name="CODUSU" type="int" default="" output="" null="false"/>
+          <parameter input="true" desc ="Descrição do Endereço" name="DSCEND" type="System.String" size="70"  default="" output="" null="false"/>
+          <parameter input="true" desc ="Tipo de Endereço" name="TIPEND" type="System.Byte" default="" output="" null="false"/>
+          <parameter input="true" desc ="Status de Registro" name="REGATV" type="System.Byte"  sysnull="true" default="" output="" null="true"/>
+        </parameters>
+      </item>
+    </methods>
+  </item>
+
+  <item create="true"  id="8" name="TBCADCTO" friendlyname="ContactBook" modelversion="3" descriptor="Tabela de Contatos">
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+
+    <insertcommand key="Identity" exceptionparamns="'DATCAD','DATUPD'" procname="" method="Insert">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[
+		SELECT @RETURN_VALUE = ISNULL(CODCTO,0) 
+      FROM TBCADCTO (NOLOCK)    
+     WHERE CODPAI = @CODPAI
+  	   AND CODOPR = @CODOPR
+			 AND NUMDDD = @NUMDDD
+			 AND NUMTEL = @NUMTEL
+			 AND TIPCTO = @TIPCTO
+			 AND CODUSU = @CODUSU
+			 AND CODEND = @CODEND
+      ]]>
+
+
+      </pre>
+      <body></body>
+      <pos>
+        <![CDATA[
+        IF(@RETURN_VALUE>0)
+            BEGIN
+                UPDATE TBCADCTO 
+                   SET REGATV = 0 
+                 WHERE CODUSU = @CODUSU
+                   AND TIPCTO = @TIPCTO
+                   AND CODCTO <> @RETURN_VALUE
+                   AND STAREC = 1
+                   AND @REGATV = 1
+            END
+      ]]>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="Identity" exceptionparamns="'DATCAD'" procname="" method="Update">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE()
+      </pre>
+      <body></body>
+      <pos>
+        <![CDATA[
+        IF(@RETURN_VALUE>0)
+          BEGIN
+              UPDATE TBCADCTO
+                 SET REGATV = 0
+               WHERE CODUSU = @CODUSU
+                 AND TIPCTO = @TIPCTO
+                 AND CODCTO <> @RETURN_VALUE
+                 AND STAREC = 1
+                 AND @REGATV = 1
+          END
+      ]]>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="ContactBook" procname="PRCADCTOSEL" desc ="Seleciona o registro de acordo com o código do cadastro de contatos">
+        <query>
+          <![CDATA[SELECT * FROM TBCADCTO (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Contato" name="CODCTO" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" method="Select" return="ContactBook" procname="PRCADCTOSELCTO" desc ="Obtêm o registro de contato de acordo com os parâmetros informados">
+        <query>
+          <![CDATA[SELECT * FROM TBCADCTO (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Usuário" name="CODUSU" type="int" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Tipo de Contato" name="TIPCTO" type="System.Byte" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Registro Ativo" name="REGATV" type="System.Byte" default="1" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Status de Registro" name="STAREC" type="System.Byte" default="1" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    <selectallcommand>
+      <item script="true" alias="A." sql="" method="List" type="List" return="ContactBooks" procname="PRCADCTOSELALL" desc ="Seleciona todos os registros de contato do usuário fornecido">
+        <query>
+          <![CDATA[
+SELECT A.*, B.*, D.*, C.*
+  FROM TBCADCTO(NOLOCK) A
+  LEFT JOIN TBTIPCTO(NOLOCK) C ON(A.TIPCTO = C.TIPCTO)
+  LEFT JOIN TBTABGER(NOLOCK) B ON(7 = B.NUMTAB AND A.STAREC = B.KEYCOD)
+  LEFT JOIN TBTABGER(NOLOCK) D ON(45 = D.NUMTAB AND A.CODOPR = D.KEYCOD)
+        ]]>
+        </query>
+        <body>
+          <![CDATA[
+          Query<ContactBooks, GeneralTable="", GeneralTable="", ContactType,ContactBooks="">(
+                 "PRCADCTOSELALL",
+                   map: (ContactBooks, Status, Operadora, TipoContato) =>
+                   {
+                       ContactBooks.Status = Status;
+                       ContactBooks.Operadora = Operadora;
+                       ContactBooks.TipoContato= TipoContato;
+                       return ContactBooks;
+                   },
+                  splitOn: "keytab,keytab, tipcto", param: p,commandType: CommandType.StoredProcedure, commandTimeout: 120);
+        
+        
+        ]]>
+          
+        </body>
+        <parameters>
+          <parameter input="true" desc ="Usuário" name="CODUSU" type="System.Int32" sysnull="true" default="" output="" null="true"/>
+        </parameters>
+      </item>
+    </selectallcommand>
+    <methods>
+      <item script="true" alias="A." sql="" method="Find" return="int" returnmode="5" procname="PRCADCTOFIN" desc ="Localiza um contato com base nos parâmetros fornecidos" returnvalue="0">
+        <query>
+          <![CDATA[
+DECLARE @RETURN_VALUE INT = 0
+SELECT @RETURN_VALUE = COALESCE(CODCTO,0) 
+  FROM TBCADCTO (NOLOCK) 
+ WHERE (@CODPAI IS NULL OR CODPAI = @NUMPAI)
+	 AND (@CODOPR IS NULL OR CODOPR = @CODOPR)
+	 AND (@NUMDDD IS NULL OR NUMDDD = @NUMDDD)
+	 AND (@NUMTEL IS NULL OR NUMTEL = @NUMTEL)
+   AND (@REGATV IS NULL OR REGATV = @REGATV)   
+	 AND TIPCTO = @TIPCTO
+	 AND CODUSU = @CODUSU
+	 AND CODEND = @CODEND    
+SELECT @RETURN_VALUE          
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Código do Usuário" name="CODUSU" type="System.Int32" default="" output="" null="false"/>
+          <parameter input="true" desc ="Código do Endereço" name="CODEND" type="System.Int32" default="" output="" null="false"/>
+          <parameter input="true" desc ="Tipo de Contato" name="TIPCTO" type="System.Int32" default="" output="" null="false"/>
+          <parameter input="true" desc ="Telefone" name="NUMTEL" type="System.String" size="15" default="" output="" null="false"/>
+          <parameter input="true" desc ="Código do Pais" name="CODPAI" type="System.Int16" sysnull="true" default="" output="" null="true"/>
+          <parameter input="true" desc ="Código da Operadora" name="CODOPR" type="System.Int16" sysnull="true" default="" output="" null="true"/>
+          <parameter input="true" desc ="Número do DDD" name="NUMDDD" type="System.String" size="4" sysnull="true" default="" output="" null="true"/>
+          <parameter input="true" desc ="Indicador de Atividade do Registro" name="REGATV" type="System.Byte" sysnull="true" default="" output="" null="true"/>
+        </parameters>
+      </item>
+    </methods>
+  </item>
+
+  <item create="true"  id="9" name="TBTABGER" friendlyname="GeneralTable" modelversion="3" descriptor="Tabela Geral do Sistema">
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="GeneralTable" procname="" desc ="Seleciona o registro de acordo com o id de registro da tabela geral">
+        <query>
+          <![CDATA[SELECT * FROM TBTABGER (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID de Registro da Tabela" name="KEYTAB" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" method="List" type="list" return="GeneralTable" procname="PRTABGERCOD" desc ="Seleciona um Tipo de Tabela Específica ou Todas se o número da tabela não for especificado">
+        <query order="A.KEYCOD">
+          <![CDATA[SELECT KEYCOD, KEYTXT, DSCTAB, NUMREF FROM TBTABGER (NOLOCK) A WHERE STAREC=1 AND USRDSP=1]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código da Tabela de Acesso" name="NUMTAB" type="int" default="" output="" null="true"/>
+        </parameters>
+      </item>
+
+    </selectcommand>
+    <methods>
+      <item script="true" alias="A." sql="" method="FindKey" return="int" returnmode="2" procname="PRTABGERFNDKEY" desc ="Localiza uma chave de registro com base no codigo chave" returnvalue="0">
+        <query merge="true">
+          <![CDATA[SELECT COALESCE(ISNULL(KEYTAB,0),0) FROM TBTABGER (NOLOCK) A WHERE STAREC=1]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Código do Tabela" name="NUMTAB" type="int" default="" output="" null="false"/>
+          <parameter input="true" desc ="Código Numérico da Chave" name="KEYCOD" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" method="FindKeyText" return="int" returnmode="2" procname="PRTABGERFNDTXT" desc ="Localiza uma chave de registro com base no texto chave" returnvalue="0">
+        <query merge="true">
+          <![CDATA[SELECT COALESCE(ISNULL(KEYTAB,0),0) FROM TBTABGER (NOLOCK) A WHERE STAREC=1]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Código do Tabela" name="NUMTAB" type="int" default="" output="" null="false"/>
+          <parameter input="true" desc ="Código Texto da Chave" name="KEYTXT" type="System.String" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </methods>
+    <insertcommand key="Identity" exceptionparamns="'DATCAD','DATUPD'" procname="" method="Insert">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[
+IF(@DSCTAB!='')
+  BEGIN
+    IF(EXISTS(SELECT 1 FROM TBTABGER (NOLOCK) WHERE KEYCOD=@KEYCOD AND KEYTXT=@KEYTXT AND DSCTAB=@DSCTAB))
+       SET RETURN_VALUE=-2
+  END
+      ]]>
+
+      </pre>
+      <body></body>
+      <pos></pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="A Tabela já contem um registro com a chave informada" error="FAILALL"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="Identity" exceptionparamns="'DATCAD'" procname="" method="Update">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body></body>
+      <pos></pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+      </returns>
+    </updatecommand>
+  </item>
+
+  <item create="true"  id="19" name="TBTIPCTO" friendlyname="ContactType" modelversion="3" descriptor="Tipos de Contato">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="ContactType" procname="" desc ="Seleciona o tipo de contato de acordo com o código">
+        <query>
+          <![CDATA[SELECT * FROM TBTIPCTO (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Tipo de Contato" name="TIPCTO" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+
+      <item script="true" alias="A." sql="" method="List" return="ContactType" procname="" desc ="Seleciona todos os tipos de contato existentes">
+        <query>
+          <![CDATA[SELECT * FROM TBTIPCTO (nolock) A]]>
+        </query>
+      </item>
+
+    </selectcommand>
+
+    <insertcommand key="Key" exceptionparamns="'DATCAD','DATUPD','TIPCTO'" procname="" method="Insert">
+      <maxfield field="TIPCTO"/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos></pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="Key" fieldreturn="TIPCTO" exceptionparamns="'DATCAD'" procname="" method="Update">
+      <maxfield field="TIPCTO"/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD = GETDATE();
+      </pre>
+      <body></body>
+      <pos></pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+      </returns>
+    </updatecommand>
+  </item>
+
+  <item create="true"  id="11" name="TBCADSTA" friendlyname="Transaction Status" modelversion="3" descriptor="Cadastro de Transações">
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="TransactionStatus" procname="" desc ="Seleciona o registro de acordo com o codigo do status fornecido">
+        <query>
+          <![CDATA[SELECT * FROM TBCADSTA (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Status" name="CODSTA" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" method="List" type="List" return="TransactionStatus" procname="PRCADSTASELALL" desc ="Seleciona todos os registros de status de transações de acordo com o módulo informado">
+        <query>
+          <![CDATA[SELECT A.*
+  FROM TBCADSTA A WITH (NOLOCK)
+ INNER JOIN TBTABGER B (NOLOCK) ON (7 = B.NUMTAB AND A.STAREC = B.KEYCOD)
+ INNER JOIN TBTABGER C (NOLOCK) ON (14 = C.NUMTAB AND A.CODMOD = C.KEYCOD)
+  LEFT JOIN TBCADGER D (NOLOCK) ON (A.UPDUSU = D.CODUSU)]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Módulo" name="CODMOD" type="int" sysnull="true" default="" output="" null="true"/>
+        </parameters>
+      </item>
+    </selectcommand>
+
+    <insertcommand key="key" exceptionparamns="'DATCAD','DATUPD','CODSTA'" procname="" method="Insert">
+      <maxfield field="CODSTA"/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos></pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" fieldreturn="CODSTA" exceptionparamns="'DATCAD'" procname="" method="Update">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body></body>
+      <pos></pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+      </returns>
+    </updatecommand>
+  </item>
+
+</root>

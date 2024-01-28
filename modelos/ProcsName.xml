@@ -1,0 +1,458 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<procs>
+  <item id="1" name="PRREGCCRINS" desc="Inserção de Registros na Tabela TBREGCCR" />
+  <item id="1" name="PRREGCCRSEL" desc="Seleciona o registro de acordo com o id de registro do conta corrente" />
+  <item id="1" name="PRREGCCRUPD" desc="Altera um registro da tabela TBREGCCR (Conta Corrente)  de acordo com a chave identity" />
+  <item id="1" name="PRREGTININS" desc="Inserção de Registros na Tabela TBREGTIN" />
+  <item id="1" name="PRREGTINSELRTI" desc="Seleciona o registro de acordo com o id da transação" />
+  <item id="1" name="PRREGTINSELTRA" desc="Seleciona as transações para Sondagem" />
+  <item id="1" name="PRREGTINUPD" desc="Altera um registro da tabela TBREGTIN ()  de acordo com a chave identity" />
+  <item id="1" name="PRREGTINSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRREGCCRDEL" desc="Deleta um registro da tabela TBREGCCR (Conta Corrente)  de acordo com a chave identity" />
+  <item id="1" name="SPL_STATUSREGISTRO" desc="[TABELA GERAL 7] Seleciona todos os Códigos de Status de Registro" />
+  <item id="1" name="SPL_TIPOPESSOA" desc="Seleciona todos os Códigos de Tipos de Pessoas" />
+  <item id="1" name="SPL_TARIFAS" desc="[TABELA GERAL 24] Seleciona todos os Códigos de Tarifas" />
+  <item id="1" name="SPL_TABELAGERALINDICE" desc="[TABELA GERAL 7] Seleciona os bancos cadastrados na Tabela Geral de acordo com o código de atributo 7" />
+  <item id="1" name="PRREGDLTINS" desc="Inserção de Registros na Tabela TBREGDLT" />
+  <item id="1" name="PRREGDLTSELDLT" desc="Seleciona o Detalhe de Lançamento de Transação de acordo com o id do detalhe do lançamento" />
+  <item id="1" name="PRREGDLTSELRTILIN" desc="Seleciona o Detalhe de Lançamento de Transação de acordo com o id do registro de transacao" />
+  <item id="1" name="PRREGDLTDEL" desc="Deleta um registro da tabela TBREGDLT (Detalhe Lancamento Transacao)  de acordo com a chave identity" />
+  <item id="1" name="PRREGDLTSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="SPL_SUMARIOMOVIMENTO" desc="[TABELA GERAL 41] Seleciona todos os Códigos de Sumarização de Tipos de Movimento" />
+  <item id="1" name="SPL_REGRASACESSO" desc="[TABELA GERAL 58] Seleciona todos os Códigos de Regra de Acecsso a Plataforma Livre" />
+  <item id="1" name="PRREGDLTSEL" desc="Seleciona o Detalhe de Lançamento de Transação de acordo com o id do detalhe do lançamento" />
+  <item id="1" name="PRREGDLTSELKEY" desc="Seleciona o Detalhe de Lançamento de Transação de acordo com o id do registro de transacao" />
+  <item id="1" name="PRLANINTINS" desc="Inserção de Registros na Tabela TBLANINT" />
+  <item id="1" name="PRLANINTSEL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRLANINTSELLIN" desc="Seleciona o tipo de lançamento e tipo de linha" />
+  <item id="1" name="PRLANINTUPD" desc="Altera um registro da tabela TBLANINT (Lançamento Interno)  de acordo com a chave identity" />
+  <item id="1" name="PRLANINTSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRREGTINSEL" desc="Seleciona o registro de acordo com o id da transação" />
+  <item id="1" name="PRGETUSUNOM" desc="Autenticacao de Usuário pelo sistema SAQUE E PAGUE" />
+  <item id="1" name="PRCNFTRASEP" desc="Confirmação de Transação elo sistema SAQUE E PAGUE" />
+  <item id="1" name="PRREGTINCLOLAN" desc="Executa o fechamento da Transação Interna" />
+  <item id="1" name="PRREGTINSELTRA" desc="Retorno de Dados para Fechamento pelo sistema SAQUE E PAGUE (Sonda)" />
+  <item id="1" name="PRREGTINSELDLT" desc="Lista Detalhes do Lançamento interno (Preparo para lancamento)" />
+  <item id="1" name="PRCLIEXTINS" desc="Inserção de Registros na Tabela TBCLIEXT" />
+  <item id="1" name="PRCLIEXTSEL" desc="Seleciona o registro de acordo com o id de configuracao" />
+  <item id="1" name="PRCLIEXTUPD" desc="Altera um registro da tabela TBCLIEXT (External Configuration Access)  de acordo com a chave primaria" />
+  <item id="1" name="PRCADKEYINS" desc="Inserção de Registros na Tabela TBCADKEY" />
+  <item id="1" name="PRCADKEYSEL" desc="Seleciona o registro de acordo com o id de registro" />
+  <item id="1" name="PRCADKEYUPD" desc="Altera um registro da tabela TBCADKEY (Chave de Usuario)  de acordo com a chave identity" />
+  <item id="1" name="PRCADKEYSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="SPL_TIPOCONTA" desc="[TABELA GERAL 0] Seleciona todos os Tipos de Conta" />
+  <item id="1" name="SPL_ORIGEMCONTA" desc="[TABELA GERAL 23] Seleciona todos os códigos de definição de origem de conta" />
+  <item id="1" name="PRREGTINREM" desc="Remove um registro de Transacao" />
+  <item id="1" name="PREXTTININS" desc="Inserção de Registros na Tabela TBEXTTIN" />
+  <item id="1" name="PREXTTINUPD" desc="Altera um registro da tabela TBEXTTIN ()  de acordo com a chave primaria" />
+  <item id="1" name="PREXTTINSEL" desc="Seleciona o registro de acordo com o id da transação" />
+  <item id="1" name="PRBXABOLINS" desc="Inserção de Registros na Tabela TBBXABOL" />
+  <item id="1" name="PRBXABOLUPD" desc="Altera um registro da tabela TBBXABOL (Registro de Baixa de Boleto)  de acordo com a chave identity" />
+  <item id="1" name="PRBXABOLDEL" desc="Deleta um registro da tabela TBBXABOL (Registro de Baixa de Boleto)  de acordo com a chave identity" />
+  <item id="1" name="PRBXABOLSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRBXABOLSEL" desc="Seleciona o registro de baixa de boleto de acordo com o id de baixa" />
+  <item id="1" name="PRBXABOLDELLOT" desc="Remove um lote de importação de Registro de Baixa de Boletos" />
+  <item id="1" name="PRBXABOLSELNID" desc="Retorna o id de Registro da Chave de Boleto informada" />
+  <item id="1" name="PRREGTEDINS" desc="Inserção de Registros na Tabela TBREGTED" />
+  <item id="1" name="PRREGTEDSELNID" desc="Seleciona o Registro de acordo com base no id de Registro da TED" />
+  <item id="1" name="PRREGTEDSELTRA" desc="Seleciona o Registro de TED com base no ID da Transação" />
+  <item id="1" name="PRREGTEDUPD" desc="Altera um registro da tabela TBREGTED ()  de acordo com a chave identity" />
+  <item id="1" name="PRCADTARINS" desc="Inserção de Registros na Tabela TBCADTAR" />
+  <item id="1" name="PRCADTARSEL" desc="Seleciona o ID de Tarifação de Acordo com o ID de Registro de Tarifação fornecido" />
+  <item id="1" name="PRCADTARUPD" desc="Altera um registro da tabela TBCADTAR (Tarifação)  de acordo com a chave identity" />
+  <item id="1" name="PRCADTARSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRTIPMOVINS" desc="Inserção de Registros na Tabela TBTIPMOV" />
+  <item id="1" name="PRTIPMOVSEL" desc="Seleciona o registro de acordo com o Código do Movimentos" />
+  <item id="1" name="PRTIPMOVUPD" desc="Altera um registro da tabela TBTIPMOV (Tipo de Movimento)  de acordo com a chave primaria" />
+  <item id="1" name="PRTIPMOVSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRCADUSUINS" desc="Inserção de Registros na Tabela TBCADUSU" />
+  <item id="1" name="PRCADUSUSEL" desc="Seleciona o registro de acordo com o Código do Usuário" />
+  <item id="1" name="PRCADUSUUPD" desc="Altera um registro da tabela TBCADUSU (Cadastro de Usuarios)  de acordo com a chave primaria" />
+  <item id="1" name="SPL_TIPOUSUARIO" desc="Seleciona todos os Códigos de Tipo de Usuário" />
+  <item id="1" name="PRCADUSUDEL" desc="Deleta um registro da tabela TBCADUSU (Cadastro de Usuarios)  de acordo com a chave primaria" />
+  <item id="1" name="PRREGPAGINS" desc="Inserção de Registros na Tabela TBREGPAG" />
+  <item id="1" name="PRREGPAGSEL" desc="Seleciona o registro de acordo com o Código do Usuário" />
+  <item id="1" name="PRREGPAGSELTRA" desc="Seleciona o registro de acordo com o Código do Usuário" />
+  <item id="1" name="PRREGPAGUPD" desc="Altera um registro da tabela TBREGPAG (Registro de Pagamento)  de acordo com a chave identity" />
+  <item id="1" name="PRREGPAGDEL" desc="Deleta um registro da tabela TBREGPAG (Registro de Pagamento)  de acordo com a chave identity" />
+  <item id="1" name="PRREGPAGSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRMEMCALINS" desc="Inserção de Registros na Tabela TBMEMCAL" />
+  <item id="1" name="PRCTRMENINS" desc="Inserção de Registros na Tabela TBCTRMEN" />
+  <item id="1" name="PRCTRMENSEL" desc="Seleciona o registro de mensalidade de acordo com o ID" />
+  <item id="1" name="PRCTRMENUPD" desc="Altera um registro da tabela TBCTRMEN (Mensalidades)  de acordo com a chave identity" />
+  <item id="1" name="PRCTRMENDEL" desc="Deleta um registro da tabela TBCTRMEN (Mensalidades)  de acordo com a chave identity" />
+  <item id="1" name="PRCTRMENSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="SPL_TIPOMENSALIDADE" desc="[TABELA GERAL 50] Seleciona todos os Códigos de Tipo de Mensalidade" />
+  <item id="1" name="PRREGPROINS" desc="Inserção de Registros na Tabela TBREGPRO" />
+  <item id="1" name="PRREGPROSEL" desc="Seleciona o registro de processamento de acordo com o ID" />
+  <item id="1" name="PRREGPROUPD" desc="Altera um registro da tabela TBREGPRO (Registro de Processamento)  de acordo com a chave identity" />
+  <item id="1" name="PRREGPRODEL" desc="Deleta um registro da tabela TBREGPRO (Registro de Processamento)  de acordo com a chave identity" />
+  <item id="1" name="PRIMPCSVINS" desc="Inserção de Registros na Tabela TPIMPCSV" />
+  <item id="1" name="PRIMPCSVSEL" desc="Seleciona o registro de importação de acordo com o ID" />
+  <item id="1" name="PRIMPCSVUPD" desc="Altera um registro da tabela TPIMPCSV (Dados Externos)  de acordo com a chave identity" />
+  <item id="1" name="PRIMPCSVDEL" desc="Deleta um registro da tabela TPIMPCSV (Dados Externos)  de acordo com a chave identity" />
+  <item id="1" name="PRBORCCRINS" desc="Inserção de Registros na Tabela TBBORCCR" />
+  <item id="1" name="PRBORCCRSEL" desc="Seleciona o registro de conta corrente de acordo com o ID" />
+  <item id="1" name="PRBORCCRUPD" desc="Altera um registro da tabela TBBORCCR (BorradorCC)  de acordo com a chave identity" />
+  <item id="1" name="PRCRTSALINS" desc="Inserção de Registros na Tabela TBCRTSAL" />
+  <item id="1" name="PRCTRSALSEL" desc="Seleciona o registro de mensalidade de acordo com o ID" />
+  <item id="1" name="PRCRTSALUPD" desc="Altera um registro da tabela TBCRTSAL (Card Balance)  de acordo com a chave primaria" />
+  <item id="1" name="PRCRTSALDEL" desc="Deleta um registro da tabela TBCRTSAL (Card Balance)  de acordo com a chave primaria" />
+  <item id="1" name="PRAPRLOTINS" desc="Inserção de Registros na Tabela TBAPRLOT" />
+  <item id="1" name="PRAPRLOTSEL" desc="Seleciona o registro de aprovaca de acordo com o ID" />
+  <item id="1" name="PRAPRLOTUPD" desc="Altera um registro da tabela TBAPRLOT (Aprovação Lote)  de acordo com a chave identity" />
+  <item id="1" name="PRAPRLOTSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRAUDDATINS" desc="Inserção de Registros na Tabela TBAUDDAT" />
+  <item id="1" name="PRREGTEDCRTTED" desc="Prepara a criação de um registro de inscrição de TED" />
+  <item id="1" name="SPL_BANCOATIVO" desc="Seleciona todos os Códigos de Bancos Ativos no Sistema" />
+  <item id="1" name="PRJOBRUNINS" desc="Inserção de Registros na Tabela TBJOBRUN" />
+  <item id="1" name="PRREGTEDSELUPD" desc="Seleciona os registros de TED com base no ID do Tomador da TED e o status de registro" />
+  <item id="1" name="PRREGTEDSELSTA" desc="Retorna o id de Ação para o Status da TED" />
+  <item id="1" name="PRGETSALTIPVAL" desc="Apura o montante de saldo de conta corrente, positivos e negativos" />
+  <item id="1" name="PRGETSALCODUSU" desc="Lista o saldo de conta corrente por usuário, positivos e negativos" />
+  <item id="1" name="PRCADTARCPY" desc="Copia os registros de configuração de tarifas de um usuário base para outro usuário" />
+  <item id="1" name="PRREGBOLINS" desc="Inserção de Registros na Tabela TBREGBOL" />
+  <item id="1" name="PRREGBOLSEL" desc="Seleciona o registro de acordo com o id de registro" />
+  <item id="1" name="PRREGBOLUPD" desc="Altera um registro da tabela TBREGBOL (Boleto Bancário)  de acordo com a chave identity" />
+  <item id="1" name="PRREGBOLSELABC" desc="Extrai o boleto dentro dos parâmetros do banco ABC" />
+  <item id="1" name="PRUSUCFGINS" desc="Inserção de Registros na Tabela TBUSUCFG" />
+  <item id="1" name="PRUSUCFGSEL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRUSUCFGSELNID" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRUSUCFGCPY" desc="Copia um registro de configuração para outro usuario" />
+  <item id="1" name="PRUSUCFGUPD" desc="Altera um registro da tabela TBUSUCFG (User Config)  de acordo com a chave primaria" />
+  <item id="1" name="SPI_COPIARCONFIGURACAOUSUARIO" desc="Copia um registro de configuração para outro usuario" />
+  <item id="1" name="SPL_OPERADORAS" desc="[TABELA GERAL 45] Seleciona todos os Códigos de Operadoras" />
+  <item id="1" name="PRREGBOLUSUCFGSEL" desc="Le os parâmetros de configuração do usuário informado" />
+  <item id="1" name="PRCADCTAINS" desc="Inserção de Registros na Tabela TBCADCTA" />
+  <item id="1" name="PRCADCTASEL" desc="Seleciona o registro de conta virtual de acordo com o id da conta" />
+  <item id="1" name="PRCADCTAUPD" desc="Altera um registro da tabela TBCADCTA (Cadastro de Contas)  de acordo com a chave identity" />
+  <item id="1" name="PRCADENDSELALL" desc="Seleciona todos os registros de endereço do usuário fornecido" />
+  <item id="1" name="PRCADCTALOC" desc="Localiza uma conta virtual a partir do código de usuário" />
+  <item id="1" name="PRUSUPROINS" desc="Inserção de Registros na Tabela TBUSUPRO" />
+  <item id="1" name="PRUSUPROSEL" desc="Seleciona o registro de acordo com o Código do Movimentos" />
+  <item id="1" name="PRUSUPROUPD" desc="Altera um registro da tabela TBUSUPRO ()  de acordo com a chave identity" />
+  <item id="1" name="PRUSUPROSELALL" desc="Seleciona todos os produtos do usuário fornecido" />
+  <item id="1" name="PRCADCTOINS" desc="Inserção de Registros na Tabela TBCADCTO" />
+  <item id="1" name="PRCADCTOSEL" desc="Seleciona o registro de acordo com o código do cadastro de contatos" />
+  <item id="1" name="PRCADCTOUPD" desc="Altera um registro da tabela TBCADCTO (Cadastro de Contatos)  de acordo com a chave identity" />
+  <item id="1" name="PRCADCTOSELALL" desc="Seleciona todos os registros de contato do usuário fornecido" />
+  <item id="1" name="PRCADCTOFIN" desc="Localiza um contato com base nos parâmetros fornecidos" />
+  <item id="1" name="PRCADCTOVALREGATIV" desc="Validar o registro principal de um contato" />
+  <item id="1" name="PRREGCRTINS" desc="Inserção de Registros na Tabela XIREGCRT" />
+  <item id="1" name="PRREGCRTSEL" desc="Seleciona o registro de acordo com o Código do Cartão" />
+  <item id="1" name="PRREGCRTUPD" desc="Altera um registro da tabela TBREGCRT (Registro de Cartões)  de acordo com a chave primaria" />
+  <item id="1" name="PRGSTLOTINS" desc="Inserção de Registros na Tabela TBGSTLOT" />
+  <item id="1" name="PRGSTLOTSEL" desc="Seleciona o lote de acordo com o ID do Lote" />
+  <item id="1" name="PRGSTLOTUPD" desc="Altera um registro da tabela TBGSTLOT (Lote Gerenciamento)  de acordo com a chave identity" />
+  <item id="1" name="PRGSTLOTSELALL" desc="Seleciona todos os produtos do usuário fornecido" />
+  <item id="1" name="PRLIGUSUINS" desc="Inserção de Registros na Tabela TBLIGUSU" />
+  <item id="1" name="PRLIGUSUSELPAR" desc="Seleciona o registro de ligacao de usuarios de acordo com os parâmetros fornecidos" />
+  <item id="1" name="PRLIGUSUSEL" desc="Seleciona o registro de ligacao de usuarios de acordo com o id de ligação" />
+  <item id="1" name="PRLIGUSUUPD" desc="Altera um registro da tabela TBLIGUSU (Ligação de Usuarios)  de acordo com a chave identity" />
+  <item id="1" name="PRREGROTINS" desc="Inserção de Registros na Tabela TBREGROT" />
+  <item id="1" name="PRREGROTSEL" desc="Seleciona o registro de roteiro de acordo com o ID" />
+  <item id="1" name="PRREGROTDEL" desc="Deleta um registro da tabela TBREGROT (Roteiro de Operacao)  de acordo com a chave identity" />
+  <item id="1" name="SPL_PLANOCOMISSIONAMENTO" desc="[TABELA GERAL 34] Seleciona todos os Códigos de Plano de Comissionamento" />
+  <item id="1" name="SPL_TIPOREGISTROMOVIMENTO" desc="[TABELA GERAL 59] Seleciona todos os Códigos de Tipo de Registro de Movimento" />
+  <item id="1" name="SPL_FINALIDADES_SAME_TUT" desc="Seleciona todos os Códigos de Finalidades de Mesma titularidade" />
+  <item id="1" name="SPL_FINALIDADES_DIF_TUT" desc="Seleciona todos os Códigos de Finalidades de Diferente Titularidade" />
+  <item id="1" name="SPL_FINALIDADES" desc="Seleciona todos os Códigos de Finalidades de Mesma titularidade" />
+  <item id="1" name="PRCADUSUVALCMF" desc="Valida um CPF/CNPJ já existente para o mesmo atributo na base de cadastro geral" />
+  <item id="1" name="PRCADUSUVALLGN" desc="Verifica se o Login já existe para outro cadastro do tipo de atributo" />
+  <item id="1" name="PRCADUSUPSQCMF" desc="Verifica se já existe um cadastro com o CPF/CNPJ cadastrado, e retorna o id localizado" />
+  <item id="1" name="PRCADCTASELALL" desc="Seleciona todos os registros de contato do usuário fornecido" />
+  <item id="1" name="PRREGBOLGETNUM" desc="Retorna o ID do Boleto a partir da chave de identificação" />
+  <item id="1" name="SPL_NIVELATRIBUICAO" desc="[TABELA GERAL 43] Seleciona todos os registros de atribuição" />
+  <item id="1" name="SPL_USUARIOCONFIGURACAO" desc="[TABELA GERAL 0] Seleciona todos os Usuarios do Nivel Gestor" />
+  <item id="1" name="SPL_USUARIOTARIFA" desc="[TABELA GERAL 0] Seleciona todos os Usuarios do Nivel Gestor" />
+  <item id="1" name="PRREGBOLSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRREGBOLUPDINF" desc="Atualiza informações complementares do Boleto" />
+  <item id="1" name="PRCADTARDEL" desc="Deleta um registro da tabela TBCADTAR (Tarifação)  de acordo com a chave identity" />
+  <item id="1" name="PRCADENDINS" desc="Inserção de Registros na Tabela TBCADEND" />
+  <item id="1" name="PRCADENDSEL" desc="Seleciona o registro de acordo com o código do cadastro de endereços" />
+  <item id="1" name="PRCADENDUPD" desc="Altera um registro da tabela TBCADEND (Cadastro de Endereços)  de acordo com a chave identity" />
+  <item id="1" name="SPL_PAISES" desc="Seleciona todos os Códigos de País" />
+  <item id="1" name="PRCADENDVALREGATIV" desc="Validar o registro principal de um endereço" />
+  <item id="1" name="PRREGTEDTYPCTA" desc="Retorna 0 se a conta for válida para lançamento" />
+  <item id="1" name="PRCADUSULSTUSU" desc="Lista usuários conforme parâmetros de pesquisa" />
+  <item id="1" name="PRREGCCRSELMOV" desc="Lista Movimento de Conta Corrente com base em código de movimento e outras funcionalidades" />
+  <item id="1" name="PRTABGER304" desc="[TABELA GERAL 304] Seleciona todos os Códigos de Finalidades de Mesma titularidade" />
+  <item id="1" name="PRTABGER305" desc="[TABELA GERAL 305] Seleciona todos os Códigos de Finalidades de Diferente Titularidade" />
+  <item id="1" name="PRTABGER304305" desc="[TABELA GERAL 304/305] Seleciona todos os Códigos de Finalidades de Mesma titularidade" />
+  <item id="1" name="PRREGBXBINS" desc="Inserção de Registros na Tabela TBREGBXB" />
+  <item id="1" name="PRREGBXBSEL" desc="Seleciona o registro de acordo com o ID de Registro de Contabilização de Baixa de Boleto" />
+  <item id="1" name="PRREGBXBUPD" desc="Altera um registro da tabela TBREGBXB ()  de acordo com a chave primaria" />
+  <item id="1" name="PRREGBXBSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRTABGER010" desc="[TABELA GERAL 10] Seleciona todos os Códigos de Sinal de Operações" />
+  <item id="1" name="SPL_BANCOS" desc="[TABELA GERAL 12] Seleciona todos os Códigos de Bancos" />
+  <item id="1" name="SPL_MODULOS" desc="[TABELA GERAL 14] Seleciona todos os Códigos de Modulos" />
+  <item id="1" name="SPL_TIPOBOLETO" desc="[TABELA GERAL 16] Seleciona todos os Códigos de Tipos de Boleto" />
+  <item id="1" name="PRTABGER911" desc="[TABELA GERAL 911] Seleciona todos os Códigos de Tipo de Valor de contabilização de Bixa de Boleto" />
+  <item id="1" name="PRTABGER920" desc="[TABELA GERAL 920] Seleciona todos os Códigos de Tipo de Registro de contabilização de Bixa de Boleto" />
+  <item id="1" name="PRREGTEDSELALL" desc="Seleciona todos os registros de Ted do tomador da TED e o status de registro" />
+  <item id="1" name="PRCADUSU007" desc="[TABELA GERAL 0] Seleciona todos os Códigos de Bancos Cadastrados no Sistema" />
+  <item id="1" name="PRBOLDLTINS" desc="Inserção de Registros na Tabela TBBOLDLT" />
+  <item id="1" name="PRBOLDLTSEL" desc="Seleciona o registro de acordo com o ID de Registro de Contabilização de Detalhe da Baixa de Boleto" />
+  <item id="1" name="PRBOLDLTUPD" desc="Altera um registro da tabela TBBOLDLT ()  de acordo com a chave identity" />
+  <item id="1" name="PRBOLDLTSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRTABGER036" desc="[TABELA GERAL 36] Seleciona todos os Códigos de Tipo de Lançamento" />
+  <item id="1" name="PRTABGER039" desc="[TABELA GERAL 39] Seleciona todos os Códigos de Indicador de Lançamento" />
+  <item id="1" name="PRTABGERINS" desc="Inserção de Registros na Tabela TBTABGER" />
+  <item id="1" name="PRTABGERUPD" desc="Altera um registro da tabela TBTABGER (Tabela Geral)  de acordo com a chave identity" />
+  <item id="1" name="PRTABGERSEL" desc="Seleciona o registro de acordo com o id de registro da tabela geral" />
+  <item id="1" name="" desc="[TABELA GERAL 51] Seleciona todos os tipos de situação de pagamento" />
+  <item id="1" name="PRTABGERFNDKEY" desc="Localiza uma chave de registro com base no codigo chave" />
+  <item id="1" name="PRTABGERFNDTXT" desc="Localiza uma chave de registro com base no texto chave" />
+  <item id="1" name="PRTABGERSELALL" desc="Seleciona todos os produtos do usuário fornecido" />
+  <item id="1" name="PRCADPROINS" desc="Inserção de Registros na Tabela TBCADPRO" />
+  <item id="1" name="PRCADPROSEL" desc="Seleciona o registro de acordo com o codigo do produto" />
+  <item id="1" name="PRCADPROUPD" desc="Altera um registro da tabela TBCADPRO (Produtos)  de acordo com a chave primaria" />
+  <item id="1" name="PRCADPROSELALL" desc="Seleciona todos os produtos" />
+  <item id="1" name="SPL_PERSONALIDADEJURIDICA" desc="[TABELA GERAL 9] Seleciona todos os registros de personalidade jurídica" />
+  <item id="1" name="SPL_PERFIL" desc="[TABELA GERAL 15] Seleciona todos os Perfis de Usuario" />
+  <item id="1" name="SPL_RECORRENCIAS" desc="[TABELA GERAL 46] Seleciona todas as recorrencias cadastradas" />
+  <item id="1" name="SPL_PRODUTOS" desc="[TABELA GERAL 0] Seleciona todos os Produtos" />
+  <item id="1" name="SPL_PRODUTOUSUARIO_LIST" desc="[TABELA GERAL 0] Seleciona todos os Produtos associados a um usuário" />
+  <item id="1" name="PRCADSTALST" desc="[TABELA GERAL 0] Seleciona o Status relacionado a um determinado módulo" />
+  <item id="1" name="SPL_TIPOBENEFICIARIO" desc="[TABELA GERAL 20] Seleciona todos os Tipos de Beneficiarios" />
+  <item id="1" name="SPL_SUBPRODUTO" desc="[TABELA GERAL 0] Seleciona todos os SubProdutos" />
+  <item id="1" name="SPL_TIPOCONTATO" desc="[TABELA GERAL 0] Seleciona todos os Tipos de Contato" />
+  <item id="1" name="SPL_USUARIOGESTOR" desc="[TABELA GERAL 3] Seleciona todos os Usuarios Gestores" />
+  <item id="1" name="SPL_UF" desc="Seleciona todas as Unidades da Federacao" />
+  <item id="1" name="SPL_TIPOPLANO" desc="[TABELA GERAL 3] Seleciona todos os Códigos de Planos" />
+  <item id="1" name="SPL_TIPVALOR" desc="Seleciona todos os Códigos de Tipo de Valor" />
+  <item id="1" name="SPL_TIPOENDERECO" desc="[TABELA GERAL 0] Seleciona todos os Tipos de Endereço" />
+  <item id="1" name="SPL_TIPOLOGRADOURO" desc="[TABELA GERAL 0] Seleciona todos os Tipos de Logradouro" />
+  <item id="1" name="SPL_TIPOMOVIMENTO" desc="[TABELA GERAL 0] Seleciona todos os Tipos de Movimento" />
+  <item id="1" name="SPL_USUARIOLIGADO" desc="[TABELA GERAL 0] Seleciona usuários associados a um usuario de referencia e tipo de ligação" />
+  <item id="1" name="SPL_TIPOVALOR" desc="[TABELA GERAL 29] Seleciona todos os Códigos de Tipo de Valor" />
+  <item id="1" name="SPL_FORMACOBRANCATARIFA" desc="[TABELA GERAL 30] Seleciona todos os Códigos de Forma de Cobrança de Tarifa" />
+  <item id="1" name="SPL_CODIGOGERENCIALMOVIMENTO" desc="[TABELA GERAL 40] Seleciona todos os Códigos Gerenciais de Movimento" />
+  <item id="1" name="SPL_GESTOR" desc="[TABELA GERAL 0] Seleciona usuários gestores associados ao lote de produto" />
+  <item id="1" name="PRPROLININS" desc="Inserção de Registros na Tabela TBPROLIN" />
+  <item id="1" name="PRPROLINUPD" desc="Altera um registro da tabela TBPROLIN (Linha de Produto)  de acordo com a chave primaria" />
+  <item id="1" name="SPL_NIVEISAPLICACAO" desc="[TABELA GERAL 5] Seleciona os registros de níveis de aplicação" />
+  <item id="1" name="SPL_INSTRUCAOBAIXA" desc="[TABELA GERAL 35] Seleciona os registros de instrucao de baixa de registro" />
+  <item id="1" name="SPL_LIGACAOUSUARIO" desc="[TABELA GERAL 38] Seleciona os registros de identificação de ligação de usuario" />
+  <item id="1" name="PRUSUPROLST" desc="[TABELA GERAL 0] Seleciona os gestores de produtos" />
+  <item id="1" name="PRPROLINSEL" desc="Seleciona o registro de acordo com o Código da Linha" />
+  <item id="1" name="PRPROLINSELALL" desc="Seleciona todos os registros de endereço do usuário fornecido" />
+  <item id="1" name="PRTABGER102" desc="[TABELA GERAL 102] Seleciona todos os registros de tipo de lancamento transferencias" />
+  <item id="1" name="PRTABGER104" desc="[TABELA GERAL 104] Seleciona todos os registros de tipo de lancamento transferencias" />
+  <item id="1" name="PRTABGER302" desc="[TABELA GERAL 302] Seleciona todos os registros de transacoes Rede" />
+  <item id="1" name="PRINSBXAINS" desc="Inserção de Registros na Tabela TBINSBXA" />
+  <item id="1" name="PRINSBXASEL" desc="Seleciona O registro de instrução de baixa de acordo com o id de registro de instrução" />
+  <item id="1" name="PRINSBXAUPD" desc="Altera um registro da tabela TBINSBXA (Instrução de Baixa)  de acordo com a chave identity" />
+  <item id="1" name="PRINSBXASELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRBXABOLREMPRO" desc="Reverte o processamento de um Lote de Importação de Registro de Baixa de Boletos" />
+  <item id="1" name="PRREGCCRUSUCCRLST" desc="[TABELA GERAL 0] Lista os usuarios a partir da tabela de conta corrente e sua conta virtual" />
+  <item id="1" name="PRREGAPRINS" desc="Inserção de Registros na Tabela TBREGAPR" />
+  <item id="1" name="PRREGAPRUPD" desc="Altera um registro da tabela TBREGAPR ()  de acordo com a chave identity" />
+  <item id="1" name="PRTABGER060" desc="[TABELA GERAL 60] Seleciona todos os Códigos de Acesso e permissão de oprações" />
+  <item id="1" name="PRREGCCRAPROPE" desc="Efetua o Registro de Aprovação de uma operação" />
+  <item id="1" name="PRTABGER037" desc="[TABELA GERAL 37] Seleciona os códigos de atributo do cadastro geral" />
+  <item id="1" name="PRCADUSU008" desc="[TABELA GERAL 0] Seleciona todos os funcionários" />
+  <item id="1" name="PRUSUACEINSUPD" desc="Insere ou atualiza um registro na tabela de Acessos e Permissões de Usuário" />
+  <item id="1" name="PRREGPOSINS" desc="Inserção de Registros na Tabela TBREGPOS" />
+  <item id="1" name="PRREGPOSUPD" desc="Altera um registro da tabela TBREGPOS (Registro Vendas Máquina)  de acordo com a chave identity" />
+  <item id="1" name="PRREGPOSDEL" desc="Deleta um registro da tabela TBREGPOS (Registro Vendas Máquina)  de acordo com a chave identity" />
+  <item id="1" name="PRCADMAQINS" desc="Inserção de Registros na Tabela TBCADMAQ" />
+  <item id="1" name="PRCADMAQUPD" desc="Altera um registro da tabela TBCADMAQ (Register POS)  de acordo com a chave identity" />
+  <item id="1" name="PRCADMAQDEL" desc="Deleta um registro da tabela TBCADMAQ (Register POS)  de acordo com a chave identity" />
+  <item id="1" name="PRCADMAQSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRUSUMAQSELDSP" desc="Lista máquinas disponíveis para atribuição" />
+  <item id="1" name="PRCADUSUESTKEY" desc="[TABELA GERAL 0] Lista os usuários que detêm registros de estabelecimentos" />
+  <item id="1" name="PRCADUSUESTUSR" desc="[TABELA GERAL 0] Lista os estabelecimentos associados a um determinado usuário" />
+  <item id="1" name="PRUSUMAQINS" desc="Inserção de Registros na Tabela TBUSUMAQ" />
+  <item id="1" name="PRUSUMAQUPD" desc="Altera um registro da tabela TBUSUMAQ (Associação Usuário Maquina)  de acordo com a chave identity" />
+  <item id="1" name="PRUSUMAQSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="SPL_MAQUINASDISPONIVEIS" desc="Lista máquinas disponíveis para atribuição" />
+  <item id="1" name="SPL_MAQUINAS" desc="Lista todas as máquinas" />
+  <item id="1" name="PRCADMAQLSTDSP" desc="[TABELA GERAL 0] Lista máquinas disponíveis para atribuição" />
+  <item id="1" name="PRCADMAQLSTALL" desc="[TABELA GERAL 0] Lista todas as máquinas" />
+  <item id="1" name="PRUSUMAQSEL" desc="Seleciona o registro de associação usuário x máquina com base no id de identificação" />
+  <item id="1" name="PRCADUSUATR004" desc="[TABELA GERAL 0] Lista todos os fornecedores" />
+  <item id="1" name="PRCADMAQSEL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRUSUMAQCHKINT" desc="Checa a integridade de uma associação de máquina" />
+  <item id="1" name="PRREGPOSSEL" desc="Seleciona um registro de vendas de acordo com o ID de Registro de Vendas" />
+  <item id="1" name="PRREGPOSDELREGFINADT" desc="Remove o registro de lote financeiro de adiantamento" />
+  <item id="1" name="PRREGPOSDELLOTIMP" desc="Remove o Lote de Importação de Dados de Vendas" />
+  <item id="1" name="PRREGPOSSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRREGPOSUPDDAT" desc="Reatualiza os dados de importação de Registros" />
+  <item id="1" name="PRREGPOSREMLOTFINADT" desc="Remove o registro de lote financeiro de adiantamento de Vendas" />
+  <item id="1" name="PRREGTINREMPRO" desc="Remove um registro de Transacao associado a um lote financeiro" />
+  <item id="1" name="PRREGCCRRESLCT" desc="Seleciona um resumo dos lancamentos para o usuário selecionado" />
+  <item id="1" name="PRTABGER063" desc="[TABELA GERAL 63] Seleciona todos os códigos de Bandeiras em situação de Vendas por cliente" />
+  <item id="1" name="PRTABGER048" desc="[TABELA GERAL 48] Seleciona todas as linhas de crédito" />
+  <item id="1" name="SPL_USUARIOMAQUINA" desc="[TABELA GERAL 0] Lista todos os usuarios associados a uma máquina e ao respectivo registro de vendas" />
+  <item id="1" name="PRREGPOSGETLAN" desc="Obtêm os registros para registro de lançamento em conta corrente" />
+  <item id="1" name="PRREGPOSCNCVEN" desc="Efetua o registro de confirmação de conciliação de venda" />
+  <item id="1" name="PRCADTARFND" desc="Obtêm um ID de Tarifação com base nos parâmetros fornecidos" />
+  <item id="1" name="PRCADTARFNDTAR" desc="Verifica o usuário detentor do registro de tarifa e obtêm um ID de Tarifação com base nos parâmetros fornecidos" />
+  <item id="1" name="PRCADTARSELPAR" desc="Seleciona o ID de Tarifação de Acordo com os parâmetros fornecidos" />
+  <item id="1" name="PRREGCCRSALACT" desc="Obtêm o saldo da conta corrente do tipo de lançamento e usuário especificado" />
+  <item id="1" name="PRREGPOSREMLOTFIN" desc="Remove o Processamento de gravação de um lote de importação" />
+  <item id="1" name="PRREGCCRREMPROFIN" desc="Remove o Processamento de gravação de um lote FINANCEIRO" />
+  <item id="1" name="PRTARMODLST" desc="[TABELA GERAL 0] Lista todos os códigos de modalidade de tarifa" />
+  <item id="1" name="PRTABGER044" desc="[TABELA GERAL 44] Seleciona todos os registros de linha de venda" />
+  <item id="1" name="PRREGPOSCRTADT" desc="Registro de Adiantamento de Vendas" />
+  <item id="1" name="PRREGPOSUPDACT" desc="Efetua a atualização da tabela de registro de vendas com informações de contabilização" />
+  <item id="1" name="PRCADENDSELGEO" desc="Selecionas os registro de usuarios credenciados para atualização de geolocalização" />
+  <item id="1" name="PRCADENDUPDCRDGEO" desc="Atualiza o registro de credenciado com informações de Geolocalização" />
+  <item id="1" name="PRTABGER001" desc="[TABELA GERAL 1] Seleciona todos os Códigos de País" />
+  <item id="1" name="PRTABGER002" desc="[TABELA GERAL 2] Seleciona todas as Unidades da Federacao" />
+  <item id="1" name="PRTABGER013" desc="[TABELA GERAL 13] Seleciona todos os Códigos de Tipos de Pessoas" />
+  <item id="1" name="PRREGBOLSETCTA" desc="Atribui o boleto à uma conta virtual (Banco) de cobrança" />
+  <item id="1" name="PRREGCRTSELALL" desc="Seleciona todos os registros de endereço do usuário fornecido" />
+  <item id="1" name="PRCADENDFIN" desc="Localiza um endereço com base nos parâmetros fornecidos" />
+  <item id="1" name="PRCADENDFND" desc="Localiza um endereço com base nos parâmetros fornecidos" />
+  <item id="1" name="PRCADSTAINS" desc="Inserção de Registros na Tabela TBCADSTA" />
+  <item id="1" name="PRCADSTAUPD" desc="Altera um registro da tabela TBCADSTA (Status de Transações)  de acordo com a chave primaria" />
+  <item id="1" name="PRCADSTASELALL" desc="Seleciona todos os códigos de Status de Transação" />
+  <item id="1" name="PRMNUCADINS" desc="Inserção de Registros na Tabela TBMNUCAD" />
+  <item id="1" name="PRMNUCADUPD" desc="Altera um registro da tabela TBMNUCAD ()  de acordo com a chave identity" />
+  <item id="1" name="PRMNUCADSELALL" desc="Seleciona todos os menus cadastrados do sistema" />
+  <item id="1" name="PRTABGER065" desc="[TABELA GERAL 65] Seleciona todos os tipos de acesso cadastrados" />
+  <item id="1" name="PRMNUCADSEL" desc="Seleciona o item de menu de acordo com o ID do Menu" />
+  <item id="1" name="PRMNUACEINS" desc="Inserção de Registros na Tabela TBMNUACE" />
+  <item id="1" name="PRMNUACESEL" desc="Seleciona o registro de permissão para o item de menu de acordo com o ID do Registro de Permissão" />
+  <item id="1" name="PRMNUACEUPD" desc="Altera um registro da tabela TBMNUACE ()  de acordo com a chave identity" />
+  <item id="1" name="PRMNUACESELALL" desc="Seleciona todos os registros de permissões dos menus" />
+  <item id="1" name="PRMNUACESELMNU" desc="Seleciona todos os itens de menus disponível" />
+  <item id="1" name="PRTABGER08" desc="Seleciona todos os Códigos de Tipo de Usuário" />
+  <item id="1" name="PRTABGER008" desc="[TABELA GERAL 8] Seleciona todos os Códigos de Tipo de Usuário" />
+  <item id="1" name="PRCADCTASELCCV" desc="Obtêm a conta virtual do usuário informado" />
+  <item id="1" name="PRCADCTASELVCL" desc="Lista as contas vinculadas ao usuário" />
+  <item id="1" name="PRCADCVLSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRREGCCREXTCCT" desc=" Obtêm o Extrato de conta corrente do usuário especificado" />
+  <item id="1" name="PRCADCVLINS" desc="Inserção de Registros na Tabela TBCADCVL" />
+  <item id="1" name="PRCADCVLSELACT" desc="Obtêm a lista de contas virtuais associadas para o usuário solicitante" />
+  <item id="1" name="PRCADPROLST" desc="[TABELA GERAL 0] Obtêm a lista de produtos associadas ao usuário solicitante" />
+  <item id="1" name="PRCADRLELST" desc="[TABELA GERAL 0] Obtêm a lista de recarga de lotes de acordo com o  usuário solicitante" />
+  <item id="1" name="PRCADLRELST" desc="[TABELA GERAL 0] Obtêm a lista de recarga de lotes de acordo com o  usuário solicitante" />
+  <item id="1" name="PRCADLREINS" desc="Inserção de Registros na Tabela TBCADLRE" />
+  <item id="1" name="PRCADLRESEL" desc="Seleciona o registro de recarga de lote de acordo com o ID do Registro de Carga" />
+  <item id="1" name="PRCADLREUPD" desc="Altera um registro da tabela TBCADLRE ()  de acordo com a chave identity" />
+  <item id="1" name="PRLRECADINS" desc="Inserção de Registros na Tabela TBLRECAD" />
+  <item id="1" name="PRLRECADSEL" desc="Seleciona o registro de recarga de lote de acordo com o ID do Registro de Carga" />
+  <item id="1" name="PRLRECADUPD" desc="Altera um registro da tabela TBLRECAD ()  de acordo com a chave identity" />
+  <item id="1" name="PRLREREGINS" desc="Inserção de Registros na Tabela TBLREREG" />
+  <item id="1" name="PRLREREGSEL" desc="Seleciona o registro de recarga de lote item de acordo com o ID do Registro de Carga" />
+  <item id="1" name="PRLREREGUPD" desc="Altera um registro da tabela TBLREREG ()  de acordo com a chave identity" />
+  <item id="1" name="PRLREREGUPDBAT" desc="Atualiza o registro de cabeça de lote com as informações do lote analítico" />
+  <item id="1" name="PRLREREGUPDCRT" desc="Atualiza o item de recarga de lote com as informações do cartão associado" />
+  <item id="1" name="PRLREREGREMBAT" desc="Remove todos os registros de item de recarga de lote e o cabeça de lote" />
+  <item id="1" name="PRLREREGUPDTRA" desc="Atualiza o registro de cabeça de lote com as informações de processamento" />
+  <item id="1" name="PRLRECADAPRBAT" desc="Atualiza o registro de aprovação do cabeça de lote e seus respectivos itens" />
+  <item id="1" name="PRLRECADCANBAT" desc="Cancela o Lote de Recarga" />
+  <item id="1" name="PRLRECADSELALL" desc="Seleciona todos os registros de carga de lote do usuário informado" />
+  <item id="1" name="PRLREREGSELALL" desc="Seleciona todos os itens de carga de lote do lote informado" />
+  <item id="1" name="PRCADADQINS" desc="Inserção de Registros na Tabela CRCADADQ" />
+  <item id="1" name="PRCADADQSEL" desc="Seleciona o registro de Adquirente atraves do ID do Crendenciado e o tipo de ADQUIRENTE" />
+  <item id="1" name="PRCADADQUPD" desc="Altera um registro da tabela CRCADADQ ()  de acordo com a chave primaria" />
+  <item id="1" name="PRCRTASSINS" desc="Inserção de Registros na Tabela CRCRTASS" />
+  <item id="1" name="PRCRTASSSEL" desc="Seleciona o registro de Tipo de Cartão associado ao credenciado através do ID dO Credenciado e Tipo de Cartão" />
+  <item id="1" name="PRCRTASSUPD" desc="Altera um registro da tabela CRCRTASS ()  de acordo com a chave primaria" />
+  <item id="1" name="PRTABGER007" desc="[TABELA GERAL 7] Seleciona todos os códigos de Status de Registro em situação de Vendas por cliente" />
+  <item id="1" name="PRCADCREINS" desc="Inserção de Registros na Tabela CRCADCRE" />
+  <item id="1" name="PRCADCRESEL" desc="Seleciona o registro de tipo de cartão associado ao credenciado" />
+  <item id="1" name="PRCADCREUPD" desc="Altera um registro da tabela CRCADCRE ()  de acordo com a chave identity" />
+  <item id="1" name="PRTABGER051" desc="[TABELA GERAL 51] Seleciona todos os tipos de situação de pagamento associado ao registro de vendas conforme o usuário" />
+  <item id="1" name="PRPOSTRAINS" desc="Inserção de Registros na Tabela TPPOSTRA" />
+  <item id="1" name="PRPOSTRAUPD" desc="Altera um registro da tabela TPPOSTRA ()  de acordo com a chave identity" />
+  <item id="1" name="PRPOSDTLINS" desc="Inserção de Registros na Tabela TPPOSDTL" />
+  <item id="1" name="PRPOSDTLUPD" desc="Altera um registro da tabela TPPOSDTL ()  de acordo com a chave identity" />
+  <item id="1" name="PRPOSTRASEL" desc="Seleciona as transações" />
+  <item id="1" name="PRPOSDTLSEL" desc="Seleciona as transações" />
+  <item id="1" name="PRLRECADLSTBAT" desc="Atualiza o registro de aprovação do cabeça de lote" />
+  <item id="1" name="PRLRECADLST" desc="[TABELA GERAL 0] Obtêm a lista de recarga de lotes de acordo com o  usuário solicitante" />
+  <item id="1" name="PRLRECADLSTUSU" desc="Obtêm a lista de recarga de lotes de acordo com o usuário solicitante" />
+  <item id="1" name="PRLRECADLSTSTA" desc="Obtêm a lista de recarga de lotes de acordo com o status de registro" />
+  <item id="1" name="PRLRECADCHGSTA" desc="Altera o Status de Registro de um lote de recarga" />
+  <item id="1" name="PRLREREGLSTSTA" desc="Obtêm a lista de recarga de lotes de acordo com o status de registro" />
+  <item id="1" name="PRTABGER0701" desc="[TABELA GERAL 70] Seleciona todos os códigos de recarga de lote para o usuario" />
+  <item id="1" name="PRTABGERRECLOT" desc="[TABELA GERAL 70] Seleciona todos os códigos de recarga de lote para o usuario" />
+  <item id="1" name="PRLRECADHASPRM" desc="Verifica se o usuário tem permissão de alteração de status do lote" />
+  <item id="1" name="PRREGBOLADDCODBAR" desc="Grava o código de barras em tabela específica de imagem do boleto" />
+  <item id="1" name="PRCADTARCAL" desc="Calcula o valor da tarifa conforme parâmetros de entrada" />
+  <item id="1" name="PRPOSTRASELALL" desc="Seleciona todos os registros de transação importados" />
+  <item id="1" name="PRPOSDTLSELALL" desc="Seleciona todas as transações de detalhamento de importação de vendas Infinite" />
+  <item id="1" name="PRPOSTRAUPDIMP" desc="Atualiza as referências de dados da importação de vendas Infinite" />
+  <item id="1" name="PRCADENDFNDBAS" desc="Localiza um endereço com base nos parâmetros fornecidos" />
+  <item id="1" name="PRCADCTOFINBAS" desc="Localiza um contato com base nos parâmetros fornecidos" />
+  <item id="1" name="PRCADUSUGSTEST" desc="[TABELA GERAL 0] Lista os gestores de estabelecimento" />
+  <item id="1" name="PRUSUMAQSELCEM" desc="Seleciona o registro de associação usuário máquina com base no código do cliente, estabelecimento e código da máquina" />
+  <item id="1" name="PRUSUMAQSELSER" desc="Seleciona o registro de associação usuário máquina com base no número de série da máquina" />
+  <item id="1" name="PRCADTARFNDREC" desc="Obtêm um ID de Tarifação com base nos parâmetros fornecidos" />
+  <item id="1" name="TESTETIPEND" desc="Inserção de Registros na Tabela TBTIPEND" />
+  <item id="1" name="PRTIPENDUPD" desc="Altera um registro da tabela TBTIPEND (Tipo de Endereço)  de acordo com a chave primaria" />
+  <item id="1" name="PRTIPENDSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRTIPCTOINS" desc="Inserção de Registros na Tabela TBTIPCTO" />
+  <item id="1" name="PRTIPCTOSEL" desc="Seleciona o tipo de contato de acordo com o código" />
+  <item id="1" name="PRTIPCTOUPD" desc="Altera um registro da tabela TBTIPCTO (Tipos de Contato)  de acordo com a chave primaria" />
+  <item id="1" name="PRTIPCTAINS" desc="Inserção de Registros na Tabela TBTIPCTA" />
+  <item id="1" name="PRTIPCTASEL" desc="Seleciona o tipo de conta de acordo com o código" />
+  <item id="1" name="PRTIPCTAUPD" desc="Altera um registro da tabela TBTIPCTA (Tipo de Conta)  de acordo com a chave primaria" />
+  <item id="1" name="PRTIPLOGINS" desc="Inserção de Registros na Tabela TBTIPLOG" />
+  <item id="1" name="PRTIPLOGSEL" desc="Seleciona o tipo de contato de acordo com o código" />
+  <item id="1" name="PRTIPLOGUPD" desc="Altera um registro da tabela TBTIPLOG (Tipos de Logradouro)  de acordo com a chave primaria" />
+  <item id="1" name="PRTIPLOGSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRTIPENDSEL" desc="Seleciona o tipo de endereço de acordo com o código" />
+  <item id="1" name="PRTIPCTASELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRCADSTASEL" desc="Seleciona o registro de acordo com o codigo do status fornecido" />
+  <item id="1" name="PRTIPCTASELTIP" desc="[TABELA GERAL 0] Seleciona todos os Tipos de Conta" />
+  <item id="1" name="PRTIPCTOSELTIP" desc="[TABELA GERAL 0] Seleciona todos os Tipos de Contato" />
+  <item id="1" name="PRTIPENDSELTIP" desc="[TABELA GERAL 0] Seleciona todos os Tipos de Endereço" />
+  <item id="1" name="PRTIPLOGSELTIP" desc="[TABELA GERAL 0] Seleciona todos os Tipos de Logradouro" />
+  <item id="1" name="PRCADMAQLSTFOR" desc="[TABELA GERAL 0] Lista todos os fornecedores de Máquinas POS" />
+  <item id="1" name="PRREGPOSRELVEN" desc="Emite um relatório de informações de vendas baseadas em um período" />
+  <item id="1" name="PRTIPCTOSELALL" desc="Seleciona todos os registros com base nos parâmetros fornecidos" />
+  <item id="1" name="PRUSUMAQSELMAQ" desc="Seleciona o registro de associação usuário máquina com base no id da máquina" />
+  <item id="1" name="PRCADMAQSELSER" desc="Seleciona o registro de máquina de acordo com o proprietário e o número de série da máquina" />
+  <item id="1" name="PRCADCRESELALL" desc="Seleciona todos os registros de credenciados conforme parâmetros" />
+  <item id="1" name="PRCADCTASELCTA" desc="Seleciona o registro de conta virtual de acordo com os parâmetros fornecidos" />
+  <item id="1" name="PRIMPCADINS" desc="Inserção de Registros na Tabela TBIMPCAD" />
+  <item id="1" name="PRIMPCADSEL" desc="Seleciona o registro de importação de de acordo com o ID do Registro de Importação" />
+  <item id="1" name="PRIMPCADUPD" desc="Altera um registro da tabela TBIMPCAD ()  de acordo com a chave identity" />
+  <item id="1" name="PRIMPREGINS" desc="Inserção de Registros na Tabela TBIMPREG" />
+  <item id="1" name="PRIMPREGSEL" desc="Seleciona o registro de recarga de lote item de acordo com o ID do Registro de Carga" />
+  <item id="1" name="PRIMPREGUPD" desc="Altera um registro da tabela TBIMPREG ()  de acordo com a chave identity" />
+  <item id="1" name="PRIMPREGSELALL" desc="Seleciona todos os itens de carga de lote do lote informado" />
+  <item id="1" name="PRIMPCADAPRBAT" desc="Atualiza o registro de aprovação do cabeça de lote e seus respectivos itens" />
+  <item id="1" name="PRIMPREGEMBAT" desc="Remove todos os registros de item de recarga de lote e o cabeça de lote" />
+  <item id="1" name="PRIMPREGUPDDAT" desc="Atualiza o item de recarga de lote com as informações do cartão associado" />
+  <item id="1" name="PRIMPREGUPDBAT" desc="Atualiza o registro de cabeça de lote com as informações do lote analítico" />
+  <item id="1" name="PRIMPREGUPDFIL" desc="Atualiza o registro de cabeça de lote com as informações de processamento" />
+  <item id="1" name="PRIMPREGLSTSTA" desc="Obtêm a lista de registros financeiros de acordo com o status" />
+  <item id="1" name="PRREGCRTGETATV" desc="Verifica se o cartão e o CPF/CNPJ informado são passíveis de ativação" />
+  <item id="1" name="PRREGTEDCHGSTA" desc="Aprova e/ou Altera o Status de Processamento de uma TED" />
+  <item id="1" name="PRREGTEDCLOREG" desc="Efetua o fechamento de processamento de uma TED" />
+  <item id="1" name="PRREGCRTGETPRO" desc="Verifica se o CPF/CNPJ informado já possui um determinado produto ativado" />
+  <item id="1" name="PRREGCCRSALUSU" desc="Obtêm o saldo da conta do indicador de lançamento do usuário" />
+  <item id="1" name="PRREGCRTSELCRT" desc="Seleciona o registro de acordo com o Código Extendido do Cartão" />
+  <item id="1" name="PRREGCRTLCKCRT" desc="Efetua uma atualização de bloqueio/desbloqueio conforme tipo de operacao" />
+  <item id="1" name="PRREGCRTCANVEN" desc="Efetua o cancelamento de um cartão vendido" />
+  <item id="1" name="PRREGCRTCHGSTA" desc="Efetua a alteração do status de um cartão" />
+  <item id="1" name="PRREGCRTCHGSTANID" desc="Efetua a alteração do status de um cartão" />
+  <item id="1" name="PRREGCRTCHGPSW" desc="Efetua a alteração da senha do cartão" />
+  <item id="1" name="PRREGCRTCHGCVC" desc="Efetua a alteração do número o CVC do Cartão" />
+  <item id="1" name="PRUSUCFGFND" desc="Pesquisa um usuario de configuração e seu respectivo nivel de configuracao" />
+  <item id="1" name="PRUSUCFGFNDEXT" desc="Pesquisa um usuario de configuração" />
+  <item id="1" name="PRREGCCRREMTRA" desc="Remove uma transação" />
+  <item id="1" name="PRREGCRTCHGASS" desc="Efetua o cancelamento da associação de um cartão" />
+  <item id="1" name="PRCADSPRINS" desc="Inserção de Registros na Tabela TBCADSPR" />
+  <item id="1" name="PRCADSPRUPD" desc="Altera um registro da tabela TBCADSPR (Sub Produto)  de acordo com a chave primaria" />
+  <item id="1" name="PRCADSPRSELALL" desc="Seleciona todos os produtos" />
+  <item id="1" name="PRXIREGCRTINS" desc="Inserção de Registros na Tabela XIREGCRT" />
+  <item id="1" name="PRCADUSUTIP003" desc="[TABELA GERAL 3] Seleciona todos os Usuarios Gestores" />
+  <item id="1" name="PRREGCCRSELTRA" desc="Seleciona o registro de acordo com o id da transação" />
+  <item id="1" name="PRCADISPINS" desc="Inserção de Registros na Tabela TBCADISP" />
+  <item id="1" name="PRCADISPUPD" desc="Altera um registro da tabela TBCADISP (Item de Sub Produto)  de acordo com a chave identity" />
+  <item id="1" name="PRCADISPSEL" desc="Seleciona o registro de acordo com o codigo do produto" />
+  <item id="1" name="PRCADSPRSEL" desc="Seleciona o registro de acordo com o codigo do sub produto" />
+  <item id="1" name="PRREGPOSLOCMAQ" desc="Localiza uma máquina com base no número do estabelecimento e o número do terminal" />
+  <item id="1" name="PRUSUACEGET" desc="Verifica se um usuário está contido no controle de acesso informado" />
+  <item id="1" name="PRWRTTOKSELALL" desc="Seleciona todos os tokens do usuário" />
+  <item id="1" name="PRWRTTOKREM" desc="Remove tokens diferentes do atual" />
+  <item id="1" name="PRREGBOLVALBOL" desc="Valida a Emissão do Boleto" />
+</procs>

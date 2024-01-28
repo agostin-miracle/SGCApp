@@ -1,0 +1,3337 @@
+<root nsw="Livre">
+  <item create="true"  id="1" name="TBCADCTA">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>FALSE</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODUSU</SelectAllList>
+    <StringSqlSelectAll>5</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="2" name="TBCADCTO">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable>SELECT CODCTO,CODUSU,CODEND,CODATR,TIPCTO,REGATV,STAREC,DATCAD,DATUPD,NUMPAI,CODOPR,NUMDDD,NUMTEL,DSCRAM,DSCOBS,UPDUSU,USUATR FROM TBCADCTO</SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODUSU</SelectAllList>
+    <StringSqlSelectAll>3</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="3" name="TBCADEND">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <insertcommand key="Identity" exceptionparamns="'DATCAD','DATUPD'" procname="">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos></pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="Identity" exceptionparamns="'DATCAD'" procname="">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos></pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+      </returns>
+    </updatecommand>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="UserConfig" procname="PRCADENDSEL" desc ="Seleciona o registro de acordo com o código do cadastro de endereços">
+        <query>
+          <![CDATA[SELECT * FROM TBUSUCFG (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Endereço" name="CODEND" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    <selectallcommand>
+      <item script="true" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRCADENDSELALL" desc ="Seleciona todos os registros de endereço do usuário fornecido">
+        <query>
+          <![CDATA[
+          SELECT A.* ,
+                 B.DSCREC
+                 ISNULL(C.LGNUSU,'') AS LGNUSU
+            FROM TBTIPEND A WITH (NOLOCK)
+           INNER JOIN TBTABGER B (NOLOCK) 
+              ON ( = B.NUMTAB AND A.STAREC = B.KEYCOD)
+            LEFT JOIN TBCADUSU C (NOLOCK) 
+              ON (A.UPDUSU = C.CODUSU)
+        
+        ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Usuário" name="CODUSU" type="int?" default="null" output="" null="true"/>
+        </parameters>
+      </item>
+    </selectallcommand>
+  
+  </item>
+  <item create="true"  id="4" name="TBCADISP">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODSPR</SelectAllList>
+    <StringSqlSelectAll>
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="5" name="TBCADPIT">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@NIDPIT</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll>35</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="6" name="TBCADPLD">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@NIDPLN</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODPLN</SelectAllList>
+    <StringSqlSelectAll>13</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields>NIDPLN</MaxFields>
+  </item>
+  <item create="true"  id="7" name="TBCADPLM">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable>SELECT CODPLM, DSCPLM, STAREC, VLRTAR, VLRVEN, VLRMEN, PRMCOM, PRMREC, PRMFAT, PRMAPI, UPDUSU FROM TBCADPLM</SqlTable>
+    <fieldreturn>@CODPLM</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODPLM</SelectAllList>
+    <StringSqlSelectAll>16</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields>CODPLM</MaxFields>
+  </item>
+  <item create="true"  id="8" name="TBCADPLN">
+    <UpdateKey>Key</UpdateKey>
+    <audit>False</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>false</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@CODPLN</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>
+    </SelectAllList>
+    <StringSqlSelectAll>12</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias>
+    </SelectAllAlias>
+    <MaxFields>CODPLN</MaxFields>
+  </item>
+  <item create="true"  id="9" name="TBCADPRO">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@CODPRO</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>
+    </SelectAllList>
+    <StringSqlSelectAll>10</StringSqlSelectAll>
+    <IdNextNumber>3</IdNextNumber>
+    <SetNextNumber>CODPRO</SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias>
+    </SelectAllAlias>
+    <MaxFields>
+    </MaxFields>
+  </item>
+  <item create="true"  id="10" name="TBCADSPR">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODPRO</SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields>CODSPR</MaxFields>
+  </item>
+  <item create="true"  id="11" name="TBCADSTA" friendlyname="Status de Transacoes">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll>9</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields>CODSTA</MaxFields>
+  </item>
+  <item create="true"  id="12" name="TBCADUSU" friendlyname="Register Users" modelversion="2">
+    <UpdateKey>Key</UpdateKey>
+    <audit>true</audit>
+    <keyaudit>CODUSU</keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable>
+      <!--SELECT CODUSU,CODATR,STAREC,STAUSU,DATCAD,DATUPD,UPDUSU,TIPUSU,CODPJU,TIPPES,NUMIRG,CODCMF,KEYUSU,SUPLGN,LGNUSU,PSWRST,PSWUSU,NOMUSU,NOMMAE,DATNAC,ULTACE,SRCUSU,RECAGV,CODUSI,ANTCRC,ADMUSU,NIVCFA FROM dbo.TBCADUSU-->
+    </SqlTable>
+    <fieldreturn>@CODUSU</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <IdNextNumber>1</IdNextNumber>
+    <SetNextNumber>CODUSU</SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="RegisterUsers" procname="PRCADUSUSEL" desc ="Seleciona o registro de acordo com o Código do Usuário">
+        <query>
+          <![CDATA[SELECT * FROM TBCADUSU (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Usuario" name="CODUSU" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    <insertcommand key="Key" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+    <deletecommand key="key" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </deletecommand>
+
+  </item>
+  <item create="true"  id="13" name="TBNXTNUM">
+    <UpdateKey></UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>
+    </SelectAllList>
+    <StringSqlSelectAll>
+    </StringSqlSelectAll>
+    <IdNextNumber>
+    </IdNextNumber>
+    <SetNextNumber>
+    </SetNextNumber>
+    <CreateSelectionAll>
+    </CreateSelectionAll>
+    <SelectAllAlias>
+    </SelectAllAlias>
+    <MaxFields>
+    </MaxFields>
+  </item>
+  <item create="true"  id="14" name="TBPLMPLN">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1100000000</procedure>
+    <asp>1100000000</asp>
+    <csharp>1100000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll>1</StringSqlSelectAll>
+    <IdNextNumber>
+    </IdNextNumber>
+    <SetNextNumber>
+    </SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias>
+    </SelectAllAlias>
+    <MaxFields>
+    </MaxFields>
+  </item>
+  <item create="true"  id="15" name="TBPROLIN">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>
+    </SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias>
+    </SelectAllAlias>
+    <MaxFields>LINPRO</MaxFields>
+  </item>
+  <item create="true"  id="16" name="TBREGCRT">
+    <UpdateKey>Key</UpdateKey>
+    <audit>true</audit>
+    <keyaudit>CODCRT</keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect>STACRT</listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable>SELECT CODCRT,NIDLIM,STAREC,DATCAD,DATUPD,DATATV,DATCAN,NIDCRT,ISEMEN,USUMEN,NUMLOT,NOMPRT,NUMCRT,VALCRT,STAFLT,STAPRO,STACRT,PSWCRT,NOMCR1,NOMCR2,NOMCR3,UPDUSU ,FILNAM,ASSPRT, ASSUSU, STAASS,NIRLOT,NUMCVC,SECLVL,ORGATV,LSTACT FROM dbo.TBREGCRT</SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>STACRT,NUMLOT,ASSUSU, USUMEN</SelectAllList>
+    <StringSqlSelectAll>6</StringSqlSelectAll>
+    <IdNextNumber>5</IdNextNumber>
+    <SetNextNumber>CODCRT</SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="17" name="TBTABGER">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>NUMTAB</SelectAllList>
+    <StringSqlSelectAll>
+    </StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields>
+    </MaxFields>
+  </item>
+  <item create="true"  id="18" name="TBTIPCTA">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias>
+    </SelectAllAlias>
+    <MaxFields>TIPCTA</MaxFields>
+  </item>
+  <item create="true"  id="19" name="TBTIPCTO">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields>TIPCTO</MaxFields>
+  </item>
+  <item create="true"  id="20" name="TBTIPEND">
+    <UpdateKey>
+    </UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>
+      1111000000
+    </csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields>TIPEND</MaxFields>
+    <insertcommand key="Key" exceptionparamns="'DATCAD','DATUPD'" procname="testetipend">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos></pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-3" message="" error="EXISTINGREQUEST"/>
+      </returns>
+    </insertcommand>
+
+    <selectallcommand>
+      <item script="true" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRTIPENDSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          SELECT A.* ,B.DSCREC
+          ISNULL(C.LGNUSU,'') AS LGNUSU
+          FROM TBTIPEND A WITH (NOLOCK)
+          INNER JOIN TBTABGER B (NOLOCK) ON
+          ( = B.NUMTAB AND A.STAREC = B.KEYCOD)
+          LEFT JOIN TBCADUSU C (NOLOCK) ON
+          (A.UPDUSU = C.CODUSU)
+        </query>
+      </item>
+    </selectallcommand>
+  </item>
+
+  <item create="true"  id="21" name="TBTIPLOG">
+    <UpdateKey></UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber>
+    </IdNextNumber>
+    <SetNextNumber>
+    </SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias>
+    </SelectAllAlias>
+    <MaxFields>TIPLOG</MaxFields>
+  </item>
+  <item create="true"  id="22" name="TBTIPMOV" friendlyname="Tipo Movimento" modelversion="2">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList></SelectAllList>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="TipoMovimento" procname="PRTIPMOVSEL" desc ="Seleciona o registro de acordo com o Código do Movimentos">
+        <query>
+          <![CDATA[SELECT * FROM TBTIPMOV (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código de Movimento" name="CODMOV" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    <insertcommand key="Key" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+          SET @DATUPD=GETDATE();
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+    <selectallcommand>
+      <item script="true" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRTIPMOVSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          SELECT a.*
+          ,ISNULL(b.DSCTAB,'') as dscrec
+          ,ISNULL(c.dsctab,'') as dscope
+          ,ISNULL(e.LGNUSU,'') AS DSCUPD
+          ,ISNULL(F.DSCTAB,'') AS DSCTPV
+          ,ISNULL(H.DSCMOV,'') AS DSCEST
+          ,ISNULL(I.DSCTAB,'') AS DSCGER
+          ,ISNULL(J.DSCTAB,'') AS DSCSUM
+          FROM tbtipmov (NOLOCK) A
+          LEFT join tbtabger(nolock) B
+          on (7 = B.numtab and a.starec = b.keycod)
+          LEFT join tbtabger (NOLOCK) C
+          on (10 = c.numtab and a.sigope = c.keycod)
+          LEFT JOIN TBCADUSU e (NOLOCK)
+          ON (A.UPDUSU = e.CODUSU)
+          LEFT JOIN TBTABGER F WITH (NOLOCK) ON
+          (29 = f.numtab and a.tipval = f.keycod)
+          LEFT JOIN (select codmov, dscmov from tbtipmov (nolock)) H
+          ON (A.CODEST = H.CODMOV)
+          LEFT JOIN TBTABGER (NOLOCK) I
+          ON (40 = i.numtab and a.codger = i.keycod)
+          LEFT JOIN TBTABGER (NOLOCK) J
+          ON (41 = J.numtab and a.CODSUM = J.keycod)
+          WHERE (1=1)
+        </query>
+      </item>
+    </selectallcommand>
+
+  </item>
+  <item create="true"  id="23" name="TBTIPPFL">
+    <UpdateKey></UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="24" name="TBUSUPRO">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>TRUE</CSharpPartial>
+    <!--<SqlTable>select USUPRO, STAREC, DATCAD, CODUSU, CODPRO, CODPLN, UPDUSU, STAINI, VLRMEN, VLRVEN, PRMCOM, PRMREC, PRMFAT, PRMAPI, APLTAT, INSBC1,INSBC2, INSBC3, APLTRF,DATMPC,TAXJUR,TAXOPE,TOMMEN,APLTAD,ACPDEB,ACPCRT,MAXPCL,ACPBOL,CODTRA,ANTCRC,ACPMAL,ACPSMS,TIPREC,NUMDVF,ALTCPG,ALTNPG,ALTENV,ACPPST,URLRET from tbusupro</SqlTable>-->
+    <SqlTable>SELECT USUPRO, STAREC, DATCAD,CODUSU, CODPRO,CODPLN, UPDUSU, DATUPD,APLINT FROM TBUSUPRO</SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1110000000</procedure>
+    <asp>1110000000</asp>
+    <csharp>1110000000</csharp>
+    <SelectAllList>CODUSU</SelectAllList>
+    <StringSqlSelectAll>4</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="25" name="TBCADUCT">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODUSU</SelectAllList>
+    <StringSqlSelectAll>11</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="26" name="TBUSUCRT">
+    <UpdateKey select="" field="CODPRT"></UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>TRUE</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@CODPRT</fieldreturn>
+    <procedure>1110000000</procedure>
+    <asp>1110000000</asp>
+    <csharp>1110000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll>25</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <SelectAllOrder>A.CODPRT</SelectAllOrder>
+    <MaxFields>CODPRT</MaxFields>
+  </item>
+  <item create="true"  id="27" name="TBGSTLOT">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>USUPRO, TIPREC, STAREC, STALOT</SelectAllList>
+    <StringSqlSelectAll>14</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>True</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="false"  id="28" name="TBWRTTOK">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1011111111</procedure>
+    <asp>1011111111</asp>
+    <csharp>1011111111</csharp>
+    <SelectAllList>URLTOK</SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="29" name="TBREGBOL" api="true" apiname="Boleto" friendlyname="BankSlip">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll>8</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="30" name="TBUSRLOG">
+    <UpdateKey></UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1000000000011111111</procedure>
+    <asp>100000000011111111</asp>
+    <csharp>10000000011111111</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <!-- desabilitada -->
+  <item create="true"  id="31" name="TBCADKEY" friendlyname="Chave de Usuario">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>11100000000</procedure>
+    <asp>1110000000</asp>
+    <csharp>111000000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="true" alias="A." sql="" type="" method="Select" return="ChaveUsuario" procname="" desc ="Seleciona o registro de acordo com o id de registro">
+        <query>
+          <![CDATA[SELECT * FROM TBCADKEY (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Conta Corrente" name="NIDKEY" type="System.Int32" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    
+    <selectallcommand>
+      <item script="true" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRCADKEYSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[
+SELECT A.*
+      ,ISNULL(B.DSCTAB,'Não definido') AS DSCREC
+      ,ISNULL(C.LGNUSU,'') AS DSCUPD
+      ,ISNULL(D.DSCPRO,'') AS DSCPRO
+  FROM TBCADKEY A WITH (NOLOCK) 
+  LEFT JOIN TBTABGER B (NOLOCK) 
+    ON (7 = B.NUMTAB AND A.STAREC = B.KEYCOD)
+  LEFT JOIN TBCADUSU C (NOLOCK) 
+    ON (A.UPDUSU = C.CODUSU)
+  LEFT JOIN TBCADPRO D (NOLOCK) 
+    ON (A.CODPRO = D.CODPRO)
+         
+]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Usuário" name="CODUSU" type="int" sysnull="true" default="null" output="" null="true"/>
+        </parameters>
+      </item>
+    </selectallcommand>
+    <insertcommand key="Identity" exceptionparamns="'DATCAD','DATUPD', 'NIDKEY','KEYUSU'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="Identity" exceptionparamns="'DATCAD','KEYUSU'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[SET @DATUPD =GETDATE();]]>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+  
+  </item>
+  
+  <item create="true"  id="32" name="TBCADOPT">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>True</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>111000000000</procedure>
+    <asp>1110000000</asp>
+    <csharp>111000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields>NIDOPT</MaxFields>
+  </item>
+  <item create="true"  id="33" name="TBREGCCR" friendlyname="Controle CC" modelversion="2">
+    <UpdateKey>Key</UpdateKey>
+    <audit>False</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>111100000000</procedure>
+    <asp>1110000000</asp>
+    <csharp>111100000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <insertcommand key="Identity" exceptionparamns="'DATCAD','DATUPD', 'NIDCCR'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="Identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[SET @DATUPD =GETDATE();]]>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+    <deletecommand key="Identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </deletecommand>
+    <selectcommand>
+      <item script="true" alias="A." sql="" type="" method="Select" return="ControleCC" procname="" desc ="Seleciona o registro de acordo com o id de registro">
+        <query>
+          <![CDATA[SELECT * FROM TBREGCCR (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Conta Corrente" name="NIDCCR" type="System.Int32" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    <methods>
+      <item script="false" alias="A." sql="" method="ExtractManagementReport" return="DataTable" procname="PRREGCCRRELFIN" desc ="Extrai o relatório gerencial de movimento de contas">
+        <parameters>
+          <parameter input="true" apply="true" desc ="Data Inicial de Extração" name="DATCAD1" type="System.DateTime" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Data Final de Extração" name="DATCAD2" type="System.DateTime" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </methods>
+  </item>
+  <item create="true"  id="34" name="TBREGMON">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>110000000000</procedure>
+    <asp>1100000000</asp>
+    <csharp>110000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="35" name="TBAUDDAT" friendlyname="Auditoria" modelversion="2">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>100000000</procedure>
+    <asp>100000000</asp>
+    <csharp>10000000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <insertcommand key="Identity" exceptionparamns="'DATCAD','DATUPD', 'AUDNUM'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+
+  </item>
+  <item create="true"  id="36" name="TBCADCTT">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>fALSE</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>111100000</asp>
+    <csharp>11110000</csharp>
+    <SelectAllList>CODUSU</SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>False</CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="37" name="TBINSBXA">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>111100000</asp>
+    <csharp>11110000</csharp>
+    <SelectAllList>TIPBOL</SelectAllList>
+    <StringSqlSelectAll>20</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <SelectAllOrder>A.TIPBOL, A.TIPREG, A.INSBXA</SelectAllOrder>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="38" name="TBCADTAR" friendlyname="Tarifacao" modelversion="2">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <extendedmodel><![CDATA[
+      select TOP 1 nidtar,nivtar,usupro,codtar,starec,codmoe,datcad,updusu,fmtcob,pcttar,vlrtar,tarbas,vlrinf, vlrmax, vlrmax as extvbs, vlrmax as extvlr from tbcadtar
+    ]]>
+    </extendedmodel>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>111100000</asp>
+    <csharp>11110000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="Tarifacao" procname="PRCADTARSEL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[SELECT * FROM TBCADTAR (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Tarifação" name="NIDTAR" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>    
+    <insertcommand key="Key" exceptionparamns="'DATCAD','DATUPD', 'NIDTAR'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+    <selectallcommand>
+      <item script="true" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRCADTARSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[
+               SELECT A.*
+               ,ISNULL(D.DSCTAB,'') AS DSCTAR
+               ,ISNULL(B.DSCTAB,'Não definido') AS DSCREC
+               ,ISNULL(C.LGNUSU,'') AS DSCUPD
+               ,ISNULL(E.DSCTAB,'N/D') AS DSCFCO
+               FROM TBCADTAR A WITH (NOLOCK) 
+               LEFT JOIN TBTABGER B (NOLOCK) ON
+               (7 = B.NUMTAB AND A.STAREC = B.KEYCOD)
+               LEFT JOIN TBCADUSU C (NOLOCK) ON
+               (A.UPDUSU = C.CODUSU)
+               LEFT JOIN TBTABGER D (NOLOCK) ON
+               (24 = D.NUMTAB AND A.CODTAR = D.KEYCOD)
+               LEFT JOIN TBTABGER E (NOLOCK) ON
+               (30 = E.NUMTAB AND A.FMTCOB = E.KEYCOD)          
+          ]]></query>
+        <parameters>
+          <parameter input="true" desc ="Código do Usuario" name="USUPRO" type="int" sysnull="false" default="" output="" null="false"/>          
+          <parameter input="true" desc ="Nivel de Tarifação" name="NIVTAR" type="System.Byte" sysnull="false" default="" output="" null="false"/>          
+        </parameters>
+      </item>
+    </selectallcommand>
+
+
+  </item>
+  <item create="true"  id="39" name="TBCPLCRT">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1100000000</procedure>
+    <asp>110000000</asp>
+    <csharp>11000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="40" name="TBCADCVL">
+    <UpdateKey>Key</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1000000000</procedure>
+    <asp>100000000</asp>
+    <csharp>10000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="41" name="TBCRTSAL" friendlyname="CardBalance" modelversion="2">
+    <UpdateKey>Key</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@CODCRT</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>111100000</asp>
+    <csharp>11110000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="CardBalance" procname="PRCTRSALSEL" desc ="Seleciona o registro de mensalidade de acordo com o ID">
+        <query>
+          <![CDATA[SELECT * FROM TBCRTSAL (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Cartão" name="CODCRT" type="int" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Código da Moeda" name="CODMOE" type="int" default="" output="" null="false"/>          
+        </parameters>
+      </item>
+    </selectcommand>
+    <insertcommand key="key" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </updatecommand>
+    <deletecommand key="key" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </deletecommand>
+
+  </item>
+  <item create="true"  id="42" name="TBCADAGV">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>False</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@NIDAGV</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>111100000</asp>
+    <csharp>11110000</csharp>
+    <SelectAllList>REGAGV</SelectAllList>
+    <StringSqlSelectAll>18</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="43" name="TBCTRMEN" friendlyname="Mensalidades" modelversion="2">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>100000000</asp>
+    <csharp>11110000</csharp>
+    <SelectAllList>STAREC/V, TIPMEN/V, STAMEN, CODUSU, USRCOB</SelectAllList>
+    <StringSqlSelectAll>30</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="Mensalidades" procname="PRCTRMENSEL" desc ="Seleciona o registro de mensalidade de acordo com o ID">
+        <query>
+          <![CDATA[SELECT * FROM TBCTRMEN (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Mensalidade" name="NIDMEN" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    <insertcommand key="identity" exceptionparamns="'DATCAD','DATUPD', 'NIDMEN'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </updatecommand>
+    <deletecommand key="identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </deletecommand>
+    <selectallcommand>
+      <item script="true" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRCTRMENSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[
+            
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Status do Registro" name="STAREC" type="System.Byte" sysnull="false" default="" output="" null="false"/>
+          <parameter input="true" desc ="Tipo de Mensalidade" name="TIPMEN" type="System.Int32" sysnull="false" default="" output="" null="false"/>
+          <parameter input="true" desc ="Status da Mensalidade" name="STAMEN" type="System.Int32" sysnull="true" default="" output="" null="true"/>          
+          <parameter input="true" desc ="Código do Usuario" name="CODUSU" type="int" sysnull="true" default="" output="" null="true"/>
+          <parameter input="true" desc ="Usuário de Cobrança" name="USRCOB" type="int" sysnull="true" default="" output="" null="true"/>
+
+        </parameters>
+      </item>
+    </selectallcommand>
+
+
+
+  </item>
+  <item create="true"  id="44" name="TBUSUPLN">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>false</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>100000000</asp>
+    <csharp>11110000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll>19</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="45" name="TBREGROT">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1011000000</procedure>
+    <asp>100000000</asp>
+    <csharp>10110000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="46" name="TPIMPCSV" friendlyname="DadosExternos" modelversion="2">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1011000000</procedure>
+    <asp>100000000</asp>
+    <csharp>10110000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="DadosExternos" procname="PRIMPCSVSEL" desc ="Seleciona o registro de importação de acordo com o ID">
+        <query>
+          <![CDATA[SELECT * FROM TBIMPCSV (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Importação" name="NIDDEX" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    <insertcommand key="identity" exceptionparamns="'DATCAD','DATUPD', 'NIDDEX'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </updatecommand>
+    <deletecommand key="identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </deletecommand>
+
+
+  </item>
+  <item create="true"  id="47" name="TBCADCAL">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>false</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1011000000</procedure>
+    <asp>100000000</asp>
+    <csharp>10110000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="48" name="TBLIGUSU">
+    <UpdateKey select="both">Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1110000000</procedure>
+    <asp>100000000</asp>
+    <csharp>11100000</csharp>
+    <SelectAllList>USUREF</SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias></SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="49" name="TBREGPRO" friendlyname="Registro de Processamento" modelversion="2">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>false</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>100000000</asp>
+    <csharp>11110000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="RegistroProcessamento" procname="PRREGPROSEL" desc ="Seleciona o registro de processamento de acordo com o ID">
+        <query>
+          <![CDATA[SELECT * FROM TBREGPRO (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Transacao" name="NIDRTR" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    <insertcommand key="identity" exceptionparamns="'DATCAD','DATUPD', 'NIDRTR'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </updatecommand>
+    <deletecommand key="identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </deletecommand>
+
+  </item>
+  <!--<item create="true"  id="50" name="TBMONLOT" friendlyname="Monitor Lote">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>STALOT</SelectAllList>
+    <StringSqlSelectAll>21</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>-->
+  <item create="true"  id="50" name="TBCADUPL">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>false</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>100000000</asp>
+    <csharp>11110000</csharp>
+    <SelectAllList>CODUSU, CODOPA</SelectAllList>
+    <StringSqlSelectAll>22</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="51" name="TBREGPOS" friendlyname="RegistroVendas">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>100000000</asp>
+    <csharp>11110000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="52" name="TBREGBCC">
+    <UpdateKey>Key</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>false</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>100000000</asp>
+    <csharp>11110000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="53" name="TBUSUMAQ">
+    <UpdateKey select="both">Key</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1110000000</procedure>
+    <asp>100000000</asp>
+    <csharp>11100000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll>24</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="54" name="TBCADMAQ">
+    <UpdateKey>Key</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>false</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>100000000</asp>
+    <csharp>11110000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll>23</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="55" name="TBUSUCFG" friendlyname="UserConfig">
+    <UpdateKey select="both">Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable>
+      <![CDATA[SELECT [NIDCFG]
+      ,[USUCFG]
+      ,[NIVCFG]
+      ,[STAREC]
+      ,[DATCAD]
+      ,[UPDUSU]
+      ,[STAINI]
+      ,[VLRMEN]
+      ,[VLRTAR]
+      ,[VLRVEN]
+      ,[PRMCOM]
+      ,[PRMFAT]
+      ,[PRMREC]
+      ,[PRMAPI]
+      ,[VLRMBL]
+      ,[VLRMRC]
+      ,[VLRMTC]
+      ,[APLTAT]
+      ,[VLRTAT]
+      ,[INSBC1]
+      ,[INSBC2]
+      ,[INSBC3]
+      ,[APLTRF]
+      ,[VLRTRF]
+      ,[VLRTOB]
+      ,[DATMPC]
+      ,[APLTAD]
+      ,[TAXJUR]
+      ,[TAXOPE]
+      ,[TOMMEN]
+      ,[DATUPD]
+      ,[ACPDEB]
+      ,[ACPCRT]
+      ,[MAXPCL]
+      ,[ACPBOL]
+      ,[CODTRA]
+      ,[ANTCRC]
+      ,[ACPMAL]
+      ,[ACPSMS]
+      ,[ACPPST]
+      ,[TIPREC]
+      ,[NUMDVF]
+      ,[ALTCPG]
+      ,[ALTNPG]
+      ,[ALTENV]
+      ,[URLRET]
+      ,[PRMASL]
+      ,[PRMACD]
+      ,[PRMARC]
+      ,[PRMAEX]
+      ,[PRMACO]
+      ,[PRMASC]
+      ,[PRMCKI]
+      ,[PRMCHP]
+      ,[PRMFTK]
+      ,[PRMLCR]
+      ,[PRMUCR]
+      ,[VALEBO]
+      ,[PRCMUL]
+      ,[APLTDP]
+      ,[REGAGV]
+      ,[ACEURL]
+  FROM [dbo].[TBUSUCFG]
+]]>
+    </SqlTable>
+
+
+    <fieldreturn></fieldreturn>
+    <procedure>1110000000</procedure>
+    <asp>1110000000</asp>
+    <csharp>1110000000</csharp>
+    <SelectAllList>CODUSU</SelectAllList>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="UserConfig" procname="PRUSUCFGSEL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[SELECT * FROM TBUSUCFG (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Usuário" name="USUCFG" type="int" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Nivel de Configuração do Usuário" name="NIVCFG" type="System.Byte" default="" output="" null="true"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" method="Select" return="UserConfig" procname="PRUSUCFGSELNID" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[SELECT * FROM TBUSUCFG (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Usuário" name="USUCFG" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" method="Copy" return="int" procname="PRUSUCFGCPY" desc ="Copia um registro de configuração para outro usuario">
+        <query>
+          <![CDATA[
+          ]]>
+        </query>
+        <parameters>
+        </parameters>
+      </item>
+    
+    </selectcommand>
+    <insertcommand key="Key" exceptionparamns="'DATCAD','DATUPD', 'NIDCFG'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+  
+    <methods>
+     <item script="true" alias="A." sql="" method="Copy" return="int" procname="spi_copiarconfiguracaousuario" desc ="Copia um registro de configuração para outro usuario">
+        <parameters>
+          <parameter input="true" apply="true" desc ="Nivel de Configuração de Destino" name="NIVCFG" type="System.Byte" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Usuário de Configuração de Destino" name="USUCFG" type="System.Int32" default="" output="" null="false"/>          
+          <parameter input="true" apply="true" desc ="Nivel de Configuração de Origem" name="SCRNIV" type="System.Byte" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Usuário de Configuração de Origem" name="SRCCFG" type="System.Int32" default="" output="" null="false"/>          
+          <parameter input="true" apply="true" desc ="Código do Usuário de Atualização" name="UPDUSU" type="System.Int32" default="" output="" null="false"/>                    
+          </parameters>
+        <returns>
+          <return operator=">" value="0" message="" error="OK">
+            <![CDATA[LastMessage = string.Format("{0} REGISTROS COPIADOS", RETURN_VALUE);]]>
+          </return>
+          <return value="0" message="" error=""><![CDATA[LastMessage = "NENHUM REGISTRO COPIADO";]]>
+              
+          </return>
+          <return value="-2" message="" error="TRANSACTIONNOTHASRECORD"/>
+        </returns>
+      </item>
+
+    </methods>
+  
+  </item>
+
+
+  <item create="true"  id="56" name="TBREGBXA">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1110000000</procedure>
+    <asp>1110000000</asp>
+    <csharp>1110000000</csharp>
+    <SelectAllList>STAREC/V, IDELIN/V, CODUSU</SelectAllList>
+    <StringSqlSelectAll>27</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="57" name="TBUSUBOL">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODUSU</SelectAllList>
+    <StringSqlSelectAll>28</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>true</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="58" name="TBCLIEXT" friendlyname="ExternalConfigurationAccess" modelversion="2">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="ExternalConfigurationAccess" procname="" desc ="Seleciona o registro de acordo com o id de configuracao">
+        <query>
+          <![CDATA[SELECT * FROM TBCLIEXT (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de configuracao do serviço externo" name="NIDCFE" type="System.Int32" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    <insertcommand key="Key" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+
+  </item>
+  <item create="true"  id="58" name="TBREGFAT">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>1111000000</asp>
+    <csharp>1111000000</csharp>
+    <SelectAllList>CODUSU</SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="59" name="TBANTBOL">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>false</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1100000000</procedure>
+    <asp>1100000000</asp>
+    <csharp>1100000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="60" name="TBUSUCVL">
+    <UpdateKey>Key</UpdateKey>
+    <audit>FALSE</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>false</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1100000000</procedure>
+    <asp>1100000000</asp>
+    <csharp>1100000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="61" name="TBBORCCR" friendlyname="Borrador CC" modelversion="2">
+    <UpdateKey>Key</UpdateKey>
+    <audit>False</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>True</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>111000000000</procedure>
+    <asp>1110000000</asp>
+    <csharp>111000000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="BorradorCC" procname="PRBORCCRSEL" desc ="Seleciona o registro de conta corrente de acordo com o ID">
+        <query>
+          <![CDATA[SELECT * FROM TBBORCCR (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Conta Corrente" name="NIDCCR" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    <insertcommand key="identity" exceptionparamns="'DATCAD','DATUPD', 'NIDCCR'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </updatecommand>
+
+  </item>
+  <item create="true"  id="62" name="TBREGPAG" friendlyname="Registro de Pagamento" modelversion="2">
+    <UpdateKey select="both">Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>100000000</asp>
+    <csharp>11110000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="RegistroPagamento" procname="PRREGPAGSEL" desc ="Seleciona o registro de acordo com o Código do Usuário">
+        <query>
+          <![CDATA[SELECT * FROM TBREGPAG (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Pagamento" name="NIDPAG" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" method="Select" return="RegistroPagamento" procname="PRREGPAGSELTRA" desc ="Seleciona o registro de acordo com o Código do Usuário">
+        <query>
+          <![CDATA[SELECT * FROM TBREGPAG (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Código do Usuário" name="CODUSU" type="int" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Identificador de Pagamento" name="NUMTRL" type="System.String" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Data de Vencimento" name="DATVCT" type="System.DateTime" default="" output="" null="false"/>          s
+        </parameters>
+      </item>
+
+    </selectcommand>
+    <insertcommand key="identity" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="identity" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+    <deletecommand key="identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </deletecommand>
+    <selectallcommand>
+      <item script="true" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRREGPAGSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[
+         SELECT A.*
+                ,ISNULL(B.DSCTAB,'Nao definido') AS DSCREC
+                ,ISNULL(D.DSCTAB,'Nao definido') AS DSCSRG
+                ,ISNULL(C.LGNUSU,'') AS DSCUPD
+                ,ISNULL(E.NOMUSU,'') AS NOMUSU
+                FROM TBREGPAG A WITH (NOLOCK)
+                LEFT JOIN TBTABGER B (NOLOCK) ON
+                (7 = b.NUMTAB AND A.STAREC = B.KEYCOD)
+                LEFT JOIN TBCADUSU C (NOLOCK) ON
+                (A.UPDUSU = C.CODUSU)
+                LEFT JOIN TBTABGER D (NOLOCK) ON
+                (49 = D.NUMTAB AND A.SITREC = D.KEYCOD)
+                INNER JOIN TBCADUSU E (NOLOCK) ON
+                (A.CODUSU = E.CODUSU)
+          
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Código do Usuário" name="CODUSU" type="int" sysnull="true" default="null" output="" null="true"/>
+        </parameters>
+      </item>
+    </selectallcommand>
+
+
+  </item>
+  <item create="true"  id="63" name="TBJOBRUN">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1000000000</procedure>
+    <asp>100000000</asp>
+    <csharp>10000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="64" name="TBMEMCAL" friendlyname="Memoria de Calculo" modelversion="2">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1000000000</procedure>
+    <asp>100000000</asp>
+    <csharp>10000000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <insertcommand key="identity" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+
+  </item>
+  <item create="true"  id="65" name="TBFATLIG">
+    <UpdateKey>key</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1100000000</procedure>
+    <asp>110000000</asp>
+    <csharp>11000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="66" name="TBBXABOL" friendlyname="TicketPaymentRegistration" modelversion="2">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <extendedmodel>
+      <![CDATA[SELECT NIDRBB,NIDLIM,NIDBOL,TIPBXA,BOLANT,NUMPCL,TIPREG,TOTPCL,STAREC,TIPLCT,LOTFIN,ORGLCT,NUMREX,DATCAD,DATUPD,VIAPGT,VLRPAR,VLRPAG,TIPVAL,VLRJUR,VLRDES,VLRTAR,VLRDCP,VLRREG,DATPGT,TAREXT,DEPINV,UPDUSU,USUPRO,USUCED,CODCRT,INDLCT,NIDCTA,NIDTRB,USUBCO,FILNAM,STABOL,STAREG,USRBNF,BXABOL,VLRTOT,TARTOT,DESTOT,DSCERR,ALTCPG,NIDRTR 
+,FRCLCK,USRDEB,USRCRD,CTADEB,CTACRD,MOVVDB,MOVVCR,INDDEB,INDCRD,TARTAD,TARTDP,0 AS CODPRT FROM dbo.TBBXABOL
+]]></extendedmodel>
+      <!--<SqlTable>SELECT NIDRBB,NIDLIM,NIDBOL,TIPBXA,BOLANT,NUMPCL,TIPREG,STAREC,TIPLCT,LOTFIN,ORGLCT,NUMREX,DATCAD,DATUPD,VIAPGT,VLRPAR,VLRPAG,TIPVAL,VLRJUR,VLRDES,VLRTAR,TAREXT,DATPGT,UPDUSU,USUPRO,USUCED,NIDTRB,FILNAM,STAREG,BXABOL,DSCERR,ALTCPG,NIDRTR,FRCLCK,USRDEB,USRCRD,CTADEB,CTACRD,MOVVDB,MOVVCR,INDDEB,INDCRD,TARTAD,TARTDP,CODCRT FROM TBBXABOL</SqlTable>-->
+    <SqlTable/>
+    <fieldreturn></fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>110000000</asp>
+    <csharp>11110000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="true" alias="A." sql="" type="" method="Select" return="TicketPaymentRegistration" procname="PRBXABOLSEL" desc ="Seleciona o registro de baixa de boleto de acordo com o id de baixa">
+        <query>
+          <![CDATA[SELECT * FROM TBBXABOL (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Baixa de Boleto" name="NIDRBB" type="System.Int32" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+
+      <selectallcommand>
+      <item script="true" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRBXABOLSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[SELECT * FROM VWBXABOL A]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Status do Registro" name="STAREC" type="short" sysnull="false" default="" output="" null="false"/>          
+          <parameter input="true" desc ="Código do Usuário" name="USUCED" type="int" sysnull="true" default="null" output="" null="true"/>
+        </parameters>
+      </item>
+    </selectallcommand>
+    <insertcommand key="Identity" exceptionparamns="'DATCAD','DATUPD', 'NIDRBB'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-3" message="" error="EXISTINGREQUEST"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="Identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[SET @DATUPD = GETDATE();]]>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+    <deletecommand key="Identity" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </deletecommand>
+    <methods>
+    <item script="false" alias="A." sql="" method="UpdateItemReference" return="int" procname="spu_ticketpaymentregistration_referencias" desc ="Atualiza as referencias de um id de registro de baixa de boleto" returnvalue="1">
+      <query>
+        <![CDATA[
+          ]]>
+      </query>
+      <parameters>
+        <parameter input="true" desc ="ID do Registro de Baixa de Boleto" name="NIDRBB" type="int" default="" output="" null="false"/>
+      </parameters>
+    </item>
+      <item script="true" alias="A." sql="" method="DeleteBatch" return="int" procname="PRBXABOLDELLOT" desc ="Remove um lote de importação de Registro de Baixa de Boletos" returnvalue="1">
+        <query>
+          <![CDATA[
+  SET @RETURN_VALUE=0         
+	BEGIN TRANSACTION
+
+	IF(@NIDLIM<=0)
+		SET @RETURN_VALUE=-1
+
+    IF(EXISTS(SELECT 1 FROM TBBXABOL WHERE NIDLIM=@NIDLIM AND LOTFIN<>0))		
+        SET @RETURN_VALUE=-2
+
+	IF(@RETURN_VALUE=0)
+		BEGIN
+			DELETE FROM TBBXABOL WHERE NIDLIM =@NIDLIM AND LOTFIN=0
+			IF(@@ERROR=0)
+				SET @RETURN_VALUE=1	   
+		END
+
+	IF(@RETURN_VALUE=1)
+		COMMIT TRANSACTION
+	ELSE
+		ROLLBACK TRANSACTION
+    RETURN @RETURN_VALUE          
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="ID do Lote de Importação" name="NIDLIM" type="int" default="" output="" null="false"/>
+        </parameters>
+        <returns>
+          <return value="0" message="EXCLUSAO EFETUADA COM SUCESSO" error="OK"/>
+          <return value="-1" message="O LOTE NÃO FOI INFORMADO" error="FAILDELETERECORD"/>
+          <return value="-2" message="O LOTE NÃO POSSUI REGISTROS ASSOCIADOS A UM REGISTRO FINANCEIRO" error="FAILDELETERECORD"/>
+        </returns>
+
+      </item>
+      <item script="false" alias="A." sql="" method="UnRegister" return="int" procname="spu_ticketpaymentregistration_removeprocess" desc ="Reverte o processamento de um Lote de Importação de Registro de Baixa de Boletos" returnvalue="1">
+        <query>
+          <![CDATA[
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="ID do Lote de Importação" name="NIDLIM" type="int" default="" output="" null="false"/>
+          <parameter input="true" desc ="ID do Usuário de Processamento" name="UPDUSU" type="int" default="" output="" null="false"/>
+        </parameters>
+        <returns>
+          <return value="1" message="REVERSAO EFETUADA COM SUCESSO" error="OK"/>
+          <return value="0" message="FALHA NA REVERSÃO DO LOTE DE IMPORTACAO" error="FAILREMOVEPROCESS"/>
+        </returns>
+
+      </item>
+      <item script="false" alias="A." sql="" method="GetMaxRecordType" return="int" procname="sps_ticketpaymentregistration_valid" desc ="Retorna o maior identificador de registro de tipo de baixa para o boleto" returnvalue="1">
+        <query>
+          <![CDATA[
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="ID do Boleto" name="NIDBOL" type="int" default="" output="" null="false"/>
+          <parameter input="true" desc ="Número da Parcela" name="NUMPCL" type="System.Int16" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="SELECT TOP 1 NIDRBB FROM TBBXABOL (NOLOCK)" method="Select" return="int" returnmode="2" procname="PRBXABOLSELNID" desc ="Retorna o id de Registro da Chave de Boleto informada" returnvalue="0">
+        <query>
+          <![CDATA[
+          DECLARE @RETURN_VALUE INT
+          SET @RETURN_VALUE =0
+          SELECT @RETURN_VALUE = NIDRBB 
+            FROM TBBXABOL (NOLOCK) A
+           WHERE NIDBOL=@NIDBOL  
+             AND TIPBXAL=@TIPBXA            
+             AND NUMPCLL=@NUMPCL                         
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="ID do Boleto" name="NIDBOL" type="int" default="" output="" null="false"/>
+          <parameter input="true" desc ="Tipo de Baixa" name="TIPBXA" type="System.Byte" default="" output="" null="false"/>
+          <parameter input="true" desc ="Número da Parcela" name="NUMPCL" type="System.Int16" default="" output="" null="false"/>
+        </parameters>
+      </item>
+
+    </methods>
+  </item>
+  <item create="true"  id="67" name="XIREGCRT">
+    <UpdateKey select="both">IDENTITY</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1000000000</procedure>
+    <asp>100000000</asp>
+    <csharp>10000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll></CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="68" name="TBAPRLOT" friendlyname="Aprovacao Lote" modelversion="2">
+    <UpdateKey select="both">IDENTITY</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1110000000</procedure>
+    <asp>110000000</asp>
+    <csharp>11100000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="AprovacaoLote" procname="PRAPRLOTSEL" desc ="Seleciona o registro de aprovaca de acordo com o ID">
+        <query>
+          <![CDATA[SELECT * FROM TBAPRLOT (nolock) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Aprovação" name="NIDAPR" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+    <insertcommand key="identity" exceptionparamns="'DATCAD','DATUPD', 'NIDAPR'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        SET @DATUPD=GETDATE();
+      </pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </updatecommand>
+    <deletecommand key="identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </deletecommand>
+    <selectallcommand>
+      <item script="true" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRAPRLOTSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[
+SELECT
+         A.CHKMOV
+        ,ISNULL(J.flglib,1) AS FLGLIB
+        ,A.NIDAPR
+        ,A.LOTCTL
+        ,A.NIDCCR
+        ,H.DATMOV
+        ,A.USUPRO
+        ,ISNULL(C.NOMUSU,'') AS DSCGST
+        ,A.CODUSU
+        ,ISNULL(D.NOMUSU,'') AS NOMUSU
+        ,A.NIDTRA
+        ,A.CANTRA
+        ,A.NIDDEP
+        ,A.IDEPRE
+        ,A.CODMOV
+        ,I.DSCMOV
+        ,A.INDLCT
+        ,A.VLRMOV
+        ,A.STAREC
+        ,A.DATCAD
+        ,A.DATUPD
+        ,A.UPDUSU
+        ,A.USUAPR
+        ,ISNULL(E.NOMUSU,'') AS NOMAPR
+        ,A.DATLIB
+        ,A.STABOR
+        ,G.DSCSTA
+  FROM TBAPRLOT (NOLOCK) A
+  LEFT JOIN TBUSUPRO (NOLOCK) B 
+    ON (A.USUPRO = B.USUPRO)
+ INNER JOIN TBCADUSU (NOLOCK) C 
+    ON (B.CODUSU = C.CODUSU)
+ INNER JOIN TBCADUSU (NOLOCK) D 
+    ON (A.CODUSU = D.CODUSU)
+  LEFT JOIN TBCADUSU (NOLOCK) E 
+    ON (A.USUAPR = E.CODUSU)
+ INNER JOIN TBTABGER (NOLOCK) F 
+    ON (7 = F.NUMTAB AND A.STAREC = F.KEYCOD)
+ INNER JOIN TBCADSTA (NOLOCK) G 
+    ON (A.STABOR = G.CODSTA)
+ INNER JOIN TBREGCCR (NOLOCK) H 
+    ON (A.NIDCCR = H.NIDCCR)
+ INNER JOIN TBTIPMOV (NOLOCK) I
+    ON (A.CODMOV = I.CODMOV)
+  LEFT JOIN (SELECT NIDTRA, 
+                    IDEPRE, 
+                    CASE WHEN isnull(starec,13) in (5,13) THEN 0 ELSE 1 END AS flglib 
+               FROM tbaprlot (NOLOCK)) J 
+    ON (A.NIDTRA = J.NIDTRA AND (A.IDEPRE-1) = J.IDEPRE)
+            
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Código do Gestor" name="USUPRO" type="System.Int32" sysnull="true" default="" output="" null="true"/>
+          <parameter input="true" desc ="Código do Usuario" name="CODUSU" type="int" sysnull="true" default="" output="" null="true"/>
+          <parameter input="true" desc ="Código do Movimento" name="CODMOV" type="System.Int16" sysnull="true" default="" output="" null="true"/>
+          <parameter input="true" desc ="Status do Registro" name="STAREC" type="System.Byte" sysnull="true" default="" output="" null="true"/>
+        </parameters>
+      </item>
+    </selectallcommand>
+
+  </item>
+  <item create="true"  id="69" name="TBCADCOM" friendlyname="RegistroComissoes">
+    <UpdateKey select="both">IDENTITY</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>1110000000</procedure>
+    <asp>110000000</asp>
+    <csharp>11100000</csharp>
+    <SelectAllList>STAREC/V, TIPCOM/V, CODUSU, CODAGV</SelectAllList>
+    <StringSqlSelectAll>32</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="70" name="TBREGVEN">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@NIDRGV</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>111100000</asp>
+    <csharp>11110000</csharp>
+    <SelectAllList>REGAGV</SelectAllList>
+    <StringSqlSelectAll>34</StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="71" name="TBREGTIN" friendlyname="Transação Interna" modelversion="2">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@NIDRTI</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>111100000</asp>
+    <csharp>11110000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectallcommand>
+      <item script="true" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRREGTINSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[
+          SELECT A.NIDRTI
+          ,A.NIDRPA
+          ,A.CODVER
+          ,A.CODPRC
+          ,A.NUMIPA
+          ,A.NIDBOL
+          ,A.NIDTOK
+          ,A.ORGLCT
+          ,A.TIPLCT
+          ,A.LOTFIN
+          ,A.NIDTRA
+          ,A.CODUSU
+          ,ISNULL(C.NOMUSU,'') AS NOMUSU
+          ,A.STAREC
+          ,ISNULL(B.DSCTAB,'') AS DSCREC
+          ,A.DATCAD
+          ,A.UPDUSU
+          ,A.CODRET
+          ,A.DATPRO
+          ,A.HORPRO
+          ,A.VLRJUR
+          ,LTRIM(RTRIM(A.MSGRET)) AS MSGRET
+          ,A.NUMAUT
+          ,A.NOMTIT
+          ,A.NUMPED
+          ,A.DSCPED
+          ,A.DATPED
+          ,A.RESPAV
+          ,A.NUMTID
+          ,A.VLRPAR
+          ,A.VLRTJU
+          ,A.RSPTAR
+          ,A.CODCRT
+          ,A.NUMCRT
+          ,A.NUMMES
+          ,A.NUMANO
+          ,A.NUMCVC
+          ,A.NUMPCL
+          ,A.CODTRA
+          ,A.VLRTRA
+          ,A.CALPAR
+          ,A.CODSOL
+          ,A.USUPRO
+          ,A.USRDEB
+          ,A.USRCRD
+          ,A.INDDEB
+          ,A.INDCRD
+          ,A.OMTSLD
+          ,A.OMTTAR
+          ,A.NUMAGE
+          ,A.NUMCTA
+          ,A.CODCMF
+          ,A.RSPCNF
+          ,A.CODBCO
+          ,A.NOMDEP
+          ,A.CPFDEP
+          ,A.NUMIDT
+          FROM TBREGTIN (nolock) a
+          INNER join TBTABGER (nolock) b
+             ON (a.starec = b.keycod and 7 = b.numtab)
+          INNER join TBCADUSU (nolock) c
+             ON (a.codusu = c.codusu)
+          WHERE (1=1)]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Usuário" name="CODUSU" type="int" sysnull="true" default="null" output="" null="true"/>
+          <parameter input="true" desc ="Status do Registro" name="TIPLCT" type="short" sysnull="true" default="null" output="" null="true"/>
+        </parameters>
+      </item>
+    </selectallcommand>
+    <methods>
+      <item script="false" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRREGTINSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+      </item>
+      <item script="false" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRREGTINSELALL" desc ="Seleciona os registros de transação do usuário especificado">
+        <parameters>
+          <parameter input="true" desc ="Usuário" name="CODUSU" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+
+      <item script="true" alias="A." sql="" method="Remove" return="int" procname="PRREGTINREM" desc ="Remove um registro de Transacao" returnvalue="1">
+        <query>
+          <![CDATA[
+  SET @RETURN_VALUE=0
+	BEGIN  TRY
+		DELETE FROM TBREGDLT 
+		 WHERE NIDRTI=@NIDRTI	
+
+		DELETE FROM TBREGTIN 
+		WHERE NIDRTI=@NIDRTI	
+    
+		DELETE FROM TBEXTTIN 
+		WHERE NIDRTI=@NIDRTI	
+    
+		SET @RETURN_VALUE=1		
+	END TRY
+	BEGIN CATCH
+		SET @RETURN_VALUE=-1
+	END CATCH
+	RETURN @RETURN_VALUE        
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" desc ="ID do Registro de Transação" name="NIDRTI" type="int" default="" output="" null="false"/>
+        </parameters>
+   
+      </item>
+      
+      <item script="false" alias="A." sql="" method="CancelTransaction" return="int" procname="PRREGTINCANRTI" desc ="Cancela um registro de transação">
+        <parameters>
+          <parameter input="true" desc ="ID do Registro de Transação" name="NIDRTI" type="int" default="" output="" null="false"/>
+        </parameters>
+        <returns>
+          <return operator=">" value="0" message="" error="OK">
+            <![CDATA[
+                    ControleCCDao WRKCCR = new ControleCCDao();
+                    RETURN_VALUE = WRKCCR.RecordInternalRelease(RETURN_VALUE, 0, 1, true);
+                    if (WRKCCR.HasError() || (RETURN_VALUE != 1))
+                    {
+                        this.LastErrorCode = WRKCCR.LastErrorCode;
+                        this.LastError = WRKCCR.LastError;
+                        this.LastMessage = WRKCCR.LastMessage;
+                        this.LastErrorObject = WRKCCR.LastErrorObject;
+                    }
+                    else
+                        SetError("OK");
+                    WRKCCR = null;
+            ]]>
+          </return>
+          <return value="-1" message="" error="TRANSACTIONNOTFOUND"/>
+          <return value="-2" message="" error="TRANSACTIONNOTHASRECORD"/>
+        </returns>
+      </item>
+
+    </methods>
+
+    <insertcommand key="Identity" exceptionparamns="'DATCAD','DATUPD', 'NIDRTI'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        /* Verifica se já não existe uma transação ativa */
+        IF(EXISTS(SELECT 1
+        FROM TBREGTIN (NOLOCK)
+        WHERE TIPLCT= @TIPLCT
+        AND CODSOL= @CODSOL
+        AND CODUSU= @CODUSU
+        AND STAREC= 1))
+        BEGIN
+        SET @RETURN_VALUE=-3;
+        END
+      </pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-3" message="" error="EXISTINGREQUEST"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="Identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[SET @DATUPD = GETDATE();]]>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" type="" method="Select" return="TransacaoInterna" procname="PRREGTINSEL" desc ="Seleciona o registro de acordo com o id da transação">
+        <query>
+          <![CDATA[SELECT * FROM TBREGTIN (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID da Transação Interna" name="NIDRTI" type="System.Int32" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="SELECT TOP 1 STAREC, NIDRTI, CODRET, CODSOL, CONVERT(VARCHAR,DATPRO) DATPRO, HORPRO, '' AS CODSTB FROM TBREGTIN (NOLOCK)" type="List" method="GetTransactions" return="TransacaoInternaChecagem" procname="PRREGTINSELTRA" desc ="Seleciona as transações para Sondagem">
+        <query>
+       <![CDATA[ 
+    SET NOCOUNT ON
+    SELECT A.STAREC, 
+           A.NIDRTI, 
+           CODRET, 
+           CODSOL, 
+           CONVERT(VARCHAR,DATPRO) DATPRO, 
+		   HORPRO,
+		   B.CODSTB 
+      FROM TBREGTIN (NOLOCK) A
+     INNER JOIN TBEXTTIN (NOLOCK) B
+        ON (A.NIDRTI = B.NIDRTI)
+     WHERE A.TIPLCT IN (71,73) 
+       AND A.STAREC IN (1,9)
+	   AND B.CODSTB <>''	            
+      ]]>
+        </query>
+      </item>
+      <item script="true" alias="A." sql="SELECT TOP 1 * from XLREGTIN" type="List" method="GetInternalTransactionData" return="DadosTransacaoInterna" procname="PRREGTINSELDLT" desc ="Lista Detalhes do Lançamento interno (Preparo para lancamento)">
+        <query>
+          <![CDATA[ 
+  SELECT  A.NIDRTI, A.NIDRPA, A.CODVER, A.CODPRC, A.NUMIPA, A.NIDBOL,
+          A.NIDTOK, A.ORGLCT, A.TIPLCT, A.LOTFIN, A.NIDTRA, A.CODUSU,
+          A.STAREC, A.DATCAD, A.DATUPD, A.UPDUSU, A.CODRET, A.DATPRO,
+          A.HORPRO, A.VLRJUR, A.MSGRET, A.NUMAUT, A.NOMTIT, A.NUMPED,
+          A.DSCPED, A.DATPED, A.RESPAV, A.NUMTID, A.VLRPAR, A.VLRTJU,
+          A.RSPTAR, A.CODCRT, A.NUMCRT, A.NUMMES, A.NUMANO, A.NUMCVC,
+          A.NUMPCL, A.CODTRA, A.VLRTRA, A.CALPAR, A.CODSOL, A.USUPRO,
+          A.USRDEB, A.USRCRD, C.INDDEB, C.INDCRD, A.OMTSLD, A.OMTTAR,
+          A.NUMAGE, A.NUMCTA, A.CODCMF, A.RSPCNF, A.CODBCO, A.NOMDEP,
+          A.CPFDEP, A.NUMIDT, B.NIDDLT, B.TIPLIN, B.CODPRT, B.CTADEB,
+          B.CTACRD, B.VLRLAN, B.VLRTAR, B.DEBPRT, B.DEBCTA, B.CRDPRT,
+          B.CRDCTA, C.NIDLCT, C.CODTRM, C.CODTAR, C.VEREXI, C.AGRLCT,
+		  C.MOVDEB, C.MOVCRD, C.STAREG, C.STABOR, C.IDEPRE, C.VALLMT, C.VALSLD, 0 APICRD
+    FROM TBREGTIN(NOLOCK) A
+   INNER JOIN TBREGDLT (NOLOCK) B
+      ON (B.NIDRTI = A.NIDRTI)
+   INNER JOIN TBLANINT(NOLOCK) C
+      ON (B.TIPLCT = C.TIPLCT AND B.TIPLIN = C.TIPLIN AND B.CODTRM = C.CODTRM)
+          ]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID da Transação Interna" name="NIDRTI" type="System.Int32" default="" output="" null="false"/>
+        </parameters>
+      </item>
+
+
+    </selectcommand>
+
+  </item>
+  <item create="true"  id="72" name="TBLOGBAL">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@NIDRTR</fieldreturn>
+    <procedure>10001000000</procedure>
+    <asp>100000000</asp>
+    <csharp>10000000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <CreateSelectionAll>TRUE</CreateSelectionAll>
+    <SelectAllAlias>A.</SelectAllAlias>
+    <MaxFields></MaxFields>
+  </item>
+  <item create="true"  id="73" name="TBLANINT" friendlyname="Lancamento Interno" modelversion="2">
+    <UpdateKey select="both">IDENTITY</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@NIDLCT</fieldreturn>
+    <procedure>1110000000</procedure>
+    <asp>110000000</asp>
+    <csharp>11100000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectallcommand>
+      <item script="true" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRLANINTSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[SELECT  A.* 
+                ,ISNULL(G.DSCTAB,'') AS DSCLCT
+                ,ISNULL(B.DSCTAB,'') AS DSCLIN
+                ,ISNULL(J.DSCTAB,'') AS DSCTAR
+                ,ISNULL(C.DSCTAB,'') AS DSCDEB
+                ,ISNULL(C.DSCTAB,'') AS DSCCRD
+                ,ISNULL(E.DSCMOV,'') AS DSCMVD
+                ,ISNULL(F.DSCMOV,'') AS DSCMVC
+                ,ISNULL(H.DSCSTA,'') AS DSCREG
+                ,ISNULL(I.DSCSTA,'') AS DSCBOR
+                ,ISNULL(K.DSCTAB,'') AS DSCREC
+                FROM TBLANINT (NOLOCK) A
+                INNER JOIN TBTABGER (NOLOCK) B
+                ON (57 = B.NUMTAB AND A.TIPLIN = B.KEYCOD)
+                INNER JOIN TBTABGER (NOLOCK) C
+                ON (39 = C.NUMTAB AND A.INDDEB = C.KEYCOD)
+                INNER JOIN TBTABGER (NOLOCK) D
+                ON (39 = D.NUMTAB AND A.INDCRD = D.KEYCOD)
+                INNER JOIN TBTIPMOV (NOLOCK) E
+                ON (A.MOVDEB = E.CODMOV)
+                INNER JOIN TBTIPMOV (NOLOCK) F
+                ON (A.MOVCRD = F.CODMOV)
+                INNER JOIN TBTABGER (NOLOCK) G
+                ON (36 = G.NUMTAB AND A.TIPLCT = G.KEYCOD)
+                INNER JOIN TBCADSTA (NOLOCK) H
+                ON (A.STAREG = H.CODSTA)
+                INNER JOIN TBCADSTA (NOLOCK) I
+                ON (A.STABOR = I.CODSTA)
+                left JOIN TBTABGER (NOLOCK) J
+                ON (24 = J.NUMTAB AND A.CODTAR = J.KEYCOD)
+                inner JOIN TBTABGER (NOLOCK) K
+                ON (7 = K.NUMTAB AND A.STAREC = K.KEYCOD)
+                WHERE (1=1)
+        ]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="Tipo de Lançamento" name="TIPLCT" type="short" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Tipo de Linha" name="tiplin" type="short" sysnull="true" default="" output="" null="true"/>
+          <parameter input="true" apply="true" desc ="Código do Tipo de Registro de Movimento" name="CODTRM" type="byte" sysnull="true" default="" output="" null="true"/>
+        </parameters>
+      </item>
+      <item script="false" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRLANINTSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query></query>
+      </item>
+    </selectallcommand>
+    <insertcommand key="Identity" exceptionparamns="'DATCAD','DATUPD', 'NIDLCT'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="Identity" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[SET @DATUPD = GETDATE();]]>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+      </returns>
+    </updatecommand>
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="LancamentoInterno" procname="PRLANINTSEL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[SELECT * FROM  TBLANINT (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Registro de Lançamento" name="NIDLCT" type="System.Int32" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" method="Select" return="LancamentoInterno" procname="PRLANINTSELLIN" desc ="Seleciona o tipo de lançamento e tipo de linha">
+        <query>
+          <![CDATA[SELECT * FROM  TBLANINT (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Tipo de Lançamento" name="TIPLCT" type="short" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="ID do Tipo de Linha" name="TIPLIN" type="short" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Código do Tipo de Registro de Movimento" name="CODTRM" type="byte" default="1" output="" null="false"/>          
+        </parameters>
+      </item>
+    </selectcommand>
+  </item>
+  
+  <item create="true"  id="73" name="TBREGDLT"  friendlyname="Detalhe Lancamento Transacao" modelversion="2">
+    <UpdateKey>Identity</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@NIDDLT</fieldreturn>
+    <procedure>1011000000</procedure>
+    <asp>100000000</asp>
+    <csharp>10110000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" method="Select" return="DetalheLancamentoTransacao" procname="PRREGDLTSEL" desc ="Seleciona o Detalhe de Lançamento de Transação de acordo com o id do detalhe do lançamento" modelversion="2">
+        <query>
+          <![CDATA[SELECT * FROM TBREGDLT (NOLOCK) A ]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID do Detalhe de Lançamento" name="NIDDLT" type="int" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="SELECT top 1 * FROM TBREGDLT (NOLOCK) A" method="Select" type="List" return="DetalheLancamentoTransacao" procname="PRREGDLTSELKEY" desc ="Seleciona o Detalhe de Lançamento de Transação de acordo com o id do registro de transacao">
+        <query>
+          <![CDATA[SELECT * FROM TBREGDLT (NOLOCK) A ]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID da Transação" name="NIDRTI" type="int" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Tipo de Lançamento" name="TIPLCT" type="short" default="" output="" null="false"/>
+          <parameter input="true" apply="true" desc ="Código do Tipo de Registro de Movimento" name="CODTRM" type="byte" default="1" output="" null="false"/>
+        </parameters>
+      </item>
+
+    </selectcommand>
+
+    <selectallcommand>
+      <item script="true" alias="A." sql="" method="SelectAll" return="DataTable" procname="PRREGDLTSELALL" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          SELECT A.*, B.DSCREC, ISNULL(C.LGNUSU,'') AS LGNUSU
+          FROM TBREGDLT A WITH (NOLOCK)
+          INNER JOIN TBCADSTR B (NOLOCK) ON
+          (A.STAREC = B.STAREC)
+          LEFT JOIN TBCDLGN C (NOLOCK) ON
+          (A.UPDUSU = C.CODCAD)
+        </query>
+        <parameters>
+          <parameter input="true" desc ="Tipo de Lançamento" name="TIPLCT" type="short" default="null" output="" null="true"/>
+          <parameter input="true" desc ="Tipo de Linha" name="tiplin" type="byte" default="null" output="" null="true"/>
+        </parameters>
+      </item>
+    </selectallcommand>
+    <insertcommand key="Identity" exceptionparamns="'DATCAD','DATUPD', 'NIDDLT'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre></pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDFOUND"/>
+      </returns>
+    </insertcommand>
+    <deletecommand key="Identity" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </deletecommand>
+  </item>
+  <item create="true"  id="74" name="XLREGTIN" friendlyname="Dados Transacao Interna" modelversion="2">
+    <UpdateKey>Key</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>001000000</procedure>
+    <asp>101000000</asp>
+    <csharp>00100000</csharp>
+    <SelectAllList></SelectAllList>
+    <StringSqlSelectAll></StringSqlSelectAll>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+  </item>
+
+  <item create="true"  id="75" name="XLREGBOL" friendlyname="Boleto Transacao">
+    <UpdateKey field="KEYBOL">Key</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn></fieldreturn>
+    <procedure>0010000000</procedure>
+    <asp>000000000</asp>
+    <csharp>001000000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+    <selectcommand>
+      <item script="false" alias="A." sql="" method="Select" return="BoletoTransacao" procname="PRREGBOLSELPRT" desc ="Seleciona todos os registros com base nos parâmetros fornecidos">
+        <query>
+          <![CDATA[   
+        ]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="false" desc ="Chave de Boleto" name="KEYBOL" type="System.Guid" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+  </item>
+  
+<item create="true"  id="76" name="TBEXTTIN" friendlyname="Transação Interna Ext" modelversion="2">
+    <UpdateKey>Key</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@NIDRTI</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>111100000</asp>
+    <csharp>11110000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+
+    <insertcommand key="key" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-3" message="" error="EXISTINGREQUEST"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[SET @DATUPD = GETDATE();]]>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" type="" method="Select" return="TransacaoInternaExt" procname="PREXTTINSEL" desc ="Seleciona o registro de acordo com o id da transação">
+        <query>
+          <![CDATA[SELECT * FROM TBEXTTIN (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID da Transação Interna" name="NIDRTI" type="System.Int32" default="" output="" null="false"/>
+        </parameters>
+      </item>
+    </selectcommand>
+
+  </item>    
+  
+<item create="true"  id="77" name="TBREGTED" friendlyname="Registro de TED" modelversion="2">
+    <UpdateKey>Key</UpdateKey>
+    <audit>false</audit>
+    <keyaudit></keyaudit>
+    <FilterSelect>False</FilterSelect>
+    <listselect></listselect>
+    <CSharpPartial>true</CSharpPartial>
+    <SqlTable></SqlTable>
+    <fieldreturn>@NIDRTI</fieldreturn>
+    <procedure>1111000000</procedure>
+    <asp>111100000</asp>
+    <csharp>11110000</csharp>
+    <IdNextNumber></IdNextNumber>
+    <SetNextNumber></SetNextNumber>
+    <MaxFields></MaxFields>
+
+    <insertcommand key="key" exceptionparamns="'DATCAD','DATUPD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+      </pre>
+      <body></body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-3" message="" error="EXISTINGREQUEST"/>
+      </returns>
+    </insertcommand>
+    <updatecommand key="key" exceptionparamns="'DATCAD'">
+      <maxfield field=""/>
+      <nextnumber field="" id="" />
+      <pre>
+        <![CDATA[SET @DATUPD = GETDATE();]]>
+      </pre>
+      <body>
+      </body>
+      <pos>
+      </pos>
+      <returns>
+        <return value="-1" message="" error="FAILALL"/>
+        <return value="-2" message="" error="RECORDNOTFOUND"/>
+      </returns>
+    </updatecommand>
+
+    <selectcommand>
+      <item script="true" alias="A." sql="" type="" method="Select" return="RegistroTED" procname="PRREGTEDSELNID" desc ="Seleciona o registro de acordo com o id de Registro da TED">
+        <query>
+          <![CDATA[SELECT * FROM TBREGTED (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID de Registro da TED" name="NIDTED" type="System.Int32" default="" output="" null="false"/>
+        </parameters>
+      </item>
+      <item script="true" alias="A." sql="" type="" method="Select" return="RegistroTED" procname="PRREGTEDSELTRA" desc ="Seleciona o registro de acordo com o id de Registro da TED">
+        <query>
+          <![CDATA[SELECT * FROM TBREGTED (NOLOCK) A]]>
+        </query>
+        <parameters>
+          <parameter input="true" apply="true" desc ="ID da Transação" name="NIDTRA" type="System.String" default="" output="" null="false"/>
+        </parameters>
+      </item>
+
+    </selectcommand>
+
+  </item>    
+  
+  <lists>
+    <item reference="0" script="true" alias="A." sql="" type="" method="TabelaGeralIndice" return="DataTable" procname="spl_tabelageralindice" desc ="Seleciona todos os Códigos de Índices da Tabela Geral">
+      <query>
+        <![CDATA[select keycod, dsctab from tbtabger (nolock) where numtab=0 and starec=1 order by keycod]]>
+      </query>
+    </item>
+
+    <item reference="7" script="true" alias="A." sql="" type="" method="StatusRegistro" return="DataTable" procname="spl_statusregistro" desc ="Seleciona todos os Códigos de Status de Registro">
+        <query>
+          <![CDATA[select keycod, dsctab from tbtabger (nolock) where numtab=7 and starec=1 order by keycod]]>
+        </query>
+      </item>
+    <item reference="8" script="true" alias="A." sql="" type="" method="TipoUsuario" return="DataTable" procname="spl_tipousuario" desc ="Seleciona todos os Códigos de Tipo de Usuário">
+      <query>
+        <![CDATA[select keycod, dsctab from tbtabger (nolock) where numtab=8 and starec=1 order by keycod]]>
+      </query>
+    </item>
+
+
+    <item reference="13" script="true" alias="A." sql="" type="" method="TipoPessoa" return="DataTable" procname="spl_tipopessoa" desc ="Seleciona todos os Códigos de Tipos de Pessoas">
+      <query>
+        <![CDATA[select keycod, dsctab from tbtabger (nolock) where numtab=13 and starec=1 order by keycod]]>
+      </query>
+    </item>
+
+    <item reference="22" script="true" alias="A." sql="" type="" method="TipoConta" return="DataTable" procname="spl_tipoconta" desc ="Seleciona todos os Tipos de Contas">
+      <query>
+        <![CDATA[select keycod, dsctab from tbtabger (nolock) where numtab=22 and starec=1 order by keycod]]>
+      </query>
+    </item>
+    <item reference="23" script="true" alias="A." sql="" type="" method="OrigemConta" return="DataTable" procname="spl_origemconta" desc ="Seleciona todos os Tipos de Contas">
+      <query>
+        <![CDATA[select keycod, dsctab from tbtabger (nolock) where numtab=23 and starec=1 order by keycod]]>
+      </query>
+    </item>
+    
+    <item reference="24" script="true" alias="A." sql="" type="" method="Tarifas" return="DataTable" procname="spl_tarifas" desc ="Seleciona todos os Códigos de Tarifas">
+      <query>
+        <![CDATA[select keycod, dsctab from tbtabger (nolock) where numtab=24 and starec=1 order by keycod]]>
+      </query>
+    </item>
+    <item reference="41" script="true" alias="A." sql="" type="" method="SumarioMovimento" return="DataTable" procname="spl_sumariomovimento" desc ="Seleciona todos os Códigos de Sumarização de Tipos de Movimento">
+      <query>
+        <![CDATA[select keycod, dsctab from tbtabger (nolock) where numtab=41 and starec=1 order by keycod]]>
+      </query>
+    </item>
+    <item reference="50" script="true" alias="A." sql="" type="" method="TipoMensalidade" return="DataTable" procname="spl_tipomensalidade" desc ="Seleciona todos os Códigos de Tipo de Mensalidade">
+      <query>
+        <![CDATA[select keycod, dsctab from tbtabger (nolock) where numtab=50 and starec=1 order by keycod]]>
+      </query>
+    </item>
+
+    <item reference="58" script="true" alias="A." sql="" type="" method="RegrasDeAcesso" return="DataTable" procname="spl_regrasacesso" desc ="Seleciona todos os Códigos de Regra de Acecsso a Plataforma Livre">
+      <query>
+        <![CDATA[select keycod, dsctab from tbtabger (nolock) where numtab=58 and starec=1 order by keycod]]>
+      </query>
+    </item>
+    <item reference="59" script="true" alias="A." sql="" type="" method="TipoRegistroMovimento" return="DataTable" procname="spl_regrasacesso" desc ="Seleciona todos os Códigos de Tipo de Registro de Movimento">
+      <query>
+        <![CDATA[select keycod, dsctab from tbtabger (nolock) where numtab=59 and starec=1 order by keycod]]>
+      </query>
+    </item>
+    <item reference="907" script="true" alias="A." sql="" type="" method="InstrucaoBaixaRegistro" return="DataTable" procname="spl_regrasacesso" desc ="Seleciona todos os Códigos de Instrução de Baixa de Registro de Boletos">
+      <query>
+        <![CDATA[select keycod, dsctab from tbtabger (nolock) where numtab=907 and starec=1 order by keycod]]>
+      </query>
+    </item>
+
+  </lists>
+  </root>

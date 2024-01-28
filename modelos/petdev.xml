@@ -1,0 +1,1483 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root nsw="Livre">
+
+	<item create="true"  id="1" name="ORIGENS" api="true" apiname="Origens" friendlyname="Origens" modelversion="3" descriptor="Origens">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+
+		<view>
+			<item script="true" alias="A." sql="" method="" return="" procname="VWDEVORI" desc ="View de Informações de migração e importação da Origens">
+				<query>
+					<![CDATA[SELECT ori.*, S.DSCREC FROM Origens ori INNER JOIN TBSTAREC S ON (S.STAREC = ori.STAREC);
+        ]]>
+				</query>
+			</item>
+		</view>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id" exceptionparamns="'id'" method="Insert" processcode="10" procname="PRDEVORIINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+
+	<item create="true"  id="2" name="CLI" api="true" apiname="Tutores" friendlyname="Tutores" modelversion="3" descriptor="Cadastro de Tutores">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<view>
+			<item script="true" alias="A." sql="" method="" return="" procname="VWDEVCLI" desc ="View de Informações de migração e importação da tabela de clientes">
+				<query>
+					<![CDATA[
+SELECT NOME,
+    CPF,
+	S.DSCTAB,
+	DSCERR,
+	ENDERECO,
+    CEP,
+    CIDADE,
+      UF,
+    TEL_RES,
+    TEL_COM,
+    TEL_CEL,
+    SIT,
+    EMAIL,
+    CONJUGE,
+    RESP,
+    RESP2,
+    DATA_CAD,
+    INDICACAO,
+    ENV_NEWS,
+    CLASSIFICACAO,
+    CREDITO,
+    DT_ULTIMA_INTER,
+    ORIGEM,
+    OBS,
+	CLI.STAREC,
+    data_atualizacao
+FROM cli INNER JOIN TBSTAREC S ON (S.STAREC = CLI.STAREC);
+INNER JOIN TBSTAREC S ON (S.STAREC = CLI.STAREC);
+        ]]>
+				</query>
+			</item>
+		</view>
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Key" fieldreturn="" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVCLIINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=0;
+SELECT IFNULL(CPF,-2) INTO pRETURN_VALUE FROM CLI WHERE CPF = pCPF LIMIT 1;
+	
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="O TUTOR JA EXISTE" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+
+		<updatecommand script="false"  webtype="[HttpPost]"  key="Key" fieldreturn="" exceptionparamns="" method="Update" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=0;
+SELECT IFNULL(CPF,-2) INTO pRETURN_VALUE FROM CLI WHERE CPF = pCPF LIMIT 1;
+	
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="O TUTOR NAO EXISTE" error="RECORDNOTFOUND"/>
+			</returns>
+		</updatecommand>
+		<selectcommand>
+			<item script="true" alias="A." sql=""  processcode="100" method="Select" return="Tutores" procname="PRDEVCLISEL" desc ="Seleciona os dados do tutor informado com base no cpf">
+				<query>
+					<![CDATA[SELECT * FROM cli  A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Usuario" name="cpf" type="System.String"  size="14" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="3" name="ANIMAIS" api="true" apiname="Animais" friendlyname="Animais" modelversion="3" descriptor="Cadastro de Animais">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable>
+			SELECT CODIGO,ID,NOME_ANI,SEXO,DT_NASC,PESO,PESO_IDEAL,RACA,ALERGICO,COR,ESPECIE,RGA,MORTO,CASTRADO,OBSERVACOES,ORIGEM,CODIGO_ANTIGO,data_atualizacao,StatusRegistro,EmpresaMigrada,DataMigrada,CODCLI,CODVET FROM animais limit 1;
+		</SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="identity"  supressidentity="true" fieldreturn="" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVANIINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=0;
+SELECT IFNULL(CPF,-1) INTO pRETURN_VALUE FROM CLI WHERE CPF = pID LIMIT 1;
+IF(pRETURN_VALUE=0) THEN
+   SELECT IFNULL(CPF,-2) INTO pRETURN_VALUE FROM ANIMAIS WHERE ID = pID AND NOME_ANI = pNOME_ANI LIMIT 1;
+END IF;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="TUTOR NAO EXISTENTE" error="RECORDNOTFOUND"/>
+				<return value="-3" message="TUTOR E ANIMAL JÁ EXISTENTE" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="true" alias="A." sql=""  processcode="100" method="Select" return="Animais" procname="PRDEVANISEL" desc ="Seleciona um registro de animal com base no código de animal">
+				<query>
+					<![CDATA[SELECT * FROM Animais  A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Código do Animal" name="codigo" type="System.Int32"  default=""  output="" null="false"/>
+				</parameters>
+			</item>
+			<item script="true" alias="A." sql=""  processcode="101" method="Select" return="Animais" procname="PRDEVANISELTUT" desc ="Seleciona um registro de animal com base no ID do tutor e Nome do Animal">
+				<query>
+					<![CDATA[SELECT * FROM Animais  A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Tutor" name="id" type="System.String"  size="14" default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Nome do Animal" name="Nome_ani" type="System.String"  size="20" default=""  output="" null="false"/>
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="4" name="PESO" api="true" apiname="Peso" friendlyname="Peso" modelversion="3" descriptor="Controle de Peso por Animal">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Key" fieldreturn="CODIGO" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVPESINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=-2;
+SELECT IFNULL(CODIGO,0) INTO pRETURN_VALUE FROM PESO WHERE CODIGO = pCODIGO AND DATA_LANC_PESO = STR_TO_DATE(pDATA_LANC_PESO, '%Y/%m/%d %H:%i:%s')
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="ANIMAL E PESO JA CADASTRADO PARA A DATA" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Peso" procname="PRDEVPESSELALL" desc ="Seleciona todos os registros de peso de um animal">
+				<query order="DATA_LANC_PESO DESC">
+					<![CDATA[SELECT * FROM PESO A]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código" name="Codigo" type="System.Int32" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+	</item>
+
+	<item create="true"  id="5" name="EMPRESAS" api="true" apiname="Empresas" friendlyname="Empresas" modelversion="3" descriptor="Cadastro de Empresas">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Key" fieldreturn="id_emp" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVEMPINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=-2;
+SELECT IFNULL(id_emp,0) INTO pRETURN_VALUE FROM empresas WHERE apelido_emp= pAPELIDO_EMP;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+					Auditing audit = new Auditing();
+					audit.UPDUSU =0;
+					audit.AUDDAT=DateTime.Now;
+					audit.AUDKEY =KeyTableId;
+					audit.AUDIDR =RETURN_VALUE;
+					audit.AUDIMS =0;
+					audit.AUDTSK =this.GetType().Name + "." + MethodBase.GetCurrentMethod().Name;
+					audit.AUDOBJ = "PRDEVEMPINS";
+					audit.AUDSRC =_changed;
+					audit.AUDCHG ="";
+					audit.NIDTOK =0;
+					audit.NUMIPA =Environment.MachineName;
+					_AUDNUM=WriteAuditing.Insert(audit);
+					respond.Logged=_AUDNUM>0;
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="EMPRESA JÁ EXISTENTE" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+	</item>
+
+	<item create="true"  id="6" name="CAD_ESTOQUES" api="true" apiname="TiposEstoque" friendlyname="TiposEstoque" modelversion="3" descriptor="Cadastro de Tipos de Estoque">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Key" fieldreturn="id_estoque" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVTIPESTINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=-2;
+SELECT IFNULL(id_emp,0) INTO pRETURN_VALUE FROM empresas WHERE apelido_emp= pAPELIDO_EMP;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="EMPRESA JÁ EXISTENTE" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+	</item>
+
+	<item create="true"  id="7" name="GRUPO_PRODUTOS" api="true" apiname="GrupoProdutos" friendlyname="GrupoProdutos" modelversion="3" descriptor="Cadastro de Agrupamento de Produtos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Key" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVAGRPROINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+SET pRETURN_VALUE=-2;
+SELECT IFNULL(id,0) INTO pRETURN_VALUE FROM grupo_produtos WHERE descricao= pDESCRICAO;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+				<return value="-2" message="EMPRESA JÁ EXISTENTE" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+	</item>
+
+
+	<item create="true"  id="8" name="PRODUTOS" api="true" apiname="Produtos" friendlyname="Produtos" modelversion="3" descriptor="Cadastro de Produtos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Identity" fieldreturn="codigo" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVPROINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+	</item>
+
+	<item create="true"  id="9" name="FORNECEDORES" api="true" apiname="Fornecedores" friendlyname="Fornecedores" modelversion="3" descriptor="Cadastro de Fornecedores">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" supressidentity="false"  webtype="[HttpPost]"  key="Identity" fieldreturn="codigo" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVFORINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+	</item>
+
+
+	<item create="true"  id="9" name="CAD_ENTRADAS" api="true" apiname="EntradasEstoque" friendlyname="EntradasEstoque" modelversion="3" descriptor="Registro de Entradas para o Estoque">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Identity" fieldreturn="codigo" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVENTESTINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+	</item>
+
+
+
+	<item create="true"  id="10" name="PROD_MOVIMENTACOES" api="true" apiname="ProdutoMovimentacao" friendlyname="ProdutoMovimentacao" modelversion="3" descriptor="Registro de Movimentação de Produtos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Identity" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVMOVESTINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+	</item>
+
+
+	<item create="true"  id="12" name="ANAMNESE_CAMPOS" api="true" apiname="AnamnesesCampos" friendlyname="AnamnesesCampos" modelversion="3" descriptor="Anamneses - Campos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Identity" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVANACAMINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+	</item>
+
+
+	<item create="true"  id="16" name="CAD_AREAS_INTERNACAO" api="true" apiname="AreasInternacao" friendlyname="AreasInternacao" modelversion="3" descriptor="Áreas de Internação">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  supressidentity="true" webtype="[HttpPost]"  key="Identity" fieldreturn="codigo" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVAREINTINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="18" name="TELAS" api="true" apiname="Telas" friendlyname="Telas" modelversion="3" descriptor="Telas">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Identity" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVAREINTINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="19" name="USUARIO_PERFIL" api="true" apiname="UsuarioPerfil" friendlyname="UsuarioPerfil" modelversion="3" descriptor="Usuário - Perfil">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id_perfil" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVUSUPFLINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="20" name="USUARIO_PERFIL_PERMISSOES" api="true" apiname="UsuarioPerfilPermissoes" friendlyname="UsuarioPerfilPermissoes" modelversion="3" descriptor="Usuário - Perfil Permissões">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id_perfil" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVUSUPFLPERINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+					Auditing audit = new Auditing();
+					audit.UPDUSU =0;
+					audit.AUDDAT=DateTime.Now;
+					audit.AUDKEY =KeyTableId;
+					audit.AUDIDR =RETURN_VALUE;
+					audit.AUDIMS =0;
+					audit.AUDTSK =this.GetType().Name + "." + MethodBase.GetCurrentMethod().Name;
+					audit.AUDOBJ = "PRDEVUSUPFLPERINS";
+					audit.AUDSRC =_changed;
+					audit.AUDCHG ="";
+					audit.NIDTOK =0;
+					audit.NUMIPA =Environment.MachineName;
+					_AUDNUM=WriteAuditing.Insert(audit);
+					respond.Logged=_AUDNUM>0;
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="23" name="USUARIOS" api="true" apiname="Usuarios" friendlyname="Usuarios" modelversion="3" descriptor="Usuários">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand  script="false" webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id_usuario" exceptionparamns="'REAPELIDO','Empresamigrada','DataMigrada','CODUSU','CODVET'" method="Insert" processcode="10" procname="PRDEVUSUINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+		<selectallcommand>
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="Usuarios" procname="PRCADUSUSELALL" desc ="Obtêm uma lista de todos os usuários">
+				<query order="NOME">
+					<![CDATA[SELECT id_usuario,
+    NOME,
+    APELIDO,
+    DOCUMENTO,
+    SERVICOS,
+    LOJA,
+    CAIXA,
+    AGENDA_BT,
+    CONTROL_HORARIO,
+    COMISSIONADO,
+    VALOR_COMISSAO,
+    TIPO,
+    SENHA,
+    usr.ID_PERFIL,
+    COALESCE(pfl.Nome_perfil,'') AS NOME_PERFIL,
+    AG_BT,
+    AG_OPE,
+    ID_ESPECIALIDADE,
+    COALESCE(spt.especialidade,'') AS ESPECIALIDADE,
+    EMAIL,
+    StatusRegistro
+FROM cli.usuarios A
+   left join usuarios_especialidades spt on (spt.id = A.id_especialidade)
+   left join usuario_perfil pfl on (pfl.id_perfil = A.id_perfil)]]>
+				</query>
+				<parameters>
+					<parameter input="true" desc ="Código" name="Tipo" type="System.String" size="4" default="" output="" null="false"/>
+				</parameters>
+			</item>
+		</selectallcommand>
+	</item>
+
+
+
+	<item create="true"  id="24" name="INTERNACAO_DADOS" api="true" apiname="Internacao" friendlyname="Internacao" modelversion="3" descriptor="Internação">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+
+		<view>
+			<item script="true" alias="A." sql="" method="" return="" procname="VWINTDAT" desc ="View de Informações SOBRE INTERNACAO DE DADOS">
+				<query>
+					<![CDATA[SELECT A.*, S.DSCTAB FROM INTERNACAO_DADOS A INNER JOIN TBSTAREC S ON (S.STAREC = A.STAREC);
+        ]]>
+				</query>
+			</item>
+		</view>
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id_internacao" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVINTINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="25" name="INTERNACAO_RELAC" api="true" apiname="InternacaoRelacionamento" friendlyname="InternacaoRelacionamento" modelversion="3" descriptor="Internação - Relacionamentos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id_internacao" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVINTRELINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="28" name="OS_REGISTROS" api="true" apiname="OS" friendlyname="OS" modelversion="3" descriptor="Ordens de Serviço - Registro">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id_os" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="29" name="REF_PROCED" api="true" apiname="ProcedimentosReferencia" friendlyname="ProcedimentosReferencia" modelversion="3" descriptor="Procedimentos - Referências">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="codigo_proced" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVPROREFINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+					Auditing audit = new Auditing();
+					audit.UPDUSU =0;
+					audit.AUDDAT=DateTime.Now;
+					audit.AUDKEY =KeyTableId;
+					audit.AUDIDR =RETURN_VALUE;
+					audit.AUDIMS =0;
+					audit.AUDTSK =this.GetType().Name + "." + MethodBase.GetCurrentMethod().Name;
+					audit.AUDOBJ = "PRDEVPROREFINS";
+					audit.AUDSRC =_changed;
+					audit.AUDCHG ="";
+					audit.NIDTOK =0;
+					audit.NUMIPA =Environment.MachineName;
+					_AUDNUM=WriteAuditing.Insert(audit);
+					respond.Logged=_AUDNUM>0;
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="30" name="LANC_PROCED" api="true" apiname="ProcedimentosLancamentos" friendlyname="ProcedimentosLancamentos" modelversion="3" descriptor="Procedimentos - Lançamentos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<view>
+			<item script="true" alias="A." sql="" method="" return="" procname="VWLANPRO" desc ="View de Informações SOBRE LANCAMENTOS DE PROCEDIMENTOS">
+				<query>
+					<![CDATA[SELECT A.*, S.DSCTAB FROM LANC_PROCED A INNER JOIN TBSTAREC S ON (S.STAREC = A.STAREC);
+        ]]>
+				</query>
+			</item>
+		</view>
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="CODIGO" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVPROLANINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="31" name="ANAMNESE" api="true" apiname="Anamnese" friendlyname="Anamnese" modelversion="3" descriptor="Anamnese">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable>
+		</SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+		<extendedmodel>select cod_ana as  id, cod_ana, descricao, ult_resp, starec, srcemp from anamnese where 1=2</extendedmodel>
+
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Key" supressidentity="true" fieldreturn="COD_ANA_" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="32" name="ANAMNESES" api="true" apiname="Anamneses" friendlyname="Anamneses" modelversion="3" descriptor="Anamneses">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVANAINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+
+	<item create="true"  id="33" name="RETORNOS" api="true" apiname="Retornos" friendlyname="Retornos" modelversion="3" descriptor="Anamneses">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable>
+
+		</SqlTable>
+		<extendedmodel> SELECT A.*, A.STAREC AS FLAG13, A.STAREC AS FLAG09 FROM RETORNOS A WHERE 1=2</extendedmodel>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+	<item create="true"  id="34" name="ANAMNESE_LANCAMENTOS" api="true" apiname="AnamnesesLancamentos" friendlyname="AnamnesesLancamentos" modelversion="3" descriptor="Anamneses - Lançamentos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false" webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="ID_ANA" exceptionparamns="" method="Insert" processcode="10" procname="PRDEVANALANINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="35" name="OBS_PROCED" api="true" apiname="ObservacoesProcedimento" friendlyname="ObservacoesProcedimento" modelversion="3" descriptor="Observações de Procedimentos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Key" supressidentity="true" fieldreturn="COD_OBS" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="35" name="OBS_PROCED" api="true" apiname="ObservacoesProcedimento" friendlyname="ObservacoesProcedimento" modelversion="3" descriptor="Observações de Procedimentos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Key" supressidentity="true" fieldreturn="COD_OBS" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="43" name="REF_PROCED_VALORES" api="true" apiname="ProcedimentosValores" friendlyname="ProcedimentosValores" modelversion="3" descriptor="Registro de Valores por procedimento/empresa">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="46" name="USUARIOS_COMISSOES" api="true" apiname="UsuariosComissoes" friendlyname="UsuariosComissoes" modelversion="3" descriptor="Registro de Comissões por Usuário e procedimento" roles="Corporativo">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand  script="false" webtype="[HttpPost]"  key="Identity"  fieldreturn="" exceptionparamns="" method="Insert" processcode="10" procname="" remarks="Adiciona um novo usuário">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="REGISTRO JA EXISTENTE" error="RECORDFOUND"></return>
+				<return value="-999" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+
+			</returns>
+		</insertcommand>
+
+		<updatecommand  script="false" webtype="[HttpPost]"  key="Identity"  fieldreturn="id_usuario" exceptionparamns="" method="Update" processcode="10" procname="" remarks="Altera o usuário">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="ALTERACAO EFETUADA COM SUCESSO" error="">
+				</return>
+
+				<return value="-1" message="REGISTRO NAO EXISTENTE" error="RECORDNOTFOUND"></return>
+				<return value="-999" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</updatecommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" route="" processcode="100" method="Select" return="UsuariosComissoes" procname="" desc ="Seleciona um registro de usuário com base no id">
+				<query>
+					<![CDATA[SELECT * FROM Usuarios_Comissoes A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="ID do Usuario" name="ID_USUARIO" type="System.Int32"  default=""  output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Código do Procedimento" name="ID_PROCED" type="System.Int32"  default=""  output="" null="false"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="57" name="PGTOS_TRANSACOES" api="true" apiname="PagamentosTransacoes" friendlyname="PagamentosTransacoes" modelversion="3" descriptor="Registro de Transações de Pagamento">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id_transacao" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="58" name="PGTOS_GRUPOS" api="true" apiname="PagamentosGrupos" friendlyname="PagamentosGrupos" modelversion="3" descriptor="Registro de Pagamento">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id_grupo" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="59" name="PGTO_PROCED" api="true" apiname="PagamentoProcedimentos" friendlyname="PagamentoProcedimentos" modelversion="3" descriptor="Registro de Pagamento de Procedimentos">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+
+		<view>
+			<item script="true" alias="A." sql="" method="" return="" procname="VWPGTPRO" desc ="View de Informações de migração de pagamento de procedimento">
+				<query>
+					<![CDATA[SELECT ID, ID_PROCED, VALOR_LANC, GRUPO, ID_TRANSACAO, A.STAREC, B.DSCTAB, SRCEMP FROM PGTO_PROCED A INNER JOIN TBSTAREC B ON (B.STAREC = A.STAREC) WHERE A.STAREC<>255]]>
+				</query>
+			</item>
+		</view>
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="61" name="ORIGEM_BASE_RELAC" api="true" apiname="OrigemBaseRelacionamento" friendlyname="OrigemBaseRelacionamento" modelversion="3" descriptor="Registro de Origem x Base">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<procedure>1111000000</procedure>
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+
+	<item create="true"  id="63" name="RETORNOS_LANC" api="true" apiname="RetornoLancamentos" friendlyname="RetornoLancamentos" modelversion="3" descriptor="Retorno Lancamentod">
+		<UpdateKey>Key</UpdateKey>
+		<audit>true</audit>
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>'
+		<asp>1111000000</asp>
+		<csharp>1111000000</csharp>
+
+		<insertcommand script="false"  webtype="[HttpPost]"  key="Identity" supressidentity="true" fieldreturn="id" exceptionparamns="" method="Insert" processcode="10" procname="">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+      SET pRETURN_VALUE =-1;
+END;
+        ]]>
+			</pre>
+			<body>
+			</body>
+			<pos>
+			</pos>
+			<returns>
+				<return value="0" operator=">" message="INCLUSAO EFETUADA COM SUCESSO" error="">
+				</return>
+				<return value="-1" message="FALHA NA INCLUSAO DO REGISTRO" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+	</item>
+</root>

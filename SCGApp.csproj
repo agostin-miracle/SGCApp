@@ -114,5 +114,31 @@
   <ItemGroup>
     <None Include="Resources\Loop.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="modelos\Amaze.xml" />
+    <Content Include="modelos\CEP.XML" />
+    <Content Include="modelos\comissions.xml" />
+    <Content Include="modelos\csgv.xml" />
+    <Content Include="modelos\csgvlab.xml" />
+    <Content Include="modelos\DBADM.xml" />
+    <Content Include="modelos\DbTools.xml" />
+    <Content Include="modelos\DL.xml" />
+    <Content Include="modelos\dw.xml" />
+    <Content Include="modelos\ENTIMP.XML" />
+    <Content Include="modelos\GoldenEagle.xml" />
+    <Content Include="modelos\Interlivre.xml" />
+    <Content Include="modelos\Maze.xml" />
+    <Content Include="modelos\Movidesk.xml" />
+    <Content Include="modelos\old_Interlivre %282%29.xml" />
+    <Content Include="modelos\old_Interlivre.xml" />
+    <Content Include="modelos\PetCareAgenda.Xml" />
+    <Content Include="modelos\petdev.xml" />
+    <Content Include="modelos\ProcsName.xml" />
+    <Content Include="modelos\RH.xml" />
+    <Content Include="modelos\scv.xml" />
+    <Content Include="modelos\Sollus.xml" />
+    <Content Include="modelos\thunderhome.xml" />
+    <Content Include="modelos\WEBFORMS.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

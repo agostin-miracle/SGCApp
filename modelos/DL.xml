@@ -1,0 +1,2335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+
+	<item create="true"  id="1" name="CVPCDORI" api="false" apiname="" friendlyname="Origins" modelversion="3" descriptor="Tabela de Informações de Origens">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="CVPCDORINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(EXISTS(SELECT 1 FROM CVPCDORI (NOLOCK) WHERE ORGBAS=@ORGBAS AND NIDORI =@NIDORI))
+	SET @RETURN_VALUE = -2;
+ 
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE= -2)
+    BEGIN
+		UPDATE CVPCDORI
+		   SET HASREC = @HASREC
+			  ,[APEPRO] = @APEPRO
+			  ,[NUMCRV] = @NUMCRV
+			  ,[UFECRV] = @UFECRV
+			  ,[RAZSOC] = @RAZSOC
+			  ,[DSCEND] = @DSCEND
+			  ,[DSCCID] = @DSCCID
+			  ,[CODUFE] = @CODUFE
+			  ,[NUMTEL] = @NUMTEL
+			  ,[NOMCTO] = @NOMCTO
+			  ,[DSCMAL] = @DSCMAL
+			  ,HASCLI = @HASCLI
+			  ,HASLAN = @HASLAN
+			  ,HASANI = @HASANI
+			  ,HASORL = @HASORL
+			  ,HASINT = @HASINT
+			  ,[DATUPD] = GETDATE()
+		 WHERE ORGBAS = @ORGBAS AND NIDORI = @NIDORI
+			IF(@@ERROR=0)
+			   SET @RETURN_VALUE=2;
+	END
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error=""></return>
+				<return value="2" message="Registro alterado com sucesso" error=""></return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="GetLastOrigin" return="int" returnmode="2" procname="" desc ="Obtêm o ID do Último Registro de Origens Gravado" returnvalue="0">
+				<query>
+					<![CDATA[IF(EXISTS (SELECT 1 FROM CVPCDORI (NOLOCK) WHERE ORGBAS = @ORGBAS))
+    SELECT MAX(NIDORI) AS RETURN_VALUE FROM CVPCDORI (NOLOCK) WHERE ORGBAS=@ORGBAS
+ELSE
+	SELECT 0 AS RETURN_VALUE]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+	<item create="true"  id="2" name="CVCADPCD" api="false" apiname="" friendlyname="Procedures" modelversion="3" descriptor="Tabela de Cadastro de Procedimentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="CVCADPCDINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(EXISTS(SELECT 1 FROM CVCADPCD (NOLOCK) WHERE ORGBAS=@ORGBAS AND CODPCD =@CODPCD))
+	SET @RETURN_VALUE = -2;
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE= -2)
+    BEGIN
+	 UPDATE CVCADPCD 
+    		      SET TIPPCD = @TIPPCD, 
+    				  DATUPD = GETDATE(),
+					  DSCPCD = @DSCPCD,
+					  SUBCAT = @SUBCAT,
+    				  HASRET = @HASRET,
+					  HASVAL = @HASVAL,
+					  CODOPE = @CODOPE,
+					  STAREC = @STAREC
+				WHERE ORGBAS = @ORGBAS AND CODPCD = @CODPCD
+    
+    	  			IF(@@ERROR=0)
+    					SET @RETURN_VALUE = 2;
+	END
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error=""></return>
+				<return value="2" message="Registro alterado com sucesso" error=""></return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+	</item>
+
+	<item create="true"  id="3" name="CVORIORL" api="false" apiname="" friendlyname="OriginsRelationshipSales" modelversion="3" descriptor="Tabela de Informações de Origens x Relacionamentos">
+
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="CVORIORLINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(EXISTS(SELECT 1 FROM CVORIORL (NOLOCK) WHERE ORGBAS=@ORGBAS AND NIDORL=@NIDORL))
+	SET @RETURN_VALUE = -2;
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE= -2)
+    BEGIN
+		UPDATE CVORIORL
+			 SET ORIKEY = @ORIKEY
+				,NIDORI = @NIDORI
+				,NIDBAS = @NIDBAS
+				,DATINI = @DATINI
+				,DATFIN = @DATFIN
+				,STAREC = @STAREC
+				,DATUPD = GETDATE()
+				,IDXKEY = @IDXKEY
+		   WHERE ORGBAS=@ORGBAS AND NIDORL=@NIDORL
+   			IF(@@ERROR=0)
+   				SET @RETURN_VALUE = 2;
+	END
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error=""></return>
+				<return value="2" message="Registro alterado com sucesso" error=""></return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+	</item>
+
+	<item create="true"  id="4" name="CVCADANI" api="false" apiname="" friendlyname="Animals" modelversion="3" descriptor="Tabela de Informações de Animais">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'NUMPES','PESIDE','DATUPD'" procname="CVCADANIINS" method="Insert">
+
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+ IF(EXISTS (SELECT 1 FROM CVCADANI (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODANI=@CODANI ))
+	    SET @RETURN_VALUE = -2
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+	UPDATE CVCADANI
+		   SET CODCMF = @CODCMF
+			  ,NOMANI = @NOMANI
+			  ,SEXANI = @SEXANI
+			  ,DATNAC = @DATNAC
+			  ,TXTPES = @TXTPES
+			  ,TXTIDE = @TXTIDE
+			  --,NUMPES = @NUMPES
+			  --,PESIDE = @PESIDE
+			  ,DSCRAC = @DSCRAC
+			  ,DSCALE = @DSCALE
+			  ,DSCCOR = @DSCCOR
+			  ,CODESP = @CODESP
+			  ,NUMRGA = @NUMRGA
+			  ,OBSANI = @OBSANI
+			  ,CODORI = @CODORI
+			  ,HASFAL = @HASFAL
+			  ,HASCAS = @HASCAS
+			  ,DATOBT = @DATOBT
+			  ,STAREC = @STAREC
+			  ,DATATU = @DATATU
+			  ,DATUPD = GETDATE()
+		 WHERE  ORGBAS = @ORGBAS AND CODANI = @CODANI
+		 
+		 IF(@@ERROR=0)
+		    SET @RETURN_VALUE=2;
+	END
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" operator="==" message="Registro incluido com sucesso" error="OK"/>
+				<return value="2" operator="==" message="Registro alterado com sucesso" error="OK"/>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-99999" message="" error="BROKENCONNECTION"/>
+			</returns>
+		</insertcommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="GetLastAnimal" return="int" returnmode="2" procname="" desc ="Obtêm o ID do Último Registro de Animal Gravado" returnvalue="0">
+				<query>
+					<![CDATA[IF(EXISTS (SELECT 1 FROM CVCADANI (NOLOCK) WHERE ORGBAS = @ORGBAS))
+    SELECT MAX(CODANI) AS RETURN_VALUE FROM CVCADANI (NOLOCK) WHERE ORGBAS=@ORGBAS
+ELSE
+	SELECT 0 AS RETURN_VALUE]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="5" name="CVCADCLI" api="true" apiname="" friendlyname="Clients" modelversion="3" descriptor="Tabela de Informações de Cliente">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<view>
+			<item owner="" script="true" definer="" name="VWCLIFON" desc ="View de Resumo de quantidades de telefones cadastrados por tipo e status">
+				<query>
+					<![CDATA[
+  SELECT FON.ORGBAS
+  ,DSCORG = CASE WHEN FON.ORGBAS=1 THEN 'SP' ELSE 'RJ' END 
+        , FON.STAREC
+		 ,DSCREC = CASE WHEN FON.STAREC=1 THEN 'OK' ELSE 'IRREGULAR' END 
+        ,FON.NORTEL
+		,DSCNOR = CASE WHEN FON.NORTEL=1 THEN 'NORMALIZADO' ELSE 'NÃO NORMALIZADO' END 
+		,FON.TIPCTO , MAX(DSCCTO) AS DSCCTO, COUNT(*) AS NUMREC
+  from TBCLIFON (NOLOCK) FON
+ INNER JOIN RFTIPCTO (NOLOCK) TIP 
+    ON (TIP.TIPCTO = FON.TIPCTO)
+GROUP BY FON.ORGBAS, FON.STAREC, FON.NORTEL, FON.TIPCTO					
+
+]]>
+				</query>
+			</item>
+		</view>
+
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','AVACEP'" procname="CVCADCLIINS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(EXISTS (SELECT 1 FROM CVCADCLI (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODCMF = @CODCMF ))
+	    SET @RETURN_VALUE = -2
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE = -2 )
+	BEGIN
+		UPDATE CVCADCLI
+		   SET NOMCLI = @NOMCLI
+			  ,CODCEP = @CODCEP
+			  ,DSCEND = @DSCEND
+              ,DSCCID = @DSCCID
+			  ,CODCLA = @CODCLA
+			  ,DSCCLA = @DSCCLA
+			  ,DSCMAL = @DSCMAL
+			  ,DATCAD = @DATCAD
+			  ,CODUFE = @CODUFE
+			  ,TELRES = @TELRES
+			  ,TELCEL = @TELCEL
+			  ,TELCOM = @TELCOM
+			  ,ENVNEW = @ENVNEW
+			  ,DATNAC = @DATNAC
+			  ,DATATU = @DATATU
+			  ,SEXCLI = @SEXCLI
+			  ,DATUPD = GETDATE()
+		 WHERE ORGBAS = @ORGBAS AND CODCMF = @CODCMF
+		 
+		 IF(@@ERROR=0)
+		    SET @RETURN_VALUE=2;
+	END
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" operator="==" message="Registro incluido com sucesso" error="OK"/>
+				<return value="2" operator="==" message="Registro alterado com sucesso" error="OK"/>
+				<return value="-1" message="" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+		<methods>
+			<item script="true" alias="A." sql="" method="UpdateClassification" return="int" returnmode="2" procname="PRCADCLIUPDCLF" desc ="Atualiza a classificação de Clientes" returnvalue="0">
+				<query>
+					<![CDATA[
+    DECLARE @RETURN_VALUE INT =0;
+	DECLARE @VALUE SMALLINT
+     UPDATE CVCADCLI
+        SET CODCLA = CASE WHEN ISNUMERIC(DSCCLA)=1 THEN REPLACE(DSCCLA,'.','') ELSE 0 END  						
+      WHERE ORGBAS = @ORGBAS
+	    /* LIMITE DE CODIFICACAO */
+	    AND CONVERT(INT, CASE WHEN ISNUMERIC(DSCCLA)=1 THEN REPLACE(DSCCLA,'.','') ELSE 0 END ) <255
+		/* CARATER NAO CONVERTIVEL */
+		AND NOT DSCCLA LIKE '%,%'
+	    
+        SET @RETURN_VALUE = @@ROWCOUNT;	 
+
+	 UPDATE CVCADCLI
+        SET CODCLA = 0  						
+      WHERE ORGBAS = @ORGBAS AND CODCLA > 7	
+        SET @RETURN_VALUE = @@ROWCOUNT;	 
+
+     UPDATE CVCADCLI
+        SET CODCLA = CASE DSCCLA 
+        							WHEN N'Indicação PetShop / Clínica' THEN 1
+        							WHEN N'Indicação Cliente / Funcionário' THEN 2
+        							WHEN N'Pesquisa Google' THEN 3
+        							WHEN N'Facebook' THEN 4
+        							WHEN N'Ao passar em frente' THEN 5
+        							WHEN N'Instagram' THEN 6
+        							WHEN N'Plano de Saúde' THEN 7
+
+        							--WHEN N'Indicação PetShop / Clínica' THEN 7
+        							--WHEN N'Indicação Cliente / Funcionário' THEN 8
+        							--WHEN N'Pesquisa Google' THEN 9
+        							--WHEN N'Facebook' THEN 10
+        							--WHEN N'Ao passar em frente' THEN 11
+        							--WHEN N'Instagram' THEN 12
+        						ELSE 0 END
+     WHERE CODCLA = 0 AND ORGBAS = @ORGBAS		
+    SET @RETURN_VALUE = @RETURN_VALUE +  @@ROWCOUNT;
+    
+    RETURN @RETURN_VALUE;
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="false" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+
+			<item script="true" alias="A." sql="" method="UpdatePhones" return="int" returnmode="2" procname="PRCADCLIUPDFON" desc ="Promove a atualização da base de controle de telefones de clientes" returnvalue="0">
+				<query>
+					<![CDATA[
+    DECLARE @remove_chars varchar(100) = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()./+@,-_;'
+    
+    MERGE 
+        TBCLIFON AS TGT
+    USING  (SELECT DISTINCT 
+                   ORGBAS
+                  ,TIPCTO
+    			  ,CODCMF
+    			  ,LEFT(REPLACE(TELRES, NUMTEL,'') + REPLICATE( ' ', 25),25) AS NOMCTT
+    			  ,NUMTEL
+    			  ,STAREC= CASE WHEN LEN(NUMTEL)<8 THEN 0
+    						    WHEN LEN(NUMTEL)=8 AND TIPCTO=3 THEN 0
+    						    WHEN LEN(NUMTEL)=10 AND TIPCTO=1 AND LEFT(NUMTEL,2)='00' THEN 0
+    			            	ELSE 1 END
+    	  	      ,NORTEL = CASE WHEN TIPCTO = 1 AND LEN(NUMTEL) =8 THEN 1
+    			                 WHEN TIPCTO = 1 AND LEN(NUMTEL)= 9 AND LEFT(NUMTEL,1)='9' THEN 0
+    			                 WHEN TIPCTO = 1 AND LEN(NUMTEL)= 11 AND SUBSTRING(NUMTEL,3,1)='9' THEN 0
+    
+    	                         WHEN TIPCTO = 3 AND LEN(NUMTEL) =13 THEN 1
+    					         WHEN TIPCTO = 2 AND LEN(NUMTEL)= 9 AND LEFT(NUMTEL,1)='9' THEN 0
+    				             ELSE 0 
+    							  END
+    	      FROM (
+    				SELECT
+    				     ORGBAS,
+    					 TIPCTO=1,
+    					 CODCMF,
+    					 replace(replace(replace(replace(replace(replace(TELRES Collate SQL_Latin1_General_Cp1253_CI_AI,' ',''),'-',''),'(',''),')',''),'+',''),'/','') AS TELRES, 
+    					 replace(Translate(replace(TELRES Collate SQL_Latin1_General_Cp1253_CI_AI,' ',''), @remove_chars, replicate('~', len(@remove_chars))), '~', '') AS NUMTEL
+    				from cvcadcli
+    				WHERE ISNULL(TELRES,'') <>'' 
+    				UNION ALL
+    				SELECT
+    				     ORGBAS,
+    					 TIPCTO=2,
+    					 CODCMF,
+    					 replace(replace(replace(replace(replace(replace(TELCOM Collate SQL_Latin1_General_Cp1253_CI_AI,' ',''),'-',''),'(',''),')',''),'+',''),'/','') AS TELRES, 
+    					 replace(Translate(replace(TELCOM Collate SQL_Latin1_General_Cp1253_CI_AI,' ',''), @remove_chars, replicate('~', len(@remove_chars))), '~', '') AS NUMTEL
+    				from cvcadcli
+    				WHERE ISNULL(TELCOM,'') <>''
+    
+    				UNION ALL
+    				SELECT
+    				     ORGBAS,
+    					 TIPCTO=3,
+    					 CODCMF,
+    					 replace(replace(replace(replace(replace(replace(TELCEL Collate SQL_Latin1_General_Cp1253_CI_AI,' ',''),'-',''),'(',''),')',''),'+',''),'/','') AS TELRES, 
+    					 replace(Translate(replace(TELCEL Collate SQL_Latin1_General_Cp1253_CI_AI,' ',''), @remove_chars, replicate('~', len(@remove_chars))), '~', '') AS NUMTEL
+    				from cvcadcli
+    				WHERE ISNULL(TELCEL,'') <>'' 
+    
+    				UNION ALL
+    				SELECT DISTINCT
+    				     ORGBAS,
+    					 TIPCTO=5,
+    					 CODCMF,
+    					 replace(replace(replace(replace(replace(replace(NOMRS1 Collate SQL_Latin1_General_Cp1253_CI_AI,' ',''),'-',''),'(',''),')',''),'+',''),'/','') AS TELRES, 
+    					 replace(Translate(replace(NOMRS1 Collate SQL_Latin1_General_Cp1253_CI_AI,' ',''), @remove_chars, replicate('~', len(@remove_chars))), '~', '') AS NUMTEL
+    				from cvcadcli
+    				WHERE ISNULL(NOMRS1,'') <>'' 
+    
+					UNION ALL
+    				SELECT DISTINCT 
+    				     ORGBAS,
+    					 TIPCTO=6,
+    					 CODCMF,
+    					 replace(replace(replace(replace(replace(replace(NOMRS2 Collate SQL_Latin1_General_Cp1253_CI_AI,' ',''),'-',''),'(',''),')',''),'+',''),'/','') AS TELRES, 
+    					 replace(Translate(replace(NOMRS2 Collate SQL_Latin1_General_Cp1253_CI_AI,' ',''), @remove_chars, replicate('~', len(@remove_chars))), '~', '') AS NUMTEL
+    				from cvcadcli
+    				WHERE ISNULL(NOMRS2,'') <>''
+    			
+    				) A
+    				WHERE NUMTEL<>'' 
+					AND LEFT(NUMTEL,8) NOT IN ('00000000','11111111','11000000','10000000','99999999','00010001','02100000')
+    				AND ISNUMERIC(NUMTEL)=1 
+					AND (LEN(NUMTEL)>=8 AND LEN(NUMTEL)<=25)
+           ) AS SRC
+    	   ON (TGT.ORGBAS = SRC.ORGBAS AND 
+    	       TGT.CODCMF = SRC.CODCMF AND
+    		   TGT.NUMTEL = SRC.NUMTEL AND
+    		   TGT.TIPCTO = SRC.TIPCTO)
+    WHEN MATCHED THEN
+        UPDATE SET 
+            TGT.STAREC = SRC.STAREC,
+            TGT.NORTEL = SRC.NORTEL,
+            TGT.DATUPD = GETDATE(),
+    		TGT.NOMCTT = SRC.NOMCTT
+    WHEN NOT MATCHED BY SOURCE THEN
+        DELETE
+    WHEN NOT MATCHED BY TARGET THEN
+        
+        INSERT 
+         VALUES (SRC.ORGBAS, SRC.CODCMF, SRC.STAREC, SRC.NORTEL, SRC.NOMCTT, SRC.NUMTEL, SRC.TIPCTO, GETDATE())          
+    ;
+    RETURN @@ROWCOUNT;
+
+				]]>
+
+				</query>
+				<parameters>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="6" name="CVPCDLAN" api="true" apiname="" friendlyname="ProceduresRecords" modelversion="3" descriptor="Tabela de Informações de Lançamentos de Procedimentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<view>
+			<item owner="" script="true" definer="" name="VWLANVWC" desc ="View de Lançamentos associada a VET WE CARE">
+				<query>
+					<![CDATA[
+SELECT
+       LAN.ORGBAS
+      ,LAN.NIDPCD
+      ,LAN.STAREC
+      ,LAN.STACHG
+      ,LAN.CODEMP
+      ,LAN.CODANI
+      ,LAN.DATPCD
+      ,LAN.VLRPCD
+      ,LAN.VLRPGT
+      ,LAN.APEVET
+      ,LAN.NUMOSS
+	  ,RIGHT('00' + CONVERT(varchar, LAN.ORGBAS), 2) + RIGHT('0000000' + CONVERT(varchar, LAN.NUMOSS), 7) AS OSSKEY
+      ,LAN.NUMQTD
+      ,LAN.CODPCD
+      ,LAN.CODORI
+      ,LAN.CODINT
+      ,LAN.HASCVN
+      ,LAN.INDDES
+      ,LAN.NIDIND
+      ,ORL.NIDBAS
+	  ,BAS.APEBAS
+	  ,URLLDO = COALESCE(LDO.URLLDO,'')
+	  ,HASRF2 = CAST( CASE WHEN RF1.CODPCD IS NULL THEN 0 ELSE 1 END AS TINYINT)
+	  ,HASRF1 = CAST( CASE WHEN RF2.CODPCD IS NULL THEN 0 ELSE 1 END AS TINYINT)
+	  ,HASSR1 = CAST( CASE WHEN RF21.CODPCD IS NULL THEN 0 ELSE 1 END AS TINYINT)
+	  ,HASDRS = CAST( CASE WHEN DRS.CODPCD IS NULL THEN 0 ELSE 1 END AS TINYINT)
+	  ,HASRF3 = CAST( CASE WHEN RF3.CODPCD IS NULL THEN 0 ELSE 1 END AS TINYINT)
+	  ,HASSR3 = CAST( CASE WHEN RF31.CODPCD IS NULL THEN 0 ELSE 1 END AS TINYINT)
+  FROM CVPCDLAN (NOLOCK) LAN
+ INNER JOIN CVORIORL (NOLOCK) ORL ON (ORL.NIDORI = LAN.CODORI)
+ INNER JOIN RFORGBAS (NOLOCK) BAS ON (BAS.ORGBAS = ORL.ORGBAS AND BAS.NIDBAS = ORL.NIDBAS)
+  LEFT JOIN CVLDOCTO (NOLOCK) LDO ON (LDO.ORGBAS = LAN.ORGBAS AND LDO.NIDPCD = LAN.NIDPCD)
+  LEFT JOIN (SELECT CODPCD FROM RFSTAOSV WHERE TIPREL=2) RF1 ON (RF1.CODPCD = LAN.CODPCD)
+  LEFT JOIN (SELECT CODPCD FROM RFSTAOSV WHERE TIPREL=1) RF2 ON (RF2.CODPCD = LAN.CODPCD)
+  LEFT JOIN (SELECT CODPCD FROM RFSTAOSV WHERE TIPREL=1 AND TIPRF1 = 1) RF21 ON (RF21.CODPCD = LAN.CODPCD)
+  LEFT JOIN (SELECT CODPCD FROM RFSTAOSS WHERE HASDRS = 1 ) DRS ON (DRS.CODPCD = LAN.CODPCD)
+  LEFT JOIN (SELECT CODPCD FROM RFSTAOSV WHERE TIPREL=3) RF3 ON (RF3.CODPCD = LAN.CODPCD)
+  LEFT JOIN (SELECT CODPCD FROM RFSTAOSV WHERE TIPREL=3 AND TIPRF1 = 1) RF31 ON (RF31.CODPCD = LAN.CODPCD)
+ WHERE LAN.STAREC=1 AND BAS.NIDBAS NOT IN (0,11,13,4,20)
+   AND DATPCD > '20211231 23:59:59']]>
+				</query>
+			</item>
+		</view>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="CVPCDLANINS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+ IF(EXISTS (SELECT 1 FROM CVPCDLAN (NOLOCK) WHERE ORGBAS = @ORGBAS AND NIDPCD=@NIDPCD ))
+	    SET @RETURN_VALUE = -2
+ 
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE CVPCDLAN
+		   SET STAREC = @STAREC
+			  ,STACHG = @STACHG
+			  ,CODEMP = @CODEMP
+			  ,CODANI = @CODANI
+			  ,DATPCD = @DATPCD
+			  ,VLRPCD = @VLRPCD
+			  ,VLRPGT = @VLRPGT
+			  ,APEVET = @APEVET
+			  ,NUMOSS = @NUMOSS
+			  ,NUMQTD = @NUMQTD
+			  ,CODPCD = @CODPCD
+			  ,CODORI = @CODORI
+			  ,CODINT = @CODINT
+			  ,HASCVN = @HASCVN
+			  ,INDDES = @INDDES
+			  ,NIDIND = @NIDIND
+		 WHERE ORGBAS = @ORGBAS AND NIDPCD = @NIDPCD
+		 
+		 IF(@@ERROR=0)
+		    SET @RETURN_VALUE = 2;
+	END
+		
+		
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error="OK"></return>
+				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="ProceduresRecords" procname="" desc ="Obtêm o registro de lançamento de acordo com a origem e o id de registro" >
+				<query>
+					<![CDATA[SELECT * FROM CVPCDLAN (NOLOCK) A]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true"  desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true"  desc ="ID do Lancamento" name="NIDPCD" type="System.Int32" default="" output="" null=""/>
+
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<methods>
+			<item script="true" alias="A." sql="" method="GetLastProcedure" return="int" returnmode="2" procname="CVPCDLANLASPCD" desc ="Obtêm o ID do Último Registro de Procedimento Gravado" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0;
+SELECT @RETURN_VALUE = MAX(NIDPCD) FROM CVPCDLAN (NOLOCK) WHERE ORGBAS=@ORGBAS AND STAREC=1;
+IF(@RETURN_VALUE IS NULL)
+   SET @RETURN_VALUE = 0;
+RETURN @RETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+				</parameters>
+			</item>
+		</methods>
+
+		<selectallcommand>
+
+			<item script="false" alias="A." sql="" method="GetAllIDS" type="List" return="int" procname="" desc ="Obtêm uma lista de id's de lançamentos para comparativo" remarks="">
+				<query>
+					<![CDATA[SELECT NIDPCD FROM CVPCDLAN (NOLOCK) WHERE ORGBAS = {0} AND NIDPCD >0 AND NIDPCD >= @NIDPCD AND STAREC=1 ORDER BY 1]]>
+				</query>
+
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem de Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="ID de Registro" name="NIDPCD" type="System.Int32" default="" output="" null=""/>
+
+				</parameters>
+
+			</item>
+		</selectallcommand>
+
+	</item>
+
+	<item create="true"  id="7" name="CVSTAOSS" api="true" apiname="" friendlyname="OS" modelversion="3" descriptor="Tabela de Informações de Ordens de Serviço">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'FCEINT'" procname="CVSTAOSSINS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+ IF(EXISTS (SELECT 1 FROM CVSTAOSS (NOLOCK) WHERE ORGBAS = @ORGBAS AND NUMOSS=@NUMOSS ))
+	    SET @RETURN_VALUE = -2
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE CVSTAOSS
+		   SET CODANI = @CODANI
+			  ,DATABE = @DATABE
+			  ,DATFEC = @DATFEC
+			  ,CODEMP = @CODEMP
+			  ,STAOSS = @STAOSS
+			  ,IDAANI = @IDAANI
+			  ,STAREC = @STAREC
+		 WHERE ORGBAS = @ORGBAS AND NUMOSS = @NUMOSS
+		 
+		 IF(@@ERROR=0)
+		    SET @RETURN_VALUE = 2;
+	END
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error="OK"></return>
+				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+
+
+			</returns>
+		</insertcommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Select" return="ProceduresRecords" procname="" desc ="Obtêm o registro de lançamento de acordo com a origem e o id de registro" >
+				<query>
+					<![CDATA[SELECT * FROM CVSTAOSS (NOLOCK)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true"  desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true"  desc ="OS" name="NUMOSS" type="System.Int32" default="" output="" null=""/>
+
+				</parameters>
+			</item>
+		</selectcommand>
+
+		<!--<methods>
+			<item script="true" alias="A." sql="" method="GetLastOS" return="int" returnmode="2" procname="CVSTAOSSLASOSS" desc ="Obtêm o ID da Última OS não fechada Gravada" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0;
+SELECT @RETURN_VALUE = MAX(NUMOSS) FROM CVSTAOSS (NOLOCK) WHERE ORGBAS=@ORGBAS AND STAOSS <> 'S';
+IF(@RETURN_VALUE IS NULL)
+   SET @RETURN_VALUE = 0;
+RETURN @RETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+				</parameters>
+			</item>
+
+
+			<item script="true" alias="A." sql="" method="UpdateReferencesVWC" return="int" returnmode="2" procname="CVSTAOSSUPDVWC" desc ="Atualiza as informações de referências relativas à VETWECARE para a tabela de OS" returnvalue="0">
+				<query>
+					<![CDATA[
+					
+	  ,HASRF1 = CAST( CASE WHEN RF1.CODPCD IS NULL THEN 0 ELSE 1 END AS TINYINT)
+	  ,HASRF2 = CAST( CASE WHEN RF2.CODPCD IS NULL THEN 0 ELSE 1 END AS TINYINT)
+	  ,HASSR1 = CAST( CASE WHEN RF21.CODPCD IS NULL THEN 0 ELSE 1 END AS TINYINT)
+	  ,HASDRS = CAST( CASE WHEN DRS.CODPCD IS NULL THEN 0 ELSE 1 END AS TINYINT)
+	  ,HASRF3 = CAST( CASE WHEN RF3.CODPCD IS NULL THEN 0 ELSE 1 END AS TINYINT)
+	  ,HASSR3 = CAST( CASE WHEN RF31.CODPCD IS NULL THEN 0 ELSE 1 END AS TINYINT)
+	  
+	  LEFT JOIN (SELECT CODPCD FROM RFSTAOSV WHERE TIPREL=2) RF1 ON (RF1.CODPCD = LAN.CODPCD)
+  LEFT JOIN (SELECT CODPCD FROM RFSTAOSV WHERE TIPREL=1) RF2 ON (RF2.CODPCD = LAN.CODPCD)
+  LEFT JOIN (SELECT CODPCD FROM RFSTAOSV WHERE TIPREL=1 AND TIPRF1 = 1) RF21 ON (RF21.CODPCD = LAN.CODPCD)
+
+  LEFT JOIN (SELECT CODPCD FROM RFSTAOSS WHERE HASDRS = 1 ) DRS ON (DRS.CODPCD = LAN.CODPCD)
+  LEFT JOIN (SELECT CODPCD FROM RFSTAOSV WHERE TIPREL=3) RF3 ON (RF3.CODPCD = LAN.CODPCD)
+  LEFT JOIN (SELECT CODPCD FROM RFSTAOSV WHERE TIPREL=3 AND TIPRF1 = 1) RF31 ON (RF31.CODPCD = LAN.CODPCD)
+				
+					
+					
+    DECLARE @RETURN_VALUE INT = 0;
+    UPDATE CVSTAOSS
+       SET HASRF1 = CAST(CASE WHEN VWC.HASRF1 = 1 AND VWC.HASRF2 = 1 THEN 1 ELSE 0 END AS TINYINT)
+          ,HASRF2 = CAST(CASE WHEN VWC.HASRF1 = 1 AND VWC.HASRF2 = 1 AND VWC.HASSR1 = 1 AND VWC.URLLDO<>'' THEN 1 ELSE 0 END  AS TINYINT)
+    	  ,HASRF3 = CAST(CASE WHEN VWC.HASDRS = 1 AND VWC.HASRF3 = 1 THEN 1 ELSE 0 END AS TINYINT)
+    	  ,HASRF4 = CAST(CASE WHEN VWC.HASDRS = 1 AND VWC.HASRF3 = 1 AND VWC.HASSR3 = 1 AND VWC.URLLDO<>'' THEN 1 ELSE 0 END AS TINYINT)
+      FROM CVSTAOSS (NOLOCK) OS
+     INNER JOIN (SELECT ORGBAS
+    	                ,NUMOSS
+    					,MAX(URLLDO) AS URLLDO
+    					,MAX(HASDRS) AS HASDRS
+    					,MAX(HASRF2) AS HASRF2
+    					,MAX(HASRF1) AS HASRF1
+    					,MAX(HASSR1)  AS HASSR1
+    					,HASRF3 = MAX(HASRF3)
+    					,HASSR3 = MAX(HASSR3)
+    				FROM VWLANVWC
+    			    WHERE ORGBAS = @ORGBAS
+    				GROUP BY ORGBAS, NUMOSS) VWC
+    	ON (VWC.ORGBAS = OS.ORGBAS AND VWC.NUMOSS = OS.NUMOSS)
+	SET @RETURN_VALUE= @@ROWCOUNT;
+    RETURN @RETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+				</parameters>
+			</item>
+		</methods>-->
+
+
+
+	</item>
+
+	<item create="true"  id="8" name="CVCADORC" api="true" apiname="" friendlyname="Budgets" modelversion="3" descriptor="Tabela de Informações de Orçamentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="CVCADORCINS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+ IF(EXISTS (SELECT 1 FROM CVCADORC (NOLOCK) WHERE ORGBAS = @ORGBAS AND NIDORC=@NIDORC ))
+	    SET @RETURN_VALUE = -2
+
+
+       
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE CVCADORC
+		   SET CODANI = @CODANI
+			  ,DATORC = @DATORC
+			  ,APEVET = @APEVET
+			  ,HASAPR = @HASAPR
+			  ,DSCTIT = @DSCTIT
+			  ,VLRTOT = @VLRTOT
+			  ,VLRDCT = @VLRDCT
+			  ,TIPDCT = @TIPDCT
+			  ,VLRLIQ = @VLRLIQ
+		 WHERE  ORGBAS = @ORGBAS AND NIDORC = @NIDORC
+		 
+		 IF(@@ERROR=0)
+		    SET @RETURN_VALUE = 2;
+	END
+		
+		
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error=""></return>
+				<return value="2" message="Registro alterado com sucesso" error=""></return>
+
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+
+
+			</returns>
+		</insertcommand>
+
+
+
+		<methods>
+			<item script="true" alias="A." sql="" method="GetLastRecord" return="int" returnmode="2" procname="CVCADORCLASNID" desc ="Obtêm o ID do Último Orçamento gravado" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0;
+SELECT @RETURN_VALUE = MAX(NIDORC) FROM CVCADORC (NOLOCK) WHERE ORGBAS=@ORGBAS;
+IF(@RETURN_VALUE IS NULL)
+   SET @RETURN_VALUE = 0;
+RETURN @RETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="9" name="CVORCLAN" api="true" apiname="" friendlyname="BudgetsRelease" modelversion="3" descriptor="Tabela de Informações de Orçamentos - Lançamentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="CVORCLANINS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+ IF(EXISTS (SELECT 1 FROM CVORCLAN (NOLOCK) WHERE ORGBAS = @ORGBAS AND ORCLAN=@ORCLAN ))
+	    SET @RETURN_VALUE = -2
+
+
+       
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE CVORCLAN
+		   SET NIDORC = @NIDORC
+			  ,DSCORC = @DSCORC
+			  ,VLRPAD = @VLRPAD
+			  ,VLRLAN = @VLRLAN
+			  ,OBSORC = @OBSORC
+			  ,QTDNUM = @QTDNUM
+			  ,TIPORC = @TIPORC
+			  ,CODPCD = @CODPCD
+		 WHERE  ORGBAS = @ORGBAS AND ORCLAN = @ORCLAN
+		 
+		 IF(@@ERROR=0)
+		    SET @RETURN_VALUE = 2;
+	END
+		
+		
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error=""></return>
+				<return value="2" message="Registro alterado com sucesso" error=""></return>
+
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+
+
+			</returns>
+		</insertcommand>
+
+
+
+		<methods>
+			<item script="true" alias="A." sql="" method="GetLastRecord" return="int" returnmode="2" procname="CVORCLANLASNID" desc ="Obtêm o ID do Último Lançamento de Orçamento gravado" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0;
+SELECT @RETURN_VALUE = MAX(ORCLAN) FROM CVORCLAN (NOLOCK) WHERE ORGBAS=@ORGBAS;
+IF(@RETURN_VALUE IS NULL)
+   SET @RETURN_VALUE = 0;
+RETURN @RETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+				</parameters>
+			</item>
+		</methods>
+
+
+
+	</item>
+
+
+	<item create="true"  id="10" name="CVCADINT" api="true" apiname="" friendlyname="Hospitalization" modelversion="3" descriptor="Tabela de Informações de Internação">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="CVCADINTINS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+ IF(EXISTS (SELECT 1 FROM CVCADINT (NOLOCK) WHERE ORGBAS = @ORGBAS AND NIDINT=@NIDINT ))
+	    SET @RETURN_VALUE = -2
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE CVCADINT
+		   SET CODANI = @CODANI
+			  ,NOMRSP = @NOMRSP
+			  ,CTOTEL = @CTOTEL
+			  ,CODORI = @CODORI
+			  ,VETRSP = @VETRSP
+			  ,VETRSI = @VETRSI
+			  ,DSCPTC = @DSCPTC
+			  ,QXACLI = @QXACLI
+			  ,DSCSIN = @DSCSIN
+			  ,DSCANA = @DSCANA
+			  ,DATINT = @DATINT
+			  ,DATALT = @DATALT
+			  ,ACTREA = @ACTREA
+			  ,ALTOBT = @ALTOBT
+			  ,VALMAX = @VALMAX
+			  ,RSPALT = @RSPALT
+			  ,CODEMP = @CODEMP
+			  ,DATUPD = GETDATE()
+		 WHERE ORGBAS = @ORGBAS AND NIDINT = @NIDINT	
+		 
+		 IF(@@ERROR=0)
+		    SET @RETURN_VALUE = 2;
+	END
+		
+		
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error=""></return>
+				<return value="2" message="Registro alterado com sucesso" error=""></return>
+
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+
+
+			</returns>
+		</insertcommand>
+
+
+
+		<methods>
+			<item script="true" alias="A." sql="" method="GetLastRecord" return="int" returnmode="2" procname="CVCADINTLASNID" desc ="Obtêm o ID do Último Lançamento de Internação gravada" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0;
+SELECT @RETURN_VALUE = MAX(NIDINT) FROM CVCADINT (NOLOCK) WHERE ORGBAS=@ORGBAS;
+IF(@RETURN_VALUE IS NULL)
+   SET @RETURN_VALUE = 0;
+RETURN @RETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+				</parameters>
+			</item>
+		</methods>
+
+
+
+	</item>
+
+	<item create="true"  id="11" name="CVBASORI" api="true" apiname="" friendlyname="OriginBasis" modelversion="3" descriptor="Tabela de Informações de Composição entre as bases de origens e origem base relac">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<methods>
+			<item script="false" alias="A." sql="" method="Create" return="int" responsemode="1" returnmode="2" procname="PRBASORICRT" desc ="Obtêm os dados de junção da tabela de origens x origens base relac" returnvalue="0">
+				<query>
+					<![CDATA[]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+
+	<item create="true"  id="12" name="CVPCDVAL" api="true" apiname="" friendlyname="ProcedureValues" modelversion="3" descriptor="Tabela de Informações de Procedimentos e Valores padrão de referência">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="CVPCDVALINS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error=""></return>
+				<return value="-1" message="" error="FAILALL"/>
+			</returns>
+		</insertcommand>
+
+
+
+		<methods>
+			<item script="true" alias="A." sql="" method="Delete" return="int" returnmode="2" procname="CVPCDVALDEL" desc ="Remove os registros existentes da tabela de procedimentos valores" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0;
+DELETE FROM CVPCDVAL WHERE ORGBAS = @ORGBAS
+SET @RETURN_VALUE = @@ROWCOUNT;
+RETURN @RETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+				</parameters>
+			</item>
+		</methods>
+	</item>
+
+	<item create="true"  id="14" name="CVHSTPCD" api="true" apiname="" friendlyname="ProcedureHistory" modelversion="3" descriptor="Tabela de Informações de Histórico de Alteração de Valores de Procedimento">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="CVHSTPCDINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(EXISTS(SELECT 1 FROM CVHSTPCD (NOLOCK) WHERE ORGBAS = @ORGBAS AND NIDALT = @NIDALT))
+	SET @RETURN_VALUE = -2;
+       ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE CVHSTPCD SET EMPKEY = @EMPKEY, CODPCD = @CODPCD, DATALT = @DATALT, VLRREF = @VLRREF, DATUPD = GETDATE() WHERE ORGBAS = @ORGBAS AND NIDALT = @NIDALT;
+		IF(@@ERROR=0)
+		   SET @RETURN_VALUE = 2;
+	END
+        ]]>
+			</pos>
+			<returns>
+				<return value="1"  message="Registro incluindo com sucesso" error="OK"></return>
+				<return value="2"  message="Registro incluindo com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+	</item>
+
+	<item create="true"  id="15" type="TABLE" name="RFSTAOSS" api="true" apiname="" friendlyname="HospitalizationReferences" modelversion="3" descriptor="Tabela de Parâmetros de Internação" comments="Tabela que define os códigos de procedimentos atrelados a operação de internação e definição de controle de diárias (coleta)">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+
+	<item create="true"  id="16" name="CVPCDALT" api="true" apiname="" friendlyname="ProceduresRecordsHistory" modelversion="3" descriptor="Tabela de Informações de Lançamentos de Procedimentos alterados">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="CVPCDALTINS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+ IF(EXISTS (SELECT 1 
+              FROM CVPCDALT (NOLOCK) 
+			 WHERE ORGBAS = @ORGBAS AND NIDALT = @NIDAT))
+	    SET @RETURN_VALUE = -2
+
+  
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+	
+		
+		
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+
+			</returns>
+		</insertcommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="GetLastProcedure" return="int" returnmode="2" procname="" desc ="Obtêm o ID do Último Registro de Alteração de Procedimento Gravado" returnvalue="0">
+				<query>
+					<![CDATA[SELECT COALESCE(MAX(NIDALT),0) AS RETURN_VALUE FROM CVPCDALT (NOLOCK)]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+				</parameters>
+			</item>
+		</selectcommand>
+
+	</item>
+
+	<item create="true"  id="17" name="CVCADEMP" api="true" apiname="" friendlyname="Units" modelversion="3" descriptor="Tabela de informações de Unidades" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+
+
+	<item create="true"  id="18" name="TBCLIFON" api="false" apiname="" friendlyname="Phones" modelversion="3" descriptor="Tabela de Informações de Telefones de Clientes">
+
+		<SqlTable></SqlTable>
+		<insertcommand script="true" key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="PRCLIFONINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+  IF(LEN(@NUMTEL)=10 AND @TIPCTO=3 )
+     BEGIN
+		SET @STAREC=0
+		SET NORTEL =0
+     END
+  IF(LEN(@NUMTEL)=10 AND SUBSTRING(@NUMTEL,3,1)='9')
+     BEGIN
+		SET @TIPCTO=3
+		SET @STAREC=0
+		SET NORTEL =0
+     END
+  IF(LEN(@NUMTEL)=11 AND SUBSTRING(@NUMTEL,3,1)='9' )
+     BEGIN
+		SET @TIPCTO=3
+		SET @STAREC=1
+		SET NORTEL =0
+     END]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+			</returns>
+		</insertcommand>
+	</item>
+
+	<item create="true"  id="18" name="TBBLAFON" api="false" apiname="" friendlyname="PhonesBlackList" modelversion="3" descriptor="Tabela de Informações de Telefones de Clientes bloqueados para exposição">
+		<SqlTable></SqlTable>
+	</item>
+
+
+
+
+	<item create="true"  id="19" name="CVCADVET" api="true" apiname="" friendlyname="Veterinarians" modelversion="3" descriptor="Tabela de Informações sobre veterinarios">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Identity" exceptionparamns="'DATUPD'" fieldreturn="NIDSPT" procname="PRCADVETINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(NOT EXISTS(SELECT 1 FROM CVCADVET WHERE VETKEY = 0)) 
+     INSERT INTO CVCADVET(VETKEY, APEVET, ORGBAS, DSCVET) VALUES(0, '', 0, 'N/D')	
+ 
+IF(EXISTS(SELECT 1 FROM CVCADVET (NOLOCK) WHERE APEVET = @APEVET AND ORGBAS = @ORGBAS))
+	SET @RETURN_VALUE = -2;
+	
+IF(@RETURN_VALUE=0)
+	BEGIN
+		SELECT @VETKEY = COALESCE(MAX(VETKEY),0)+1 FROM CVCADVET (NOLOCK)
+
+	END
+			]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF (@RETURN_VALUE=-2)
+     BEGIN
+	     UPDATE CVCADVET 
+		    SET DSCVET = @DSCVET
+			   , NIDSPT = @NIDSPT
+			   , TIPFUN=@TIPFUN 
+		  WHERE APEVET = @APEVET AND ORGBAS = @ORGBAS
+		 IF(@@ERROR=0)
+			SET @RETURN_VALUE = 2;
+
+     END			
+				
+					]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error="OK"/>
+				<return value="2" message="Registro alterado com sucesso" error="OK"/>
+
+				<return value="-2" message="" error="RECORDFOUND"></return>
+
+			</returns>
+		</insertcommand>
+
+	</item>
+
+	<item create="true"  id="20" name="CVVETSPT" api="true" apiname="" friendlyname="VeterinarySpecialties" modelversion="3" descriptor="Tabela de Informações sobre especialidades de veterinarios">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<insertcommand key="Identity" exceptionparamns="'DATUPD'" fieldreturn="NIDSPT" procname="PRVETSPTINS">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[IF(NOT EXISTS(SELECT 1 FROM CVVETSPT (NOLOCK) WHERE NIDSPT =0)) INSERT INTO CVVETSPT(NIDSPT, DSCSPT) VALUES (0,'N/D');
+IF(EXISTS(SELECT 1 FROM CVVETSPT (NOLOCK) WHERE NIDSPT =@NIDSPT))
+   SET @RETURN_VALUE=-2;
+			
+			]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[]]>
+			</pos>
+			<returns>
+				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+
+			</returns>
+		</insertcommand>
+
+	</item>
+
+
+	<item create="true"  id="21" name="CVCADARE" api="false" apiname="" friendlyname="HospitalizationArea" modelversion="3" descriptor="Tabela de Cadastro de Áreas de Internação">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="PRCADAREINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(NOT EXISTS (SELECT 1 FROM CVCADARE (NOLOCK) WHERE AREKEY=0))
+     BEGIN
+		INSERT INTO CVCADARE (AREKEY,NOMARE,LOCARE,PTEARE,OBSARE,SECARE,EMPKEY) VALUES (0,'N/D','N/D','N/D','N/D','N/D',0)
+	 END
+IF(EXISTS (SELECT 1 FROM CVCADARE (NOLOCK) WHERE AREKEY=@AREKEY))
+   SET @RETURN_VALUE = -2;
+   
+				
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+   BEGIN
+		UPDATE CVCADARE 
+		   SET NOMARE =@NOMARE
+		      , LOCARE=@LOCARE
+		      , PTEARE=@PTEARE
+		      , OBSARE=@OBSARE
+		      , EMPKEY=@EMPKEY 
+		 WHERE AREKEY=@AREKEY
+	
+	IF(@@ERROR=0)
+	   SET @RETURN_VALUE=2;
+   END
+			]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error="OK"/>
+				<return value="2" message="Registro alterado com sucesso" error="OK"/>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+			</returns>
+		</insertcommand>
+
+	</item>
+
+
+	<item create="true"  id="22" name="TTSQB010" api="true" apiname="" friendlyname="Departments"  modelversion="3" descriptor="Cadastro de Departamentos" comments="Base de origem : SQB010/SQB030 - Departamentos">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="PRSQB010INS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE @TMPKEY INT =0
+IF(NOT EXISTS(SELECT 1 FROM TTSQB010 (NOLOCK) WHERE DPTKEY=0))
+    INSERT INTO TTSQB010 (DPTKEY, CODEMP, CODFIL, CODDPT, DSCDPT, CODCCU) VALUES (0,0,'','','','');
+	
+IF(EXISTS(SELECT 1 FROM TTSQB010 (NOLOCK) WHERE CODEMP =@CODEMP AND CODFIL = @CODFIL AND CODDPT = @CODDPT))
+	BEGIN
+		 SET @RETURN_VALUE=-2;
+		 SELECT @DPTKEY = DPTKEY FROM TTSQB010 (NOLOCK) WHERE CODEMP =@CODEMP AND CODFIL = @CODFIL AND CODDPT = @CODDPT;
+	END
+
+IF(@RETURN_VALUE = 0) 
+	BEGIN
+        SELECT @TMPKEY = ISNULL(MAX(DPTKEY),0)+1 FROM TTSQB010 WITH (NOLOCK)
+		SET @DPTKEY = RIGHT('00' + CONVERT(VARCHAR,@CODEMP),2) + RIGHT('0000000' + CONVERT(VARCHAR,@TMPKEY),7)
+	END
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE TTSQB010
+		   SET DSCDPT = @DSCDPT
+		      ,CODCCU = @CODCCU
+			  ,DATUPD = GETDATE()
+		 WHERE CODEMP = @CODEMP
+		   AND CODFIL = @CODFIL
+		   AND CODDPT = @CODDPT
+		 
+		 IF(@@ERROR=0)
+			SET @RETURN_VALUE = 2;
+	END
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+	</item>
+
+	<item create="true"  id="23" name="TTSRJ010" api="true" apiname="" friendlyname="EmployeeRole"  modelversion="3" descriptor="Registro de Funções de Funcionários" comments="Base de origem : SRJ010/SRJ030 - Funções">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="FNCKEY" exceptionparamns="'DATUPD'" procname="PRSRJ010INS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+DECLARE @TMPKEY INT =0
+IF(NOT EXISTS(SELECT 1 FROM TTSRJ010 (NOLOCK) WHERE FNCKEY=0))
+    INSERT INTO TTSRJ010 (FNCKEY, CODEMP, CODFIL, CODFNC, DSCFNC) VALUES (0,0,'','','');
+	
+IF(EXISTS(SELECT 1 FROM TTSRJ010 (NOLOCK) WHERE CODEMP =@CODEMP AND CODFIL = @CODFIL AND CODFNC = @CODFNC))
+	BEGIN
+		 UPDATE TTSRJ010
+		    SET DSCFNC = @DSCFNC
+			   ,DATUPD = GETDATE()
+		 WHERE CODEMP = @CODEMP
+		   AND CODFIL = @CODFIL
+		   AND CODFNC = @CODFNC
+		 
+		 IF(@@ERROR=0)
+			SET @RETURN_VALUE = 1;
+	END
+
+IF(@RETURN_VALUE = 0) 
+	BEGIN
+	    SELECT @TMPKEY = COALESCE(MAX( CAST( RIGHT(FNCKEY,7) AS INTEGER)),0) + 1 FROM TTSRJ010 WITH (NOLOCK)
+		SET @FNCKEY = RIGHT('00' + CONVERT(VARCHAR,@CODEMP),2) + RIGHT('0000000' + CONVERT(VARCHAR,@TMPKEY),7)
+	END
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+	</item>
+
+
+	<item create="true"  id="24" name="TTSL1010" api="true" apiname="" friendlyname="FinancialRecord" modelversion="3" descriptor="Registro Financeiro">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','CHKPCD','CHKANI'" procname="PRSL1010INS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET @NUMMES = MONTH(@DATFEC);
+SET @NUMANO = YEAR(@DATFEC);
+SET @HASCHG = 0;
+
+SET @NUMITE = 0;
+
+SELECT @NUMITE = COALESCE(MAX(NUMITE),0)+1 FROM TTSL1010 (NOLOCK) WHERE NIDFIN= @NIDFIN AND TIPREG=@TIPREG;
+
+IF(EXISTS (SELECT 1 FROM TTSL1010 (NOLOCK) WHERE NIDFIN = @NIDFIN AND TIPREG=@TIPREG))
+   SET @RETURN_VALUE=-2;
+  
+IF(@RETURN_VALUE = 0)
+	BEGIN
+		SELECT @CODEMP = ISNULL(CODEMP,0) FROM CVCADEMP (NOLOCK) WHERE CODFIL = @CODFIL AND HASPRO=1;
+		IF(@CODEMP IS NULL)
+		   SET @CODEMP = 0;
+    END
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+  
+				]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+
+			</returns>
+		</insertcommand>
+		<updatecommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','CHKPCD','CHKANI'" procname="PRSL1010UPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET @NUMMES = MONTH(@DATFEC);
+SET @NUMANO = YEAR(@DATFEC);
+SET @HASCHG = 1;
+SET @NUMITE = 0;
+SELECT @NUMITE = COALESCE(MAX(NUMITE),0)+1 FROM TTSL1010 (NOLOCK) WHERE NIDFIN= @NIDFIN AND TIPREG=@TIPREG;
+
+SELECT @CODEMP = ISNULL(CODEMP,0) FROM CVCADEMP (NOLOCK) WHERE CODFIL = @CODFIL AND HASPRO=1;
+IF(@CODEMP IS NULL)
+   SET @CODEMP = 0;
+
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+
+
+				]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+			</returns>
+		</updatecommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Exists" return="int" returnmode="2" procname="" desc ="Verifica se o ID de Registro para o tipo de Registro já existe na tabela de contenção" returnvalue="0">
+				<query>
+					<![CDATA[IF(EXISTS (SELECT 1 FROM TTSL1010 (NOLOCK) WHERE NIDFIN = @NIDFIN AND TIPREG=@TIPREG))
+    SELECT 1 AS RETURN_VALUE
+ELSE
+	SELECT 0 AS RETURN_VALUE]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="ID de Registro" name="NIDFIN" type="System.Int32" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Tipo de Registro" name="TIPREG" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+
+	</item>
+
+	<item create="true"  id="25" name="TBLOCCEP" api="true" apiname="" friendlyname="PostalAddressBook" modelversion="3" descriptor="CEP Localizado">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRLOCCEPINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				
+IF(EXISTS(SELECT 1 FROM TBLOCCEP (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODCMF = @CODCMF))
+    SET @RETURN_VALUE= -2
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+  
+				]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+			</returns>
+		</insertcommand>
+		<updatecommand key="Key" fieldreturn="" exceptionparamns="'DATCAD','DSCEND'" procname="PRLOCCEPUPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				
+IF(NOT EXISTS(SELECT 1 FROM TBLOCCEP (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODCMF = @CODCMF))
+    SET @RETURN_VALUE= -2
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+  
+				]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+				<return value="-2" message="" error="RECORDNOTFOUND"></return>
+			</returns>
+		</updatecommand>
+
+
+		<selectallcommand>
+
+			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="PostalAddressBook" procname="" desc ="Obtêm uma lista de todos os clientes e cep's cadastrados" remarks="">
+				<query>
+					<![CDATA[SELECT * FROM TBLOCCEP (NOLOCK) WHERE STAREC=0]]>
+				</query>
+
+
+			</item>
+		</selectallcommand>
+
+		<methods>
+			<item script="true" alias="" sql="" method="UpdateClientBase" return="int" returnmode="21" procname="PRLOCCEPUPDCLI" desc ="Atualiza a base de clientes com o cep localizado e anula o registro de localização" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @CODCEP VARCHAR(8)
+DECLARE @RETURN_VALUE INT =0;
+IF(EXISTS(SELECT 1 FROM TBLOCCEP (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODCMF = @CODCMF AND VRFCEP=1))
+	BEGIN
+		SELECT @CODCEP = CODCEP FROM TBLOCCEP (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODCMF = @CODCMF AND VRFCEP=1 AND STACEP<>9
+		IF(TRIM(@CODCEP) NOT IN ('','00000000'))
+		    UPDATE CVCADCLI SET AVACEP = @CODCEP WHERE ORGBAS = @ORGBAS AND CODCMF = @CODCMF AND AVACEP = '00000000'
+			IF(@@ERROR=0)
+				BEGIN
+					UPDATE TBLOCCEP SET STACEP = 9 WHERE ORGBAS = @ORGBAS AND CODCMF = @CODCMF AND VRFCEP=1;
+					SET @RETURN_VALUE = 1;
+				END
+	END
+RETURN @RETURN_VALUE;
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" desc ="Id de Origem" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true" desc ="CPF/CNPJ" name="CODCMF" type="System.String" size ="14" default="" output="" null=""/>
+				</parameters>
+			</item>
+		</methods>
+
+
+	</item>
+
+	<item create="true"  id="26" name="TTSZ6010" api="true" apiname="" friendlyname="MedicalInsurance" modelversion="3" descriptor="Convênio Médico">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+
+
+		<insertcommand key="identity" fieldreturn="" exceptionparamns="'DATUPD'" procname="PRSZ6010INS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET @NUMMES = 0
+SET @NUMANO = 0
+
+
+
+IF(EXISTS (SELECT 1 FROM TTSZ6010 (NOLOCK) WHERE NIDFIN = @NIDFIN AND TIPREG=@TIPREG))
+   SET @RETURN_VALUE=-2;
+  
+IF(@RETURN_VALUE = 0)
+	BEGIN
+		SELECT @CODEMP = ISNULL(CODEMP,0) FROM CVCADEMP (NOLOCK) WHERE CODFIL = @CODFIL AND HASPRO=1;
+		IF(@CODEMP IS NULL)
+		   SET @CODEMP = 0;
+    END
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+  
+				]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="-2" message="" error="RECORDFOUND"></return>
+
+			</returns>
+		</insertcommand>
+		<updatecommand key="identity" fieldreturn="" exceptionparamns="'DATCAD','DATUPD'" procname="PRSZ6010UPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SELECT @CODEMP = ISNULL(CODEMP,0) FROM CVCADEMP (NOLOCK) WHERE CODFIL = @CODFIL AND HASPRO=1;
+IF(@CODEMP IS NULL)
+   SET @CODEMP = 0;
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+			</returns>
+		</updatecommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Exists" return="int" returnmode="2" procname="" desc ="Verifica se o ID de Registro para o tipo de Registro já existe na tabela de contenção" returnvalue="0">
+				<query>
+					<![CDATA[IF(EXISTS (SELECT 1 FROM TTSZ6010 (NOLOCK) WHERE NIDFIN = @NIDFIN AND TIPREG=@TIPREG))
+    SELECT 1 AS RETURN_VALUE
+ELSE
+	SELECT 0 AS RETURN_VALUE]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="ID de Registro" name="NIDFIN" type="System.Int32" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Tipo de Registro" name="TIPREG" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+
+	</item>
+
+	<item create="true"  id="27" name="EXTPETLV" api="true" apiname="" friendlyname="MedicalInsuranceControl" modelversion="3" descriptor="Controle de Convênio Médico PetLove">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+		<insertcommand key="identity"  supressidentity="true" fieldreturn="" exceptionparamns="'DATUPD','OLDRGA','CODDPR','NUMOSS','NIDPCD','VLRPCD','VLROSS','VLRLIQ','VLRDIF','DIFLOC','CNVKEY'" procname="PREXTPETINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET @NUMMES = MONTH(@DATLAN)
+SET @NUMANO = YEAR(@DATLAN)
+DECLARE @PTLKEY INT = 0;
+
+
+IF(@DATLAN <= '2023-07-31 23:59:59' AND @EMPKEY=10)
+   SET @STAREC = 0;
+
+SELECT @PTLKEY = COALESCE(PTLKEY,0) 
+  FROM EXTPETLV (NOLOCK)
+ WHERE ORGBAS = @ORGBAS
+   AND EMPKEY = @EMPKEY
+   AND NUMMES = @NUMMES
+   AND NUMANO = @NUMANO
+   AND CODATE = @CODATE
+   AND DATLAN = @DATLAN
+   AND TRIM(NOMCLI) = TRIM (@NOMCLI)
+   AND TRIM(NOMANI) = TRIM (@NOMANI)
+   AND TRIM(DSCESP) = TRIM (@DSCESP)
+   AND TRIM(DSCRAC) = TRIM (@DSCRAC)  
+   AND TRIM(SEXANI) = TRIM (@SEXANI)  
+   AND TRIM(PLNANI) = TRIM (@PLNANI)
+   AND TRIM(NUMRGA) = TRIM (@NUMRGA)
+   AND TRIM(NUMIDE) = TRIM (@NUMIDE)
+   AND TRIM(NOMVET) = TRIM (@NOMVET)
+   AND TRIM(CODCMF) = TRIM (@CODCMF)
+   AND TRIM(STAPGT) = TRIM (@STAPGT)
+   AND TRIM(DSCPCD) = TRIM (@DSCPCD);
+   
+    IF(@PTLKEY IS NULL)
+	   SET @PTLKEY = 0;
+
+
+IF(@PTLKEY>0)
+  SET @RETURN_VALUE = -2;
+
+  
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+  
+IF(@RETURN_VALUE = -2)
+	BEGIN
+		UPDATE EXTPETLV
+		   SET VLRLAN = VLRLAN + @VLRLAN
+			  ,VLRCPT = VLRCPT + @VLRCPT
+		WHERE PTLKEY = @PTLKEY;
+		
+		   IF(@@ERROR=0)
+		      SET @RETURN_VALUE = 2;
+	END
+  
+
+				]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+
+			</returns>
+		</insertcommand>
+
+		<methods>
+
+			<item script="true" alias="A." sql="" method="Delete" return="int" returnmode="21" procname="PREXTPETDEL" desc ="Transfere os dados de uma PA para o registro financeiro" returnvalue="0" remarks="">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT =0;
+DELETE FROM EXTPETLV WHERE EMPKEY = @EMPKEY AND NUMMES =@NUMMES AND NUMANO = @NUMANO;
+SET @RETURN_VALUE = @@ROWCOUNT;
+RETURN @RETURN_VALUE;
+ 					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="EMPKEY" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Mes" name="NUMMES" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Ano" name="NUMANO" type="System.Int16" default="" output="" null=""/>
+
+				</parameters>
+			</item>
+
+			<item script="false" alias="A." sql="" method="UpdateReferences" return="int" returnmode="21" procname="PREXTPETUPDREF" desc ="Atualiza as referências de código de animal e cpf para cadas registro" returnvalue="0" remarks="">
+				<query>
+					<![CDATA[
+
+ 					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="EMPKEY" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Mes" name="NUMMES" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Ano" name="NUMANO" type="System.Int16" default="" output="" null=""/>
+				</parameters>
+			</item>
+
+			<item script="true" alias="A." sql="" method="UpdateProceduresReferences" return="int" returnmode="21" procname="PREXTPETUPDPCD" desc ="Atualiza as referências de procedimentos e suas correlações para equalização de informações" returnvalue="0" remarks="">
+				<query>
+					<![CDATA[
+	DECLARE @RETURN_VALUE INT = 0;
+    /* ---------------------------------------------------------------------------------------------------------------------------
+      ATUALIZA O DE-PARA DE PROCEDIMENTOS GERAL
+    ------------------------------------------------------------------------------------------------------------------------------*/
+    UPDATE EXTPETLV 
+       SET CODPCD = DP.CODPCD
+	      ,NIDPCD = 0
+		  ,NUMOSS = 0
+		  ,DIFLOC = 0
+		  ,VLRPCD = 0
+      FROM EXTPETLV LV
+     INNER JOIN EXTPCDDP (NOLOCK) DP ON (DP.DSCPCD = LV.DSCPCD)
+     WHERE DP.CODEMP=0
+       AND LV.EMPKEY=@EMPKEY AND LV.NUMMES = @NUMMES AND LV.NUMANO = @NUMANO
+       AND LV.STAREC NOT IN (0,200)
+       SET @RETURN_VALUE = @@ROWCOUNT;
+    /* ---------------------------------------------------------------------------------------------------------------------------
+      ATUALIZA O DE-PARA DE PROCEDIMENTOS POR EMPRESA
+    ------------------------------------------------------------------------------------------------------------------------------*/
+    UPDATE EXTPETLV 
+       SET CODPCD = DP.CODPCD
+	   	  ,NIDPCD = 0
+		  ,NUMOSS = 0
+		  ,DIFLOC = 0
+		  ,VLRPCD = 0
+      FROM EXTPETLV LV
+     INNER JOIN EXTPCDDP (NOLOCK) DP ON (DP.DSCPCD = LV.DSCPCD)
+     WHERE DP.CODEMP=@EMPKEY
+       AND LV.EMPKEY=@EMPKEY AND LV.NUMMES = @NUMMES AND LV.NUMANO = @NUMANO
+       AND LV.STAREC NOT IN (0,200)
+       SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    RETURN @RETURN_VALUE;				
+				
+				]]>
+
+				</query>
+
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="EMPKEY" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Mes" name="NUMMES" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Ano" name="NUMANO" type="System.Int16" default="" output="" null=""/>
+				</parameters>
+			</item>
+
+
+			<item script="true" alias="A." sql="" method="TransferToFinantial" return="int" returnmode="21" procname="PREXTPETTRFFIN" desc ="Transfere os dados de uma PA para o registro financeiro" returnvalue="0" remarks="Este evento ocorre quando uma PA não é encontrada na Tabela TTSZ6010">
+				<query>
+					<![CDATA[
+INSERT INTO TTSZ6010 
+      (    NIDFIN,     CODATE, TIPREG, SRCSYS,     NUMMES,     NUMANO,     DATFEC,     DATEMI,     DATPGT,    CODEMP,     NUMOSS,    CODPCD,    VLRBRT,   CODANI)
+SELECT LOV.CODATE, LOV.CODATE,     14,      1, LOV.NUMMES, LOV.NUMANO, LOV.DATLAN, LOV.DATLAN, LOV.DATLAN,LOV.EMPKEY, LOV.NUMOSS,LOV.CODPCD,LAN.VLRPCD,LAN.CODANI 
+FROM CVPCDLAN (NOLOCK) LAN
+INNER JOIN EXTPETLV (NOLOCK) LOV
+   ON (LOV.NUMOSS = LAN.NUMOSS AND LOV.CODPCD = LAN.CODPCD)
+WHERE LAN.NUMOSS=@NUMOSS;
+RETURN @@ROWCOUNT;
+ 					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Número da OS" name="NUMOSS" type="System.Int32" default="" output="" null=""/>
+				</parameters>
+			</item>
+
+
+			<item script="true" alias="A." sql="" method="CheckExistenceRecord" return="int" returnmode="21" procname="PREXTPETCHKEXI" desc ="Checa se o lançamentoe existe na tabela corresponde de registro de procedimentos" returnvalue="0" remarks="">
+				<query>
+					<![CDATA[
+	DECLARE @RETURN_VALUE INT =0;
+    UPDATE EXTPETLV SET HASREC=0 WHERE EMPKEY = @EMPKEY;
+    SET @RETURN_VALUE = @@ROWCOUNT;
+    
+    UPDATE EXTPETLV
+       SET HASREC = 1
+      FROM EXTPETLV
+     INNER JOIN (SELECT DISTINCT CODEMP, CODANI 
+                   FROM CVPCDLAN (NOLOCK) 
+    			  WHERE CODEMP=@EMPKEY AND STAREC=1) LAN
+    	ON (LAN.CODEMP = EXTPETLV.EMPKEY AND LAN.CODANI = EXTPETLV.CODANI)
+     WHERE EMPKEY = @EMPKEY;
+     SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+	 RETURN @RETURN_VALUE;
+ 
+ 					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Código da Empresa" name="EMPKEY" type="System.Byte" default="" output="" null=""/>
+				</parameters>
+			</item>
+
+			<item script="true" alias="A." sql="" method="UpdateRecordsOnFinantial" return="int" returnmode="21" procname="PREXTPETUPDFIN" desc ="Promove a atualização dos dados relativos ao financeiro" returnvalue="0" remarks="Este evento ocorre quando se há a necessidade de se associar da Tabela TTSZ6010 para um determinado periodo financeiro">
+				<query>
+					<![CDATA[
+UPDATE TTSZ6010
+   SET VLRLIQ = CASE WHEN LOV.STAPGT='PAGO' THEN LOV.VRLLAN ELSE 0 END 
+       ,NUMMES = LOV.NUMMES
+	   ,NUMANO = LOV.NUMANO
+  FROM TTSZ6010  SZ6
+ INNER JOIN EXTPETLV (NOLOCK) LOV  
+    ON (LOV.CODPCD = SZ6.CODPCD AND LOV.NUMOSS = SZ6.NUMOSS) 
+RETURN @@ROWCOUNT;
+ 					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="´Número da OS" name="NUMOSS" type="System.Int32" default="" output="" null=""/>
+				</parameters>
+			</item>
+
+			<item script="true" alias="A." sql="" method="TransferToProcedures" return="int" returnmode="21" procname="PREXTPCDTRFPCD" desc ="Executa a atualização do arquivo de integração com o faturamento" returnvalue="0" remarks="Este processo além das informações basicas de empresa, ano e mês, necessita do número da nota fiscal e série relativas ao movimento">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0
+
+
+
+	BEGIN TRANSACTION
+
+	BEGIN TRY
+
+		DELETE FROM EXTPCDLV
+	     WHERE EMPKEY = @EMPKEY
+           AND NUMANO = @NUMANO
+	       AND NUMMES = @NUMMES
+	       AND STAREC = 1;
+
+		INSERT INTO EXTPCDLV 
+	           (NIDFIN
+	           ,TIPREG
+	           ,NUMANO
+	           ,NUMMES
+	           ,CODEMP
+	           ,DATFEC
+	           ,DATEMI
+	           ,CODFIL
+	           ,NUMOSS
+	           ,CODPCD
+	           ,VLROSS
+	           ,VLRLIQ
+	           ,VLRBRT
+	           ,NUMNFE
+	           ,SERNFE
+	           ,CODANI
+	           ,DSCSRV
+	           ,STAREC
+	           ,NIDPCD)
+	    SELECT
+	            PTLKEY
+	           ,14
+	           ,@NUMANO
+	           ,@NUMMES
+	           ,@EMPKEY
+	           ,DATLAN
+	           ,DATLAN
+	           ,CODFIL
+	           ,NUMOSS
+	           ,CODPCD
+	           ,VLROSS
+	           ,VLRLAN
+	           ,VLRLAN
+	           ,@NUMNFE
+	           ,@SERNFE
+	           ,CODANI
+	           ,'PETLOVE'
+	           ,1
+	           ,NIDPCD
+		  FROM EXTPETLV (NOLOCK)
+		 WHERE EMPKEY = @EMPKEY
+		   AND NUMANO = @NUMANO
+		   AND NUMMES = @NUMMES
+		   AND STAREC = 1;
+
+	       SET @RETURN_VALUE = @RETURN_VALUE  + @@ROWCOUNT;
+	        IF(@@ERROR = 0)
+				BEGIN
+					UPDATE EXTPETLV 
+					   SET STAREC=200
+					 WHERE EMPKEY = @EMPKEY
+					   AND NUMANO = @NUMANO
+		               AND NUMMES = @NUMMES
+		               AND STAREC = 1
+					   SET @RETURN_VALUE = @RETURN_VALUE  + @@ROWCOUNT;
+				END
+		   COMMIT;
+	END TRY
+
+	BEGIN CATCH
+	  IF @@TRANCOUNT > 0  
+        ROLLBACK TRANSACTION; 
+	  SET @RETURN_VALUE = -1;
+	END CATCH
+
+  RETURN @RETURN_VALUE;
+ 					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="EMPKEY" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Mes" name="NUMMES" type="System.Byte" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Ano" name="NUMANO" type="System.Int16" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="NF" name="NUMNFE" type="System.String"  size="9" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Série" name="SERNFE" type="System.String"  size="4" default="" output="" null=""/>
+				</parameters>
+			</item>
+		</methods>
+
+	</item>
+
+	<item create="true"  id="28" name="EXTPCDDP" api="false" apiname="" friendlyname="MedicalInsuranceControlFromTo" modelversion="3" descriptor="Controle de Convênio Médico PetLove - Relação de-para de procedimentos" remarks ="Relaciona um código de procedimento por empresa, opionalmente, para localização">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+	<item create="true"  id="29" name="RLPCDDPR" api="false" apiname="" friendlyname="MedicalInsuranceControlFromToRelational" modelversion="3" descriptor="Controle de Convênio Médico PetLove - Relação de-para de procedimentos Alternativos" remarks="Esta tabela tem o objetivo de relacionar um código de de-para de procedimentos de forma recorrente">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+
+
+	<item create="true"  id="30" name="CVLDOCTO" api="true" apiname="" friendlyname="TechnicalReports" modelversion="3" descriptor="Conteúdo de Laudos" remarks="Tabela de Origem SGV : laudos_conteudo">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="PRLDOCTO" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				
+IF(EXISTS(SELECT 1 FROM CVLDOCTO (NOLOCK) WHERE ORGBAS = @ORGBAS AND NIDLDO = @NIDLDO))
+    SET @RETURN_VALUE= -2
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+ IF(@RETURN_VALUE = -2)
+	BEGIN
+	    UPDATE CVLDOCTO
+		   SET NIDPCD = @NIDPCD
+		      ,NIDIDE = @NIDIDE
+			  ,URLLDO = @URLLDO
+			  ,DATCAD = @DATCAD
+		 WHERE ORGBAS = @ORGBAS AND NIDLDO = @NIDLDO
+		
+		IF (@@ERROR = 0)
+		    SET @RETURN_VALUE = 2;
+	END
+				]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+
+
+	</item>
+
+
+	<item create="true"  id="31" type="TABLE" name="RFSTAOSV" api="false" apiname="" friendlyname="HospitalizationReferencesVWC" modelversion="3" descriptor="Tabela de Parâmetros de Consulta/Internação - Vet We Care" comments="Tabela que define os códigos de procedimentos atrelados a operação de internação e definição de controle de diárias (coleta) com exclusividade da VET WE CARE">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+
+	<item create="true"  id="32" type="VIEW" name="VWLANVWC" api="false" apiname="" friendlyname="ProceduresRecordsVWC" modelversion="3" descriptor="View de Registro de Lançamentos aplicados para a VET WE CARE" comments="Esta visualização além de exibir os resultados normais de um lançamento, formata campos adicionais de análise específicas da VET WE CARE">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+
+	<item create="true"  id="33" type="TABLE" name="EXTPCDLV" api="false" apiname="" friendlyname="MedicalInsuranceControlProcedures" modelversion="3" descriptor="Tabela de Armazenamento de informações de integração de conciliação de registros PETLOVE" comments="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="300" name="CT2010" api="true" apiname="" friendlyname="Ledger" modelversion="3" descriptor="PROTHEUS - Ledger" remarks="CT2010/CT2030">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="PTCT2010INS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+ IF(EXISTS (SELECT 1 FROM CT2010 (NOLOCK) WHERE CODEMP = @CODEMP AND R_E_C_N_O_=@R_E_C_N_O_ ))
+	    SET @RETURN_VALUE = -2
+     ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+
+		
+		
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+				<return value="-99999" message="" error="BROKENCONNECTION"/>
+			</returns>
+		</insertcommand>
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="GetLastRecord" return="int" returnmode="2" procname="" desc ="Obtêm o ID do Último Registro de Origens Gravado" returnvalue="0">
+				<query>
+					<![CDATA[IF(EXISTS (SELECT 1 FROM CT2010 (NOLOCK) WHERE CODEMP = @CODEMP))
+    SELECT MAX(R_E_C_N_O_) AS RETURN_VALUE FROM CT2010 (NOLOCK) WHERE CODEMP=@CODEMP
+ELSE
+	SELECT 0 AS RETURN_VALUE]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Empresa" name="CODEMP" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int64" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+		<methods>
+			<item script="true" alias="" sql="" method="Delete" return="int" returnmode="0" procname="PTCT2010DEL" desc ="Remove um período de processamento" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+DECLARE @RETURN_VALUE INT =0;
+					DELETE FROM CT2010 WHERE CODEMP=@CODEMP AND NUMANO = @NUMANO AND NUMMES = @NUMMES
+					SET @RETURN_VALUE = @@ROWCOUNT;
+					RETURN @RETURN_VALUE;					
+					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true"  omit="true" desc ="Código da Empresa" name="CODEMP" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true"  omit="true" desc ="Mes de Processamento" name="NUMMES" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true"  omit="true" desc ="Ano de Processamento" name="NUMANO" type="System.Int16" default="" output="" null="false"/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+		</methods>
+
+
+	</item>
+
+	<item create="true"  id="302" name="SN1010" api="true" apiname="" friendlyname="Assets" modelversion="3" descriptor="PROTHEUS - Assets" remarks="SN1010/SN1030">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="PTSN1010INS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+ IF(EXISTS (SELECT 1 FROM SN1010 (NOLOCK) WHERE CODEMP = @CODEMP AND R_E_C_N_O_=@R_E_C_N_O_ ))
+	    SET @RETURN_VALUE = -2
+
+
+       
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+
+		
+		
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+				<return value="-99999" message="" error="BROKENCONNECTION"/>
+			</returns>
+		</insertcommand>
+
+
+
+		<methods>
+			<item script="true" alias="" sql="" method="Delete" return="int" returnmode="0" procname="PTSN1010DEL" desc ="Remove uma empresa cadastrada" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+DECLARE @RETURN_VALUE INT =0;
+					DELETE FROM SN1010 WHERE CODEMP=@CODEMP
+					SET @RETURN_VALUE = @@ROWCOUNT;
+					RETURN @RETURN_VALUE;					
+					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true"  omit="true" desc ="Código da Empresa" name="CODEMP" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+		</methods>
+
+
+	</item>
+
+	<item create="true"  id="303" name="CTT010" api="true" apiname="" friendlyname="CostCenter" modelversion="3" descriptor="PROTHEUS - Cost Centers" remarks="CTT010/CTT030">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="PTCTT010INS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+ IF(EXISTS (SELECT 1 FROM CTT010 (NOLOCK) WHERE CODEMP = @CODEMP AND R_E_C_N_O_=@R_E_C_N_O_ ))
+	    SET @RETURN_VALUE = -2
+
+
+       
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+
+		
+		
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+				<return value="-99999" message="" error="BROKENCONNECTION"/>
+			</returns>
+		</insertcommand>
+
+
+
+		<methods>
+			<item script="true" alias="" sql="" method="Delete" return="int" returnmode="0" procname="PTCTT010DEL" desc ="Remove uma empresa cadastrada" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+DECLARE @RETURN_VALUE INT =0;
+					DELETE FROM CTT010 WHERE CODEMP=@CODEMP
+					SET @RETURN_VALUE = @@ROWCOUNT;
+					RETURN @RETURN_VALUE;					
+					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true"  omit="true" desc ="Código da Empresa" name="CODEMP" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+		</methods>
+
+
+	</item>
+
+	<item create="true"  id="303" name="CT1010" api="true" apiname="" friendlyname="Accounting" modelversion="3" descriptor="PROTHEUS - financial accounts" remarks="CT1010/CT1030">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="PTCT1010INS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+ IF(EXISTS (SELECT 1 FROM CT1010 (NOLOCK) WHERE CODEMP = @CODEMP AND R_E_C_N_O_=@R_E_C_N_O_ ))
+	    SET @RETURN_VALUE = -2
+     
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+				<return value="-99999" message="" error="BROKENCONNECTION"/>
+			</returns>
+		</insertcommand>
+
+
+
+		<methods>
+			<item script="true" alias="" sql="" method="Delete" return="int" returnmode="0" procname="PTCT1010DEL" desc ="Remove uma empresa cadastrada" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+DECLARE @RETURN_VALUE INT =0;
+					DELETE FROM CT1010 WHERE CODEMP=@CODEMP
+					SET @RETURN_VALUE = @@ROWCOUNT;
+					RETURN @RETURN_VALUE;					
+					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true"  omit="true" desc ="Código da Empresa" name="CODEMP" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+		</methods>
+
+
+	</item>
+
+	<item create="true"  id="301" name="SYS_COMPANY" api="true" apiname="" friendlyname="Branches" modelversion="3" descriptor="PROTHEUS - Branches" remarks="SYS_COMPANY">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="PTSYSCOMINS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+      
+      ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+
+		
+		
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+				<return value="-99999" message="" error="BROKENCONNECTION"/>
+			</returns>
+		</insertcommand>
+
+
+
+		<methods>
+			<item script="true" alias="" sql="" method="Delete" return="int" returnmode="0" procname="PTSYSCOMDEL" desc ="Remove os dados da tabela" returnvalue="0">
+				<query merge="true">
+					<![CDATA[
+DECLARE @RETURN_VALUE INT =0;
+					DELETE FROM SYS_COMPANY
+					SET @RETURN_VALUE = @@ROWCOUNT;
+					RETURN @RETURN_VALUE;					
+					]]>
+				</query>
+				<parameters>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+		</methods>
+
+
+	</item>
+
+
+	<item create="true"  id="501" name="TPPCDLAN" api="true" apiname="" friendlyname="ReleasesOut" modelversion="3" descriptor="Equalização de Lançamentos - Saida" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+
+	<item create="true"  id="502" name="RPQRYNPS" api="true" apiname="" friendlyname="ReportNPS" modelversion="3" descriptor="Tabela de Informações e Controle do Relatório de NPS" remarks="O relatório consiste basicamente em efetuar a leitura de dados da ultima semana retroativa a segunda feira 
+		da semana detectada considerando as restrições e parametrizações do relatório">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+
+	<item create="true"  id="503" type="TABLE" name="RFNPSREP" api="true" apiname="" friendlyname="	NPSReferences" modelversion="3" descriptor="Tabela de Parâmetros de Internação" comments="Tabela que define os códigos de procedimentos associados a cada relatório de extração de informações NPS">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+</root>
