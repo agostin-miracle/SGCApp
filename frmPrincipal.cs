@@ -23,7 +23,7 @@ namespace SCGApp
         List<String> TableList = new List<String>();
 
 
-        private string pathToolFile = @"c:\repositoriobase\modelos\dbtools.xml";
+        private string _PATHMODELBASE = @"c:\repositoriobase\modelos\dbtools.xml";
         public frmPrincipal()
         {
             InitializeComponent();
@@ -36,7 +36,7 @@ namespace SCGApp
             {
                 for (int i = 0; i < this.TableList.Count; i++)
                 {
-                    MazeFire.DataBaseTools.CreateSP sp = new MazeFire.DataBaseTools.CreateSP(GetId(), pathToolFile, this.TableList[i]);
+                    MazeFire.DataBaseTools.CreateSP sp = new MazeFire.DataBaseTools.CreateSP(GetId(), _PATHMODELBASE, this.TableList[i]);
                 }
                 MessageBox.Show("Concluido");
             }
@@ -47,7 +47,7 @@ namespace SCGApp
 
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
-            pathToolFile = MazeFire.Configuration.GetAppValue("ModeloBase");
+            _PATHMODELBASE = MazeFire.Configuration.GetAppValue("PATHMODELBASE");
             LoadCliente();
         }
 
@@ -61,7 +61,7 @@ namespace SCGApp
         }
         private void LoadCliente()
         {
-            var _list = WRKCFG.GetIdList(pathToolFile);
+            var _list = WRKCFG.GetIdList(_PATHMODELBASE);
             fcliente.Items.Clear();
             foreach (var item in _list)
             {
@@ -103,7 +103,7 @@ namespace SCGApp
                 try
                 {
 
-                    WRKCFG.Load(id, pathToolFile);
+                    WRKCFG.Load(id, _PATHMODELBASE);
 
                     if (!WRKCFG.Ready)
                     {
@@ -188,7 +188,7 @@ namespace SCGApp
                 {
                     MazeFire.DataBaseTools.CreateCSharp sp = new MazeFire.DataBaseTools.CreateCSharp();
 
-                    value = sp.Execute(GetId(), pathToolFile, this.TableList[i]);
+                    value = sp.Execute(GetId(), _PATHMODELBASE, this.TableList[i]);
 
                     if (value != 1)
                     {
