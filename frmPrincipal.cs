@@ -219,6 +219,7 @@ namespace SCGApp
         private void btn_printschema_Click(object sender, EventArgs e)
         {
             bool go = MazeFire.DataBaseTools.Schemas.WriteProcedures(WRKCFG);
+            GenWord.GenerateProceduresDoc(System.IO.Path.Combine(WRKCFG.ScriptProcsPath, "Docs"), WRKCFG.Title+"_PROCEDURES", WRKCFG.Title);
             MessageBox.Show(MazeFire.DataBaseTools.Schemas.TrappedError.UserError);
         }
 
@@ -226,6 +227,8 @@ namespace SCGApp
         private void print_table_Click(object sender, EventArgs e)
         {
             bool go = MazeFire.DataBaseTools.Schemas.WriteTables(WRKCFG);
+            GenWord.GenerateTablesDoc(System.IO.Path.Combine(WRKCFG.ScriptProcsPath, "Docs"), WRKCFG.Title + "_MODELOFISICO", WRKCFG.Title);
+
             MessageBox.Show(MazeFire.DataBaseTools.Schemas.TrappedError.UserError);
         }
 

@@ -54,8 +54,15 @@ namespace SCGApp
          * */
 
 
-        public static void GenerateTablesDoc(string path)
+        public static void GenerateTablesDoc(string path, string outputfile, string headertitle = "", string subtitle = "Tabelas e Views")
         {
+
+            HeaderTitle = headertitle;
+            SubTitle = subtitle;
+            if (String.IsNullOrWhiteSpace(outputfile))
+                OutPutFile = headertitle + "_MODELO_FISICO";
+            else
+                OutPutFile = outputfile;
 
             string file = Path.Combine(path, "tables.xml");
             XmlDocument doc = new XmlDocument();
@@ -202,9 +209,7 @@ namespace SCGApp
                     document.Sections[1].AddHeaders();
                     document.Sections[1].AddFooters();
 
-                    //document.Sections[1].PageNumberStart = 1;
-                    //document.Sections[1].DifferentFirstPage = true;
-                    //document.Sections[1].DifferentOddAndEvenPages = true;
+
                     var headers1 = document.Sections[1].Headers;
                     headers1.First.InsertParagraph(HeaderTitle);
                     headers1.Even.InsertParagraph(HeaderTitle);
@@ -212,7 +217,6 @@ namespace SCGApp
 
 
                     var footers1 = document.Sections[1].Footers;
-                    //footers1.First.PageNumbers = true;
                     footers1.First.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal).Alignment = Alignment.right;
 
                     footers1.Even.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal).Alignment = Alignment.right;
@@ -239,10 +243,12 @@ namespace SCGApp
                         p.Append($"    Alias:{tb.Description}").Font(new Xceed.Document.NET.Font("Arial")).Bold();
                         p.StyleId = "Normal";
 
-                        p = document.InsertParagraph();
-                        p.Append($"Propósito:{tb.Comments}").Font(new Xceed.Document.NET.Font("Arial")).Bold();
-                        p.StyleId = "Normal";
-
+                        if (!String.IsNullOrWhiteSpace(tb.Comments))
+                        {
+                            p = document.InsertParagraph();
+                            p.Append($"Propósito:{tb.Comments}").Font(new Xceed.Document.NET.Font("Arial")).Bold();
+                            p.StyleId = "Normal";
+                        }
                         //p = document.InsertParagraph();
                         //p.Alignment = Alignment.left;
                         //p.Append(tb.Description)
@@ -283,7 +289,13 @@ namespace SCGApp
                             else
                                 t.Rows[i].Cells[2].Paragraphs[0].Append(item.DataType).FontSize(11d);
                             t.Rows[i].Cells[3].Paragraphs[0].Append(item.IsNullable == true ? "Sim" : "Não").FontSize(11d);
-                            t.Rows[i].Cells[4].Paragraphs[0].Append(item.Format).FontSize(11d);
+
+                            if (item.DataType.ToLower() == "tinyint")
+                            {
+                                t.Rows[i].Cells[4].Paragraphs[0].Append("999").FontSize(11d);
+                            }
+                            else
+                                t.Rows[i].Cells[4].Paragraphs[0].Append(item.Format).FontSize(11d);
 
                             t.Rows[i].Cells[5].Paragraphs[0].Append(item.Description).FontSize(11d);
 
@@ -404,182 +416,6 @@ namespace SCGApp
                     }
 
 
-                    //h = document.InsertParagraph();
-                    //h.Append("Views");
-                    //h.StyleId = "Heading1";
-                    //foreach (TablesModel tb in result.Where(z => z.Type == "VIEW").OrderBy(x => x.Type).OrderBy(y => y.Name))
-                    //{
-                    //    // Add a title
-
-                    //    var p = document.InsertParagraph();
-                    //    p.Append(tb.Name);
-                    //    //p.Heading = HeadingType.Heading2;
-
-                    //    //var p = document.InsertParagraph(tb.Name + " - " + tb.Description).FontSize(15d).SpacingAfter(50d);
-                    //    p.StyleId = "Heading2";
-
-                    //    p = document.InsertParagraph();
-                    //    p.Alignment = Alignment.left;
-                    //    p.Append(tb.Description)
-                    //    .Font(new Xceed.Document.NET.Font("Arial"))
-                    //    .Color(Color.Blue)
-                    //    .Bold()
-                    //    .Append(": ").Append(tb.Comments).Color(Color.Black).SpacingAfter(10);
-                    //    p.StyleId = "Normal";
-
-                    //    //p = document.InsertParagraph();
-                    //    //p.Append(tb.Comments).Font(new Xceed.Document.NET.Font("Arial"));
-                    //    //p.StyleId = "Normal";
-
-
-                    //    var t = document.AddTable(tb.Columns.Count + 1, 6);
-                    //    t.Alignment = Alignment.center;
-                    //    t.Design = TableDesign.LightGridAccent1;
-                    //    t.AutoFit = AutoFit.ColumnWidth;
-
-
-
-                    //    t.SetWidths(new float[] { 60, 120, 130, 80, 80, 400 }, true);
-
-
-                    //    t.Rows[0].Cells[0].Paragraphs[0].Append("#");
-                    //    t.Rows[0].Cells[1].Paragraphs[0].Append("Campo");
-                    //    t.Rows[0].Cells[2].Paragraphs[0].Append("Tipo");
-                    //    t.Rows[0].Cells[3].Paragraphs[0].Append("Nulo");
-                    //    t.Rows[0].Cells[4].Paragraphs[0].Append("Formato");
-                    //    t.Rows[0].Cells[5].Paragraphs[0].Append("Descrição");
-                    //    int i = 1;
-                    //    foreach (var item in tb.Columns)
-                    //    {
-                    //        t.Rows[i].Cells[0].Paragraphs[0].Append(item.Order.ToString()).FontSize(11d);
-                    //        t.Rows[i].Cells[1].Paragraphs[0].Append(item.Name).FontSize(11d);
-
-                    //        if (!(String.IsNullOrEmpty(item.Size) || string.IsNullOrWhiteSpace(item.Size)))
-                    //        {
-                    //            t.Rows[i].Cells[2].Paragraphs[0].Append(item.DataType + "(" + item.Size + ")").FontSize(11d);
-                    //        }
-                    //        else
-                    //            t.Rows[i].Cells[2].Paragraphs[0].Append(item.DataType).FontSize(11d);
-                    //        t.Rows[i].Cells[3].Paragraphs[0].Append(item.IsNullable == true ? "Sim" : "Não").FontSize(11d);
-                    //        t.Rows[i].Cells[4].Paragraphs[0].Append(item.Format).FontSize(11d);
-
-                    //        t.Rows[i].Cells[5].Paragraphs[0].Append(item.Description).FontSize(11d);
-
-                    //        i++;
-                    //    }
-
-
-
-                    //    document.InsertTable(t);
-
-                    //    byte first = 0;
-                    //    foreach (var item in tb.Columns)
-                    //    {
-                    //        if (!String.IsNullOrWhiteSpace(item.Comments))
-                    //        {
-                    //            if (first == 0)
-                    //            {
-                    //                p = document.InsertParagraph();
-                    //                p.Append("Observações");
-                    //                p.StyleId = "Heading4";
-                    //                first = 1;
-                    //            }
-                    //            string[] lines = item.Comments.Split('@');
-                    //            for (int u = 0; u < lines.Length; u++)
-                    //            {
-                    //                p = document.InsertParagraph();
-                    //                if (u == 0)
-                    //                {
-                    //                    p.Spacing(10).Append(item.Order.ToString()).Bold().Append(":" + lines[u]).SpacingLine(12);
-                    //                }
-                    //                else
-                    //                    p.Spacing(10).Append(lines[u]).SpacingLine(12);
-
-                    //                p.StyleId = "Normal";
-                    //            }
-
-
-                    //        }
-                    //    }
-
-                    //    if (tb.Indexes.Count > 0)
-                    //    {
-                    //        var idx = document.AddTable(tb.Indexes.Count + 1, 6);
-                    //        idx.Alignment = Alignment.center;
-                    //        idx.Design = TableDesign.LightGridAccent1;
-                    //        //idx.AutoFit = AutoFit.ColumnWidth;
-                    //        idx.SetWidthsPercentage(new[] { 80f, 80f, 80f, 80f, 80f, 90f }, 490);
-                    //        idx.Rows[0].Cells[0].Paragraphs[0].Append("Índice");
-                    //        idx.Rows[0].Cells[1].Paragraphs[0].Append("Tipo");
-                    //        idx.Rows[0].Cells[2].Paragraphs[0].Append("Campo");
-                    //        idx.Rows[0].Cells[3].Paragraphs[0].Append("PK");
-                    //        idx.Rows[0].Cells[4].Paragraphs[0].Append("Unique");
-                    //        idx.Rows[0].Cells[5].Paragraphs[0].Append("Unique Constraint");
-                    //        //idx.SetColumnWidth(3, 80, true);
-                    //        // idx.SetColumnWidth(4, 80, true);
-
-                    //        i = 1;
-                    //        foreach (var item in tb.Indexes)
-                    //        {
-                    //            idx.Rows[i].Cells[0].Paragraphs[0].Append(item.Name).FontSize(11d);
-                    //            idx.Rows[i].Cells[1].Paragraphs[0].Append(item.Type);
-                    //            idx.Rows[i].Cells[2].Paragraphs[0].Append(item.ColumnName);
-                    //            idx.Rows[i].Cells[3].Paragraphs[0].Append(item.IsPrimaryKey == true ? "Sim" : "Não").Bold();
-                    //            idx.Rows[i].Cells[4].Paragraphs[0].Append(item.IsUnique == true ? "Sim" : "Não");
-                    //            idx.Rows[i].Cells[5].Paragraphs[0].Append(item.IsUniqueConstraint == true ? "Sim" : "Não");
-
-                    //            i++;
-                    //        }
-
-
-                    //        p = document.InsertParagraph("Índices da Tabela").FontSize(15d).SpacingAfter(15d);
-                    //        p.StyleId = "Heading3";
-
-
-                    //        // Insert the Table after the Paragraph.
-                    //        p.InsertTableAfterSelf(idx);
-                    //    }
-
-
-                    //    if (tb.ForeignKeys.Count > 0)
-                    //    {
-                    //        var fk = document.AddTable(tb.ForeignKeys.Count + 1, 5);
-                    //        fk.Alignment = Alignment.center;
-
-
-                    //        fk.Design = TableDesign.LightGridAccent1;
-
-                    //        //fk.AutoFit = AutoFit.ColumnWidth;
-                    //        fk.SetWidthsPercentage(new[] { 120f, 80f, 80f, 80f, 90f }, 450);
-                    //        fk.Rows[0].Cells[0].Paragraphs[0].Append("Índice");
-                    //        fk.Rows[0].Cells[1].Paragraphs[0].Append("Tabela Pai");
-                    //        fk.Rows[0].Cells[2].Paragraphs[0].Append("Coluna Pai");
-                    //        fk.Rows[0].Cells[3].Paragraphs[0].Append("Tabela Referência");
-                    //        fk.Rows[0].Cells[4].Paragraphs[0].Append("Coluna Referência");
-
-
-                    //        i = 1;
-                    //        foreach (var item in tb.ForeignKeys)
-                    //        {
-                    //            fk.Rows[i].Cells[0].Paragraphs[0].Append(item.Name);
-                    //            fk.Rows[i].Cells[1].Paragraphs[0].Append(item.ParentTable);
-                    //            fk.Rows[i].Cells[2].Paragraphs[0].Append(item.ParentColumn);
-                    //            fk.Rows[i].Cells[3].Paragraphs[0].Append(item.ReferencedTable);
-                    //            fk.Rows[i].Cells[4].Paragraphs[0].Append(item.ReferencedColumn);
-
-                    //            i++;
-                    //        }
-
-
-                    //        p = document.InsertParagraph("Chaves Estrangeiras").FontSize(15d).SpacingAfter(15d);
-                    //        p.StyleId = "Heading3";
-
-
-                    //        // Insert the Table after the Paragraph.
-                    //        p.InsertTableAfterSelf(fk);
-                    //    }
-                    //}
-
 
 
 
@@ -590,8 +426,15 @@ namespace SCGApp
             }
         }
 
-        public static void GenerateProceduresDoc(string path)
+        public static void GenerateProceduresDoc(string path, string outputfile, string headertitle = "", string subtitle = "Procedures e Funções")
         {
+            HeaderTitle = headertitle;
+            SubTitle = subtitle;
+            if (String.IsNullOrWhiteSpace(outputfile))
+                OutPutFile = headertitle + "_PROCEDURES";
+            else
+                OutPutFile = outputfile;
+
 
             string procedures = Path.Combine(path, "procedures.xml");
             XmlDocument doc = new XmlDocument();
@@ -690,17 +533,40 @@ namespace SCGApp
                     document.InsertParagraph().InsertPageBreakAfterSelf();
 
                     document.InsertSectionPageBreak();
-                    document.AddHeaders();
-                    document.AddFooters();
-                    document.DifferentFirstPage = true;
-                    document.DifferentOddAndEvenPages = true;
-                    document.Headers.First.InsertParagraph(HeaderTitle + " w ");
-                    document.Headers.Even.InsertParagraph(HeaderTitle);
-                    document.Headers.Odd.InsertParagraph(HeaderTitle);
+                    //document.AddHeaders();
+                    //document.AddFooters();
+                    //document.DifferentFirstPage = true;
+                    //document.DifferentOddAndEvenPages = true;
+                    //document.Headers.First.InsertParagraph(HeaderTitle + " w ");
+                    //document.Headers.Even.InsertParagraph(HeaderTitle);
+                    //document.Headers.Odd.InsertParagraph(HeaderTitle);
 
-                    document.Footers.First.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal);
-                    document.Footers.Even.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal);
-                    document.Footers.Odd.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal);
+                    //document.Footers.First.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal);
+                    //document.Footers.Even.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal);
+                    //document.Footers.Odd.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal);
+
+
+
+
+                    document.InsertSectionPageBreak();
+                    //document.DifferentFirstPage = true;
+
+                    document.Sections[1].AddHeaders();
+                    document.Sections[1].AddFooters();
+
+
+                    var headers1 = document.Sections[1].Headers;
+                    headers1.First.InsertParagraph(HeaderTitle);
+                    headers1.Even.InsertParagraph(HeaderTitle);
+                    headers1.Odd.InsertParagraph(HeaderTitle);
+
+
+                    var footers1 = document.Sections[1].Footers;
+                    footers1.First.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal).Alignment = Alignment.right;
+
+                    footers1.Even.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal).Alignment = Alignment.right;
+
+                    footers1.Odd.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal).Alignment = Alignment.right;
 
 
 
