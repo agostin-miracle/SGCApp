@@ -270,7 +270,9 @@ IF(@RETURN_VALUE = -2 )
 	BEGIN
 		UPDATE CVCADCLI
 		   SET NOMCLI = @NOMCLI
+		      ,TYPCMF = @TYPCMF
 			  ,CODCEP = @CODCEP
+			  ,VALCEP =@VALCEP
 			  ,DSCEND = @DSCEND
               ,DSCCID = @DSCCID
 			  ,CODCLA = @CODCLA
@@ -286,6 +288,8 @@ IF(@RETURN_VALUE = -2 )
 			  ,DATATU = @DATATU
 			  ,SEXCLI = @SEXCLI
 			  ,DATUPD = GETDATE()
+			  ,VALCEL = @VALCEL
+			  ,VALMAL = @VALMAL
 		 WHERE ORGBAS = @ORGBAS AND CODCMF = @CODCMF
 		 
 		 IF(@@ERROR=0)
@@ -960,7 +964,7 @@ RETURN @RETURN_VALUE;]]>
 
 	</item>
 
-	<item create="true"  id="11" name="CVBASORI" api="true" apiname="" friendlyname="OriginBasis" modelversion="3" descriptor="Tabela de Informações de Composição entre as bases de origens e origem base relac">
+	<item create="true"  id="11" name="CVBASORI" api="true" apiname="" friendlyname="OriginBasis" modelversion="3" descriptor="Tabela de Informações de Composição entre as bases de origens e origem base relac" comments ="Esta tabela sintetiza as operações de origens entre as tabelas CVPCDLAN, CVORIORL, CVPCDORI. Por falha de integridade relacional, os dados destas tabelas não fecham entre si, portanto a sintetização aqui se torna necessária devido ao fato de uma mesma origem possuir várias definições de base.">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<methods>
