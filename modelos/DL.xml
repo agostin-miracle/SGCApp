@@ -11,8 +11,7 @@
 				<![CDATA[
 IF(EXISTS(SELECT 1 FROM CVPCDORI (NOLOCK) WHERE ORGBAS=@ORGBAS AND NIDORI =@NIDORI))
 	SET @RETURN_VALUE = -2;
- 
-      ]]>
+Lis      ]]>
 			</pre>
 			<body></body>
 			<pos>
@@ -157,7 +156,7 @@ IF(@RETURN_VALUE= -2)
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
-		<insertcommand key="Key" fieldreturn="" exceptionparamns="'NUMPES','PESIDE','DATUPD'" procname="CVCADANIINS" method="Insert">
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'NUMPES','PESIDE','DATUPD','ULTPCD'" procname="CVCADANIINS" method="Insert">
 
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
@@ -290,6 +289,7 @@ IF(@RETURN_VALUE = -2 )
 			  ,DATUPD = GETDATE()
 			  ,VALCEL = @VALCEL
 			  ,VALMAL = @VALMAL
+			  ,CODORI = @CODORI
 		 WHERE ORGBAS = @ORGBAS AND CODCMF = @CODCMF
 		 
 		 IF(@@ERROR=0)
@@ -784,32 +784,9 @@ IF(@RETURN_VALUE=-2)
 			<returns>
 				<return value="1" message="Registro inserido com sucesso" error=""></return>
 				<return value="2" message="Registro alterado com sucesso" error=""></return>
-
 				<return value="-1" message="" error="FAILALL"/>
-				<return value="-2" message="" error="RECORDFOUND"/>
-
-
 			</returns>
 		</insertcommand>
-
-
-
-		<methods>
-			<item script="true" alias="A." sql="" method="GetLastRecord" return="int" returnmode="2" procname="CVCADORCLASNID" desc ="Obtêm o ID do Último Orçamento gravado" returnvalue="0">
-				<query>
-					<![CDATA[
-DECLARE @RETURN_VALUE INT = 0;
-SELECT @RETURN_VALUE = MAX(NIDORC) FROM CVCADORC (NOLOCK) WHERE ORGBAS=@ORGBAS;
-IF(@RETURN_VALUE IS NULL)
-   SET @RETURN_VALUE = 0;
-RETURN @RETURN_VALUE;]]>
-				</query>
-				<parameters>
-					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
-					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
-				</parameters>
-			</item>
-		</methods>
 	</item>
 
 	<item create="true"  id="9" name="CVORCLAN" api="true" apiname="" friendlyname="BudgetsRelease" modelversion="3" descriptor="Tabela de Informações de Orçamentos - Lançamentos">
@@ -822,9 +799,7 @@ RETURN @RETURN_VALUE;]]>
 				<![CDATA[
  IF(EXISTS (SELECT 1 FROM CVORCLAN (NOLOCK) WHERE ORGBAS = @ORGBAS AND ORCLAN=@ORCLAN ))
 	    SET @RETURN_VALUE = -2
-
-
-       
+     
       ]]>
 			</pre>
 			<body></body>
@@ -853,35 +828,9 @@ IF(@RETURN_VALUE=-2)
 			<returns>
 				<return value="1" message="Registro inserido com sucesso" error=""></return>
 				<return value="2" message="Registro alterado com sucesso" error=""></return>
-
 				<return value="-1" message="" error="FAILALL"/>
-				<return value="-2" message="" error="RECORDFOUND"/>
-
-
 			</returns>
 		</insertcommand>
-
-
-
-		<methods>
-			<item script="true" alias="A." sql="" method="GetLastRecord" return="int" returnmode="2" procname="CVORCLANLASNID" desc ="Obtêm o ID do Último Lançamento de Orçamento gravado" returnvalue="0">
-				<query>
-					<![CDATA[
-DECLARE @RETURN_VALUE INT = 0;
-SELECT @RETURN_VALUE = MAX(ORCLAN) FROM CVORCLAN (NOLOCK) WHERE ORGBAS=@ORGBAS;
-IF(@RETURN_VALUE IS NULL)
-   SET @RETURN_VALUE = 0;
-RETURN @RETURN_VALUE;]]>
-				</query>
-				<parameters>
-					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
-					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
-				</parameters>
-			</item>
-		</methods>
-
-
-
 	</item>
 
 
@@ -2336,4 +2285,439 @@ DECLARE @RETURN_VALUE INT =0;
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 	</item>
+
+	<item create="true"  id="503" type="TABLE" name="RFREPGER" api="true" apiname="" friendlyname="	ReportsReferences" modelversion="3" descriptor="Tabela de Parâmetros de Montagem de Relatórios" comments="Tabela que define os parâmetros funcionais de montagem de relatórios">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+
+
+	<actions>
+
+		<item access="public" modifier="static" reference="" procbase="" script="true" alias="A." sql="" type="list" method="GetMarketingList" return="ReportMarketing" returnmode="5" procname="MKGETQRYMKT" desc ="Obtêm a lista de clientes baseada em regra estratégica de marketing" remarks="" >
+			<query>
+				<![CDATA[
+SELECT * 
+ FROM (
+		SELECT CLI.NOMCLI as NOMTUT
+			  ,NOMANI 
+			  ,ESP.DSCESP
+			  ,DSCRAC
+			  ,IDAANI = DATEDIFF(YEAR, ANI.DATNAC, GETDATE())
+			  ,TELCEL as NUMCEL
+			  ,DSCMAL
+			  ,APEEMP
+			  ,ORL.BASNAM AS DSCBAS
+			  ,NUMROW = ROW_NUMBER() OVER(PARTITION BY LAN.CODANI ORDER BY LAN.DATPCD DESC)
+		  FROM CVPCDLAN (NOLOCK) LAN
+		 INNER JOIN (SELECT DISTINCT CODEMP, APEEMP FROM CVCADEMP (NOLOCK) WHERE ORGBAS=1 AND HASPRO=1) EMP 
+			ON (EMP.CODEMP = LAN.CODEMP)
+		 INNER JOIN CVBASORI (NOLOCK) ORL
+			ON (ORL.ORGBAS = LAN.ORGBAS AND ORL.NIDORI = LAN.CODORI)
+		 INNER JOIN CVCADANI (NOLOCK) ANI 
+			ON (ANI.ORGBAS = LAN.ORGBAS AND ANI.CODANI = LAN.CODANI)
+		 INNER JOIN CVCADCLI (NOLOCK) CLI 
+			ON (CLI.ORGBAS = ANI.ORGBAS AND CLI.CODCMF = ANI.CODCMF)
+		 INNER JOIN CVCADESP (NOLOCK) ESP 
+			ON (ESP.CODESP = ANI.CODESP)
+
+		 WHERE LAN.ORGBAS = 1
+		   AND LAN.STAREC = 1
+		   AND LAN.DATPCD >= DATEADD(MONTH, -36, GETDATE())
+		   AND LAN.CODPCD NOT IN (SELECT CODPCD 
+   									FROM CVCADPCD (NOLOCK)
+   								   WHERE ORGBAS = 1 AND CODOPE IN (1,2))
+		   AND LAN.CODANI NOT IN (SELECT CODANI 
+   									FROM CVCADANI (NOLOCK)
+   								   WHERE ORGBAS= 1 AND HASFAL = 1 OR (DATEDIFF(YEAR, DATNAC, GETDATE()) <= 5))
+		   AND LAN.CODANI NOT IN (SELECT CODANI 
+   										FROM CVPCDLAN (NOLOCK) 
+									   WHERE CODPCD IN (SELECT CODPCD 
+														  FROM CVCADPCD 
+														 WHERE ORGBAS= 1 AND STAREC = 1 AND CODOPE IN (14))
+										 AND DATPCD > DATEADD(MONTH, -12, GETDATE()) AND DATPCD <= GETDATE())
+		   AND ORL.NIDBAS IN (0,11,13) AND ORL.IDXKEY=1
+	) QRY WHERE NUMROW=1
+
+]]>
+			</query>
+
+		</item>
+		<item access="public" modifier="static" reference="" procbase="" script="true" alias="A." sql="" type="list" method="GetObesityList" return="ReportObesity" returnmode="5" procname="MKGETOBSLST" desc ="Obtêm a lista de registro de obesidades" remarks="" >
+			<query>
+				<![CDATA[
+DECLARE @OBESITY TABLE (ORGBAS TINYINT, CODANI INT , CODEMP TINYINT, DATPCD DATETIME, NUMROW INT);
+
+INSERT INTO @OBESITY (ORGBAS, CODANI, CODEMP, DATPCD, NUMROW)
+SELECT LAN.ORGBAS, LAN.CODANI
+ 	        ,CODEMP
+ 	        ,DATPCD
+			,NUMROW = ROW_NUMBER() OVER(PARTITION BY LAN.CODANI ORDER BY LAN.CODANI DESC)
+  FROM CVPCDLAN (NOLOCK) LAN 
+       INNER JOIN  CVCADANI (NOLOCK) ANI ON (ANI.ORGBAS = LAN.ORGBAS AND ANI.CODANI = LAN.CODANI)
+	   WHERE LAN.ORGBAS = 1 
+	     AND LAN.STAREC=1
+	     AND ANI.DSCRAC IN ('ROTTWEILER','TERRA NOVA','SHIH-TZU','SHIH TZU','PUG','DACHSHUND PELO DURO','DACHSHUND PELO LISO','DACHSHUND PELO LONGO','DACHSHUND','DACHSHUND PELO DUR',
+'LABRADOR RETRIEVER','BASSET HOUND', 'BEAGLE','Rough Collie', 'BULDOGUE FRANCÊS','BULDOGUE CAMPEIRO','PASTOR ALEMAO','BOXER','COCKER SPANIEL AMERICANO', 'COCKER SPANIEL INGLES')
+         AND ANI.HASCAS = 'S'
+         AND DATEDIFF(YEAR, ANI.DATNAC, GETDATE()) BETWEEN 5 AND 12 
+         AND ANI.HASFAL=0
+         AND LAN.CODEMP IN (SELECT DISTINCT CODEMP FROM CVCADEMP (NOLOCK) WHERE ORGBAS = 1 AND HASPRO = 1)
+ ORDER BY LAN.DATPCD DESC
+      
+SELECT DISTINCT 
+	NOMCLI AS NOMTUT,
+	NOMANI,
+    DSCRAC,
+	COALESCE(TELCEL,'') as NUMCEL,
+	DSCMAL,
+	APEEMP AS DSCEMP,
+	IDAANI = DATEDIFF (YEAR, ANI.DATNAC, GETDATE())
+	  ,ORL.BASNAM AS DSCBAS
+  FROM CVCADCLI (NOLOCK) CLI
+ INNER JOIN CVCADANI (NOLOCK) ANI ON (ANI.ORGBAS = CLI.ORGBAS AND ANI.CODCMF = CLI.CODCMF)
+  LEFT JOIN  CVBASORI (NOLOCK) ORL ON (ORL.ORGBAS = CLI.ORGBAS AND ORL.NIDORI = CLI.CODORI AND ORL.IDXKEY = 1)
+  LEFT JOIN  @OBESITY B0 ON (B0.ORGBAS = B0.ORGBAS AND B0.CODANI = ANI.CODANI AND B0.NUMROW = 1)
+INNER JOIN  CVCADEMP (NOLOCK) EMP ON (EMP.CODEMP = B0.CODEMP AND EMP.ORGBAS = CLI.ORGBAS)
+WHERE  CLI.ORGBAS = 1
+  AND ANI.ORGBAS=1
+  AND CLI.ENVNEW='S'
+AND CLI.DSCMAL <>''
+AND ORL.NIDBAS IN (0,11,13)
+ORDER BY CLI.NOMCLI
+
+]]>
+			</query>
+
+		</item>
+		<item  access="public" modifier="static" reference="" procbase="" script="true" alias="A." sql="" type="list" method="GetSpeciesList" return="ReportSpecies" returnmode="5" procname="MKGETSPELST" desc ="Obtêm a lista de registro baseada na espécie do animal" remarks="" >
+			<query>
+				<![CDATA[
+				
+/*
+ * QUERY OTIMIZADA
+   USING IX_CVPCDLAN_0005
+ */
+
+
+DECLARE @TB1 TABLE (CODANI INT)
+INSERT INTO @TB1 (CODANI)
+SELECT DISTINCT CODANI 
+  FROM CVPCDLAN (NOLOCK)
+ WHERE ORGBAS = @ORGBAS
+  AND STAREC = 1
+  AND CODEMP IN (SELECT CODEMP FROM CVCADEMP WHERE ORGBAS = @ORGBAS AND HASPRO=1)
+  AND CODPCD IN (SELECT CODPCD 
+	     		   FROM CVCADPCD (NOLOCK)
+				  WHERE ORGBAS = @ORGBAS AND CODOPE= 15)
+  AND DATPCD >= DATEADD(MONTH, -18, GETDATE())
+
+ SELECT  
+		    ANI.CODCMF
+		   ,TIPPES = CASE WHEN TYPCMF = 1   THEN 'PF'
+						  WHEN TYPCMF = 2   THEN 'PJ'
+						  WHEN TYPCMF = 3   THEN 'EX'
+				          ELSE 'ND' END
+		
+		   ,NOMCLI as NOMTUT,
+		   ULT.CODANI 							  	    AS CODANI,
+		   ANI.NOMANI											 , 
+		   ESP.DSCESP,
+		   ANI.DSCRAC,
+		   DATEDIFF(MONTH, ANI.DATNAC, GETDATE())      	AS IDAANI,
+		   TELCEL									as NUMCEL,
+		   DSCMAL,
+		   APEEMP 									AS APEEMP,
+		   ORL.BASNAM,
+		   ENVNEW,
+		   ULT.ULTATD
+	  FROM CVPCDLAN (NOLOCK) LAN
+	 INNER JOIN (SELECT CODANI 
+		               ,MAX(NIDPCD) AS NIDPCD
+		               ,MAX(DATPCD) AS ULTATD 
+	               FROM CVPCDLAN (NOLOCK)
+	              WHERE ORGBAS = @ORGBAS
+				    AND STAREC = 1
+	                AND CODEMP IN (SELECT CODEMP FROM CVCADEMP (NOLOCK) WHERE ORGBAS = @ORGBAS AND HASPRO=1)
+
+	              GROUP BY CODANI) ULT
+		ON (ULT.CODANI = LAN.CODANI AND ULT.NIDPCD = LAN.NIDPCD)
+	 INNER JOIN CVCADEMP (NOLOCK) EMP 
+		ON (EMP.ORGBAS = LAN.ORGBAS AND EMP.CODEMP =LAN.CODEMP AND EMP.HASPRO=1)
+	 INNER JOIN CVCADANI (NOLOCK) ANI
+		ON (ANI.ORGBAS = LAN.ORGBAS AND ANI.CODANI = LAN.CODANI)
+	 INNER JOIN CVCADCLI (NOLOCK) CLI
+		ON (CLI.ORGBAS = ANI.ORGBAS AND CLI.CODCMF = ANI.CODCMF)
+	  LEFT JOIN CVBASORI (NOLOCK) ORL
+	    ON (ORL.ORGBAS = LAN.ORGBAS AND ORL.NIDORI = LAN.CODORI AND ORL.IDXKEY=1)
+	  LEFT JOIN CVCADESP (NOLOCK) ESP
+	    ON (ESP.CODESP = ANI.CODESP)
+	 WHERE LAN.ORGBAS = @ORGBAS
+	   AND LAN.STAREC = 1
+       AND LAN.CODANI NOT IN (SELECT CODANI FROM @TB1)
+	   AND LAN.DATPCD >= DATEADD(MONTH, -18, GETDATE())
+	   AND ANI.HASFAL = 0
+	   AND ESP.DSCESP = @DSCESP
+	
+			]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="false" desc ="Origem do Registro" name="ORGBAS" type="System.Byte" default="" output="" null="false"/>
+				<parameter input="true" apply="false" desc ="Descrição da Espécie" name="DSCESP" type="System.String" size="40" default="CANINA" output="" null="false"/>
+			</parameters>
+
+		</item>
+
+		<item access="public" modifier="static" reference="" procbase="" script="true" alias="A." sql="" type="list" method="GetEZVETList" return="ReportCampaignEZVET" returnmode="5" procname="MKGETEZVLST" desc ="Obtêm a lista de registro baseada em campanha EZVET" remarks="" >
+			<query>
+				<![CDATA[
+				
+/*
+ * QUERY OTIMIZADA
+   USING IX_CVPCDLAN_0005
+ */
+DECLARE @TPCAMEZV TABLE (FLGREC TINYINT, CODCMF VARCHAR(15), DEAANI INT, LIVANI INT, NUMLIV TINYINT, NUMDEA TINYINT, DATNAC DATE NULL)
+
+INSERT INTO @TPCAMEZV (FLGREC, CODCMF, DEAANI, LIVANI, NUMLIV, NUMDEA)
+SELECT                      1, CODCMF, CODANI,      0,      0,      1
+  FROM CVCADANI (NOLOCK) ANI
+ WHERE ORGBAS = @ORGBAS AND STAREC = 1 AND HASFAL = 1 OR DATOBT IS NOT NULL 
+   AND LEN(CODCMF)=11;
+
+INSERT INTO @TPCAMEZV (FLGREC, CODCMF, DEAANI, LIVANI, NUMLIV, NUMDEA, DATNAC)
+SELECT                      2, CODCMF,      0, CODANI,      1,      0, DATNAC
+  FROM CVCADANI (NOLOCK) ANI
+ WHERE ORGBAS = @ORGBAS AND STAREC = 1 AND HASFAL = 0 OR DATOBT < GETDATE()
+
+INSERT INTO @TPCAMEZV (FLGREC, CODCMF,      DEAANI, LIVANI, NUMLIV, NUMDEA)
+SELECT                      9, CODCMF, MAX(DEAANI),      0,      0,      1
+  FROM @TPCAMEZV
+ WHERE FLGREC = 1
+ GROUP BY CODCMF
+
+INSERT INTO @TPCAMEZV (FLGREC, CODCMF, DEAANI, LIVANI, NUMLIV, NUMDEA, DATNAC)
+SELECT                      9, CODCMF,      0, LIVANI,      1,      0, DATNAC
+  FROM (SELECT NUMROW = ROW_NUMBER() OVER(PARTITION BY CODCMF ORDER BY CODCMF, DATNAC DESC) 
+              ,CODCMF
+		      ,LIVANI
+			  ,DATNAC
+	        FROM @TPCAMEZV
+		   WHERE FLGREC=2) QRY 
+		   WHERE QRY.NUMROW=1;
+    
+
+DELETE FROM @TPCAMEZV WHERE FLGREC <> 9;
+
+
+    
+INSERT INTO @TPCAMEZV (FLGREC, CODCMF, DEAANI, LIVANI, NUMLIV, NUMDEA, DATNAC) 
+SELECT                      0, CODCMF, MAX(DEAANI) AS DEAANI, MAX(LIVANI) AS LIVANI, MAX(NUMLIV) AS NUMLIV, MAX(NUMDEA) AS NUMDEA, MAX(DATNAC) AS DATNAC
+  FROM @TPCAMEZV 
+ WHERE FLGREC=9  
+ GROUP BY CODCMF
+HAVING MAX(DEAANI)>0 AND MAX(LIVANI) >0 AND MAX(NUMLIV)>0 AND MAX(NUMDEA)>0  ;
+          
+DELETE FROM @TPCAMEZV WHERE FLGREC <> 0;
+
+DELETE FROM @TPCAMEZV WHERE deaani = livani;
+
+SELECT A.CODCMF
+      ,DEAANI
+      ,ANI1.NOMANI AS ANIDEA
+      ,LIVANI
+      ,ANI2.NOMANI AS ANILIV
+      ,NUMLIV
+      ,NUMDEA
+	  ,IDAANI = DATEDIFF(YEAR, A.DATNAC, GETDATE())
+      ,QRY.BASNAM
+      ,CLI.NOMCLI AS NOMTUT
+	  ,CLI.DSCMAL
+	  ,TELCEL AS NUMCEL
+  FROM @TPCAMEZV A
+ INNER JOIN CVCADCLI (NOLOCK) CLI 
+    ON (CLI.ORGBAS = @ORGBAS AND CLI.CODCMF = A.CODCMF)
+ INNER JOIN (SELECT CODANI, MAX(BASNAM) AS BASNAM
+               FROM CVPCDLAN (NOLOCK) LAN
+			  INNER JOIN CVBASORI (NOLOCK) ORL
+			     ON (ORL.ORGBAS = LAN.ORGBAS AND ORL.NIDORI = LAN.CODORI AND ORL.IDXKEY = 1)
+              WHERE LAN.ORGBAS = @ORGBAS
+			    AND LAN.STAREC = 1
+				AND LAN.CODANI IN (SELECT LIVANI FROM @TPCAMEZV WHERE FLGREC=0 )
+			  GROUP BY LAN.CODANI) QRY
+    ON (QRY.CODANI = A.LIVANI) 
+ INNER JOIN CVCADANI (NOLOCK) ANI1 
+    ON (ANI1.ORGBAS = @ORGBAS AND ANI1.CODANI = A.DEAANI)
+ INNER JOIN CVCADANI (NOLOCK) ANI2 
+    ON (ANI2.ORGBAS = @ORGBAS AND ANI2.CODANI = A.LIVANI)
+ WHERE (CLI.ENVNEW = 'S')
+   AND FLGREC=0
+   AND BASNAM = 'PETCARE';
+
+	
+			]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="false" omit="true" desc ="Origem do Registro" name="ORGBAS" type="System.Byte" default="" output="" null="false"/>
+			</parameters>
+
+		</item>
+
+			<item access="public" modifier="static" reference="" procbase="" script="true" alias="A." sql="" type="list" method="GetNpsList" return="NPS" returnmode="5" procname="MKGETREPNPS" desc ="Obtêm a lista de registro baseada em Regras de NPS" remarks="" >
+			<query>
+				<![CDATA[
+	DECLARE @DATINI DATETIME = DATEADD(day, -7, GETDATE())                       -- Data de inicio de Leitura
+	DECLARE @DATFIN DATETIME = GETDATE()										 -- Data de Fim da Leitura
+	DECLARE @NDSANO INT =0;														 -- Número da Semana
+	DECLARE @WK INT = DATEPART(WEEKDAY, GETDATE())								 -- Número do dia da semana
+	DECLARE @DATBAS DATETIME													 -- Data Temporária
+
+	/*
+		@CODREP
+		      0 - Todas as unidades, exceto hemovet
+			  1 - Somente hemovet
+
+		O relatório consiste basicamente em efetuar a leitura de dados da ultima semana retroativa a segunda feira 
+		da semana detectada considerando as restrições e parametrizações do relatório
+
+
+		RFREPGER
+		
+		Requer ORGBAS
+		  Sim			 1 - Lista as empresas associadas ao relatório
+		  Não			 2 - Lista os procedimentos associados a montagem do relatório
+		  Não			 3 - Lista os procedimentos associados a montagem do relatório (Óbitos)
+
+	*/
+
+	IF @WK >= 2
+		/*
+		 * O Relatório é emitido de maneira retroativa, considerando a última segunda feira, como ponto de retroatividade
+		 */
+		BEGIN
+			SET @DATBAS = DATEADD(DAY, (@WK - 2)*-1,GETDATE());
+			SET @DATINI = DATEADD(DAY, -7, @DATBAS)
+			SET @DATFIN = DATEADD(DAY, -1, @DATBAS)
+	    END
+    
+    SET @DATINI = CONVERT( VARCHAR , CAST(@DATINI AS date),112) + ' 00:00:00';
+    SET @DATFIN = CONVERT( VARCHAR , CAST(@DATFIN AS date),112) + ' 23:59:59';
+	SET @NDSANO = DATEPART(WEEK, DATEADD(day,-1,@DATFIN))
+
+
+	DECLARE @TP TABLE (
+						  NDSANO tinyint default 0,
+						  CODANI int DEFAULT 0,
+						  NOMTUT varchar(70) DEFAULT '',
+						  DSCMAL varchar(70) DEFAULT '',
+						  TELRES varchar(25) DEFAULT '',
+						  TELCEL varchar(25) DEFAULT '',
+						  APEEMP varchar(25) DEFAULT '',
+						  DATPCD datetime DEFAULT NULL,
+						  BASNAM varchar(25) DEFAULT '',
+						  CODEMP tinyint default 0,
+						  ANIPBI int DEFAULT 0
+					) ;
+
+	INSERT INTO @TP (ANIPBI, NDSANO, CODANI,NOMTUT,DSCMAL, TELRES, TELCEL, CODEMP, DATPCD,BASNAM)
+
+	SELECT RIGHT('00' + CONVERT(VARCHAR, @ORGBAS),2) +  RIGHT('00' + CONVERT(VARCHAR, CASE WHEN @ORGBAS =2 THEN 28 ELSE LAN.CODEMP END ),2) +  RIGHT('0000000' + CONVERT(VARCHAR,LAN.CODANI),7) AS ANIPBI
+		  ,NDSANO= @NDSANO
+		  ,LAN.CODANI
+		  ,CLI.NOMCLI
+		  ,CLI.DSCMAL
+		  ,TELRES
+		  ,TELCEL
+          ,LAN.CODEMP
+		  ,MAX(LAN.DATPCD) AS DATPCD
+		  ,BASNAM = CASE WHEN MAX(ORL.NIDBAS) IN (0,11,23) THEN 'PETCARE' ELSE 'VETWECARE' END
+      FROM CVPCDLAN (NOLOCK) LAN 
+	 INNER JOIN CVBASORI (NOLOCK) ORL ON (ORL.ORGBAS = LAN.ORGBAS AND ORL.NIDORI = LAN.CODORI)
+	 INNER JOIN CVCADANI (NOLOCK) ANI ON (ANI.ORGBAS = LAN.ORGBAS AND ANI.CODANI = LAN.CODANI)
+	 INNER JOIN CVCADCLI (NOLOCK) CLI ON (CLI.ORGBAS = ANI.ORGBAS AND CLI.CODCMF = ANI.CODCMF)
+	 INNER JOIN (SELECT ROW_NUMBER() OVER(PARTITION BY CODANI ORDER BY DATPCD DESC) AS NUMROW
+					   ,NIDPCD
+					   ,CODANI
+					   ,DATPCD
+				   FROM CVPCDLAN (NOLOCK) 
+				  WHERE ORGBAS = @ORGBAS
+				    AND STAREC = 1
+					AND DATPCD >= @DATINI AND DATPCD < @DATFIN
+					AND CODEMP IN (SELECT CODREF FROM RFREPGER (NOLOCK) WHERE ORGBAS=@ORGBAS AND CODREP= @CODREP AND CODCND=1)
+					AND CODPCD in (SELECT CODREF FROM RFREPGER (NOLOCK) WHERE ORGBAS=@ORGBAS AND CODCND=2)
+			
+					
+					) AS SEC 
+        ON (SEC.NIDPCD = LAN.NIDPCD AND SEC.NUMROW = 1)
+	 WHERE LAN.ORGBAS = @ORGBAS
+	   AND LAN.STAREC = 1
+	   AND LAN.DATPCD >= @DATINI AND LAN.DATPCD < @DATFIN
+	   /* unidaded associadas ao relatório */
+	   AND LAN.CODEMP IN (SELECT CODREF FROM RFREPGER (NOLOCK) WHERE ORGBAS=@ORGBAS AND CODREP= @CODREP AND CODCND=1)
+	   /* Excluir os pacientes "mortos". */
+	   AND ANI.HASFAL= 0
+       /* Excluir os clientes que no SGV tenham o "Não Receber News" */
+       AND CLI.ENVNEW = 'S'
+       /* Excluir Clientes “pessoa jurídica” */
+       AND LEN(CLI.CODCMF)<=11
+       /* Excluir clientes que estejam internado s*/
+       AND (LAN.CODINT = 0  or LAN.CODINT not in (select NIDINT from CVCADINT (NOLOCK) WHERE DATALT IS  NULL))
+       /* Clientes que registraram procedimentos sensíveis: Eutanasia */
+       and LAN.CODANI not in (SELECT CODANI FROM CVPCDLAN WHERE ORGBAS=@ORGBAS AND  CODPCD IN (SELECT CODREF FROM RFREPGER (NOLOCK) WHERE ORGBAS=@ORGBAS AND CODCND=3))
+            /* Excluir os pacientes com PAs abertas */
+            /* 07/07/2023 
+				Levar em consideração a data do fechamento da PA para montar a relação de clientes que vão receber a pesquisa, ou seja, a lista da próxima semana irá refletir os clientes que tiveram PA fechada na ultima semana e que seguirem o restante de regras existentes na extração. 
+            */
+       and LAN.NUMOSS not in (SELECT NUMOSS 
+			                    FROM CVSTAOSS (NOLOCK) 
+							   WHERE ORGBAS = @ORGBAS AND STAOSS in ('S') and DATFEC >= @DATINI and DATFEC <= @DATFIN )
+	GROUP BY LAN.CODANI, CLI.NOMCLI , CLI.DSCMAL , CLI.TELRES , CLI.TELCEL , LAN.CODEMP;
+
+
+
+	
+	/* remove se existir, a ocorrencia da semana de processamento */
+    DELETE FROM RPQRYNPS WHERE (NDSANO = @NDSANO) AND CODREP = @CODREP;
+	/* insere no registro mestre, a chave desde que não exista a ocorrencia dentro do intervalo de 6 meses */				
+    INSERT INTO RPQRYNPS (ANIPBI, NDSANO, DATEMI, STAREC,CODREP)
+    SELECT EMI.ANIPBI
+          , EMI.NDSANO
+          , @DATFIN
+		  ,1
+          ,@CODREP
+      FROM @TP EMI
+	 WHERE ANIPBI 
+       NOT IN (SELECT ANIPBI 
+                 FROM RPQRYNPS 
+				WHERE DATEMI >= DATEADD (MONTH, -6, @DATINI) AND DATEMI < @DATFIN 
+				  AND CODREP = @CODREP
+                  AND STAREC=1);
+
+    /* Extrai somente o que é novo (emitido e não incluso no intervalo de 6 meses) */
+    SELECT EMI.NDSANO,
+		   CODANI,
+           NOMTUT,
+		   DSCMAL,
+		   TELRES,
+		   TELCEL,
+           DATPCD,
+           BASNAM,
+           EMP.CODEMP,
+           EMI.ANIPBI,
+           EMP.APEEMP
+		
+      FROM @TP EMI
+	 INNER JOIN CVCADEMP (NOLOCK) EMP ON (EMP.CODEMP = EMI.CODEMP)
+     INNER JOIN RPQRYNPS (NOLOCK) REP ON (REP.NDSANO = @NDSANO AND REP.ANIPBI = EMI.ANIPBI)
+	 WHERE REP.CODREP =@CODREP AND REP.STAREC=1;	
+			]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="false" omit="true" desc ="Origem do Registro" name="ORGBAS" type="System.Byte" default="" output="" null="false"/>
+				<parameter input="true" apply="false" omit="true" desc ="Código do Relatório" name="CODREP" type="System.Byte" default="" output="" null="false"/>
+
+			</parameters>
+
+		</item>
+
+	</actions>
 </root>
