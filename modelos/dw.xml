@@ -1392,7 +1392,7 @@ DECLARE @RETURN_VALUE INT =0;
 	<item create="true"  id="7" name="TBCADVET" api="true" apiname="" friendlyname="Veterinarians" modelversion="3" descriptor="Tabela de Informações sobre veterinarios">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
-		<insertcommand key="Identity" exceptionparamns="'DATUPD'" fieldreturn="NIDSPT" procname="PRCADVETINS">
+		<insertcommand key="" exceptionparamns="'DATUPD'" fieldreturn="" procname="PRCADVETINS">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
 			<pre>
@@ -1400,7 +1400,7 @@ DECLARE @RETURN_VALUE INT =0;
 IF(NOT EXISTS(SELECT 1 FROM TBCADVET WHERE VETKEY = 0)) 
      INSERT INTO TBCADVET(VETKEY, APEVET, ORGBAS, DSCVET) VALUES(0, '', 0, 'N/D')	
  
-IF(EXISTS(SELECT 1 FROM TBCADVET (NOLOCK) WHERE APEVET = @APEVET AND ORGBAS = @ORGBAS))
+IF(EXISTS(SELECT 1 FROM TBCADVET (NOLOCK) WHERE ORGBAS = @ORGBAS AND  APEVET = @APEVET))
 	SET @RETURN_VALUE = -2;
 	
 IF(@RETURN_VALUE=0)
@@ -1419,7 +1419,7 @@ IF (@RETURN_VALUE=-2)
 		    SET DSCVET = @DSCVET
 			   , NIDSPT = @NIDSPT
 			   , TIPFUN=@TIPFUN 
-		  WHERE APEVET = @APEVET AND ORGBAS = @ORGBAS
+		  WHERE ORGBAS = @ORGBAS AND APEVET = @APEVET
 		 IF(@@ERROR=0)
 			SET @RETURN_VALUE = 2;
 
@@ -1435,46 +1435,7 @@ IF (@RETURN_VALUE=-2)
 
 			</returns>
 		</insertcommand>
-		<!--<methods>
-			<item script="true" alias="A." sql="" method="InsertOrUpdate" return="int" returnmode="2" procname="PRCADVETINSUPD" desc ="Insere/Atualiza um registro de veterinário" returnvalue="0">
-				<query>
-					<![CDATA[
- DECLARE @RETURN_VALUE INT = 0;
- DECLARE @VETKEY INT = 0
- 
- IF(NOT EXISTS(SELECT 1 FROM TBCADVET WHERE VETKEY = 0)) INSERT INTO TBCADVET(VETKEY, APEVET, ORGBAS, DSCVET) VALUES(0, '', 0, 'N/D')
- 
- IF(NOT EXISTS(SELECT 1 FROM TBCADVET (NOLOCK) WHERE APEVET = @APEVET AND ORGBAS = @ORGBAS))
-     BEGIN
-		SELECT @VETKEY = COALESCE(MAX(VETKEY),0)+1 FROM TBCADVET (NOLOCK)
-		INSERT INTO TBCADVET (VETKEY,APEVET, ORGBAS, DSCVET, NIDSPT,TIPFUN) VALUES (@VETKEY, @APEVET, @ORGBAS, @DSCVET,@NIDSPT,@TIPFUN)
-		IF(@@ERROR=0)
-				SET @RETURN_VALUE = 1;
-	 END
- ELSE
-     BEGIN
-	     UPDATE TBCADVET SET DSCVET = @DSCVET, NIDSPT = @NIDSPT, TIPFUN=@TIPFUN WHERE APEVET = @APEVET AND ORGBAS = @ORGBAS
-		 IF(@@ERROR=0)
-			SET @RETURN_VALUE = 1;
 
-     END
- RETURN @RETURN_VALUE;		
-				
-				
-				]]>
-				</query>
-				<parameters model="1">
-					<parameter input="true" desc ="Apelido do Veterinário" name="APEVET" size="20" type="System.String" default="" output="" null="true"/>
-					<parameter input="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null="false"/>
-					<parameter input="true" desc ="Descrição do Veterinário" name="DSCVET" type="System.String" size="70" default="" output="" null="true"/>
-					<parameter input="true" desc ="ID da especialidade do usuario" name="NIDSPT" type="int" default="" output="" null="false"/>
-					<parameter input="true" desc ="Tipo de Função" name="TIPFUN" type="System.String" size="4" default="" output="" null="false"/>
-					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
-
-				</parameters>
-			</item>
-
-		</methods>-->
 	</item>
 
 	<item create="true"  id="8" name="TBVETSPT" api="true" apiname="" friendlyname="VeterinarySpecialties" modelversion="3" descriptor="Tabela de Informações sobre especialidades de veterinarios">
@@ -1927,7 +1888,6 @@ RETURN @RETURN_VALUE;
 				<![CDATA[
 IF(NOT (EXISTS(SELECT 1 FROM TBPCDORI (NOLOCK) WHERE NIDORI=0 AND ORIKEY=0)))
       INSERT INTO TBPCDORI (ORIKEY, NIDORI, ORGBAS, APEPRO, NUMCRV, UFECRV) VALUES (0,0,0,'N/D','','')
-	  
 IF(EXISTS(SELECT 1 FROM TBPCDORI (NOLOCK) WHERE ORIKEY=@ORIKEY))
 	SET @RETURN_VALUE = -2;
  
@@ -1967,12 +1927,11 @@ IF(@RETURN_VALUE= -2)
 			<returns>
 				<return value="1" message="Registro inserido com sucesso" error=""></return>
 				<return value="2" message="Registro alterado com sucesso" error=""></return>
-
 				<return value="-1" message="" error="FAILALL"></return>
-				<return value="-2" message="" error="RECORDFOUND"></return>
+
 			</returns>
 		</insertcommand>
-		<selectcommand>
+		<!--<selectcommand>
 			<item script="false" alias="A." sql="" method="GetLastOrigin" return="int" returnmode="2" procname="" desc ="Obtêm o ID do Último Registro de Origens Gravado" returnvalue="0">
 				<query>
 					<![CDATA[SELECT COALESCE( MAX(NIDORI), 0) FROM TBPCDORI (NOLOCK) A ]]>
@@ -1981,7 +1940,7 @@ IF(@RETURN_VALUE= -2)
 					<parameter input="true" apply="true" omit="false" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
 				</parameters>
 			</item>
-		</selectcommand>
+		</selectcommand>-->
 
 	</item>
 
@@ -2259,6 +2218,8 @@ IF(@RETURN_VALUE = -2)
 					  HASVAL = @HASVAL,
 					  CODOPE = @CODOPE,
 					  STAREC = @STAREC
+					 ,NIVATE = @NIVATE
+					 ,NIVQTF = @NIVQTF
 				WHERE ORGBAS = @ORGBAS AND CODPCD = @CODPCD  AND PCDKEY<>0 
     
     	  			IF(@@ERROR=0)

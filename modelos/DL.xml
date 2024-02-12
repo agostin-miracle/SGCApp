@@ -11,7 +11,7 @@
 				<![CDATA[
 IF(EXISTS(SELECT 1 FROM CVPCDORI (NOLOCK) WHERE ORGBAS=@ORGBAS AND NIDORI =@NIDORI))
 	SET @RETURN_VALUE = -2;
-Lis      ]]>
+      ]]>
 			</pre>
 			<body></body>
 			<pos>
@@ -35,6 +35,7 @@ IF(@RETURN_VALUE= -2)
 			  ,HASANI = @HASANI
 			  ,HASORL = @HASORL
 			  ,HASINT = @HASINT
+			  ,OBSORI = @OBSORI
 			  ,[DATUPD] = GETDATE()
 		 WHERE ORGBAS = @ORGBAS AND NIDORI = @NIDORI
 			IF(@@ERROR=0)
@@ -93,6 +94,8 @@ IF(@RETURN_VALUE= -2)
 					  HASVAL = @HASVAL,
 					  CODOPE = @CODOPE,
 					  STAREC = @STAREC
+					 ,NIVATE = @NIVATE
+					 ,NIVQTF = @NIVQTF
 				WHERE ORGBAS = @ORGBAS AND CODPCD = @CODPCD
     
     	  			IF(@@ERROR=0)
@@ -1995,7 +1998,56 @@ IF(EXISTS(SELECT 1 FROM CVLDOCTO (NOLOCK) WHERE ORGBAS = @ORGBAS AND NIDLDO = @N
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 	</item>
-	<item create="true"  id="300" name="CT2010" api="true" apiname="" friendlyname="Ledger" modelversion="3" descriptor="PROTHEUS - Ledger" remarks="CT2010/CT2030">
+	
+	<item create="true"  id="34" type="TABLE" name="CVCADUSU" api="false" apiname="" friendlyname="Users" modelversion="3" descriptor="Tabela de informações de usuário" comments="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="CVCADUSUINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				
+IF(NOT EXISTS (SELECT 1 FROM CVCADUSU (NOLOCK) WHERE CODUSU=0))
+	INSERT INTO CVCADUSU ([ORGBAS],[CODUSU],[NOMUSU],[DOCUSU],[PFLUSU], CODSPT,[DSCMAL],[STAUSU],[NIVUSU]) VALUES ( 0,0,'N/D','',0,0,'','N',0)
+IF(EXISTS(SELECT 1 FROM CVCADUSU (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODUSU = @CODUSU))
+    SET @RETURN_VALUE= -2
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+ IF(@RETURN_VALUE = -2)
+	BEGIN
+	    UPDATE CVCADUSU
+		   SET NOMUSU = @NOMUSU
+		      ,DOCUSU = @DOCUSU
+			  ,PFLUSU = @PFLUSU
+			  ,CODSPT = @CODSPT
+			  ,DSCMAL = @DSCMAL
+			  ,STAUSU = @STAUSU
+			  ,NIVUSU = @NIVUSU
+		 WHERE ORGBAS = @ORGBAS AND CODUSU = @CODUSU
+		
+		IF (@@ERROR = 0)
+		    SET @RETURN_VALUE = 2;
+	END
+				]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+	</item>
+		
+		
+		
+			<item create="true"  id="300" name="CT2010" api="true" apiname="" friendlyname="Ledger" modelversion="3" descriptor="PROTHEUS - Ledger" remarks="CT2010/CT2030">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="PTCT2010INS" >
