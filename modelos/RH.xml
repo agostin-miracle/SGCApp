@@ -350,10 +350,7 @@ IF(@RETURN_VALUE=-2)
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 
-		<!--INSERT INTO RHCADFIL (FILKEY, EMPKEY, CODEMP, CODFIL, NOMRED, DSCEMP) VALUES(     0,      0,      0,     '',     '',     '')-->
-
-
-		<insertcommand key="Key" fieldreturn="FILKEY" exceptionparamns="" procname="RHCADFILINS" method="Insert">
+		<insertcommand key="Key" fieldreturn="FILKEY" exceptionparamns="'DATUPD'" procname="RHCADFILINS" method="Insert">
 			<maxfield field="FILKEY"/>
 			<nextnumber field="" id="" />
 			<pre>
@@ -367,6 +364,7 @@ IF(EXISTS (SELECT 1 FROM RHCADFIL (NOLOCK) WHERE CODEMP = @CODEMP AND CODFIL = @
 		UPDATE RHCADFIL 
 		   SET NOMRED = @NOMRED
 		      ,DSCEMP = @DSCEMP
+			  ,CODCMF = @CODCMF
 		 WHERE  CODEMP = @CODEMP AND CODFIL = @CODFIL
 		 
 		 SELECT @FILKEY = FILKEY FROM RHCADFIL (NOLOCK) WHERE CODEMP = @CODEMP AND CODFIL = @CODFIL;
@@ -408,22 +406,16 @@ IF(EXISTS (SELECT 1 FROM RHCADFIL (NOLOCK) WHERE CODEMP = @CODEMP AND CODFIL = @
 				</parameters>
 			</item>
 		</selectcommand>
-
-
-
 	</item>
 
 	<item create="true"  id="8" name="RHREGFUN" api="true" apiname="" friendlyname="EmployeesItem" friendlynamealternative="Employees" modelversion="3" descriptor="Registro de Ocorrências de Funcionários" comments="Base de origem : SRA010 - Cadastro de Funcionários - Esta tabela conterá o registro de evolução dos funcionários">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
-
-
 		<insertcommand key="identity" fieldreturn="NIDREC" exceptionparamns="'DATUPD','DATCAD','CREVRT'" procname="RHREGFUNINS" method="Insert">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
 			<pre>
 				<![CDATA[
-	
 	
 				]]>
 			</pre>
@@ -439,10 +431,6 @@ IF(EXISTS (SELECT 1 FROM RHCADFIL (NOLOCK) WHERE CODEMP = @CODEMP AND CODFIL = @
 				<return value="-3" message="REGISTRO DE DESLIGAMENTO JA EXISTENTE" error="FAILALL"></return>
 			</returns>
 		</insertcommand>
-
-
-
-
 	</item>
 
 

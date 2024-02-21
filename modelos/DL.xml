@@ -262,7 +262,15 @@ GROUP BY FON.ORGBAS, FON.STAREC, FON.NORTEL, FON.TIPCTO
 			<pre>
 				<![CDATA[
 IF(EXISTS (SELECT 1 FROM CVCADCLI (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODCMF = @CODCMF ))
-	    SET @RETURN_VALUE = -2
+	    SET @RETURN_VALUE = -2;
+		
+SET @TYPCMF = IIF(LEFT(@CODCMF,7) IN ('0000000','1111111','2222222','3333333','444444','5555555','6666666','7777777','8888888','9999999'),0,@TYPCMF)
+
+IF(@TYPCMF = 3)
+   SET @VALCMF = 1;
+ELSE
+   SET @VALCMF = IIF(@TYPCMF IN (1,2),dbo.ValidateCMF(@CODCMF), 0);
+
       ]]>
 			</pre>
 			<body></body>
@@ -273,8 +281,9 @@ IF(@RETURN_VALUE = -2 )
 		UPDATE CVCADCLI
 		   SET NOMCLI = @NOMCLI
 		      ,TYPCMF = @TYPCMF
+			  ,VALCMF = @VALCMF
 			  ,CODCEP = @CODCEP
-			  ,VALCEP =@VALCEP
+			  ,VALCEP = @VALCEP
 			  ,DSCEND = @DSCEND
               ,DSCCID = @DSCCID
 			  ,CODCLA = @CODCLA
@@ -454,8 +463,7 @@ IF(@RETURN_VALUE = -2 )
     WHEN NOT MATCHED BY TARGET THEN
         
         INSERT 
-         VALUES (SRC.ORGBAS, SRC.CODCMF, SRC.STAREC, SRC.NORTEL, SRC.NOMCTT, SRC.NUMTEL, SRC.TIPCTO, GETDATE())          
-    ;
+         VALUES (SRC.ORGBAS, SRC.CODCMF, SRC.STAREC, SRC.NORTEL, SRC.NOMCTT, SRC.NUMTEL, SRC.TIPCTO, GETDATE());
     RETURN @@ROWCOUNT;
 
 				]]>
@@ -1339,9 +1347,6 @@ IF(@RETURN_VALUE = 0)
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
-
-
-
 		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','CHKPCD','CHKANI'" procname="PRSL1010INS" method="Insert">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
@@ -1376,8 +1381,7 @@ IF(@RETURN_VALUE = 0)
 			<returns>
 				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
 				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
-				<return value="-2" message="" error="RECORDFOUND"></return>
-
+				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
 		</insertcommand>
 		<updatecommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','CHKPCD','CHKANI'" procname="PRSL1010UPD" method="Update">
@@ -1408,6 +1412,8 @@ IF(@CODEMP IS NULL)
 			<returns>
 				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
 				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+
+				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
 		</updatecommand>
 
@@ -1430,8 +1436,258 @@ ELSE
 
 		</selectcommand>
 
+		<selectallcommand>
+
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="FinancialRecord" procname="PRSL1010GETALL" desc ="Obtêm uma lista de todos os registros atribuidos ao faturamento" remarks="">
+				<query>
+					<![CDATA[
+
+
+/*
+   TTSL1010 - Dados importados direto do Protheus
+   TTSL1011 - Dados importados direto do Protheus - Serviços
+   EXTPCDLV - Dados de integração de dados do aplicativo - PETLOVE
+
+
+*/
+SELECT NIDFIN
+      ,TIPREG
+      ,HASCHG
+      ,NUMANO
+      ,NUMMES
+      ,CODEMP
+      ,EMPKEY = ISNULL(EMP.EMPKEY,0)
+      ,DATFEC
+      ,DATEMI
+	  ,DATFEC AS DATPGT
+      ,TTSL1010.CODFIL
+      ,NUMOSS
+      ,CODPCD
+      ,VLRLIQ
+      ,VLRBRT
+      ,NUMNFE
+      ,SERNFE
+      ,CODANI
+      ,VLRPIS
+      ,VLRCOF
+      ,VLRISS
+      ,VLRIRF
+      ,VLRCSL
+      ,VLRDCT
+      ,VLRVCH
+      ,VLRGLO
+      ,HASACT
+      ,DATACT
+      ,NUMORC
+      ,DSCSRV
+      ,NUMVCH
+      ,EMIVCH
+      ,NUMITE
+      ,0 AS STAREC
+      ,VLROSS
+  FROM TTSL1010 (NOLOCK)
+ INNER JOIN (SELECT CODFIL, EMPKEY FROM CVCADEMP (NOLOCK) WHERE HASPRO=1) EMP ON (EMP.CODFIL = TTSL1010.CODFIL)
+WHERE TTSL1010.DATEMI >= CONVERT(VARCHAR, @DATEMI,112)
+  AND TTSL1010.STAREC = 1
+
+UNION ALL
+
+SELECT NIDFIN
+      ,TIPREG
+      ,HASCHG
+      ,NUMANO
+      ,NUMMES
+      ,CODEMP
+      ,EMPKEY = ISNULL(EMP.EMPKEY,0)
+      ,DATFEC
+      ,DATEMI
+	  ,DATFEC AS DATPGT
+      ,TTSL1011.CODFIL
+      ,NUMOSS
+      ,CODPCD
+      ,VLRLIQ
+      ,VLRBRT
+      ,NUMNFE
+      ,SERNFE
+      ,CODANI
+      ,VLRPIS
+      ,VLRCOF
+      ,VLRISS
+      ,VLRIRF
+      ,VLRCSL
+      ,VLRDCT
+      ,VLRVCH
+      ,VLRGLO
+      ,HASACT
+      ,DATACT
+      ,NUMORC
+      ,DSCSRV
+      ,NUMVCH
+      ,EMIVCH
+      ,NUMITE
+      ,0 AS STAREC
+      ,VLROSS
+  FROM TTSL1011 (NOLOCK)
+ INNER JOIN (SELECT CODFIL, EMPKEY FROM CVCADEMP (NOLOCK) WHERE HASPRO=1) EMP ON (EMP.CODFIL = TTSL1011.CODFIL)
+ WHERE TTSL1011.DATEMI >= CONVERT(VARCHAR, @DATEMI,112)
+  AND TTSL1011.STAREC = 1
+
+ UNION ALL
+
+SELECT NIDFIN
+      ,TIPREG
+      ,HASCHG=1
+      ,NUMANO
+      ,NUMMES
+      ,CODEMP
+      ,EMPKEY = CODEMP
+      ,DATFEC
+      ,DATEMI
+	  ,DATFEC AS DATPGT
+      ,LOV.CODFIL
+      ,NUMOSS
+      ,CODPCD
+      ,VLRLIQ
+      ,VLRBRT
+      ,NUMNFE
+      ,SERNFE
+      ,CODANI
+      ,VLRPIS=0
+      ,VLRCOF=0
+      ,VLRISS=0
+      ,VLRIRF=0
+      ,VLRCSL=0
+      ,VLRDCT=0
+      ,VLRVCH=0
+      ,VLRGLO=0
+      ,HASACT=1
+      ,DATACT=NULL
+      ,NUMORC=''
+      ,DSCSRV
+      ,NUMVCH=''
+      ,EMIVCH=NULL
+      ,NUMITE=1
+      ,0 AS STAREC
+      ,VLROSS
+  FROM EXTPCDLV (NOLOCK) LOV
+WHERE LOV.CODFIL IN (SELECT  CODFIL FROM CVCADEMP (NOLOCK) WHERE HASPRO = 1)
+  AND LOV.DATEMI >=CONVERT(VARCHAR, @DATEMI,112)
+  AND LOV.STAREC = 1
+		]]>
+				</query>
+<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Data" name="DATEMI" type="System.DateTime" default="" output="" null=""/>
+
+				</parameters>
+
+			</item>
+		</selectallcommand>
+
+
 
 	</item>
+
+
+	<item create="true"  id="24" name="TTSL1011" api="true" apiname="" friendlyname="FinancialRecordService" modelversion="3" descriptor="Registro Financeiro de Serviços">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+
+
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','CHKPCD','CHKANI'" procname="PRSL1011INS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET @NUMMES = MONTH(@DATFEC);
+SET @NUMANO = YEAR(@DATFEC);
+SET @HASCHG = 0;
+
+SET @NUMITE = 0;
+
+SELECT @NUMITE = COALESCE(MAX(NUMITE),0)+1 FROM TTSL1011 (NOLOCK) WHERE NIDFIN= @NIDFIN AND TIPREG=@TIPREG;
+
+IF(EXISTS (SELECT 1 FROM TTSL1011 (NOLOCK) WHERE NIDFIN = @NIDFIN AND TIPREG=@TIPREG))
+   SET @RETURN_VALUE=-2;
+  
+IF(@RETURN_VALUE = 0)
+	BEGIN
+		SELECT @CODEMP = ISNULL(CODEMP,0) FROM CVCADEMP (NOLOCK) WHERE CODFIL = @CODFIL AND HASPRO=1;
+		IF(@CODEMP IS NULL)
+		   SET @CODEMP = 0;
+    END
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+  
+				]]>
+			</pos>
+			<returns>
+				<return value="1" operator="==" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+		<updatecommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','CHKPCD','CHKANI'" procname="PRSL1011UPD" method="Update">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+SET @NUMMES = MONTH(@DATFEC);
+SET @NUMANO = YEAR(@DATFEC);
+SET @HASCHG = 1;
+SET @NUMITE = 0;
+SELECT @NUMITE = COALESCE(MAX(NUMITE),0)+1 FROM TTSL1011 (NOLOCK) WHERE NIDFIN= @NIDFIN AND TIPREG=@TIPREG;
+
+SELECT @CODEMP = ISNULL(CODEMP,0) FROM CVCADEMP (NOLOCK) WHERE CODFIL = @CODFIL AND HASPRO=1;
+IF(@CODEMP IS NULL)
+   SET @CODEMP = 0;
+
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+
+
+				]]>
+			</pos>
+			<returns>
+				<return value="1" operator="==" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</updatecommand>
+
+
+		<selectcommand>
+			<item script="false" alias="A." sql="" method="Exists" return="int" returnmode="2" procname="" desc ="Verifica se o ID de Registro para o tipo de Registro já existe na tabela de contenção" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0;		
+SELECT @RETURN_VALUE = COALESCE(STAREC,0) FROM TTSL1011 (NOLOCK) WHERE NIDFIN = @NIDFIN AND TIPREG=@TIPREG
+IF(@RETURN_VALUE IS NULL)
+   SET @RETURN_VALUE = 0;
+SELECT @RETURN_VALUE AS RETURN_VALUE;]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="ID de Registro" name="NIDFIN" type="System.Int32" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Tipo de Registro" name="TIPREG" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+		</selectcommand>
+
+
+	</item>
+
+
+
 
 	<item create="true"  id="25" name="TBLOCCEP" api="true" apiname="" friendlyname="PostalAddressBook" modelversion="3" descriptor="CEP Localizado">
 		<CSharpPartial>True</CSharpPartial>
@@ -1831,87 +2087,125 @@ RETURN @@ROWCOUNT;
 			<item script="true" alias="A." sql="" method="TransferToProcedures" return="int" returnmode="21" procname="PREXTPCDTRFPCD" desc ="Executa a atualização do arquivo de integração com o faturamento" returnvalue="0" remarks="Este processo além das informações basicas de empresa, ano e mês, necessita do número da nota fiscal e série relativas ao movimento">
 				<query>
 					<![CDATA[
-DECLARE @RETURN_VALUE INT = 0
+   DECLARE @RETURN_VALUE INT = 0
+    
+    /*
+	 * VERIFICA SE EXISTE MOVIMENTO A INTEGRAR
+	 */
+	IF (NOT EXISTS( SELECT 1 
+	                 FROM EXTPETLV (NOLOCK)
+    	     WHERE EMPKEY = @EMPKEY
+               AND NUMANO = @NUMANO
+    	       AND NUMMES = @NUMMES
+    	       AND STAREC = 1
+			   AND STAPGT = CASE WHEN @STAPGT = 1 THEN 'Pago' ELSE 'Não Pago' END ))
+		SET @RETURN_VALUE=-2;
+    
+	/*
+	 * VERIFICA SE A NOTA FISCAL EXISTE E NAO FOI INTEGRADA
+	 */
+	IF(NOT EXISTS(SELECT 1 
+	                FROM TTSL1011 (NOLOCK) 
+				   WHERE CODEMP = @EMPKEY AND NUMNFE = @NUMNFE AND SERNFE = @SERNFE AND STAREC=1))
+		SET @RETURN_VALUE = -1;
 
 
+	/*
+	 * INTEGRA O MOVIMENTO SE NAO HOUVER FALHA
+	 */
 
 	BEGIN TRANSACTION
-
-	BEGIN TRY
-
-		DELETE FROM EXTPCDLV
-	     WHERE EMPKEY = @EMPKEY
-           AND NUMANO = @NUMANO
-	       AND NUMMES = @NUMMES
-	       AND STAREC = 1;
-
-		INSERT INTO EXTPCDLV 
-	           (NIDFIN
-	           ,TIPREG
-	           ,NUMANO
-	           ,NUMMES
-	           ,CODEMP
-	           ,DATFEC
-	           ,DATEMI
-	           ,CODFIL
-	           ,NUMOSS
-	           ,CODPCD
-	           ,VLROSS
-	           ,VLRLIQ
-	           ,VLRBRT
-	           ,NUMNFE
-	           ,SERNFE
-	           ,CODANI
-	           ,DSCSRV
-	           ,STAREC
-	           ,NIDPCD)
-	    SELECT
-	            PTLKEY
-	           ,14
-	           ,@NUMANO
-	           ,@NUMMES
-	           ,@EMPKEY
-	           ,DATLAN
-	           ,DATLAN
-	           ,CODFIL
-	           ,NUMOSS
-	           ,CODPCD
-	           ,VLROSS
-	           ,VLRLAN
-	           ,VLRLAN
-	           ,@NUMNFE
-	           ,@SERNFE
-	           ,CODANI
-	           ,'PETLOVE'
-	           ,1
-	           ,NIDPCD
-		  FROM EXTPETLV (NOLOCK)
-		 WHERE EMPKEY = @EMPKEY
-		   AND NUMANO = @NUMANO
-		   AND NUMMES = @NUMMES
-		   AND STAREC = 1;
-
-	       SET @RETURN_VALUE = @RETURN_VALUE  + @@ROWCOUNT;
-	        IF(@@ERROR = 0)
+	IF(@RETURN_VALUE = 0)
+		BEGIN
+    		DELETE FROM EXTPCDLV
+    	     WHERE CODEMP = @EMPKEY
+               AND NUMANO = @NUMANO
+    	       AND NUMMES = @NUMMES
+    	       AND STAREC = 1;
+    
+    		INSERT INTO EXTPCDLV 
+    	           (NIDFIN
+    	           ,TIPREG
+    	           ,NUMANO
+    	           ,NUMMES
+    	           ,CODEMP
+    	           ,DATFEC
+    	           ,DATEMI
+    	           ,CODFIL
+    	           ,NUMOSS
+    	           ,CODPCD
+    	           ,VLROSS
+    	           ,VLRLIQ
+    	           ,VLRBRT
+    	           ,NUMNFE
+    	           ,SERNFE
+    	           ,CODANI
+    	           ,DSCSRV
+    	           ,STAREC
+    	           ,NIDPCD)
+    	    SELECT
+    	            PTLKEY
+    	           ,14
+    	           ,@NUMANO
+    	           ,@NUMMES
+    	           ,@EMPKEY
+    	           ,DATLAN
+    	           ,DATLAN
+    	           ,CODFIL
+    	           ,NUMOSS
+    	           ,CODPCD
+    	           ,VLROSS
+    	           ,VLRLAN
+    	           ,VLRLAN
+    	           ,@NUMNFE
+    	           ,@SERNFE
+    	           ,CODANI
+    	           ,'PETLOVE'
+    	           ,1
+    	           ,NIDPCD
+    		  FROM EXTPETLV (NOLOCK)
+    		 WHERE EMPKEY = @EMPKEY
+    		   AND NUMANO = @NUMANO
+    		   AND NUMMES = @NUMMES
+    		   AND STAREC = 1;
+    
+    	      IF(@@ERROR = 0 AND @@ROWCOUNT >0)
 				BEGIN
 					UPDATE EXTPETLV 
-					   SET STAREC=200
+					   SET STAREC= CASE WHEN @STAPGT = 1 THEN 201 ELSE 200 END
 					 WHERE EMPKEY = @EMPKEY
 					   AND NUMANO = @NUMANO
 		               AND NUMMES = @NUMMES
 		               AND STAREC = 1
-					   SET @RETURN_VALUE = @RETURN_VALUE  + @@ROWCOUNT;
+					   AND STAPGT = CASE WHEN @STAPGT = 1 THEN 'Pago' ELSE 'Não Pago' END 
+					   
+					   IF(@@ERROR = 0)
+					       BEGIN
+						   
+								/*
+								 * BLOQUEIA NOTA FISCAL ENVOLVIDA
+								 */
+								UPDATE TTSL1011
+								   SET STAREC = 200
+								 WHERE CODEMP = @EMPKEY
+					  
+								   AND NUMNFE = @NUMNFE
+								   AND SERNFE = @SERNFE
+								   
+								   IF(@@ERROR = 0)
+								       SET @RETURN_VALUE=1;
+						   END
+					
 				END
-		   COMMIT;
-	END TRY
+		END
+	  ELSE
+	       PRINT @RETURN_VALUE;
 
-	BEGIN CATCH
-	  IF @@TRANCOUNT > 0  
-        ROLLBACK TRANSACTION; 
-	  SET @RETURN_VALUE = -1;
-	END CATCH
-
-  RETURN @RETURN_VALUE;
+	  IF(@RETURN_VALUE = 0)
+	      ROLLBACK TRANSACTION;
+      ELSE
+	     COMMIT TRANSACTION;
+      RETURN @RETURN_VALUE;
  					]]>
 				</query>
 				<parameters>
@@ -1920,6 +2214,8 @@ DECLARE @RETURN_VALUE INT = 0
 					<parameter input="true" apply="true" omit="true" desc ="Ano" name="NUMANO" type="System.Int16" default="" output="" null=""/>
 					<parameter input="true" apply="true" omit="true" desc ="NF" name="NUMNFE" type="System.String"  size="9" default="" output="" null=""/>
 					<parameter input="true" apply="true" omit="true" desc ="Série" name="SERNFE" type="System.String"  size="4" default="" output="" null=""/>
+					<parameter input="true" apply="true" omit="true" desc ="Status de Pagamento" name="STAPGT" type="System.Byte"   default="" output="" null=""/>
+
 				</parameters>
 			</item>
 		</methods>
@@ -1998,11 +2294,11 @@ IF(EXISTS(SELECT 1 FROM CVLDOCTO (NOLOCK) WHERE ORGBAS = @ORGBAS AND NIDLDO = @N
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 	</item>
-	
+
 	<item create="true"  id="34" type="TABLE" name="CVCADUSU" api="false" apiname="" friendlyname="Users" modelversion="3" descriptor="Tabela de informações de usuário" comments="">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
-	
+
 		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="CVCADUSUINS" method="Insert">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
@@ -2044,10 +2340,10 @@ IF(EXISTS(SELECT 1 FROM CVCADUSU (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODUSU = @C
 
 
 	</item>
-		
-		
-		
-			<item create="true"  id="300" name="CT2010" api="true" apiname="" friendlyname="Ledger" modelversion="3" descriptor="PROTHEUS - Ledger" remarks="CT2010/CT2030">
+
+
+
+	<item create="true"  id="300" name="CT2010" api="true" apiname="" friendlyname="Ledger" modelversion="3" descriptor="PROTHEUS - Ledger" remarks="CT2010/CT2030">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="PTCT2010INS" >
@@ -2614,7 +2910,7 @@ SELECT A.CODCMF
 
 		</item>
 
-			<item access="public" modifier="static" reference="" procbase="" script="true" alias="A." sql="" type="list" method="GetNpsList" return="NPS" returnmode="5" procname="MKGETREPNPS" desc ="Obtêm a lista de registro baseada em Regras de NPS" remarks="" >
+		<item access="public" modifier="static" reference="" procbase="" script="true" alias="A." sql="" type="list" method="GetNpsList" return="NPS" returnmode="5" procname="MKGETREPNPS" desc ="Obtêm a lista de registro baseada em Regras de NPS" remarks="" >
 			<query>
 				<![CDATA[
 	DECLARE @DATINI DATETIME = DATEADD(day, -7, GETDATE())                       -- Data de inicio de Leitura
