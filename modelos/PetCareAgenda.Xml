@@ -454,7 +454,9 @@ Query<AccessControl>("PRLGNUSUACECTL",
                                 typeof(ActiveCards),
                                 typeof(AddressBook)
                             },
-                            objects =>
+                            
+							
+							=>
                             {
                                 var ac = objects[0] as AccessControl;
                                 var va = objects[1] as VirtualAccount;

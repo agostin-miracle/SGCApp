@@ -238,9 +238,6 @@ namespace SCGApp
             MessageBox.Show(MazeFire.DataBaseTools.Schemas.TrappedError.UserError);
         }
 
-        private void tvwdata_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-
-        }
+    
     }
 }

@@ -1021,24 +1021,28 @@ RETURN @RETURN_VALUE;
 			<item acess="" modifier="" name="DailyClosingReport" inherit="" desc ="Objeto de Contenção do Relatório de Fechamento Diário" remarks="">
 				<query>
 					<![CDATA[
-SELECT  TBREGFIN.TIPREG,
-       CASE 
-	      WHEN  TBREGFIN.TIPREG=2 THEN 'CANCELAMENTOS'
-		  WHEN  TBREGFIN.TIPREG=3 THEN 'EXCLUSOES'
-		  ELSE 'RECEITAS' END AS DSCREG,
-       TBREGFIN.MODINP, 
-       MAX(DSCINP) AS DSCIMP, 
-	   TBREGFIN.STAREC, 
-	   MAX(DSCREC) AS DSCREC, 
-	   COUNT(DISTINCT NUMOSS) AS NUMORD, 
-	   COUNT(*) AS NUMREC, 
-	   SUM(VLRBRT) AS VLRBRT,
-	   SUM(CASE WHEN TBREGFIN.TIPREG IN (2,3) AND TBREGFIN.HASACT=1 THEN VLRBRT ELSE 0 END ) VLRACT
-  FROM TBREGFIN (NOLOCK)
- INNER JOIN RFMODINP (NOLOCK) ON (RFMODINP.MODINP = TBREGFIN.MODINP)
- INNER JOIN TBSTAREC (NOLOCK) ON (TBSTAREC.STAREC = TBREGFIN.STAREC)
- WHERE TBREGFIN.NIDFIN=-1
-GROUP BY TBREGFIN.TIPREG,TBREGFIN.STAREC, TBREGFIN.MODINP 
+    SELECT TOP 1  TBREGFIN.TIPREG,
+           CASE 
+    	      WHEN  TBREGFIN.TIPREG=2 THEN 'CANCELAMENTOS'
+    		  WHEN  TBREGFIN.TIPREG=3 THEN 'EXCLUSOES'
+			  WHEN  TBREGFIN.TIPREG=4 THEN 'SERVIÇOS'
+			  WHEN  TBREGFIN.TIPREG=14 THEN 'INTEGRACAO PETLOVE'
+    		  ELSE 'RECEITAS' END AS DSCREG,
+		   STAREG = CASE WHEN  STAREG = 1 THEN 'FECHADO' ELSE 'ABERTO' END,
+           TBREGFIN.MODINP, 
+           MAX(DSCINP) AS DSCIMP, 
+    	   TBREGFIN.STAREC, 
+    	   MAX(DSCREC) AS DSCREC, 
+    	   COUNT(DISTINCT NUMOSS) AS NUMORD, 
+    	   COUNT(*) AS NUMREC, 
+    	   SUM(VLRBRT) AS VLRBRT,
+    	   SUM(CASE WHEN TBREGFIN.TIPREG IN (2,3) AND TBREGFIN.HASACT=1 THEN VLRBRT ELSE 0 END ) VLRACT
+      FROM TBREGFIN (NOLOCK)
+     INNER JOIN RFMODINP (NOLOCK) ON (RFMODINP.MODINP = TBREGFIN.MODINP)
+     INNER JOIN TBSTAREC (NOLOCK) ON (TBSTAREC.STAREC = TBREGFIN.STAREC)
+	 WHERE DATFEC >= '20201101'
+     GROUP BY TBREGFIN.TIPREG, TBREGFIN.STAREG,TBREGFIN.STAREC, TBREGFIN.MODINP 
+     ORDER BY TBREGFIN.STAREG DESC, TBREGFIN.TIPREG, TBREGFIN.MODINP DESC,TBREGFIN.STAREC DESC
  ]]>
 				</query>
 			</item>
@@ -1422,8 +1426,8 @@ IF(@RETURN_VALUE=-2)
 					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
 				</parameters>
 			</item>
-			
-			
+
+
 			<item script="true" alias="A." sql="" method="GetLastProcedure" return="int" returnmode="21" procname="PRGETLASPCD" desc ="Obtêm o ID do Último Registro de Procedimento Gravado" returnvalue="0">
 				<query>
 					<![CDATA[DECLARE @RETURN_VALUE INT = 0;
@@ -1490,7 +1494,9 @@ DECLARE @RETURN_VALUE INT =0;
     	      WHEN  TBREGFIN.TIPREG=2 THEN 'CANCELAMENTOS'
     		  WHEN  TBREGFIN.TIPREG=3 THEN 'EXCLUSOES'
 			  WHEN  TBREGFIN.TIPREG=4 THEN 'SERVIÇOS'
+			  WHEN  TBREGFIN.TIPREG=14 THEN 'INTEGRACAO PETLOVE'
     		  ELSE 'RECEITAS' END AS DSCREG,
+		   STAREG = CASE WHEN  STAREG = 1 THEN 'FECHADO' ELSE 'ABERTO' END,
            TBREGFIN.MODINP, 
            MAX(DSCINP) AS DSCIMP, 
     	   TBREGFIN.STAREC, 
@@ -1502,9 +1508,9 @@ DECLARE @RETURN_VALUE INT =0;
       FROM TBREGFIN (NOLOCK)
      INNER JOIN RFMODINP (NOLOCK) ON (RFMODINP.MODINP = TBREGFIN.MODINP)
      INNER JOIN TBSTAREC (NOLOCK) ON (TBSTAREC.STAREC = TBREGFIN.STAREC)
-	 WHERE DATFEC >= '20220101'
-     GROUP BY TBREGFIN.TIPREG,TBREGFIN.STAREC, TBREGFIN.MODINP 
-     ORDER BY TBREGFIN.TIPREG, TBREGFIN.MODINP  DESC,TBREGFIN.STAREC DESC
+	 WHERE DATFEC >= '20201101'
+     GROUP BY TBREGFIN.TIPREG, TBREGFIN.STAREG,TBREGFIN.STAREC, TBREGFIN.MODINP 
+     ORDER BY TBREGFIN.STAREG DESC, TBREGFIN.TIPREG, TBREGFIN.MODINP DESC,TBREGFIN.STAREC DESC
 ]]>
 				</query>
 			</item>
@@ -1886,6 +1892,40 @@ RETURN @RETURN_VALUE;
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 
+		<view>
+			<item owner="" script="true" definer="" name="VWANACLI" desc ="View de Analise de clientes" comments="Esta view disponibiliza informações sobre clientes dispondo os dados nas seguintes condições:@O campo CODCMF for válido dentro dos critério conforme o tipo@O Cep for válido@O Campo DSCMAL for estruturalmente válido@O campo TELCEL for valido dentro das regras de formatação 99 99 9 9999 9999@O Campo NUMANI exibe as quantidades de animais vivos dentro da condição estabelecida pelo campo">
+				<query>
+					<![CDATA[
+
+select CLI.ORGBAS
+      ,CLI.CLIKEY
+	  ,CLI.TYPCMF
+	  ,NOMCLI
+	  ,CLI.CODCMF
+	  ,CODCEP
+	  ,DSCMAL
+	  ,SEXCLI
+	  ,ENVNEW
+	  ,CLI.DATNAC
+	  ,TELCEL
+	  ,NUMANI
+	  ,EMP.DSCEMP
+  FROM TBCADCLI (NOLOCK)CLI
+
+ INNER JOIN (SELECT ORGBAS, CODCMF, COUNT(*) AS NUMANI FROM TBCADANI (NOLOCK) WHERE HASFAL=0 AND DATEDIFF(YEAR, DATNAC, GETDATE()) <=22 GROUP BY ORGBAS, CODCMF)  ANI
+    ON (ANI.ORGBAS = CLI.ORGBAS AND ANI.CODCMF = CLI.CODCMF)
+  LEFT JOIN TBCADEMP (NOLOCK) EMP
+    ON (EMP.EMPKEY = CLI.ULTEMP)
+ WHERE LEN(REPLACE(REPLACE(REPLACE(REPLACE(TELCEL,'(',''),')',''),' ',''),'-',''))=13
+  AND isnumeric(REPLACE(REPLACE(REPLACE(REPLACE(TELCEL,'(',''),')',''),' ',''),'-',''))=1
+   AND CLI.VALCEP = 1
+   AND CLI.VALMAL = 1
+   AND CLI.VALCMF = 1
+
+]]>
+				</query>
+			</item>
+		</view>
 		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','SAVCLA'" procname="PRCADCLIINS" method="Insert">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
@@ -1911,6 +1951,7 @@ IF(@RETURN_VALUE=-2)
 		UPDATE TBCADCLI
            SET NOMCLI = @NOMCLI
               ,CODCEP = @CODCEP
+			  ,VALCMF = @VALCMF
 			  ,VALCEP = @VALCEP
               ,CODCLA = @CODCLA
               ,DATUPD = GETDATE()
@@ -1929,6 +1970,7 @@ IF(@RETURN_VALUE=-2)
 			  ,PCDKEY = @PCDKEY
 			  ,VALCEL = @VALCEL
 			  ,VALMAL = @VALMAL
+			  ,ENVNEW = @ENVNEW
          WHERE CODCMF = @CODCMF 
 		   AND ORGBAS = @ORGBAS;
 		    IF (@@ERROR=0)
@@ -2424,13 +2466,11 @@ IF(@RETURN_VALUE = -2)
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
 			<pre>
-				<![CDATA[
-      ]]>
+				<![CDATA[]]>
 			</pre>
 			<body></body>
 			<pos>
-				<![CDATA[
-        ]]>
+				<![CDATA[]]>
 			</pos>
 			<returns>
 				<return value="-1" message="" error="FAILALL"></return>
@@ -2560,35 +2600,6 @@ IF(@RETURN_VALUE=-2)
 	</item>
 
 
-	<!--
-
-SELECT SL2.R_E_C_N_O_ AS NIDFIN,
-SL1.L1_FILIAL AS CODFIL, 
-SL1.L1_XCODSGV AS NUMOSS, 
- L2_VLRITEM AS VLRLIQ, 
- L2_PRCTAB AS VLRBRT, 
- CONVERT(DATE,SL1.L1_EMISSAO,112) AS DATFEC,
-CONVERT(DATE,SL1.L1_EMISNF,112) AS DATEMI, 
- SL1.L1_DOC AS NUMNFE, 
- SL1.L1_SERIE AS SERNFE, 
- CAST(SL1.L1_XFICHA AS INT) AS CODANI, 
- SB1.B1_XCODSGV AS CODPCD,
-SL2.L2_VALPS2 AS VLRPIS, 
- SL2.L2_VALCF2 AS VLRCOF, 
- SL2.L2_VALISS AS VLRISS, 
- SL2.L2_VALIRRF AS VLRIRF 
- FROM SL2010 SL2 
- INNER JOIN SL1010 SL1 ON ( SL1.L1_FILIAL = L2_FILIAL AND SL1.L1_NUM = L2_NUM AND SL1.D_E_L_E_T_ = ' ') 
- INNER JOIN SA1010 SA1 ON ( SL1.L1_CLIENTE = A1_COD AND SL1.L1_LOJA = A1_LOJA AND SA1.D_E_L_E_T_ = ' ')
-INNER JOIN SYS_COMPANY SM0 ON ( SM0.M0_CODFIL = SL1.L1_FILIAL AND SM0.D_E_L_E_T_ = ' ' )
-INNER JOIN SB1010 SB1 ON ( SL2.L2_PRODUTO = B1_COD AND SUBSTRING( B1_FILIAL, 1, 2 ) = SUBSTRING( SL2.L2_FILIAL, 1, 2 ) AND SB1.D_E_L_E_T_ = ' ')
-WHERE SL2.L2_FILIAL IN ( '0202', '0203', '0204', '0205', '0207', '0208','0904','2201')
-AND SL1.L1_EMISSAO BETWEEN '20201101' AND '20201130' 
- AND SL2.D_E_L_E_T_ = ' ' 
-  ORDER BY SL1.L1_FILIAL, SL1.L1_EMISSAO
-
-
--->
 	<item create="true"  id="27" name="TBREGFIN" api="true" apiname="" friendlyname="FinancialRecord" modelversion="3" descriptor="Registro Financeiro">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
@@ -2596,6 +2607,50 @@ AND SL1.L1_EMISSAO BETWEEN '20201101' AND '20201130'
 
 
 		<view>
+
+			<item owner="" script="true" definer="" name="RLPCDFIN" desc ="View de Consolidação de Registros Financeiros de Faturamento x Registros de Lançamentos de Procedimentos">
+				<query>
+					<![CDATA[
+SELECT FAT.NIDFIN
+      ,COALESCE(LAN.NIDPCD,0) as NIDPCD
+
+      ,FAT.LANKEY
+	  ,FAT.HASACT
+      ,FAT.TIPREG
+	  ,FAT.EMPKEY
+      ,FAT.MODINP
+	  ,FAT.STAREC
+      ,VLRLIQ = FAT.VLRLIQ * case when FAT.TIPREG in (2,3) then -1 else 1 end
+      ,VLRBRT = FAT.VLRBRT * case when FAT.TIPREG in (2,3) then -1 else 1 end
+      ,FAT.DATFEC
+      ,FAT.DATEMI
+	  ,VLROSS = FAT.VLROSS * case when FAT.TIPREG in (2,3) then -1 else 1 end
+      ,VLRPIS = FAT.VLRPIS * case when FAT.TIPREG in (2,3) then -1 else 1 end
+      ,VLRCOF = FAT.VLRCOF * case when FAT.TIPREG in (2,3) then -1 else 1 end
+      ,VLRISS = FAT.VLRISS * case when FAT.TIPREG in (2,3) then -1 else 1 end
+      ,VLRIRF = FAT.VLRIRF * case when FAT.TIPREG in (2,3) then -1 else 1 end
+      ,VLRDCT = FAT.VLRDCT * case when FAT.TIPREG in (2,3) then 1 else -1 end
+      ,VLRVCH = FAT.VLRVCH * case when FAT.TIPREG in (2,3) then -1 else 1 end
+	  ,VLRCPT = LAN.VLRCPT 
+	  ,VLRREP = LAN.VLRREP 
+      ,VLRGLO = FAT.VLRGLO * case when FAT.TIPREG in (2,3) then 1 else -1 end
+	  ,OSSKEY = CASE WHEN FAT.NUMOSS=0 THEN 0 ELSE CAST(RIGHT('00' + CONVERT (VARCHAR,IIF(FAT.EMPKEY=28,2,1) ),2) + RIGHT('0000000' + CONVERT(VARCHAR,FAT.NUMOSS),7) AS INT) END
+      ,CODANI = CAST(RIGHT('00' + CONVERT (VARCHAR,IIF(FAT.EMPKEY=28,2,1) ),2) + RIGHT('0000000' + CONVERT(VARCHAR,CASE WHEN FAT.CHKANI>0 THEN FAT.CHKANI ELSE   (CASE WHEN FAT.CODANI > 0 THEN FAT.CODANI ELSE 999999 END) END),7) AS INT)
+      ,CODPCD = CAST(RIGHT('00' + CONVERT (VARCHAR,IIF(FAT.EMPKEY=28,2,1) ),2) + RIGHT('0000000' + CONVERT(VARCHAR,CASE WHEN FAT.TIPREG=4 AND FAT.CODPCD=0 THEN  999998 ELSE CASE WHEN FAT.CHKPCD>0 THEN CHKPCD ELSE CASE WHEN FAT.CODPCD= 0 THEN 999999 ELSE FAT.CODPCD END  END END),7) AS INT)
+	  ,VLRPCD = COALESCE(LAN.VLRPCD,0) * case when FAT.TIPREG in (2,3) then -1 else 1 end
+	  ,VLRTAB = COALESCE(LAN.VLRTAB,0) * case when FAT.TIPREG in (2,3) then -1 else 1 end
+ 
+  FROM TBREGFIN (NOLOCK) FAT
+  INNER JOIN TBPCDLAN (NOLOCK) LAN
+   ON (LAN.LANKEY = FAT.LANKEY)
+ WHERE FAT.DATFEC > '20211231'
+   AND FAT.LANKEY <>1
+				
+]]>
+				</query>
+			</item>
+
+
 			<item owner="" script="true" definer="" name="VWPCDLANCTE" desc ="View de Consolidação de Registros do Movimento Financeiro originários do Protheus">
 				<query>
 					<![CDATA[
@@ -2695,7 +2750,7 @@ GROUP BY YEAR(DATFEC), MONTH(DATFEC), FIN.EMPKEY, PCD.DSCPCD, PCD.TIPPCD, PCD.SU
 				</query>
 			</item>
 		</view>
-		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','CNTITE','CNTREC','CNTFIN','CHKPCD','CHKANI'" procname="PRREGFININSV2" method="Insert">
+		<insertcommand key="Key" supressidentity="true" fieldreturn="" exceptionparamns="'DATUPD','CNTITE','CNTREC','CNTFIN','CHKPCD','CHKANI'" procname="PRREGFININS" method="Insert">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
 			<pre>
@@ -2711,26 +2766,78 @@ IF (EXISTS (SELECT 1 FROM TBREGFIN (NOLOCK) WHERE NIDFIN = @NIDFIN AND TIPREG=@T
 			<body></body>
 			<pos>
 				<![CDATA[
- 
+ IF(@RETURN_VALUE = -2)
+	BEGIN
+         UPDATE TBREGFIN
+               SET NUMANO=@NUMANO
+                  ,NUMMES=@NUMMES
+                  ,CODEMP=@CODEMP
+                  ,DATFEC=@DATFEC
+                  ,DATEMI=@DATEMI
+                  ,DATPGT=@DATPGT
+                  ,HASLAN=@HASLAN
+                  ,NIDCAN=@NIDCAN
+                  ,REGBXD=@REGBXD
+                  ,STAREG=@STAREG
+                  ,STAREC=@STAREC
+                  ,MODINP=@MODINP
+                  ,LANKEY=@LANKEY
+                  ,CODFIL=@CODFIL
+                  ,EMPKEY=@EMPKEY
+                  ,NUMOSS=@NUMOSS
+                  ,VLROSS=@VLROSS
+                  ,CODPCD=@CODPCD
+                  ,NIDPCD=@NIDPCD
+                  ,NIDBAS=@NIDBAS
+                  ,VLRLIQ=@VLRLIQ
+                  ,VLRBRT=@VLRBRT
+                  ,NUMNFE=@NUMNFE
+                  ,SERNFE=@SERNFE
+                  ,CODANI=@CODANI
+                  ,VLRPIS=@VLRPIS
+                  ,VLRCOF=@VLRCOF
+                  ,VLRISS=@VLRISS
+                  ,VLRIRF=@VLRIRF
+                  ,VLRCSL=@VLRCSL
+                  ,VLRCPT=@VLRCPT
+                  ,VLRGLO=@VLRGLO
+                  ,VLRREP=@VLRREP
+                  ,VLRDCT=@VLRDCT
+                  ,DATACT=@DATACT
+                  ,HASACT=@HASACT
+                  ,NUMORC=@NUMORC
+                  ,DSCSRV=@DSCSRV
+                  ,NUMVCH=@NUMVCH
+                  ,VLRVCH=@VLRVCH
+                  ,EMIVCH=@EMIVCH
+                  ,NUMITE = NUMITE + 1
+				  ,DATUPD = GETDATE()
+             WHERE NIDFIN = @NIDFIN
+			   AND TIPREG = @TIPREG
+			   AND STAREG = 0
+			 
+			 IF(@@ERROR=0)
+			     SET @RETURN_VALUE = 2;
+	END
 
 				]]>
 			</pos>
 			<returns>
 				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
-				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+					<return value="2" message="Registro alterado com sucesso" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"></return>
 
 			</returns>
 		</insertcommand>
 
-		<updatecommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','CNTITE','CNTREC','CNTFIN'" procname="PRREGFINUPDV2" method="Update">
+		<!--<updatecommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','CNTITE','CNTREC','CNTFIN'" procname="PRREGFINUPDV2" method="Update">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
 			<pre>
 				<![CDATA[
 SET @STAREG = 0;
-SET @MODINP = 0
-SET @STAREC = 0
+IF(@TIPREG = 1)
+	SET @STAREC = 0
 SET @LANKEY = 0
 SET @CHKPCD = 0
 SET @CHKANI = 0
@@ -2744,54 +2851,20 @@ IF (NOT EXISTS (SELECT 1 FROM TBREGFIN (NOLOCK) WHERE NIDFIN = @NIDFIN AND TIPRE
 				<![CDATA[
 
 			
-/*
-  ATUALIZACAO BEM SUCEDIDA E TIPO REGISTRO = 1
-*/
-/*
-IF(@RETURN_VALUE =1 AND @TIPREG=1)
-	BEGIN
-		--  REMOVE O ITEM DE VENDA ASSOCIACAO COM O FINANCEIRO 
-		
-		IF (EXISTS (SELECT 1 FROM RLPCDFIN (NOLOCK) WHERE NIDFIN = @NIDFIN))
-			BEGIN
-				DELETE FROM RLPCDFIN WHERE NIDFIN=@NIDFIN;
-				IF(@@ERROR=0)
-					BEGIN
-					
-						 --  REMOVE O ITEM FINANCEIRO ASSOCIADO AO REGISTRO DE LANCAMENTO SE EXISTIR
-					
-						IF(EXISTS (SELECT 1 FROM TBPCDLAN (NOLOCK) WHERE TIPREG=2 AND NIDPCD = @NIDFIN))
-							BEGIN
-								
-								 -- REMOVE O LANCAMENTO DO ITEM DE PROVISÃO SE EXISTIR
-								
-								DELETE FROM TBPCDLAN WHERE TIPREG=2 AND NIDPCD = @NIDFIN
-								IF(@@ERROR<>0)
-									SET @RETURN_VALUE= -4;
-							END
-					END
-				ELSE
-					SET @RETURN_VALUE = -3;
-			END
-	END		
-*/
+
 				]]>
 			</pos>
 			<returns>
 				<return value="1" message="Registro alterado com sucesso" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"></return>
 				<return value="-2" message="" error="RECORDNOTFOUND"></return>
-				<return value="-3" message="FALHA NA REMOÇÃO DO REGISTRO DE ASSOCIACAO DE FATURAMENTO" error="FAILALL"></return>
-				<return value="-4" message="FALHA NA REMOÇÃO DO ITEM DE REGISTRO DE LANÇAMENTOS" error="FAILALL"></return>
-
 			</returns>
-		</updatecommand>
+		</updatecommand>-->
 
-
-
+	
 		<methods>
 
-			<item script="true" alias="A." sql="" method="WriteToProcedures" return="int" returnmode="21" procname="PRREGFININSLANREF" desc ="Insere para a tabela de lançamentos os registros não equalizados com o registro financeiro" returnvalue="0">
+			<!--<item script="true" alias="A." sql="" method="WriteToProcedures" return="int" returnmode="21" procname="PRREGFININSLANREF" desc ="Insere para a tabela de lançamentos os registros não equalizados com o registro financeiro" returnvalue="0">
 				<query>
 					<![CDATA[
 DECLARE @RETURN_VALUE INT=0
@@ -2820,7 +2893,7 @@ RETURN @RETURN_VALUE;
 				<parameters>
 					<parameter input="true" apply="true" omit="true" desc ="ID do Registro Financeiro" name="FINKEY" type="System.Int32" default="" output="" null=""/>
 				</parameters>
-			</item>
+			</item>-->
 
 			<!--
 			
@@ -3080,88 +3153,626 @@ SELECT NIDFIN AS NIDPCD
 			</item>-->
 
 
-			<item script="true" alias="" sql="" method="UpdateReferences" return="int" returnmode="21" procname="PRREGFINUPDREFV3" desc ="Atualiza as referencias do Registro Financeiro" returnvalue="0" timeout="2800">
+			<item script="true" alias="" sql="" method="UpdateReferences" return="int" returnmode="21" procname="PRREGFINUPDREF" desc ="Atualiza e equaliza as referencias do Registro Financeiro contra a tabela de registro de procedimentos" returnvalue="0" timeout="2800">
 				<query>
 					<![CDATA[
-					
+     DECLARE @RETURN_VALUE INT =0;
+    
+    	/*
+    	 CONSIDERAÇÕES
+    
+    		  CHAVE DE PESQUISA
+    		      EMPKEY
+    			  NUMOSS
+    			  CODPCD
+    			  VLRBRT
+    			  CODANI
+    
+    
+    	                                                             STAREC       HASACT
+    	      TIPREG = 1 - FATURAMENTO                                  0            1
+    		  TIPREG = 2 - CANCELAMENTO DE VENDAS                       1            1
+    		  TIPREG = 3 - EXCLUSAO DE VENDAS                           1            1
+    		  TIPREG = 4 - SERVIÇOS (NÃO CONCILIADO)                    1            1
+    		  TIPREG =14 - SERVIÇOS PET LOVE - CONCILIADOS              1            1
+    
+    	  OS SEGUINTES STATUS NÃO CONSTITUEM EQUALIZAÇÃO FINANCEIRA
+    	     O DW ASSUME QUE TODOS OS REGISTROS TENHAM STAREC = 1, PORTANTO OS STATUS ABAIXO NÃO DEVERÃO CONSTITUIR EQUALIZAÇÃO
+    
+    		 104	OS NAO EXISTENTE
+    		 102	PROCEDIMENTO NAO EXISTENTE
+             101	OS SEM REGISTRO DE LANCAMENTO
+    		  13	ANIMAL NAO EXISTENTE
+    
+    	 */
+    
+    
+		UPDATE TBPCDLAN 
+		   SET VLRCPT = 0,
+		       VLRREP = 0
+		 WHERE TIPREG= 1 AND DATPCD > '20230630' AND SRCSYS =0
+		 
+    	SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    	/* REMOVE OS REGISTROS DE COMPATIBILIDADE COM O FINANCEIRO */
+        --DELETE FROM TBPCDLAN WHERE SRCSYS = 1
+        --SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    
+    	   /*
+    	    * ATUALIA O CODIGO DO ANIMAL VINCULADO A OS DE ACORDO COM OS LANCAMENTOS
+    		*/
+    	UPDATE TBREGFIN
+    	    SET CHKANI = CASE WHEN TBREGFIN.CODANI <> ANI.CODANI THEN ANI.CODANI ELSE 0 END 
+    	    FROM TBREGFIN
+    	INNER JOIN (SELECT NUMOSS, CODANI
+    	                FROM TBPCDLAN (NOLOCK)
+    	                WHERE SRCSYS = 0
+    					AND TIPREG = 1
+    					AND STAREC = 1
+    		            AND NUMOSS >0 
+    					GROUP BY NUMOSS, CODANI) ANI
+    		ON (ANI.NUMOSS = TBREGFIN.NUMOSS)
+        WHERE TBREGFIN.TIPREG = 1
+    	   AND TBREGFIN.STAREC = 0
+    	   AND TBREGFIN.STAREG = 0 
+    	   AND TBREGFIN.LANKEY = 1 
+    	   AND TBREGFIN.NUMOSS > 0 
+    	   AND TBREGFIN.CODANI <> ANI.CODANI
+    
+    	SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    	UPDATE TBREGFIN
+    	   SET CHKPCD = B.CODPCD
+    	  FROM TBREGFIN 
+    	 INNER JOIN TBPCDLAN (NOLOCK) B
+    	    ON (B.EMPKEY = TBREGFIN.EMPKEY 
+           AND  B.NUMOSS = TBREGFIN.NUMOSS
+           AND  B.VLRPCD = TBREGFIN.VLRBRT
+           AND  B.CODANI = TBREGFIN.CODANI)
+         WHERE TBREGFIN.TIPREG = 1
+    	   AND TBREGFIN.STAREC = 0
+    	   AND TBREGFIN.STAREG = 0 
+    	   AND TBREGFIN.LANKEY = 1 
+    	   AND TBREGFIN.NUMOSS > 0 
+    	   AND TBREGFIN.CODPCD <> B.CODPCD
+    	SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    	
+    
+    	/*
+    	 * INTEGRA AUTOMATICAMENTE LANCAMENTOS QUE COINCIDEM COM CHAVE DE PROCEDIMENTO SOMENTE PARA LANCAMENTOS COM OCORRENCIA UNICA
+    	 */
+    	UPDATE TBREGFIN
+           SET TBREGFIN.STAREC = 111
+    	      ,TBREGFIN.LANKEY = B.LANKEY
+    	      ,MODINP = 1
+    		  ,STAREG = 1
+          FROM TBREGFIN 
+         INNER JOIN TBPCDLAN B  (NOLOCK)
+            ON (B.EMPKEY = TBREGFIN.EMPKEY 
+           AND  B.NUMOSS = TBREGFIN.NUMOSS
+           AND  B.CODPCD = TBREGFIN.CODPCD 
+           AND  B.VLRPCD = TBREGFIN.VLRBRT
+           AND  B.CODANI = TBREGFIN.CODANI)
+    	 INNER JOIN (SELECT EMPKEY, NUMOSS, CODPCD, VLRPCD, CODANI, COUNT(*) AS NUMREC
+    			       FROM TBPCDLAN (NOLOCK)
+                      WHERE EMPKEY >0
+                      GROUP BY EMPKEY, NUMOSS, CODPCD, VLRPCD, CODANI 
+                      HAVING COUNT(*)=1) DUP
+    	    ON (DUP.EMPKEY = TBREGFIN.EMPKEY 
+           AND  DUP.NUMOSS = TBREGFIN.NUMOSS
+           AND  DUP.CODPCD = TBREGFIN.CODPCD 
+           AND  DUP.VLRPCD = TBREGFIN.VLRBRT
+           AND  DUP.CODANI = TBREGFIN.CODANI)
+         WHERE TBREGFIN.TIPREG = 1
+    	   AND TBREGFIN.STAREC = 0
+    	   AND TBREGFIN.STAREG = 0 
+    	   AND TBREGFIN.LANKEY = 1 
+    	   AND TBREGFIN.NUMOSS > 0 
+    	   AND B.TIPREG=1 
+    	   AND B.STAREC=1
+    	   AND DUP.NUMREC = 1
+    	   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    	/*
+    	 * INTEGRA AUTOMATICAMENTE LANCAMENTOS QUE NAO COINCIDEM COM O VALOR DA OPERAÇÃO
+    	 */
+    	UPDATE TBREGFIN
+           SET TBREGFIN.STAREC = 111
+    	      ,TBREGFIN.LANKEY = B.LANKEY
+    	      ,MODINP = 8
+    		  ,STAREG = 1
+          FROM TBREGFIN A
+         INNER JOIN TBPCDLAN B  (NOLOCK)
+            ON (B.EMPKEY = A.EMPKEY 
+           AND  B.NUMOSS = A.NUMOSS
+           AND  B.CODPCD = A.CODPCD 
+           AND  B.VLRPCD <> A.VLRBRT
+           AND  B.CODANI = A.CODANI)
+    
+    	 INNER JOIN (SELECT EMPKEY, NUMOSS, CODPCD, VLRPCD, CODANI, COUNT(*) AS NUMREC
+    			       FROM TBPCDLAN (NOLOCK)
+                      WHERE EMPKEY >0
+                      GROUP BY EMPKEY, NUMOSS, CODPCD, VLRPCD, CODANI 
+                      HAVING COUNT(*)=1) DUP
+    	    ON (DUP.EMPKEY = A.EMPKEY 
+           AND  DUP.NUMOSS = A.NUMOSS
+           AND  DUP.CODPCD = A.CODPCD 
+           AND  DUP.VLRPCD <> A.VLRBRT
+           AND  DUP.CODANI = A.CODANI)
+    
+         WHERE A.TIPREG = 1
+    	   AND A.STAREC = 0
+    	   AND A.STAREG = 0 
+    	   AND A.LANKEY = 1 
+    	   AND A.NUMOSS > 0 
+    	   AND B.TIPREG = 1 
+    	   AND B.STAREC = 1
+    	   AND DUP.NUMREC = 1
+    	   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    	   
+    
+    
+    	/*
+    	 * INTEGRA POR SUBSTITUICAO DO CODIGO DO ANIMAL
+    	 */
+      	UPDATE TBREGFIN
+           SET TBREGFIN.STAREC = 111
+    	      ,TBREGFIN.LANKEY = B.LANKEY
+    	      ,MODINP = 4
+    		  ,STAREG = 1
+          FROM TBREGFIN 
+         INNER JOIN TBPCDLAN B  (NOLOCK)
+            ON (B.EMPKEY = TBREGFIN.EMPKEY 
+           AND  B.NUMOSS = TBREGFIN.NUMOSS
+           AND  B.CODPCD = TBREGFIN.CODPCD 
+           AND  B.VLRPCD = TBREGFIN.VLRBRT
+    	   AND  B.CODANI <> TBREGFIN.CODANI
+           AND  B.CODANI = TBREGFIN.CHKANI)
+    
+         WHERE TBREGFIN.TIPREG = 1
+    	   AND TBREGFIN.STAREC = 0
+    	   AND TBREGFIN.STAREG = 0 
+    	   AND TBREGFIN.LANKEY = 1 
+    	   AND TBREGFIN.NUMOSS > 0 
+    	   AND B.TIPREG = 1 
+    	   AND B.STAREC = 1
+    	   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    
+    	 /*
+    	 * INTEGRA POR SUBSTITUICAO DE CODIGO DE PROCEDIMENTO
+    	 */
+      	UPDATE TBREGFIN
+           SET TBREGFIN.STAREC = 111
+    	      ,TBREGFIN.LANKEY = B.LANKEY
+    	      ,MODINP = 3
+    		  ,STAREG = 1
+          FROM TBREGFIN 
+         INNER JOIN TBPCDLAN B  (NOLOCK)
+            ON (B.EMPKEY = TBREGFIN.EMPKEY 
+           AND  B.NUMOSS = TBREGFIN.NUMOSS
+           AND  B.CODPCD <> TBREGFIN.CODPCD 
+           AND  B.VLRPCD = TBREGFIN.VLRBRT
+    	   AND  B.CODANI = TBREGFIN.CODANI
+           AND  B.CODPCD = TBREGFIN.CHKPCD)
+    
+         WHERE TBREGFIN.TIPREG = 1
+    	   AND TBREGFIN.STAREC = 0
+    	   AND TBREGFIN.STAREG = 0 
+    	   AND TBREGFIN.LANKEY = 1 
+    	   AND TBREGFIN.NUMOSS > 0 
+    	   AND B.TIPREG = 1 
+    	   AND B.STAREC = 1
+    
+    	   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    
+    
+    
+        /*
+    	   HEMOVET 0208
+    	   ZOOCARE 2201
+    	 */
+       	UPDATE TBREGFIN 
+    	   SET STAREC= 112
+    	      ,MODINP =CASE WHEN (CODFIL = '0208') THEN 14 ELSE 6 END 
+    	 WHERE TIPREG = 1 
+    	   AND STAREC = 0 
+    	   AND STAREG = 0 
+    	   AND NUMOSS = 0 
+    	   AND CODFIL IN ('0208','2201') 
+    	   AND NUMNFE <>'' 
+    	   AND SERNFE='RPS'
+           SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    
+    	-- OS SEM REGISTRO DE LANCAMENTO
+    	UPDATE TBREGFIN 
+    	   SET STAREC=101 
+    	      ,MODINP = 1
+    	 WHERE TIPREG= 1 
+    	   AND STAREC =0 
+    	   AND STAREG = 0 
+    	   AND NUMOSS > 0  
+    	   AND NUMOSS NOT IN (SELECT NUMOSS FROM TBPCDLAN (NOLOCK) WHERE TIPREG=1 AND NUMOSS<>0)
+       SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    	-- OS NAO EXISTENTE
+    	UPDATE TBREGFIN 
+    	   SET STAREC=104 
+    	      ,MODINP =1
+    	 WHERE TIPREG= 1 
+    	   AND STAREC NOT IN (106, 107,108,109) 
+    	   AND STAREG = 0 
+    	   AND NUMOSS =0 
+           SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    
+     
+    	/*
+    	 * DUPLICIDADE GERAL
+    	 */
+    	UPDATE TBREGFIN
+    	   SET STAREC = 105
+    	      ,MODINP = 5
+    	  FROM TBREGFIN A
+    	 INNER JOIN (SELECT EMPKEY, NUMOSS, CODPCD, VLRBRT, CODANI, COUNT(*) AS NUMREC
+    				   FROM TBREGFIN
+    				  WHERE TIPREG=1 AND STAREC = 0
+    				  GROUP BY EMPKEY, NUMOSS, CODPCD, VLRBRT, CODANI
+    				 HAVING COUNT(*) > 1) B
+    		ON (    A.EMPKEY = B.EMPKEY 
+    		    AND A.NUMOSS = B.NUMOSS 
+    			AND A.CODPCD = B.CODPCD 
+    			AND A.VLRBRT = B.VLRBRT 
+    			AND A.CODANI = B.CODANI)
+    
+    	  WHERE A.TIPREG=1 
+    	    AND A.STAREC=0 
+    		AND A.STAREG=0 
+         SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+         
+     	UPDATE TBREGFIN
+    	   SET STAREC = 105
+    	      ,MODINP = 5
+    	  FROM TBREGFIN A
+    	  WHERE A.TIPREG=1 
+    	    AND A.STAREC=0 
+    		AND A.STAREG=0 
+         SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+     
+        /***************************************************** PETLOVE *************************************************** */
+    	 /*
+		  * VERIFICA SE O LANCAMENTO DE REPASSE EXISTE COM STATUS 1, CASO NAO EXISTA, ASSUME O STATUS DO LANCAMENTO
+    	  */
+ 
+    	UPDATE TBREGFIN
+    	   SET MODINP = 13
+    	      ,STAREC = LAN.STAREC
+    		  ,STAREG = 0
+    	  FROM TBREGFIN FIN
+    	  INNER JOIN TBPCDLAN (NOLOCK) LAN
+    	     ON (LAN.TIPREG = 1 AND LAN.NIDPCD = FIN.NIDPCD)
+    	  WHERE FIN.TIPREG = 14
+    		AND FIN.STAREG = 0
+    		AND LAN.STAREC <>1
+    		AND FIN.NIDPCD >0
+    		AND LAN.NIDPCD >0
+         SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    	/*
+    	  ATRIBUI O VALOR DE REPASSE E O VALOR DE COPARTICIPACAO DOS MOVIMENTOS PETLOVE
+    	*/
+    	
+    	UPDATE TBREGFIN
+    	   SET MODINP = 13
+    	      ,STAREC = 111
+    		  ,LANKEY = LAN.LANKEY
+			  ,STAREG = 1
+    	  FROM TBREGFIN FIN
+    	 INNER JOIN TBPCDLAN (NOLOCK) LAN
+    	    ON (LAN.TIPREG = 1 AND LAN.NIDPCD = FIN.NIDPCD)
+    	  WHERE FIN.TIPREG = 14
+    		AND FIN.STAREG = 0
+    		AND FIN.STAREC = 112
+    		AND FIN.NIDPCD > 0
+    		AND LAN.SRCSYS = 0
+    		AND LAN.STAREC = 1
+         SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+   
+    	DECLARE @AJ01 TABLE (NIDPCD INT, VLRREP MONEY, VLRCPT MONEY )
+    	INSERT INTO @AJ01 (NIDPCD, VLRREP, VLRCPT)
+    	SELECT             NIDPCD, SUM(VLRREP), SUM(VLRCPT)
+    	  FROM TBREGFIN FIN
+    	  WHERE FIN.TIPREG = 14
+    	   AND FIN.MODINP = 13
+    	   AND FIN.STAREG = 1
+    	   AND FIN.STAREC = 111
+    	   AND FIN.NIDPCD > 0
+    	 GROUP BY FIN.NIDPCD
+          SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+   	
+    	/*
+    	 * ATUALIZA OS VALORES NO RESPECTIVO MOVIMENTO DE LANCAMENTOS
+    	 */
+    	UPDATE TBPCDLAN
+    	   SET  VLRCPT = FIN.VLRCPT
+    	       ,VLRREP = FIN.VLRREP
+    	  FROM TBPCDLAN LAN
+    	 INNER JOIN @AJ01 FIN
+    		ON (1 = LAN.TIPREG AND FIN.NIDPCD = LAN.NIDPCD)
+    	  WHERE LAN.SRCSYS = 0 
+    		AND LAN.STAREC = 1
+    		AND LAN.NIDPCD > 0
+         SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    	  
+    	UPDATE TBREGFIN
+    	   SET STAREC = 112
+    	      ,STAREG = 0
+    	  FROM TBREGFIN FIN
+    	 WHERE FIN.TIPREG =4
+    	   AND MODINP = 13
+    	   AND FIN.STAREG = 0
+    	   AND FIN.STAREC = 1
+          SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+   
+    	UPDATE TBREGFIN
+    	   SET STAREC = 112
+    	  FROM TBREGFIN FIN
+    	  WHERE FIN.TIPREG = 14
+    	    AND MODINP = 13
+    		AND FIN.STAREG = 0
+    		AND FIN.STAREC = 1
+          SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+   
+    	/************************************************* FIM PETLOVE *************************************************** */
+      
+    	/* ***************************  BAIXA EFETIVA DE CANCELAMENTOS E EXCLUSÕES ************************************** */
+    
+    	DECLARE @XTCAN TABLE
+             (FLGPRO TINYINT NOT NULL DEFAULT 0,
+    		  EMPKEY tinyint NOT NULL DEFAULT 0,
+    	      NUMOSS int NOT NULL DEFAULT 0,
+    	      QTDENT int NOT NULL DEFAULT 0,
+    		  QTDSAI int NOT NULL DEFAULT 0)
+    
+    	INSERT INTO @XTCAN 
+    	      (EMPKEY,NUMOSS,QTDENT, QTDSAI)
+    	SELECT EMPKEY, NUMOSS, COUNT(*), 0
+    	  FROM TBREGFIN (NOLOCK) 
+    	 WHERE STAREG= 0  AND TIPREG=1 AND NUMOSS >0 
+    	 GROUP BY EMPKEY, NUMOSS
+    	 UNION
+    	SELECT EMPKEY, NUMOSS, 0, COUNT(*)
+    	  FROM TBREGFIN (NOLOCK)  
+    	 WHERE TIPREG IN (2) AND STAREC=1 AND NUMOSS>0 AND HASLAN=0
+    	 GROUP BY EMPKEY, NUMOSS
+     
+           SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    	INSERT INTO @XTCAN 
+    	      (FLGPRO, EMPKEY,NUMOSS, QTDENT, QTDSAI)
+    	SELECT 1, EMPKEY, NUMOSS, SUM(QTDENT),SUM(QTDSAI)
+    	  FROM @XTCAN 
+    	 WHERE FLGPRO = 0
+    	 GROUP BY EMPKEY, NUMOSS
+    
+    	 DELETE FROM @XTCAN WHERE FLGPRO=0
+    	 DELETE FROM @XTCAN WHERE QTDSAI=0
+    
+    	/* O REGISTRO DE CANCELAMENTO POSSUI UM REGISTRO DE FATURAMENTO */
+    	UPDATE TBREGFIN 
+    	   SET TBREGFIN.HASLAN = 11
+    	      ,TBREGFIN.STAREC = 112
+    	  FROM TBREGFIN 
+    	 INNER JOIN @XTCAN A1
+    	    ON (TBREGFIN.EMPKEY = A1.EMPKEY AND TBREGFIN.NUMOSS=A1.NUMOSS)
+    	 WHERE TBREGFIN.STAREG=0  AND TBREGFIN.TIPREG = 2 AND TBREGFIN.STAREC=1
+           SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;	
+    
+    	UPDATE TBREGFIN 
+    	   SET TBREGFIN.REGBXD = CASE WHEN (A1.QTDENT-A1.QTDSAI=0) THEN 1 ELSE 2 END
+    	  FROM TBREGFIN 
+    	 INNER JOIN @XTCAN A1
+    	    ON (TBREGFIN.EMPKEY = A1.EMPKEY AND TBREGFIN.NUMOSS=A1.NUMOSS)
+    	 WHERE TBREGFIN.STAREG=1  AND TBREGFIN.TIPREG =1
+    	   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;	
+    
+    
+    	DELETE FROM @XTCAN
+    
+    	INSERT INTO @XTCAN (EMPKEY,NUMOSS,QTDENT, QTDSAI)
+    	SELECT EMPKEY, NUMOSS, COUNT(*), 0
+    	  FROM TBREGFIN (NOLOCK) 
+    	 WHERE STAREG IN(1,0)  AND TIPREG=1 AND NUMOSS >0  AND REGBXD =0
+    	 GROUP BY EMPKEY, NUMOSS
+    	 UNION
+    	SELECT EMPKEY, NUMOSS, 0, COUNT(*)
+    	  FROM TBREGFIN (NOLOCK)  
+    	 WHERE TIPREG IN (3) AND STAREC=1 AND NUMOSS>0 AND HASLAN=0
+    	 GROUP BY EMPKEY, NUMOSS
+    
+    
+    	INSERT INTO @XTCAN 
+    	      (FLGPRO, EMPKEY,NUMOSS, QTDENT, QTDSAI)
+    	SELECT 1, EMPKEY, NUMOSS, SUM(QTDENT),SUM(QTDSAI)
+    	  FROM @XTCAN 
+    	 WHERE FLGPRO = 0
+    	 GROUP BY EMPKEY, NUMOSS
+    
+    	 DELETE FROM @XTCAN WHERE FLGPRO = 0
+    	 DELETE FROM @XTCAN WHERE QTDSAI=0
+    
+    
+    
+    	UPDATE TBREGFIN 
+    	   SET TBREGFIN.HASLAN = 11
+    	      ,TBREGFIN.STAREC = 112
+    	  FROM TBREGFIN 
+    	 INNER JOIN @XTCAN A1
+    	    ON (TBREGFIN.EMPKEY = A1.EMPKEY AND TBREGFIN.NUMOSS=A1.NUMOSS)
+    	 WHERE TBREGFIN.STAREG=0  AND TBREGFIN.TIPREG = 3 AND TBREGFIN.STAREC=1
+           SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;	
+    
+    
+       	UPDATE TBREGFIN 
+    	   SET TBREGFIN.REGBXD = CASE WHEN (A1.QTDENT-A1.QTDSAI=0) THEN 1 ELSE 2 END
+    	  FROM TBREGFIN 
+    	 INNER JOIN @XTCAN A1
+    	    ON (TBREGFIN.EMPKEY = A1.EMPKEY AND TBREGFIN.NUMOSS=A1.NUMOSS)
+    	 WHERE TBREGFIN.STAREG IN (1,0) AND TBREGFIN.TIPREG =1 
+    	   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;	
+    	DELETE FROM @XTCAN
+    
+    
+    	UPDATE TBREGFIN 
+    	   SET TBREGFIN.STAREC = 113
+    		  ,TBREGFIN.STAREG = 0
+    	  FROM TBREGFIN 
+    	 WHERE TBREGFIN.STAREG=0  
+    	   AND TBREGFIN.TIPREG IN (2,3)
+    	   AND TBREGFIN.STAREC =1
+           SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;	
+    
+    
+    /* TRATATIVAS DE REGISTROS COM STATUS 105 */
+    
+    	DECLARE @NIDFIN int 
+    	DECLARE @EMPKEY tinyint 
+    	DECLARE @NUMOSS int 
+    	DECLARE @CODPCD int 
+    	DECLARE @VLRLIQ money 
+    	DECLARE @CODANI int 
+    	DECLARE @RC INT
+    	DECLARE @LANKEY INT =0;
+    	DECLARE T105 CURSOR 
+    		FOR 
+    			SELECT DISTINCT 
+    				   A.NIDFIN
+    				  ,EMPKEY =CASE WHEN A.EMPKEY <> B.EMPKEY THEN B.EMPKEY ELSE A.EMPKEY END
+    				  ,A.NUMOSS
+    				  ,CODPCD = CASE WHEN A.CODPCD <> B.CODPCD THEN B.CODPCD ELSE A.CODPCD END
+    				  ,VLRLIQ = CASE WHEN A.VLRBRT <> B.VLRPCD THEN B.VLRPCD ELSE A.VLRBRT END
+    				  ,CODANI = CASE WHEN A.CODANI <> B.CODANI THEN B.CODANI ELSE A.CODANI END
+    			  FROM TBREGFIN A (NOLOCK)
+    			  LEFT JOIN TBPCDLAN B (NOLOCK) 
+    				ON (B.EMPKEY = CASE WHEN A.EMPKEY <> B.EMPKEY THEN B.EMPKEY ELSE A.EMPKEY END 
+    			   AND  B.NUMOSS = A.NUMOSS
+    			   AND  B.CODPCD = CASE WHEN A.CODPCD <> B.CODPCD THEN B.CODPCD ELSE A.CODPCD END 
+    			   AND  B.VLRPCD = CASE WHEN A.VLRBRT <> B.VLRPCD THEN B.VLRPCD ELSE A.VLRBRT END
+    			   AND  B.CODANI = CASE WHEN A.CODANI <> B.CODANI THEN B.CODANI ELSE A.CODANI END)
+    	 WHERE A.TIPREG = 1 
+    	   AND A.STAREC=105 
+    	   AND A.LANKEY = 1 
+    	   AND MODINP IN (5) 
+    	 ORDER BY NIDFIN DESC
+    
+    	 OPEN T105
+    	 FETCH NEXT FROM T105 INTO @NIDFIN, @EMPKEY, @NUMOSS, @CODPCD, @VLRLIQ, @CODANI
+    
+    	 WHILE @@FETCH_STATUS =0
+    
+    		BEGIN
+    			SET @LANKEY =0;
+            
+    			SELECT @LANKEY = COALESCE(LANKEY,1)
+    			  FROM TBPCDLAN (NOLOCK) A
+    			 WHERE SRCSYS = 0
+    			   AND TIPREG = 1
+    			   AND A.EMPKEY = @EMPKEY
+    			   AND NUMOSS = @NUMOSS
+    			   AND CODPCD = @CODPCD
+    			   AND VLRPCD = @VLRLIQ
+    			   AND CODANI = @CODANI
+    			   AND LANKEY NOT IN(SELECT LANKEY FROM TBREGFIN WHERE TIPREG=1 AND LANKEY <>1)
+    		   
+    			IF(@LANKEY IS NOT NULL AND @LANKEY >1)
+    				BEGIN
+    			
+    							UPDATE TBREGFIN 
+    							   SET LANKEY=@LANKEY
+    								  ,STAREG=1
+    								  ,STAREC=111
+    							 WHERE NIDFIN = @NIDFIN AND TIPREG = 1;
+                    		
+    				
+    				END
+    
+    			FETCH NEXT FROM T105 INTO @NIDFIN, @EMPKEY, @NUMOSS, @CODPCD, @VLRLIQ, @CODANI
+    
+    		END
+    	CLOSE T105
+    	DEALLOCATE T105
+    
+    
+    	/*
+    	 * INSERE OS REGISTROS NÃO EQUALIZADOS PARA A TABELA DE LANÇAMENTOS
+    	 */
+  
+    	INSERT INTO TBPCDLAN
+    			  (NIDPCD,SRCSYS,TIPREG,STAREC,ORGBAS,NUMMES,NUMANO,CODANI 
+         		  ,IDAANI,DATPCD,VLRTAB,VLRPCD,VLRPGT,APEVET,NUMQTD,CODPCD
+        		  ,CODORI,CODEMP,INTKEY,NUMOSS,STAOSS,VLRDCT,NIDBAS,EMPKEY,NIDVAC)
+    	SELECT NIDFIN
+    		   ,1
+    		   ,TIPREG
+    		   ,1
+    		   ,CASE WHEN EMPKEY = 28 THEN 2 ELSE 1 END
+    		   ,NUMMES
+    		   ,NUMANO
+    		   ,CASE WHEN FAT.CHKANI>0 THEN FAT.CHKANI ELSE (CASE WHEN FAT.CODANI > 0 THEN FAT.CODANI ELSE 999999 END) END
+    		   ,0
+    		   ,DATFEC
+    		   ,0
+    		   ,VLRLIQ
+    		   ,VLRLIQ
+    		   ,''
+    		   ,1
+    		   ,CASE WHEN FAT.TIPREG=4 AND FAT.CODPCD=0 THEN  999998 ELSE CASE WHEN FAT.CHKPCD>0 THEN CHKPCD ELSE CASE WHEN FAT.CODPCD= 0 THEN 999999 ELSE FAT.CODPCD END  END END
+    		   ,FINKEY
+    		   ,CODEMP
+    		   ,0
+    		   ,NUMOSS
+    		   ,'P'
+    		   ,0
+    		   ,0
+    		   ,EMPKEY
+    		   ,0
+    	  FROM TBREGFIN (NOLOCK) FAT
+         WHERE STAREC=112
+    	   AND STAREG = 0
+    	   AND RIGHT('00' + CONVERT(VARCHAR, TIPREG),2) + RIGHT('0000000' + CONVERT(VARCHAR,NIDFIN),7)
+    			    NOT IN(SELECT RIGHT('00' + CONVERT(VARCHAR, tipreg),2) + RIGHT('0000000' + CONVERT(VARCHAR,nidpcd),7) 
+    				         FROM TBPCDLAN (NOLOCK) WHERE SRCSYS = 1)
+    
+    	   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;	
+    
+    
+    	 --/*
+    	 --* OBTEM O ID DE CADA REGISTRO INSERIDO NA TBPCDLAN
+    	 --*/
+    	UPDATE TBREGFIN
+    	   SET TBREGFIN.LANKEY = TBPCDLAN.LANKEY
+    	      ,STAREG =1
+    	  FROM TBREGFIN
+    	 INNER JOIN TBPCDLAN (NOLOCK)
+    		ON (TBPCDLAN.CODORI = TBREGFIN.FINKEY)
+    	 WHERE TBPCDLAN.SRCSYS = 1
+    	   AND TBPCDLAN.STAREC = 1
+    	   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;	
+         RETURN @RETURN_VALUE;
 				]]>
 				</query>
 			</item>
 
-			<!--<item script="false" alias="" sql="" method="RemoveReleases" return="int" returnmode="21" procname="PRREGFINCLSDAT" desc ="Remove todos os registros relacionados ao processamento de Registro financeiros de Vendas" returnvalue="0" timeout="2800">
-				<query>
-					<![CDATA[
-DECLARE @RETURN_VALUE INT = 0
 
- DELETE FROM RLPCDFIN
- SET @RETURN_VALUE = @@ROWCOUNT
- DELETE FROM TBPCDLAN WHERE TIPREG IN (2,12)
- SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT
- TRUNCATE TABLE TBREGFIN	
-		]]>
-				</query>
-				<parameters>
-					<parameter input="false" apply="false" omit="true" desc ="Valor de Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
-
-				</parameters>
-			</item>-->
 		</methods>
 
-		<selectcommand>
-			<item script="false" alias="A." sql="" method="Exists" return="int" returnmode="2" procname="" desc ="Verifica se o ID de Registro para o tipo de Registro já existe na tabela de contenção" returnvalue="0">
-				<query>
-					<![CDATA[IF(EXISTS (SELECT 1 FROM TBREGFIN (NOLOCK) WHERE NIDFIN = @NIDFIN AND TIPREG=@TIPREG))
-    SELECT 1 AS RETURN_VALUE
-ELSE
-	SELECT 0 AS RETURN_VALUE]]>
-				</query>
-				<parameters>
-					<parameter input="true" apply="true" omit="true" desc ="ID de Registro" name="NIDFIN" type="System.Int32" default="" output="" null=""/>
-					<parameter input="true" apply="true" omit="true" desc ="Tipo de Registro" name="TIPREG" type="System.Byte" default="" output="" null=""/>
-					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
-
-				</parameters>
-			</item>
-
-		</selectcommand>
-
-		<selectallcommand>
-			<!-- Query otimizada -->
-			<item script="false" alias="A." sql="" method="SelectID" type="List" return="int" procname="" desc ="Obtêm uma lista de id's conforme o status de registro" remarks="">
-				<query order="NIDFIN DESC">
-					<![CDATA[SELECT DISTINCT A.NIDFIN FROM TBREGFIN (NOLOCK) A WHERE A.STAREG = 0 AND A.TIPREG=1 AND A.LANKEY=1]]>
-				</query>
-
-				<parameters>
-					<parameter input="true" apply="true" desc ="Status do registro" name="STAREC" type="System.Byte" default="" output="" null=""/>
-				</parameters>
-
-			</item>
-
-			<item script="false" alias="A." sql="" method="GetRecordsNotEqualizeds" type="List" return="int" procname="" desc ="Obtêm uma lista de id's de notas de cancelamentos/exclusão contabilizados e não associadas ao financeiro com base no status de registro" remarks="">
-				<query order="NIDFIN DESC">
-					<![CDATA[SELECT FINKEY FROM TBREGFIN (NOLOCK) A WHERE A.LANKEY = 1]]>
-				</query>
-
-			</item>
-			<!--<item script="false" alias="A." sql="" method="GetCancellations" type="List" return="int" procname="" desc ="Obtêm uma lista de id's de notas de cancelamentos/exclusão contabilizados e não associadas ao financeiro com base no status de registro" remarks="">
-				<query order="NIDFIN DESC">
-					<![CDATA[SELECT DISTINCT A.NIDFIN FROM TBREGFIN (NOLOCK) A WHERE A.TIPREG IN (2,3) AND A.STAREC=@STAREC AND A.LANKEY=0 AND A.MODINP=0 AND A.HASACT=1]]>
-				</query>
-				<parameters>
-					<parameter input="true" apply="true" omit="true" desc ="Status do registro" name="STAREC" type="System.Byte" default="" output="" null=""/>
-				</parameters>
-
-			</item>
-
-			<item script="false" alias="A." sql="" method="GetCancellations" type="List" return="int" procname="" desc ="Obtêm uma lista de id's de notas de cancelamentos/exclusão não contabilizados e associadas ao financeiro" remarks="">
-				<query order="NIDFIN DESC">
-					<![CDATA[SELECT DISTINCT A.NIDFIN FROM TBREGFIN (NOLOCK) A WHERE A.TIPREG IN (2,3) AND A.STAREC=1 AND A.LANKEY=0 AND A.MODINP=0 AND A.HASACT=0 AND HASLAN=11]]>
-				</query>
-			</item>-->
 
 
-		</selectallcommand>
+
 	</item>
 
 
@@ -3172,7 +3783,7 @@ ELSE
 
 
 		<view>
-			<item owner="" script="true" definer="" name="VWPCDFIN_OS" desc ="View de SUMARIZAÇÃO DE informações financeiras por Os e Empresa">
+			<!--<item owner="" script="true" definer="" name="VWPCDFIN_OS" desc ="View de SUMARIZAÇÃO DE informações financeiras por Os e Empresa">
 				<query>
 					<![CDATA[select 
   max(rec.dscrec) as DSCREC,
@@ -3192,9 +3803,9 @@ ELSE
 
  group by lan.empkey, lan.starec, lan.NUMOSS;]]>
 				</query>
-			</item>
+			</item>-->
 
-			<item owner="" script="true" definer="" name="VWPCDFIN_EMPRESA" desc ="View de SUMARIZAÇÃO DE informações financeiras por Empresa/Mes ano">
+			<!--<item owner="" script="true" definer="" name="VWPCDFIN_EMPRESA" desc ="View de SUMARIZAÇÃO DE informações financeiras por Empresa/Mes ano">
 				<query>
 					<![CDATA[select 
   max(rec.dscrec) as DSCREC,
@@ -3215,32 +3826,14 @@ ELSE
 
  group by lan.empkey,lan.starec, LAN.NUMMES,LAN.NUMANO;]]>
 				</query>
-			</item>
+			</item>-->
 		</view>
 
-		<!--<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="PRPCDFININS" method="Insert">
-			<maxfield field=""/>
-			<nextnumber field="" id="" />
-			<pre>
-				<![CDATA[
-IF(EXISTS (SELECT 1 FROM RLPCDFIN (NOLOCK) WHERE NIDFIN = @NIDFIN AND LANKEY =@LANKEY))
-   SET @RETURN_VALUE = -2;
-				]]>
-			</pre>
-			<body></body>
-			<pos>
-				<![CDATA[]]>
-			</pos>
-			<returns>
-				<return value="-1" message="" error="FAILALL"></return>
-				<return value="-2" message="" error="RECORDFOUND"></return>
 
-			</returns>
-		</insertcommand>-->
 
 		<selectallcommand>
-			<!-- Query Otimizada -->
-			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="FinancialRecord" procname="" desc ="Obtêm todos os registros financeiross inconsistentes com o registro de lancamentos para o processo de análise e merge por status de registro" remarks="">
+
+			<!--<item script="false" alias="A." sql="" method="SelectAll" type="List" return="FinancialRecord" procname="" desc ="Obtêm todos os registros financeiross inconsistentes com o registro de lancamentos para o processo de análise e merge por status de registro" remarks="">
 				<query order="NIDFIN DESC">
 					<![CDATA[
 SELECT DISTINCT A.NIDFIN, A.EMPKEY, A.NUMOSS, A.CODPCD, A.VLRLIQ, A.VLRBRT, A.CODANI, A.CHKPCD 
@@ -3253,9 +3846,9 @@ SELECT DISTINCT A.NIDFIN, A.EMPKEY, A.NUMOSS, A.CODPCD, A.VLRLIQ, A.VLRBRT, A.CO
 					<parameter input="true" apply="true" omit="true" desc ="Status do registro" name="STAREC" type="System.Byte" default="" output="" null=""/>
 				</parameters>
 
-			</item>
+			</item>-->
 
-			<item script="true" alias="A." sql="" method="GroupAll" type="List" return="FinancialRecord" procname="PRPCDFINSELGRPINC" desc ="Obtêm todos os registros financeiros inconsistentes com o registro de lancamentos" remarks="7 - Lista informações para associação ao Modo de Input 7 - MIGRACAO AGRUPADA@8 - Lista informações para associação ao Modo de Input -8 - MIGRACAO COM VALOR DIVERGENTE">
+			<!--<item script="true" alias="A." sql="" method="GroupAll" type="List" return="FinancialRecord" procname="PRPCDFINSELGRPINC" desc ="Obtêm todos os registros financeiros inconsistentes com o registro de lancamentos" remarks="7 - Lista informações para associação ao Modo de Input 7 - MIGRACAO AGRUPADA@8 - Lista informações para associação ao Modo de Input -8 - MIGRACAO COM VALOR DIVERGENTE">
 				<query>
 					<![CDATA[
     IF(@TIPLIS=7)
@@ -3316,83 +3909,61 @@ SELECT DISTINCT A.NIDFIN, A.EMPKEY, A.NUMOSS, A.CODPCD, A.VLRLIQ, A.VLRBRT, A.CO
 
 				</parameters>
 
-			</item>
+			</item>-->
 
 
 
 		</selectallcommand>
 		<methods>
-			<!--<item script="true" alias="" sql="" method="IsComplete" return="int" returnmode="21" procname="PRPCDFINHASINT" desc ="Verifica se a Tabela de Relação Procedimentos x Financeiro é integra" returnvalue="0">
-				<query>
-					<![CDATA[
-DECLARE @RETURN_VALUE INT = 1;
-SELECT LANKEY, COUNT(*) AS RECNOS FROM RLPCDFIN group by lankey having COUNT(*) > 1;
-IF(@@ROWCOUNT>0)
-   SET @RETURN_VALUE =0;
-RETURN @RETURN_VALUE;
-		
-]]>
-				</query>
-			</item>-->
 
-			<item script="false" alias="" sql="" responsemode="1" method="Merge" return="int" returnmode="9" procname="" desc ="Efetua o merge de informações da tabela de registros financeiros" returnvalue="0">
+			<!--<item script="false" alias="" sql="" responsemode="1" method="Merge" return="int" returnmode="9" procname="" desc ="Efetua o merge de informações da tabela de registros financeiros" returnvalue="0">
 				<query/>
 				<scriptbody>
 					<![CDATA[respond = IMerge();]]>
 				</scriptbody>
-			</item>
+			</item>-->
 
-			<item script="true" alias="" sql="" method="InsertFromOrigin" return="int" responsemode="1" returnmode="21" procname="PRPCDFININSORI" desc ="Insere um registro na tabela Procedimentos x Financeiro a partir do Id de Origem da Tabela de Registros financeiros e status de registro qualificado" remarks="Este procedimento se baseia no campo status de registro para definir o modo de input de dados" returnvalue="0">
+			<!--<item script="true" alias="" sql="" method="InsertFromOrigin" return="int" responsemode="1" returnmode="21" procname="PRPCDFININSORI" desc ="Insere um registro na tabela Procedimentos x Financeiro a partir do Id de Origem da Tabela de Registros financeiros e status de registro qualificado" remarks="Este procedimento se baseia no campo status de registro para definir o modo de input de dados" returnvalue="0">
 				<query>
 					<![CDATA[
 
-DECLARE @RETURN_VALUE INT =0;
-DECLARE @LANKEY INT =0;
-    
--- PESQUISA OS DADOS DO REGISTRO NA TABELA DE PROCEDIMENTOS
-SELECT @LANKEY = COALESCE(LANKEY,0)
-  FROM TBPCDLAN A
- WHERE A.EMPKEY = @EMPKEY
-   AND NUMOSS = @NUMOSS
-   AND CODPCD = @CODPCD
-   AND VLRPCD = @VLRLIQ
-   AND CODANI = @CODANI
-   AND LANKEY NOT IN(SELECT LANKEY FROM TBREGFIN)				
-            					
-IF(@LANKEY IS NULL)
-    SET @LANKEY =0;
-    
-             
-IF(@LANKEY>0)
-    BEGIN
-        INSERT INTO RLPCDFIN
-		      (NIDFIN,  SRCSYS, MODINP,  LANKEY, VLRLIQ, VLRBRT, DATFEC, DATEMI, VLRPIS, VLRCOF, VLRISS, VLRIRF)
-        SELECT NIDFIN, CASE WHEN TIPREG=1 THEN 1 ELSE 2 END,@MODINP, @LANKEY, VLRLIQ, VLRBRT, DATFEC, DATEMI, VLRPIS, VLRCOF, VLRISS, VLRIRF
-          FROM TBREGFIN  
-         WHERE NIDFIN = @NIDFIN;
-            				  
-        IF(@@ERROR = 0)
-            BEGIN
-            	UPDATE TBREGFIN SET MODINP=@MODINP, LANKEY=@LANKEY, STAREC=1 WHERE NIDFIN = @NIDFIN;
-            						
-            	IF(@@ERROR=0)
-            		SET @RETURN_VALUE = @NIDFIN;
-            	ELSE
-            		BEGIN
-            			DELETE FROM RLPCDFIN WHERE NIDFIN = @NIDFIN;
-            			UPDATE TBREGFIN SET LANKEY = 0, MODINP=3, STAREC=1 WHERE NIDFIN = @NIDFIN;
-        				SET @RETURN_VALUE=-3;
-            		END
-            END
-        ELSE
-        	BEGIN
-    			/* FALHA NA ATUALIZAÇÃO DO REGISTRO */
-            	UPDATE TBREGFIN SET LANKEY = 0, MODINP=3 WHERE NIDFIN = @NIDFIN;
-        		SET @RETURN_VALUE=-2;
-        	END
-    END
+  DECLARE @RETURN_VALUE INT =0;
+    DECLARE @LANKEY INT =0;
+        
+    PESQUISA OS DADOS DO REGISTRO NA TABELA DE PROCEDIMENTOS
+    SELECT @LANKEY = COALESCE(LANKEY,1)
+      FROM TBPCDLAN (NOLOCK) A
+     WHERE A.EMPKEY = @EMPKEY
+       AND NUMOSS = @NUMOSS
+       AND CODPCD = @CODPCD
+       AND VLRPCD = @VLRLIQ
+       AND CODANI = @CODANI
+       AND LANKEY NOT IN(SELECT LANKEY FROM TBREGFIN)				
+                					
+    IF(@LANKEY IS NULL)
+        SET @LANKEY =1;
+        
+    IF(@LANKEY>0)
+		BEGIN
+			UPDATE TBREGFIN SET MODINP=@MODINP,LANKEY=@LANKEY,STAREC=1 WHERE NIDFIN = @NIDFIN AND TIPREG = 1;
+                						
+            IF(@@ERROR=0)
+                SET @RETURN_VALUE = 1;
+            ELSE
+                BEGIN
+                    UPDATE TBREGFIN SET LANKEY = 1, MODINP=3 WHERE NIDFIN = @NIDFIN AND TIPREG = 1;
+            		SET @RETURN_VALUE=-3;
+                END
+		END
+	ELSE
+        BEGIN
+        	/* FALHA NA ATUALIZAÇÃO DO REGISTRO */
+            UPDATE TBREGFIN SET LANKEY = 1, MODINP=3 WHERE NIDFIN = @NIDFIN AND TIPREG = 1;
+            SET @RETURN_VALUE=-2;
+        END
+      
     RETURN @RETURN_VALUE;
- 
+
 
 ]]>
 				</query>
@@ -3411,19 +3982,16 @@ IF(@LANKEY>0)
 					<return value="-2" message="FALHA NA INSERÇÃO DO REGISTRO DE VINCULO FINANCEIRO" error="FAILALL"></return>
 					<return value="-3" message="FALHA NA ATUALIZAÇÃO DO FECHAMENTO DO REGISTRO DE VINCULO FINANCEIRO" error="FAILALL"></return>
 				</returns>
-			</item>
-		</methods>
+			</item>-->
 
+
+		</methods>
 	</item>
 
 
 	<item create="true"  id="29" name="TBSTAVAC" api="true" apiname="" friendlyname="StatusVacinas" modelversion="3" descriptor="Tabela de Informações sobre Status de Vacinas e Periodontais" comments="Armazena as informações dos status de vacinas e outros controles relacionados, a disposição de cada status esta relacionada de maneira vertical ou seja cada classificação de status está relacionada para uma coluna individual da tabela">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
-
-	
-
-
 		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="PRSTAVACINS" method="Insert">
 			<maxfield field="NIDVAC"/>
 			<nextnumber field="" id="" />
@@ -4518,6 +5086,11 @@ IF(EXISTS (SELECT 1 FROM TBPCDOPE (NOLOCK) WHERE CODOPE=@CODOPE))
 		<SqlTable></SqlTable>
 	</item>
 	<item create="true"  id="206" type="View" name="VWLANINTVWC" api="true" apiname="" friendlyname="ViewBaseInternacaoVWC" modelversion="3" descriptor="View de Registros de Lançamentos de Procedimentos base consulta VET WE CARE" comments ="Expôe os registros de lançamentos com base em critérios de coleta da tabela de referência RFSTAOSV e tabela RFSTAOSS e seus específicos tipos de relacionamento">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="206" type="View" name="VWANACLI" api="false" apiname="" friendlyname="ViewClientAnalisys" modelversion="3" descriptor="View de Registros de Lançamentos de Procedimentos base consulta VET WE CARE" comments="@Esta view disponibiliza informações sobre clientes dispondo os dados nas seguintes condições:@O campo CODCMF for válido dentro do critério conforme o tipo@O Cep for válido@O campo DSCMAL for estruturalmente válido@O campo TELCEL for válido dentro do critério de estrutura 99 99 9 9999 9999@O campo NUMANI exibe as quantidades de animais vivos dentro da condição estabelecida pelo campo">
+
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 	</item>

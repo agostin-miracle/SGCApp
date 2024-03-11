@@ -2718,8 +2718,6 @@ SELECT N+2023 AS CODREF, CONVERT(VARCHAR,N+2023) AS DSCREF  FROM R]]>
 				<parameter input="true" apply="true" omit="true" desc ="ID de Logon" name="NIDLOG" type="System.Int32" default="" output="" null="false"/>
 				<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
 			</parameters>
-
-
 		</item>
 
 		<item modifier="static" script="true" alias="" sql="" responsemode="1" method="Login" return="int" returnmode="2" procname="PRCADUSULGN" desc ="Efetua o login de usuário" returnvalue="1">
@@ -2865,7 +2863,6 @@ IF(@RETURN_VALUE =0)
 			</returns>
 		</item>
 
-
 		<item modifier="static" script="true" alias="AUD." sql="" route="" processcode="110" method="GetUserLogged" return="UserLogged" returnmode="2" procname="PRLOGACEGET" desc ="Retorna informações do id de login informado" remarks="O sistema liga o ID de usuario com o ID de Chave de Associação de auditoria">
 			<query order="AUD.DATCAD DESC">
 				<![CDATA[
@@ -2892,7 +2889,6 @@ IF(@RETURN_VALUE =0)
 			</parameters>
 		</item>
 
-
 		<item modifier="static" script="true" alias="" sql="" route="" processcode="110" method="GetVeterinariansNumber" return="int" returnmode="2" procname="PRCADVETGETNUM" desc ="Retorna o número de veterinários cadastrados" remarks="O sistema apura o número de veterinários de forma distinta em relação ao apelido ou login do veterinário">
 			<query order="">
 				<![CDATA[DECLARE @RETURN_VALUE INT = 0;
@@ -2914,5 +2910,6 @@ IF(@RETURN_VALUE =0)
 				<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
 			</parameters>
 		</item>
+	
 	</actions>
 </root>

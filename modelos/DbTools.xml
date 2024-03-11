@@ -185,43 +185,43 @@
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
 
-			<business ns="DW.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,DW.Domain.Models, DW.Domain.Dto,DW.Interface,MazeFire,System.Collections.Generic ">C:\Repositorio\PetCareDW\Business</business>
-			<interface ns="DW.Interface" using="System.Collections.Generic,DW.Domain.Models,DW.Domain.Dto">C:\Repositorio\PetCareDW\Interface</interface>
-			<model ns="DW.Domain.Models" using="System,MazeFire">C:\Repositorio\PetCareDW\Domain\Models</model>
-			<interfaceapp ns="DW.Domain.Interface.Application" using="DW.Domain.Models,DW.Domain.Dto,System.Collections.Generic" >C:\Repositorio\PetCareDW\Domain\Interface\Application</interfaceapp>
-			<serviceapp ns="DW.Domain.Application" using="System,MazeFire,System.Collections.Generic,DW.Domain.Interface.Application,DW.Domain.Models,DW.Domain.Dto,DW.Domain.Interface.Repository">C:\Repositorio\PetCareDW\Domain\Application</serviceapp>
-			<dto ns="DW.Domain.Dto" using="System, MazeFire">C:\Repositorio\PetCareDW\Domain\Dto</dto>
-			<actions ns="DW.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,DW.Domain.Models, DW.Domain.Dto,DW.Interface ">C:\Repositorio\PetCareDW\Business</actions>
+			<business ns="PetCare.DW.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.DW.Domain.Models, PetCare.DW.Domain.Dto,PetCare.DW.Interface,MazeFire,System.Collections.Generic ">C:\Repositorio\PetCareDW\Business</business>
+			<interface ns="PetCare.DW.Interface" using="System.Collections.Generic,PetCare.DW.Domain.Models,PetCare.DW.Domain.Dto">C:\Repositorio\PetCareDW\Interface</interface>
+			<model ns="PetCare.DW.Domain.Models" using="System,MazeFire">C:\Repositorio\PetCareDW\Domain\Models</model>
+			<interfaceapp ns="PetCare.DW.Domain.Interface.Application" using="PetCare.DW.Domain.Models,PetCare.DW.Domain.Dto,System.Collections.Generic" >C:\Repositorio\PetCareDW\Domain\Interface\Application</interfaceapp>
+			<serviceapp ns="PetCare.DW.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.DW.Domain.Interface.Application,PetCare.DW.Domain.Models,PetCare.DW.Domain.Dto,PetCare.DW.Domain.Interface.Repository">C:\Repositorio\PetCareDW\Domain\Application</serviceapp>
+			<dto ns="PetCare.DW.Domain.Dto" using="System, MazeFire">C:\Repositorio\PetCareDW\Domain\Dto</dto>
+			<actions ns="PetCare.DW.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.DW.Domain.Models, PetCare.DW.Domain.Dto,PetCare.DW.Interface,MazeFire ">C:\Repositorio\PetCareDW\Business</actions>
 
 			<api>C:\dbtools\Maze\Api</api>
 			<asp>C:\dbtools\Maze\Asp</asp>
 			<procs>C:\Repositorio\PetCareDW\Business\DbScripts</procs>
-			<lists ns="DW.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,DW.Domain.Models, DW.Domain.Dto">C:\Repositorio\PetCareDW\Business</lists>
+			<lists ns="PetCare.DW.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.DW.Domain.Models, PetCare.DW.Domain.Dto">C:\Repositorio\PetCareDW\Business</lists>
 			<docs>C:\Repositorio\PetCareDW\Business\Docs</docs>
-			<webservice ns="DW.API" using="System,System.Net,System.Reflection,System.Web.Http,System.Collections.Generic,System.Web.Http.Cors,DW.Domain.Dto,DW.Domain.Models,DW.Business,Swashbuckle.Swagger.Annotations">C:\Repositorio\PetCareDW\API\Controllers\</webservice>
+			<webservice ns="PetCare.DW.API" using="System,System.Net,System.Reflection,System.Web.Http,System.Collections.Generic,System.Web.Http.Cors,PetCare.DW.Domain.Dto,PetCare.DW.Domain.Models,PetCare.DW.Business,Swashbuckle.Swagger.Annotations">C:\Repositorio\PetCareDW\API\Controllers\</webservice>
 			<webservicemodel>C:\dbtools\Maze\Api\Models</webservicemodel>
 		</paths>
 	</client>
 
 
-	<client active="1" id="11" title="SCV" file="scv.xml" provider="1" context="SCVCONNECT">
+	<client active="1" id="11" title="SCV" file="scv.xml" provider="1" context="SCVCONNECT" addmysql="false" connectioncontext ="SCVCONNECT_PRO" connectionkey="UvJLpuKxe1ft07fMoozJFA==" >
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
 
-			<business ns="SCV.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,SCV.Domain.Models, SCV.Domain.Dto,SCV.Interface,MazeFire,System.Collections.Generic ">C:\SCV\Business</business>
-			<interface ns="SCV.Interface" using="System.Collections.Generic,SCV.Domain.Models,SCV.Domain.Dto,MazeFire">C:\SCV\Interface</interface>
-			<model ns="SCV.Domain.Models" using="System, MazeFire">C:\SCV\Domain\Models</model>
-			<interfaceapp ns="SCV.Domain.Interface.Application" using="SCV.Domain.Models,SCV.Domain.Dto,System.Collections.Generic" >C:\SCV\Domain\Interface\Application</interfaceapp>
-			<serviceapp ns="SCV.Domain.Application" using="System,MazeFire,System.Collections.Generic,SCV.Domain.Interface.Application,SCV.Domain.Models,SCV.Domain.Dto,SCV.Domain.Interface.Repository">C:\SCV\Domain\Application</serviceapp>
-			<dto ns="SCV.Domain.Dto" using="System">C:\SCV\Domain\Dto</dto>
-			<actions ns="SCV.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,SCV.Domain.Models, SCV.Domain.Dto,SCV.Interface ">C:\SCV\Business</actions>
+			<business ns="SCV.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,SCV.Domain.Models, SCV.Domain.Dto,SCV.Interface,MazeFire,System.Collections.Generic ">C:\RepositorioHome\SCV\Business</business>
+			<interface ns="SCV.Interface" using="System.Collections.Generic,SCV.Domain.Models,SCV.Domain.Dto,MazeFire">C:\RepositorioHome\SCV\Interface</interface>
+			<model ns="SCV.Domain.Models" using="System, MazeFire">C:\RepositorioHome\SCV\Domain\Models</model>
+			<interfaceapp ns="SCV.Domain.Interface.Application" using="SCV.Domain.Models,SCV.Domain.Dto,System.Collections.Generic" >C:\RepositorioHome\SCV\Domain\Interface\Application</interfaceapp>
+			<serviceapp ns="SCV.Domain.Application" using="System,MazeFire,System.Collections.Generic,SCV.Domain.Interface.Application,SCV.Domain.Models,SCV.Domain.Dto,SCV.Domain.Interface.Repository">C:\RepositorioHome\SCV\Domain\Application</serviceapp>
+			<dto ns="SCV.Domain.Dto" using="System">C:\RepositorioHome\SCV\Domain\Dto</dto>
+			<actions ns="SCV.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,SCV.Domain.Models, SCV.Domain.Dto,SCV.Interface,MazeFire">C:\RepositorioHome\SCV\Business</actions>
 
 			<api>C:\dbtools\Maze\Api</api>
 			<asp>C:\dbtools\Maze\Asp</asp>
-			<procs>C:\SCV\DbScripts</procs>
-			<lists ns="SCV.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,SCV.Domain.Models, SCV.Domain.Dto">C:\SCV\Business</lists>
-			<docs>C:\SCV\DbScripts\Docs</docs>
-			<webservice ns="SCV.API" using="System,System.Net,System.Reflection,System.Web.Http,System.Collections.Generic,System.Web.Http.Cors,SCV.Domain.Dto,SCV.Domain.Models,SCV.Business,Swashbuckle.Swagger.Annotations">C:\SCV\API\Controllers\</webservice>
+			<procs>C:\RepositorioHome\SCV\DbScripts</procs>
+			<lists ns="SCV.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,SCV.Domain.Models, MazeFire">C:\RepositorioHome\SCV\Business</lists>
+			<docs>C:\RepositorioHome\SCV\DbScripts\Docs</docs>
+			<webservice ns="SCV.API" using="System,System.Net,System.Reflection,System.Web.Http,System.Collections.Generic,System.Web.Http.Cors,SCV.Domain.Dto,SCV.Domain.Models,SCV.Business,Swashbuckle.Swagger.Annotations">C:\RepositorioHome\SCV\API\Controllers\</webservice>
 			<webservicemodel>C:\dbtools\Maze\Api\Models</webservicemodel>
 		</paths>
 	</client>
@@ -256,7 +256,7 @@
 			<interfaceapp ns="PetCareCep.Domain.Interface.Application" using="PetCareCep.Domain.Models,PetCareCep.Domain.Dto,System.Collections.Generic" >C:\Repositorio\Cep\Domain\Interface\Application</interfaceapp>
 			<serviceapp ns="PetCareCep.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCareCep.Domain.Interface.Application,PetCareCep.Domain.Models,PetCareCep.Domain.Dto,PetCareCep.Domain.Interface.Repository">C:\Repositorio\Cep\Domain\Application</serviceapp>
 			<dto ns="PetCareCep.Domain.Dto" using="System">C:\Repositorio\Cep\Domain\Dto</dto>
-			<actions ns="PetCareCep" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCareCep.Domain.Models, PetCareCep.Domain.Dto,PetCareCep.Interface">C:\Repositorio\Cep</actions>
+			<actions ns="PetCareCep" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCareCep.Domain.Models, PetCareCep.Domain.Dto,PetCareCep.Interface, MazeFire">C:\Repositorio\Cep</actions>
 			<api>C:\dbtools\Maze\Api</api>
 			<asp>C:\dbtools\Maze\Asp</asp>
 			<procs>C:\Repositorio\Cep\Business\DbScripts</procs>
@@ -271,19 +271,19 @@
 	<client active="1" id="14" title="Movidesk" file="movidesk.xml" provider="1" context="MDCONNECTSQL">
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
-			<business ns="PetCareDW.MoviDesk.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCareDW.MoviDesk.Domain.Models, PetCareDW.MoviDesk.Domain.Dto,PetCareDW.MoviDesk.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\PetCareDW.MoviDesk\Business</business>
-			<interface ns="PetCareDW.MoviDesk.Interface" using="System.Collections.Generic,PetCareDW.MoviDesk.Domain.Models,PetCareDW.MoviDesk.Domain.Dto">C:\Repositorio\PetCareDW.MoviDesk\Interface</interface>
-			<model ns="PetCareDW.MoviDesk.Domain.Models" using="System,MazeFire">C:\Repositorio\PetCareDW.MoviDesk\Domain\Models</model>
-			<interfaceapp ns="PetCareDW.MoviDesk.Domain.Interface.Application" using="PetCareDW.MoviDesk.Domain.Models,PetCareDW.MoviDesk.Domain.Dto,System.Collections.Generic" >C:\Repositorio\PetCareDW.MoviDesk\Domain\Interface\Application</interfaceapp>
-			<serviceapp ns="PetCareDW.MoviDesk.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCareDW.MoviDesk.Domain.Interface.Application,PetCareDW.MoviDesk.Domain.Models,PetCareDW.MoviDesk.Domain.Dto,PetCareDW.MoviDesk.Domain.Interface.Repository">C:\Repositorio\PetCareDW.MoviDesk\Domain\Application</serviceapp>
-			<dto ns="PetCareDW.MoviDesk.Domain.Dto" using="System">C:\Repositorio\PetCareDW.MoviDesk\Domain\Dto</dto>
-			<actions ns="PetCareDW.MoviDesk.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCareDW.MoviDesk.Domain.Models, PetCareDW.MoviDesk.Domain.Dto,PetCareDW.MoviDesk.Interface">C:\Repositorio\PetCareDW.MoviDesk\Business</actions>
+			<business ns="PetCare.MoviDesk.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.MoviDesk.Domain.Models, PetCare.MoviDesk.Domain.Dto,PetCare.MoviDesk.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\PetCareDW.MoviDesk\Business</business>
+			<interface ns="PetCare.MoviDesk.Interface" using="System.Collections.Generic,PetCare.MoviDesk.Domain.Models,PetCare.MoviDesk.Domain.Dto">C:\Repositorio\PetCareDW.MoviDesk\Interface</interface>
+			<model ns="PetCare.MoviDesk.Domain.Models" using="System,MazeFire">C:\Repositorio\PetCareDW.MoviDesk\Domain\Models</model>
+			<interfaceapp ns="PetCare.MoviDesk.Domain.Interface.Application" using="PetCare.MoviDesk.Domain.Models,PetCare.MoviDesk.Domain.Dto,System.Collections.Generic" >C:\Repositorio\PetCareDW.MoviDesk\Domain\Interface\Application</interfaceapp>
+			<serviceapp ns="PetCare.MoviDesk.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.MoviDesk.Domain.Interface.Application,PetCare.MoviDesk.Domain.Models,PetCare.MoviDesk.Domain.Dto,PetCare.MoviDesk.Domain.Interface.Repository">C:\Repositorio\PetCareDW.MoviDesk\Domain\Application</serviceapp>
+			<dto ns="PetCare.MoviDesk.Domain.Dto" using="System">C:\Repositorio\PetCareDW.MoviDesk\Domain\Dto</dto>
+			<actions ns="PetCare.MoviDesk.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.MoviDesk.Domain.Models, PetCare.MoviDesk.Domain.Dto,PetCare.MoviDesk.Interface, MazeFire">C:\Repositorio\PetCareDW.MoviDesk\Business</actions>
 			<api>C:\dbtools\Maze\Api</api>
 			<asp>C:\dbtools\Maze\Asp</asp>
 			<procs>C:\Repositorio\PetCareDW.MoviDesk\Business\DbScripts</procs>
-			<lists ns="PetCareDW.MoviDesk.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCareDW.MoviDesk.Domain.Models, PetCareDW.MoviDesk.Domain.Dto">C:\Repositorio\PetCareDW.MoviDesk\Business</lists>
+			<lists ns="PetCare.MoviDesk.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.MoviDesk.Domain.Models, PetCare.MoviDesk.Domain.Dto">C:\Repositorio\PetCareDW.MoviDesk\Business</lists>
 			<docs>C:\Repositorio\PetCareDW.MoviDesk\Business\Docs</docs>
-			<webservice ns="PetCareDW.MoviDesk.API" using="System,System.Net,System.Reflection,System.Web.Http,System.Collections.Generic,System.Web.Http.Cors,PetCareDW.MoviDesk.Domain.Dto,PetCareDW.MoviDesk.Domain.Models,PetCareDW.MoviDesk.Business,Swashbuckle.Swagger.Annotations">C:\Repositorio\PetCareDW.MoviDesk.Api\Controllers\</webservice>
+			<webservice ns="PetCare.MoviDesk.API" using="System,System.Net,System.Reflection,System.Web.Http,System.Collections.Generic,System.Web.Http.Cors,PetCare.MoviDesk.Domain.Dto,PetCare.MoviDesk.Domain.Models,PetCare.MoviDesk.Business,Swashbuckle.Swagger.Annotations">C:\Repositorio\PetCare.MoviDesk.Api\Controllers\</webservice>
 			<webservicemodel>C:\dbtools\Maze\Api\Models</webservicemodel>
 		</paths>
 	</client>
@@ -352,19 +352,19 @@
 	<client active="1" id="18" title="DWRH" file="rh.xml" provider="1" context="RHCONNECT">
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
-			<business ns="DWRH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,DWRH.Domain.Models, DWRH.Domain.Dto,DWRH.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\DWRH\Business</business>
-			<interface ns="DWRH.Interface" using="System.Collections.Generic,DWRH.Domain.Models,DWRH.Domain.Dto">C:\Repositorio\DWRH\Interface</interface>
-			<model ns="DWRH.Domain.Models" using="System,MazeFire">C:\Repositorio\DWRH\Domain\Models</model>
-			<interfaceapp ns="DWRH.Domain.Interface.Application" using="DWRH.Domain.Models,DWRH.Domain.Dto,System.Collections.Generic" >C:\Repositorio\DWRH\Domain\Interface\Application</interfaceapp>
-			<serviceapp ns="DWRH.Domain.Application" using="System,MazeFire,System.Collections.Generic,DWRH.Domain.Interface.Application,DWRH.Domain.Models,DWRH.Domain.Dto,DWRH.Domain.Interface.Repository">C:\Repositorio\DWRH\Domain\Application</serviceapp>
-			<dto ns="DWRH.Domain.Dto" using="System">C:\Repositorio\DWRH\Domain\Dto</dto>
-			<actions ns="DWRH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,DWRH.Domain.Models, DWRH.Domain.Dto,DWRH.Interface,MazeFire">C:\Repositorio\DWRH\Business</actions>
+			<business ns="PetCare.RH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.RH.Domain.Models, PetCare.RH.Domain.Dto,PetCare.RH.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\DWRH\Business</business>
+			<interface ns="PetCare.RH.Interface" using="System.Collections.Generic,PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto">C:\Repositorio\DWRH\Interface</interface>
+			<model ns="PetCare.RH.Domain.Models" using="System,MazeFire">C:\Repositorio\DWRH\Domain\Models</model>
+			<interfaceapp ns="PetCare.RH.Domain.Interface.Application" using="PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto,System.Collections.Generic" >C:\Repositorio\DWRH\Domain\Interface\Application</interfaceapp>
+			<serviceapp ns="PetCare.RH.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.RH.Domain.Interface.Application,PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto,PetCare.RH.Domain.Interface.Repository">C:\Repositorio\DWRH\Domain\Application</serviceapp>
+			<dto ns="PetCare.RH.Domain.Dto" using="System">C:\Repositorio\DWRH\Domain\Dto</dto>
+			<actions ns="PetCare.RH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.RH.Domain.Models, PetCare.RH.Domain.Dto,PetCare.RH.Interface,MazeFire">C:\Repositorio\DWRH\Business</actions>
 			<api>C:\dbtools\Maze\Api</api>
 			<asp>C:\dbtools\Maze\Asp</asp>
 			<procs>C:\Repositorio\DWRH\Business\DbScripts</procs>
-			<lists ns="DWRH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,DWRH.Domain.Models, DWRH.Domain.Dto">C:\Repositorio\DWRH\Business</lists>
+			<lists ns="PetCare.RH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.RH.Domain.Models, PetCare.RH.Domain.Dto">C:\Repositorio\DWRH\Business</lists>
 			<docs>C:\Repositorio\DWRH\Business\Docs</docs>
-			<webservice ns="DWRH.API" using="System,System.Net,System.Reflection,System.Web.Http,System.Collections.Generic,System.Web.Http.Cors,DWRH.Domain.Dto,DWRH.Domain.Models,DWRH.Business,Swashbuckle.Swagger.Annotations">C:\Repositorio\DWRH.Api\Controllers\</webservice>
+			<webservice ns="PetCare.RH.API" using="System,System.Net,System.Reflection,System.Web.Http,System.Collections.Generic,System.Web.Http.Cors,PetCare.RH.Domain.Dto,PetCare.RH.Domain.Models,PetCare.RH.Business,Swashbuckle.Swagger.Annotations">C:\Repositorio\PetCare.RH.Api\Controllers\</webservice>
 			<webservicemodel>C:\dbtools\Maze\Api\Models</webservicemodel>
 		</paths>
 	</client>
@@ -394,19 +394,19 @@
 	<client active="1" id="20" title="DL" file="DL.XML" provider="1" context="DLCONNECT">
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
-			<business ns="PetCare.DataLake.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.DataLake.Domain.Models, PetCare.DataLake.Domain.Dto,PetCare.DataLake.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\PetCare.DataLake\Business</business>
-			<interface ns="PetCare.DataLake.Interface" using="System.Collections.Generic,PetCare.DataLake.Domain.Models,PetCare.DataLake.Domain.Dto">C:\Repositorio\PetCare.DataLake\Interface</interface>
-			<model ns="PetCare.DataLake.Domain.Models" using="System,MazeFire">C:\Repositorio\PetCare.DataLake\Domain\Models</model>
-			<interfaceapp ns="PetCare.DataLake.Domain.Interface.Application" using="PetCare.DataLake.Domain.Models,PetCare.DataLake.Domain.Dto,System.Collections.Generic" >C:\Repositorio\PetCare.DataLake\Domain\Interface\Application</interfaceapp>
-			<serviceapp ns="PetCare.DataLake.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.DataLake.Domain.Interface.Application,PetCare.DataLake.Domain.Models,PetCare.DataLake.Domain.Dto,PetCare.DataLake.Domain.Interface.Repository">C:\Repositorio\PetCare.DataLake\Domain\Application</serviceapp>
-			<dto ns="PetCare.DataLake.Domain.Dto" using="System">C:\Repositorio\PetCare.DataLake\Domain\Dto</dto>
-			<actions ns="PetCare.DataLake.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.DataLake.Domain.Models, PetCare.DataLake.Domain.Dto,PetCare.DataLake.Interface,MazeFire">C:\Repositorio\PetCare.DataLake\Business</actions>
+			<business ns="PetCare.DL.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.DL.Domain.Models, PetCare.DL.Domain.Dto,PetCare.DL.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\PetCare.DataLake\Business</business>
+			<interface ns="PetCare.DL.Interface" using="System.Collections.Generic,PetCare.DL.Domain.Models,PetCare.DL.Domain.Dto">C:\Repositorio\PetCare.DataLake\Interface</interface>
+			<model ns="PetCare.DL.Domain.Models" using="System,MazeFire">C:\Repositorio\PetCare.DataLake\Domain\Models</model>
+			<interfaceapp ns="PetCare.DL.Domain.Interface.Application" using="PetCare.DL.Domain.Models,PetCare.DL.Domain.Dto,System.Collections.Generic" >C:\Repositorio\PetCare.DataLake\Domain\Interface\Application</interfaceapp>
+			<serviceapp ns="PetCare.DL.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.DL.Domain.Interface.Application,PetCare.DL.Domain.Models,PetCare.DL.Domain.Dto,PetCare.DL.Domain.Interface.Repository">C:\Repositorio\PetCare.DataLake\Domain\Application</serviceapp>
+			<dto ns="PetCare.DL.Domain.Dto" using="System">C:\Repositorio\PetCare.DataLake\Domain\Dto</dto>
+			<actions ns="PetCare.DL.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.DL.Domain.Models, PetCare.DL.Domain.Dto,PetCare.DL.Interface,MazeFire">C:\Repositorio\PetCare.DataLake\Business</actions>
 			<api>C:\dbtools\Maze\Api</api>
 			<asp>C:\dbtools\Maze\Asp</asp>
 			<procs>C:\Repositorio\PetCare.DataLake\Business\DbScripts</procs>
-			<lists ns="PetCare.DataLake.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.DataLake.Domain.Models, PetCare.DataLake.Domain.Dto">C:\Repositorio\PetCare.DataLake\Business</lists>
+			<lists ns="PetCare.DL.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.DL.Domain.Models, PetCare.DL.Domain.Dto">C:\Repositorio\PetCare.DataLake\Business</lists>
 			<docs>C:\Repositorio\PetCare.DataLake\Business\Docs</docs>
-			<webservice ns="PetCare.DataLake.API" using="System,System.Net,System.Reflection,System.Web.Http,System.Collections.Generic,System.Web.Http.Cors,PetCare.DataLake.Domain.Dto,PetCare.DataLake.Domain.Models,PetCare.DataLake.Business,Swashbuckle.Swagger.Annotations">C:\Repositorio\PetCare.DataLake.Api\Controllers\</webservice>
+			<webservice ns="PetCare.DL.API" using="System,System.Net,System.Reflection,System.Web.Http,System.Collections.Generic,System.Web.Http.Cors,PetCare.DL.Domain.Dto,PetCare.DL.Domain.Models,PetCare.DL.Business,Swashbuckle.Swagger.Annotations">C:\Repositorio\PetCare.DL.Api\Controllers\</webservice>
 			<webservicemodel>C:\dbtools\Maze\Api\Models</webservicemodel>
 		</paths>
 	</client>

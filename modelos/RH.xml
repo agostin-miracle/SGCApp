@@ -798,7 +798,51 @@ IF(@RETURN_VALUE=-2)
 
 	</item>
 
+	<item create="true"  id="15" name="RFCODROT" api="true" apiname="" friendlyname="CalculationRoutes" modelversion="3" descriptor="Roteiros de Cálculo" comments="Tabela de referência de roteiros de cálculo">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
 
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="RFCODROTINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+IF(EXISTS(SELECT 1 FROM RFCODROT (NOLOCK) 
+           WHERE ROTKEY = @ROTKEY))
+	BEGIN
+		 SET @RETURN_VALUE = -2;
+	END
+		]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+		UPDATE RFCODROT
+		   SET DSCROT = @DSCROT
+		      ,CODEMP = @CODEMP
+			  ,CODFIL = @CODFIL
+			  ,CODROT = @CODROT
+			  ,DATUPD = GETDATE()
+		 WHERE ROTKEY = @ROTKEY
+	 
+		 IF(@@ERROR=0)
+			SET @RETURN_VALUE = 2;
+	END
+				]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro inserido com sucesso" error="OK"></return>
+				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+
+
+	</item>
 
 	<item create="true"  id="27" name="RFMOTABN" api="true" apiname="" friendlyname="Allowances" modelversion="3" descriptor="Tipo de Motivo de Abono" comments="SP6010 - Justificativa/Abono">
 		<CSharpPartial>True</CSharpPartial>

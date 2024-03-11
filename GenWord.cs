@@ -246,7 +246,7 @@ namespace SCGApp
                         if (!String.IsNullOrWhiteSpace(tb.Comments))
                         {
                             p = document.InsertParagraph();
-                            p.Append($"Propósito:{tb.Comments}").Font(new Xceed.Document.NET.Font("Arial")).Bold();
+                            p.Append($"Propósito:{tb.Comments.Replace("@",Environment.NewLine)}").Font(new Xceed.Document.NET.Font("Arial")).Bold();
                             p.StyleId = "Normal";
                         }
                         //p = document.InsertParagraph();

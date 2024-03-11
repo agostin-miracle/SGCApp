@@ -95,7 +95,6 @@ namespace SCGApp
             this.tvwdata.Size = new System.Drawing.Size(595, 639);
             this.tvwdata.TabIndex = 0;
             this.tvwdata.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.tvwdata_AfterCheck);
-            this.tvwdata.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvwdata_AfterSelect);
             // 
             // groupBox2
             // 

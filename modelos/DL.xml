@@ -367,6 +367,46 @@ IF(@RETURN_VALUE = -2 )
 				</parameters>
 			</item>
 
+			<item script="true" alias="A." sql="" method="UpdateSalesInformation" return="int" returnmode="2" procname="PRCADCLIUPDSAL" desc ="Atualiza informações referente atualizações de venda de serviços (ultima Unidade, ultimo procedimento, etc...)" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0;
+UPDATE CVCADCLI
+   SET ULTPCD  = UPD.ULTPCD
+      ,ULTEMP  = UPD.ULTEMP
+      ,PCDKEY =  UPD.PCDKEY
+ FROM (SELECT A.ORGBAS
+			,CODCMF
+			,ULTLCT
+			,RIGHT('00' + CONVERT(VARCHAR, A.ORGBAS),2 ) + RIGHT('0000000' + CONVERT(VARCHAR,ULT.CODPCD),7) AS PCDKEY
+			,ULTPCD = ULT.DATPCD
+			,ULTEMP = CASE WHEN A.ORGBAS = 2 THEN 28 ELSE ULT.CODEMP END
+		FROM (SELECT LAN.ORGBAS
+			        ,ANI.CODCMF
+			        ,MAX(LAN.NIDPCD) AS ULTLCT
+                FROM CVPCDLAN (NOLOCK) LAN
+			INNER JOIN CVCADANI (NOLOCK) ANI 
+			    ON (ANI.ORGBAS = LAN.ORGBAS AND ANI.CODANI = LAN.CODANI)
+			WHERE LAN.STAREC = 1
+			    AND LAN.CODEMP IN (SELECT CODEMP FROM CVCADEMP (NOLOCK) WHERE HASPRO=1)
+			GROUP BY LAN.ORGBAS, ANI.CODCMF) A
+		INNER JOIN (SELECT NIDPCD, DATPCD, CODPCD, CODEMP FROM CVPCDLAN (NOLOCK)) ULT 
+			ON (ULT.NIDPCD = A.ULTLCT)
+	   ) UPD
+  INNER JOIN CVCADCLI CLI
+	 ON (CLI.ORGBAS= UPD.ORGBAS AND CLI.CODCMF = UPD.CODCMF)
+ WHERE UPD.ORGBAS=@ORGBAS;
+SET @RETURN_VALUE = @@ROWCOUNT;
+RETRUN @RETURN_VALUE;
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="false" alias="UPD" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
 
 			<item script="true" alias="A." sql="" method="UpdatePhones" return="int" returnmode="2" procname="PRCADCLIUPDFON" desc ="Promove a atualização da base de controle de telefones de clientes" returnvalue="0">
 				<query>
@@ -1347,6 +1387,146 @@ IF(@RETURN_VALUE = 0)
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
+
+		<view>
+			<item owner="" script="true" definer="" name="VWSL1010" desc ="View de Junção de dados das tabelas TTSL1010, TTLS1011, EXTPCDLV que compõem informações do faturamento">
+				<query>
+					<![CDATA[
+SELECT NIDFIN
+          ,TIPREG
+		  ,MODINP = CASE WHEN TIPREG IN (2,3) THEN 15 ELSE 1 END
+          ,HASCHG
+          ,NUMANO
+          ,NUMMES
+          ,CODEMP
+          ,EMPKEY = ISNULL(EMP.EMPKEY,0)
+          ,DATFEC
+          ,DATEMI
+    	  ,DATFEC AS DATPGT
+          ,TTSL1010.CODFIL
+          ,NUMOSS
+          ,CODPCD
+          ,VLRLIQ
+          ,VLRBRT
+          ,NUMNFE
+          ,SERNFE
+          ,CODANI
+          ,VLRPIS
+          ,VLRCOF
+          ,VLRISS
+          ,VLRIRF
+          ,VLRCSL
+          ,VLRDCT
+          ,VLRVCH
+          ,VLRGLO
+		  ,VLRCPT=0
+		  ,VLRREP=0
+          ,HASACT
+          ,DATACT
+          ,NUMORC
+          ,DSCSRV
+          ,NUMVCH
+          ,EMIVCH
+          ,NUMITE
+          ,STAREC = CASE WHEN TIPREG IN (2,3) THEN 1 ELSE 0 END 
+          ,VLROSS
+		  ,NIDPCD=0
+      FROM TTSL1010 (NOLOCK)
+     INNER JOIN (SELECT CODFIL, EMPKEY FROM CVCADEMP (NOLOCK) WHERE HASPRO=1) EMP ON (EMP.CODFIL = TTSL1010.CODFIL)
+    WHERE TTSL1010.STAREC = 1
+    UNION ALL
+    SELECT NIDFIN
+          ,TIPREG
+		  ,MODINP =13
+          ,HASCHG
+          ,NUMANO
+          ,NUMMES
+          ,CODEMP
+          ,EMPKEY = ISNULL(EMP.EMPKEY,0)
+          ,DATFEC
+          ,DATEMI
+    	  ,DATFEC AS DATPGT
+          ,TTSL1011.CODFIL
+          ,NUMOSS
+          ,CODPCD
+          ,VLRLIQ
+          ,VLRBRT
+          ,NUMNFE
+          ,SERNFE
+          ,CODANI
+          ,VLRPIS
+          ,VLRCOF
+          ,VLRISS
+          ,VLRIRF
+          ,VLRCSL
+          ,VLRDCT
+          ,VLRVCH
+          ,VLRGLO
+		  ,VLRCPT=0
+		  ,VLRREP=0
+          ,HASACT
+          ,DATACT
+          ,NUMORC
+          ,DSCSRV
+          ,NUMVCH
+          ,EMIVCH
+          ,NUMITE
+          ,1 AS STAREC
+          ,VLROSS
+		  ,NIDPCD=0
+      FROM TTSL1011 (NOLOCK)
+     INNER JOIN (SELECT CODFIL, EMPKEY FROM CVCADEMP (NOLOCK) WHERE HASPRO=1) EMP ON (EMP.CODFIL = TTSL1011.CODFIL)
+     WHERE TTSL1011.STAREC = 1
+     UNION ALL
+    SELECT NIDFIN
+          ,TIPREG
+		  ,MODINP =13
+          ,HASCHG=1
+          ,NUMANO
+          ,NUMMES
+          ,CODEMP
+          ,EMPKEY = CODEMP
+          ,DATFEC
+          ,DATEMI
+    	  ,DATFEC AS DATPGT
+          ,LOV.CODFIL
+          ,NUMOSS
+          ,CODPCD
+          ,VLRREP
+          ,VLRREP
+          ,NUMNFE
+          ,SERNFE
+          ,CODANI
+          ,VLRPIS=0
+          ,VLRCOF=0
+          ,VLRISS=0
+          ,VLRIRF=0
+          ,VLRCSL=0
+          ,VLRDCT=0
+          ,VLRVCH=0
+          ,VLRGLO=0
+		  ,VLRCPT
+		  ,VLRREP
+          ,HASACT=1
+          ,DATACT=NULL
+          ,NUMORC=''
+          ,DSCSRV
+          ,NUMVCH=''
+          ,EMIVCH=NULL
+          ,NUMITE=1
+          ,112 AS STAREC
+          ,VLROSS
+		  ,NIDPCD
+      FROM EXTPCDLV (NOLOCK) LOV
+    WHERE LOV.CODFIL IN (SELECT  CODFIL FROM CVCADEMP (NOLOCK) WHERE HASPRO = 1)
+      AND LOV.STAREC = 1
+			
+
+]]>
+				</query>
+			</item>
+		</view>
+		
 		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','CHKPCD','CHKANI'" procname="PRSL1010INS" method="Insert">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
@@ -1436,159 +1616,12 @@ ELSE
 
 		</selectcommand>
 
-		<selectallcommand>
-
-			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="FinancialRecord" procname="PRSL1010GETALL" desc ="Obtêm uma lista de todos os registros atribuidos ao faturamento" remarks="">
-				<query>
-					<![CDATA[
-
-
-/*
-   TTSL1010 - Dados importados direto do Protheus
-   TTSL1011 - Dados importados direto do Protheus - Serviços
-   EXTPCDLV - Dados de integração de dados do aplicativo - PETLOVE
-
-
-*/
-SELECT NIDFIN
-      ,TIPREG
-      ,HASCHG
-      ,NUMANO
-      ,NUMMES
-      ,CODEMP
-      ,EMPKEY = ISNULL(EMP.EMPKEY,0)
-      ,DATFEC
-      ,DATEMI
-	  ,DATFEC AS DATPGT
-      ,TTSL1010.CODFIL
-      ,NUMOSS
-      ,CODPCD
-      ,VLRLIQ
-      ,VLRBRT
-      ,NUMNFE
-      ,SERNFE
-      ,CODANI
-      ,VLRPIS
-      ,VLRCOF
-      ,VLRISS
-      ,VLRIRF
-      ,VLRCSL
-      ,VLRDCT
-      ,VLRVCH
-      ,VLRGLO
-      ,HASACT
-      ,DATACT
-      ,NUMORC
-      ,DSCSRV
-      ,NUMVCH
-      ,EMIVCH
-      ,NUMITE
-      ,0 AS STAREC
-      ,VLROSS
-  FROM TTSL1010 (NOLOCK)
- INNER JOIN (SELECT CODFIL, EMPKEY FROM CVCADEMP (NOLOCK) WHERE HASPRO=1) EMP ON (EMP.CODFIL = TTSL1010.CODFIL)
-WHERE TTSL1010.DATEMI >= CONVERT(VARCHAR, @DATEMI,112)
-  AND TTSL1010.STAREC = 1
-
-UNION ALL
-
-SELECT NIDFIN
-      ,TIPREG
-      ,HASCHG
-      ,NUMANO
-      ,NUMMES
-      ,CODEMP
-      ,EMPKEY = ISNULL(EMP.EMPKEY,0)
-      ,DATFEC
-      ,DATEMI
-	  ,DATFEC AS DATPGT
-      ,TTSL1011.CODFIL
-      ,NUMOSS
-      ,CODPCD
-      ,VLRLIQ
-      ,VLRBRT
-      ,NUMNFE
-      ,SERNFE
-      ,CODANI
-      ,VLRPIS
-      ,VLRCOF
-      ,VLRISS
-      ,VLRIRF
-      ,VLRCSL
-      ,VLRDCT
-      ,VLRVCH
-      ,VLRGLO
-      ,HASACT
-      ,DATACT
-      ,NUMORC
-      ,DSCSRV
-      ,NUMVCH
-      ,EMIVCH
-      ,NUMITE
-      ,0 AS STAREC
-      ,VLROSS
-  FROM TTSL1011 (NOLOCK)
- INNER JOIN (SELECT CODFIL, EMPKEY FROM CVCADEMP (NOLOCK) WHERE HASPRO=1) EMP ON (EMP.CODFIL = TTSL1011.CODFIL)
- WHERE TTSL1011.DATEMI >= CONVERT(VARCHAR, @DATEMI,112)
-  AND TTSL1011.STAREC = 1
-
- UNION ALL
-
-SELECT NIDFIN
-      ,TIPREG
-      ,HASCHG=1
-      ,NUMANO
-      ,NUMMES
-      ,CODEMP
-      ,EMPKEY = CODEMP
-      ,DATFEC
-      ,DATEMI
-	  ,DATFEC AS DATPGT
-      ,LOV.CODFIL
-      ,NUMOSS
-      ,CODPCD
-      ,VLRLIQ
-      ,VLRBRT
-      ,NUMNFE
-      ,SERNFE
-      ,CODANI
-      ,VLRPIS=0
-      ,VLRCOF=0
-      ,VLRISS=0
-      ,VLRIRF=0
-      ,VLRCSL=0
-      ,VLRDCT=0
-      ,VLRVCH=0
-      ,VLRGLO=0
-      ,HASACT=1
-      ,DATACT=NULL
-      ,NUMORC=''
-      ,DSCSRV
-      ,NUMVCH=''
-      ,EMIVCH=NULL
-      ,NUMITE=1
-      ,0 AS STAREC
-      ,VLROSS
-  FROM EXTPCDLV (NOLOCK) LOV
-WHERE LOV.CODFIL IN (SELECT  CODFIL FROM CVCADEMP (NOLOCK) WHERE HASPRO = 1)
-  AND LOV.DATEMI >=CONVERT(VARCHAR, @DATEMI,112)
-  AND LOV.STAREC = 1
-		]]>
-				</query>
-<parameters>
-					<parameter input="true" apply="true" omit="true" desc ="Data" name="DATEMI" type="System.DateTime" default="" output="" null=""/>
-
-				</parameters>
-
-			</item>
-		</selectallcommand>
-
 
 
 	</item>
 
 
-	<item create="true"  id="24" name="TTSL1011" api="true" apiname="" friendlyname="FinancialRecordService" modelversion="3" descriptor="Registro Financeiro de Serviços">
+	<item create="true"  id="25" name="TTSL1011" api="true" apiname="" friendlyname="FinancialRecordService" modelversion="3" descriptor="Registro Financeiro de Serviços">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
