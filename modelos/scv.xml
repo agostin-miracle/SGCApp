@@ -284,8 +284,6 @@ SELECT @RETURN_VALUE AS RETURN_VALUE;
 			</item>
 
 		</selectcommand>
-
-
 		<selectallcommand>
 			<item script="false" alias="A." sql="" type="List" method="SelectAll" return="UsersList" procname="" desc ="Obtêm uma lista de todos os usuario cadastrados">
 				<query>
@@ -855,77 +853,79 @@ SELECT A.NIDTAB,A.CODTAB,A.KEYCOD,KEYTXT = ISNULL(A.KEYTXT,''),A.NUMREF,A.DSCTAB
 		<extendedmodel>
 			<![CDATA[SELECT ATR.CODATR
       ,DSCATR
-      ,HASLOG
+      ,ATR.HASLOG
       ,ATR.STAREC
+	  ,STA.DSCREC
       ,ATR.DATCAD
       ,ATR.DATUPD
       ,ATR.UPDUSU
-	  ,LGNUSU = ISNULL(GER.LGNUSU,'')
+	  ,LGNUSU = ISNULL(LGN.LGNUSU,'')
   FROM RFCODATR (NOLOCK) ATR
- INNER JOIN TBTABGER (NOLOCK) T07 ON (T07.NIDTAB = 7 AND T07.KEYCOD = ATR.STAREC)
-  LEFT JOIN TBCADGER (NOLOCK) GER ON (GER.NIDGER = ATR.UPDUSU)
- WHERE CODATR=-1]]>
+ INNER JOIN TBSTAREC (NOLOCK) STA ON (STA.STAREC = ATR.STAREC)
+  LEFT JOIN TBCADUSU (NOLOCK) LGN ON (LGN.CODUSU = ATR.UPDUSU)
+ WHERE ATR.CODATR=-1]]>
 		</extendedmodel>
 
-		<insertcommand key="Key" exceptionparamns="'DATCAD','DATUPD','CODATR'" procname="">
+		<insertcommand key="Key" exceptionparamns="'DATCAD','DATUPD'" procname="PRCODATRINS" method="Insert">
 			<maxfield field="CODATR"/>
 			<nextnumber field="" id="" />
-			<pre><![CDATA[DECLARE @CODATR TINYINT=0]]></pre>
+			<pre><![CDATA[
+IF(EXISTS(SELECT 1 FROM RFCODATR (NOLOCK) WHERE CODATR = @CODATR))
+   SET @RETURN_VALUE = -2;
+			
+			]]></pre>
 			<body></body>
-			<pos></pos>
+			<pos>
+				<![CDATA[
+				
+IF(@RETURN_VALUE = -2)
+	BEGIN
+		UPDATE dbo.RFCODATR
+		   SET CODATR = @CODATR
+			  ,DSCATR = @DSCATR
+			  ,HASLOG = @HASLOG
+			  ,STAREC = @STAREC
+			  ,DATUPD = GETDATE()
+			  ,UPDUSU = @UPDUSU
+		 WHERE CODATR = @CODATR;
+			IF(@@ERROR=0)
+			   SET @RETURN_VALUE=2;
+	
+	END
+				]]>
+			</pos>
 			<returns>
-				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return operator="==" value="1" message="Registro inserido com sucesso" error="OK"/>
+				<return operator="==" value="2" message="Registro alterado com sucesso" error="OK"/>
 				<return value="-1" message="" error="FAILALL"/>
 			</returns>
 		</insertcommand>
-		<updatecommand key="Key" fieldreturn="CODCOR" exceptionparamns="'DATCAD'" procname="" >
-			<maxfield field="CODATR"/>
-			<nextnumber field="" id="" />
-			<pre>
-				SET @DATUPD = GETDATE();
-			</pre>
-			<body></body>
-			<pos></pos>
-			<returns>
-				<return operator=">" value="0" message="Registro alterado com sucesso" error="OK"/>
-				<return value="-1" message="" error="FAILALL"/>
-			</returns>
-		</updatecommand>
+
 		<selectcommand>
-			<item script="true" alias="A." sql="" method="Select" return="Attributes" procname="" desc ="Obtêm o registro de atributo de acordo com o código do atributo">
+			<item script="false" alias="A." sql="" method="Select" return="Attributes" procname="" desc ="Obtêm o registro de atributo de acordo com o código do atributo">
 				<query>
-					<![CDATA[SELECT ATR.CODATR
-      ,DSCATR
-      ,HASLOG
-      ,ATR.STAREC
-      ,ATR.DATCAD
-      ,ATR.DATUPD
-      ,ATR.UPDUSU
-	  ,LGNUSU = ISNULL(GER.LGNUSU,'')
-  FROM RFCODATR (NOLOCK) ATR
- INNER JOIN TBTABGER (NOLOCK) T07 ON (T07.NIDTAB = 7 AND T07.KEYCOD = ATR.STAREC)
-  LEFT JOIN TBCADGER (NOLOCK) GER ON (GER.NIDGER = ATR.UPDUSU)
-]]>
+					<![CDATA[SELECT * FROM RFCODATR (NOLOCK) A]]>
 				</query>
 				<parameters>
-					<parameter input="true" apply="true" desc ="Código do Atributo" alias=".ATR" name="CODATR" type="System.Byte" default="" output="" null="false"/>
+					<parameter input="true" apply="true" desc ="Código do Atributo" alias="" name="CODATR" type="System.Byte" default="" output="" null="false"/>
 				</parameters>
 			</item>
 		</selectcommand>
 		<selectallcommand>
-			<item script="true" alias="A." sql="" type="List" method="SelectAll" return="Attributes" procname="" desc ="Obtêm todos os registros de atributos cadastrados">
+			<item script="false" alias="A." sql="" type="List" method="SelectAll" return="Attributes" procname="" desc ="Obtêm todos os registros de atributos cadastrados">
 				<query>
 					<![CDATA[SELECT ATR.CODATR
       ,DSCATR
-      ,HASLOG
+      ,ATR.HASLOG
       ,ATR.STAREC
+	  ,STA.DSCREC
       ,ATR.DATCAD
       ,ATR.DATUPD
       ,ATR.UPDUSU
-	  ,LGNUSU = ISNULL(GER.LGNUSU,'')
+	  ,LGNUSU = ISNULL(LGN.LGNUSU,'')
   FROM RFCODATR (NOLOCK) ATR
- INNER JOIN TBTABGER (NOLOCK) T07 ON (T07.NIDTAB = 7 AND T07.KEYCOD = ATR.STAREC)
-  LEFT JOIN TBCADGER (NOLOCK) GER ON (GER.NIDGER = ATR.UPDUSU)
+ INNER JOIN TBSTAREC (NOLOCK) STA ON (STA.STAREC = ATR.STAREC)
+  LEFT JOIN TBCADUSU (NOLOCK) LGN ON (LGN.CODUSU = ATR.UPDUSU)
 
 ]]>
 				</query>
@@ -2205,16 +2205,19 @@ IF(@RETURN_VALUE = -2)
 			</item>
 		</selectcommand>
 		<selectallcommand>
-			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="PetsList" procname="" desc ="Obtêm todos os registros de animais com base no ID de Registro do Cliente">
+			<item script="true" alias="A." sql="" method="SelectAll" type="List" return="PetsList" procname="PRCADANISELALL" desc ="Obtêm todos os registros de animais com base no ID de Registro do Cliente">
 				<query order="DATCAD DESC">
 					<![CDATA[
+IF(@HASFAL=-1)
+   SET @HASFAL  = NULL;
+		
  SELECT * FROM VWCADANI A
         ]]>
 				</query>
 				<parameters>
 					<parameter input="true" desc ="Código do Cliente"  name="CODCLI" type="int" size="15" default="" output="" null="false"/>
-					<parameter input="true" desc ="Nome do Animal" islike="true" name="NOMANI" type="System.String" size="50" default="null" output="" null="true"/>
-					<parameter input="true" desc ="Vivo ou Morto"  name="HASFAL" type="int"  default="null" output="" sysnull="true" null="true"/>
+					<parameter input="true" desc ="Nome do Animal" islike="true" name="NOMANI" type="System.String" size="50" default="" output="" null="false"/>
+					<parameter input="true" desc ="Vivo ou Morto"  islike="true" name="HASFAL" type="int"  default="" output="" null="false"/>
 			
 				</parameters>
 			</item>
@@ -4043,6 +4046,15 @@ INNER JOIN TBTIPMOV (NOLOCK) B
 			</query>
 		</item>
 
+		<item reference="" procbase="" script="true" alias="A." sql="" type="List" method="DynamicClients" return="ItemList" procname="PRCADANILSTDYN" desc ="Obtêm uma lista de Clientes por busca dinâmica">
+			<query order="RAZSOC">
+				<![CDATA[SELECT CODCLI AS CODREF, RAZSOC AS DSCREF FROM TBCADCLI (NOLOCK) A  WHERE STAREC=1 ]]>
+			</query>
+			<parameters>
+				<parameter input="true" apply="true" islike="true" desc ="Nome do Cliente" name="RAZSOC" type="System.String" size="70" default="" output="" null=""/>
+			</parameters>
+		</item>
+		
 		<item reference="" procbase="" script="true" alias="A." sql="" type="List" method="RegistrationReferences" return="ItemList" procname="PRCADGEREFCAD" desc ="Obtêm uma lista de Referências do Cadastro Geral">
 			<query>
 				<![CDATA[
