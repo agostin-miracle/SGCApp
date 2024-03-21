@@ -186,7 +186,7 @@
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
 
 			<business ns="PetCare.DW.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.DW.Domain.Models, PetCare.DW.Domain.Dto,PetCare.DW.Interface,MazeFire,System.Collections.Generic ">C:\Repositorio\PetCareDW\Business</business>
-			<interface ns="PetCare.DW.Interface" using="System.Collections.Generic,PetCare.DW.Domain.Models,PetCare.DW.Domain.Dto">C:\Repositorio\PetCareDW\Interface</interface>
+			<interface ns="PetCare.DW.Interface" using="System.Collections.Generic,PetCare.DW.Domain.Models,PetCare.DW.Domain.Dto,MazeFire">C:\Repositorio\PetCareDW\Interface</interface>
 			<model ns="PetCare.DW.Domain.Models" using="System,MazeFire">C:\Repositorio\PetCareDW\Domain\Models</model>
 			<interfaceapp ns="PetCare.DW.Domain.Interface.Application" using="PetCare.DW.Domain.Models,PetCare.DW.Domain.Dto,System.Collections.Generic" >C:\Repositorio\PetCareDW\Domain\Interface\Application</interfaceapp>
 			<serviceapp ns="PetCare.DW.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.DW.Domain.Interface.Application,PetCare.DW.Domain.Models,PetCare.DW.Domain.Dto,PetCare.DW.Domain.Interface.Repository">C:\Repositorio\PetCareDW\Domain\Application</serviceapp>
@@ -251,7 +251,7 @@
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
 			<business ns="PetCareCep.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCareCep.Domain.Models, PetCareCep.Domain.Dto,PetCareCep.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\Cep\Business</business>
-			<interface ns="PetCareCep.Interface" using="System.Collections.Generic,PetCareCep.Domain.Models,PetCareCep.Domain.Dto">C:\Repositorio\Cep\Interface</interface>
+			<interface ns="PetCareCep.Interface" using="System.Collections.Generic,PetCareCep.Domain.Models,PetCareCep.Domain.Dto, MazeFire">C:\Repositorio\Cep\Interface</interface>
 			<model ns="PetCareCep.Domain.Models" using="System,MazeFire">C:\Repositorio\Cep\Domain\Models</model>
 			<interfaceapp ns="PetCareCep.Domain.Interface.Application" using="PetCareCep.Domain.Models,PetCareCep.Domain.Dto,System.Collections.Generic" >C:\Repositorio\Cep\Domain\Interface\Application</interfaceapp>
 			<serviceapp ns="PetCareCep.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCareCep.Domain.Interface.Application,PetCareCep.Domain.Models,PetCareCep.Domain.Dto,PetCareCep.Domain.Interface.Repository">C:\Repositorio\Cep\Domain\Application</serviceapp>
@@ -272,7 +272,7 @@
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
 			<business ns="PetCare.MoviDesk.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.MoviDesk.Domain.Models, PetCare.MoviDesk.Domain.Dto,PetCare.MoviDesk.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\PetCareDW.MoviDesk\Business</business>
-			<interface ns="PetCare.MoviDesk.Interface" using="System.Collections.Generic,PetCare.MoviDesk.Domain.Models,PetCare.MoviDesk.Domain.Dto">C:\Repositorio\PetCareDW.MoviDesk\Interface</interface>
+			<interface ns="PetCare.MoviDesk.Interface" using="System.Collections.Generic,PetCare.MoviDesk.Domain.Models,PetCare.MoviDesk.Domain.Dto, MazeFire">C:\Repositorio\PetCareDW.MoviDesk\Interface</interface>
 			<model ns="PetCare.MoviDesk.Domain.Models" using="System,MazeFire">C:\Repositorio\PetCareDW.MoviDesk\Domain\Models</model>
 			<interfaceapp ns="PetCare.MoviDesk.Domain.Interface.Application" using="PetCare.MoviDesk.Domain.Models,PetCare.MoviDesk.Domain.Dto,System.Collections.Generic" >C:\Repositorio\PetCareDW.MoviDesk\Domain\Interface\Application</interfaceapp>
 			<serviceapp ns="PetCare.MoviDesk.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.MoviDesk.Domain.Interface.Application,PetCare.MoviDesk.Domain.Models,PetCare.MoviDesk.Domain.Dto,PetCare.MoviDesk.Domain.Interface.Repository">C:\Repositorio\PetCareDW.MoviDesk\Domain\Application</serviceapp>
@@ -333,7 +333,7 @@
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
 			<business ns="Sollus.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,Sollus.Domain.Models, Sollus.Domain.Dto,Sollus.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\Sollus\Business</business>
-			<interface ns="Sollus.Interface" using="System.Collections.Generic,Sollus.Domain.Models,Sollus.Domain.Dto">C:\Repositorio\Sollus\Interface</interface>
+			<interface ns="Sollus.Interface" using="System.Collections.Generic,Sollus.Domain.Models,Sollus.Domain.Dto, MazeFire">C:\Repositorio\Sollus\Interface</interface>
 			<model ns="Sollus.Domain.Models" using="System,MazeFire">C:\Repositorio\Sollus\Domain\Models</model>
 			<interfaceapp ns="Sollus.Domain.Interface.Application" using="Sollus.Domain.Models,Sollus.Domain.Dto,System.Collections.Generic" >C:\Repositorio\Sollus\Domain\Interface\Application</interfaceapp>
 			<serviceapp ns="Sollus.Domain.Application" using="System,MazeFire,System.Collections.Generic,Sollus.Domain.Interface.Application,Sollus.Domain.Models,Sollus.Domain.Dto,Sollus.Domain.Interface.Repository">C:\Repositorio\Sollus\Domain\Application</serviceapp>
@@ -353,7 +353,7 @@
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
 			<business ns="PetCare.RH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.RH.Domain.Models, PetCare.RH.Domain.Dto,PetCare.RH.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\DWRH\Business</business>
-			<interface ns="PetCare.RH.Interface" using="System.Collections.Generic,PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto">C:\Repositorio\DWRH\Interface</interface>
+			<interface ns="PetCare.RH.Interface" using="System.Collections.Generic,PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto,MazeFire">C:\Repositorio\DWRH\Interface</interface>
 			<model ns="PetCare.RH.Domain.Models" using="System,MazeFire">C:\Repositorio\DWRH\Domain\Models</model>
 			<interfaceapp ns="PetCare.RH.Domain.Interface.Application" using="PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto,System.Collections.Generic" >C:\Repositorio\DWRH\Domain\Interface\Application</interfaceapp>
 			<serviceapp ns="PetCare.RH.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.RH.Domain.Interface.Application,PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto,PetCare.RH.Domain.Interface.Repository">C:\Repositorio\DWRH\Domain\Application</serviceapp>
@@ -374,7 +374,7 @@
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
 			<business ns="PetCare.Forms.Data.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.Forms.Data.Domain.Models, PetCare.Forms.Data.Domain.Dto,PetCare.Forms.Data.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\PetCare.Forms.Data\Business</business>
-			<interface ns="PetCare.Forms.Data.Interface" using="System.Collections.Generic,PetCare.Forms.Data.Domain.Models,PetCare.Forms.Data.Domain.Dto">C:\Repositorio\PetCare.Forms.Data\Interface</interface>
+			<interface ns="PetCare.Forms.Data.Interface" using="System.Collections.Generic,PetCare.Forms.Data.Domain.Models,PetCare.Forms.Data.Domain.Dto, MazeFire">C:\Repositorio\PetCare.Forms.Data\Interface</interface>
 			<model ns="PetCare.Forms.Data.Domain.Models" using="System,MazeFire">C:\Repositorio\PetCare.Forms.Data\Domain\Models</model>
 			<interfaceapp ns="PetCare.Forms.Data.Domain.Interface.Application" using="PetCare.Forms.Data.Domain.Models,PetCare.Forms.Data.Domain.Dto,System.Collections.Generic" >C:\Repositorio\PetCare.Forms.Data\Domain\Interface\Application</interfaceapp>
 			<serviceapp ns="PetCare.Forms.Data.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.Forms.Data.Domain.Interface.Application,PetCare.Forms.Data.Domain.Models,PetCare.Forms.Data.Domain.Dto,PetCare.Forms.Data.Domain.Interface.Repository">C:\Repositorio\PetCare.Forms.Data\Domain\Application</serviceapp>
@@ -395,7 +395,7 @@
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
 			<business ns="PetCare.DL.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.DL.Domain.Models, PetCare.DL.Domain.Dto,PetCare.DL.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\PetCare.DataLake\Business</business>
-			<interface ns="PetCare.DL.Interface" using="System.Collections.Generic,PetCare.DL.Domain.Models,PetCare.DL.Domain.Dto">C:\Repositorio\PetCare.DataLake\Interface</interface>
+			<interface ns="PetCare.DL.Interface" using="System.Collections.Generic,PetCare.DL.Domain.Models,PetCare.DL.Domain.Dto, MazeFire">C:\Repositorio\PetCare.DataLake\Interface</interface>
 			<model ns="PetCare.DL.Domain.Models" using="System,MazeFire">C:\Repositorio\PetCare.DataLake\Domain\Models</model>
 			<interfaceapp ns="PetCare.DL.Domain.Interface.Application" using="PetCare.DL.Domain.Models,PetCare.DL.Domain.Dto,System.Collections.Generic" >C:\Repositorio\PetCare.DataLake\Domain\Interface\Application</interfaceapp>
 			<serviceapp ns="PetCare.DL.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.DL.Domain.Interface.Application,PetCare.DL.Domain.Models,PetCare.DL.Domain.Dto,PetCare.DL.Domain.Interface.Repository">C:\Repositorio\PetCare.DataLake\Domain\Application</serviceapp>
@@ -415,7 +415,7 @@
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
 			<business ns="PetCare.AdmData.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.AdmData.Domain.Models, PetCare.AdmData.Domain.Dto,PetCare.AdmData.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\PetCare.AdmData\Business</business>
-			<interface ns="PetCare.AdmData.Interface" using="System.Collections.Generic,PetCare.AdmData.Domain.Models,PetCare.AdmData.Domain.Dto">C:\Repositorio\PetCare.AdmData\Interface</interface>
+			<interface ns="PetCare.AdmData.Interface" using="System.Collections.Generic,PetCare.AdmData.Domain.Models,PetCare.AdmData.Domain.Dto, MazeFire">C:\Repositorio\PetCare.AdmData\Interface</interface>
 			<model ns="PetCare.AdmData.Domain.Models" using="System,MazeFire">C:\Repositorio\PetCare.AdmData\Domain\Models</model>
 			<interfaceapp ns="PetCare.AdmData.Domain.Interface.Application" using="PetCare.AdmData.Domain.Models,PetCare.AdmData.Domain.Dto,System.Collections.Generic" >C:\Repositorio\PetCare.AdmData\Domain\Interface\Application</interfaceapp>
 			<serviceapp ns="PetCare.AdmData.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.AdmData.Domain.Interface.Application,PetCare.AdmData.Domain.Models,PetCare.AdmData.Domain.Dto,PetCare.AdmData.Domain.Interface.Repository">C:\Repositorio\PetCare.AdmData\Domain\Application</serviceapp>

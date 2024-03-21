@@ -1893,34 +1893,61 @@ RETURN @RETURN_VALUE;
 		<SqlTable></SqlTable>
 
 		<view>
-			<item owner="" script="true" definer="" name="VWANACLI" desc ="View de Analise de clientes" comments="Esta view disponibiliza informações sobre clientes dispondo os dados nas seguintes condições:@O campo CODCMF for válido dentro dos critério conforme o tipo@O Cep for válido@O Campo DSCMAL for estruturalmente válido@O campo TELCEL for valido dentro das regras de formatação 99 99 9 9999 9999@O Campo NUMANI exibe as quantidades de animais vivos dentro da condição estabelecida pelo campo">
+			<item owner="" script="true" definer="" name="VWANACLI" desc ="View de Analise de clientes" comments="View que disponibiliza informações sobre clientes com critérios específicos de análise">
 				<query>
 					<![CDATA[
-
 select CLI.ORGBAS
       ,CLI.CLIKEY
 	  ,CLI.TYPCMF
 	  ,NOMCLI
 	  ,CLI.CODCMF
-	  ,CODCEP
+	  ,CODCEP = CASE WHEN CLI.VALCEP=1 THEN CLI.CODCEP ELSE CLI.AVACEP END
 	  ,DSCMAL
 	  ,SEXCLI
+	  ,CODCLA
 	  ,ENVNEW
 	  ,CLI.DATNAC
 	  ,TELCEL
-	  ,NUMANI
+	  ,NUMANI = ISNULL(NUMANI,0) - ISNULL(NUMOBT,0)
+	  ,CANANI = ISNULL(CANANI,0)
+	  ,FELANI = ISNULL(FELANI,0)
+	  ,EMP.EMPKEY
 	  ,EMP.DSCEMP
+	  ,NIDBAS=CASE WHEN EMP.EMPKEY =0 THEN 0 ELSE ULTBAS END
+	  ,CLI.ULTEMP
+	  ,CNTUNI = CASE WHEN ISNULL(G01.CNTUNI,0) = 0 AND CLI.ULTEMP >0 AND EMPKEY >0 
+	                 THEN 1 ELSE CASE WHEN EMPKEY = 28 
+					                  THEN 1 
+									  ELSE (CASE WHEN EMPKEY>0 AND ISNULL(G01.CNTUNI,0)>0 
+									             THEN ISNULL(G01.CNTUNI,0) ELSE 0 
+												 END) END END
   FROM TBCADCLI (NOLOCK)CLI
 
- INNER JOIN (SELECT ORGBAS, CODCMF, COUNT(*) AS NUMANI FROM TBCADANI (NOLOCK) WHERE HASFAL=0 AND DATEDIFF(YEAR, DATNAC, GETDATE()) <=22 GROUP BY ORGBAS, CODCMF)  ANI
+ LEFT JOIN (SELECT ORGBAS, CODCMF, COUNT(*) AS NUMANI 
+                   ,SUM(CASE WHEN CODESP = 1 AND HASFAL=0 THEN 1 ELSE 0 END) AS CANANI
+				   ,SUM(CASE WHEN CODESP = 2 AND HASFAL=0 THEN 1 ELSE 0 END) AS FELANI
+				   ,SUM(CASE WHEN HASFAL=1 THEN 1 ELSE 0 END) AS NUMOBT
+
+               FROM TBCADANI (NOLOCK) 
+			  WHERE DATEDIFF(YEAR, DATNAC, GETDATE()) <22 
+			  GROUP BY ORGBAS, CODCMF)  ANI
     ON (ANI.ORGBAS = CLI.ORGBAS AND ANI.CODCMF = CLI.CODCMF)
+
+  LEFT JOIN (SELECT ORGBAS, CLIKEY, COUNT(DISTINCT EMPKEY) AS CNTUNI FROM TBPCDLAN (NOLOCK) WHERE TIPREG=1 AND STAREC= 1 GROUP BY ORGBAS, CLIKEY) G01
+    ON (G01.ORGBAS = CLI.ORGBAS AND G01.CLIKEY = CLI.CLIKEY)
+ 
   LEFT JOIN TBCADEMP (NOLOCK) EMP
     ON (EMP.EMPKEY = CLI.ULTEMP)
+
+
+
  WHERE LEN(REPLACE(REPLACE(REPLACE(REPLACE(TELCEL,'(',''),')',''),' ',''),'-',''))=13
   AND isnumeric(REPLACE(REPLACE(REPLACE(REPLACE(TELCEL,'(',''),')',''),' ',''),'-',''))=1
-   AND CLI.VALCEP = 1
+   AND CLI.VALCEP in (1,2)
    AND CLI.VALMAL = 1
    AND CLI.VALCMF = 1
+   AND CLI.ULTEMP NOT IN (29,8)
+   AND CASE WHEN CLI.VALCEP=1 THEN CLI.CODCEP ELSE CLI.AVACEP END IN (SELECT CODCEP FROM CEP.dbo.TBCADCEP WHERE COALESCE(CODUFE,'')<> '')
 
 ]]>
 				</query>
@@ -1951,6 +1978,7 @@ IF(@RETURN_VALUE=-2)
 		UPDATE TBCADCLI
            SET NOMCLI = @NOMCLI
               ,CODCEP = @CODCEP
+			  ,FLGREC = @FLGREC
 			  ,VALCMF = @VALCMF
 			  ,VALCEP = @VALCEP
               ,CODCLA = @CODCLA
@@ -1971,6 +1999,7 @@ IF(@RETURN_VALUE=-2)
 			  ,VALCEL = @VALCEL
 			  ,VALMAL = @VALMAL
 			  ,ENVNEW = @ENVNEW
+			  ,ULTBAS = @ULTBAS
          WHERE CODCMF = @CODCMF 
 		   AND ORGBAS = @ORGBAS;
 		    IF (@@ERROR=0)
@@ -2009,15 +2038,6 @@ UPDATE TBCADANI
   FROM TBCADANI A INNER JOIN TBCADCLI B ON (B.CODCMF = A.CODCMF AND B.ORGBAS = A.ORGBAS) 
  WHERE A.ORGBAS = @ORGBAS
 SET @RETURN_VALUE = @RETURN_VALUE +  @@ROWCOUNT;
-
-UPDATE TBCADCLI 
-   SET HASCEP=0
- WHERE ORGBAS = @ORGBAS;
-   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT
-
-UPDATE TBCADCLI SET HASCEP =1 
- WHERE ORGBAS = @ORGBAS AND AVACEP IN (SELECT CODCEP FROM CEP.DBO.TBCADCEP);
-   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT
 
 RETURN @RETURN_VALUE;
 				]]>
@@ -2824,7 +2844,7 @@ IF (EXISTS (SELECT 1 FROM TBREGFIN (NOLOCK) WHERE NIDFIN = @NIDFIN AND TIPREG=@T
 			</pos>
 			<returns>
 				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
-					<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"></return>
 
 			</returns>
@@ -2861,7 +2881,7 @@ IF (NOT EXISTS (SELECT 1 FROM TBREGFIN (NOLOCK) WHERE NIDFIN = @NIDFIN AND TIPRE
 			</returns>
 		</updatecommand>-->
 
-	
+
 		<methods>
 
 			<!--<item script="true" alias="A." sql="" method="WriteToProcedures" return="int" returnmode="21" procname="PRREGFININSLANREF" desc ="Insere para a tabela de lançamentos os registros não equalizados com o registro financeiro" returnvalue="0">
@@ -5089,7 +5109,7 @@ IF(EXISTS (SELECT 1 FROM TBPCDOPE (NOLOCK) WHERE CODOPE=@CODOPE))
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 	</item>
-	<item create="true"  id="206" type="View" name="VWANACLI" api="false" apiname="" friendlyname="ViewClientAnalisys" modelversion="3" descriptor="View de Registros de Lançamentos de Procedimentos base consulta VET WE CARE" comments="@Esta view disponibiliza informações sobre clientes dispondo os dados nas seguintes condições:@O campo CODCMF for válido dentro do critério conforme o tipo@O Cep for válido@O campo DSCMAL for estruturalmente válido@O campo TELCEL for válido dentro do critério de estrutura 99 99 9 9999 9999@O campo NUMANI exibe as quantidades de animais vivos dentro da condição estabelecida pelo campo">
+	<item create="true"  id="206" type="View" name="VWANACLI" api="false" apiname="" friendlyname="ViewClientAnalisys" modelversion="3" descriptor="View de Analise de Informações de Clientes" comments="@Esta view disponibiliza informações sobre clientes com bases nos seguintes requisitos:@@RF1 :Cep válido e autenticado pela base de dados de cep.@RF2 - e-mail, estruturalmente válido.@RF3 - CPF, CNPJ ou RNE, estruturalmente e logicamente (Receita Federal) válidos.@RF4 - Telefones, estruturalmente válidos com a expressão (DDI:99) (DDD:99) Telefone : 9(9) ou 9(8).@@@ RNF1 - A view disponibiliza ainda, dados relativos de clientes exclusivos de unidades como a RK (SP) e Itanhanga (RJ), porêm, estas informações não são visíveis por motivo de não haver integridade relativa com estas duas unidades.@@@ RNF2 - Considera-se ainda que para a movimentação de clientes foram considerados os movimentos relativos a unidades que não tiveram seus movimentos integrados dentro do DW@Vet Quality - de 31/07/2023 para trás.@RNF3 - Movimentação de Clientes que tiveram seus registros excluidos ou inativados.@Movimentação Morumbi: Janeiro de 2022, por processo de migração com problemas.">
 
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
