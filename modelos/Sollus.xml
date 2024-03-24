@@ -1,63 +1,88 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
 
-	<item create="true"  id="1" name="TBCADCCU" api="true" apiname="" friendlyname="CentroCusto" modelversion="3" descriptor="Tabela de Informações de Centros de Custo" remarks="">
+	<item create="true"  id="1" name="TBCADCCU" api="true" apiname="" friendlyname="SollusCostCenter" modelversion="3" descriptor="Tabela de Informações de Centros de Custo" remarks="">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
 	</item>
 
-	<item create="true"  id="2" name="TBCADCTD" api="true" apiname="" friendlyname="Plano de Contas" modelversion="3" descriptor="Tabela de Informações de Plano de Contas" remarks="">
+	<item create="true"  id="2" name="TBCADCTD" api="true" apiname="" friendlyname="SollusChartAccounts" modelversion="3" descriptor="Tabela de Informações de Plano de Contas" remarks="">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
 	</item>
 
-	<item create="true"  id="3" name="TBCADMAT" api="true" apiname="" friendlyname="Materiais" modelversion="3" descriptor="Tabela de Informações de Materiais" remarks="">
+	<item create="true"  id="3" name="TBCADMAT" api="true" apiname="" friendlyname="SollusMaterials" modelversion="3" descriptor="Tabela de Informações de Materiais" remarks="">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
 	</item>
 
-	<item create="true"  id="4" name="TBCADPCD" api="true" apiname="" friendlyname="Procedimentos Veterinarios" modelversion="3" descriptor="Tabela de Informações de Procedimentos Veterinarios" remarks="">
+	<item create="true"  id="4" name="TBCADPCD" api="true" apiname="" friendlyname="SollusProcedures" modelversion="3" descriptor="Tabela de Informações de Procedimentos Veterinarios" remarks="">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
 	</item>
-	<item create="true"  id="5" name="TBCADSAL" api="true" apiname="" friendlyname="Saldos" modelversion="3" descriptor="Tabela de Informações de Saldos Contábeis" remarks="">
-		<CSharpPartial>True</CSharpPartial>
-		<SqlTable></SqlTable>
-		<extendedmodel></extendedmodel>
-	</item>
-
-	<item create="true"  id="6" name="TBRAZCON" api="true" apiname="" friendlyname="RazaoContabil" modelversion="3" descriptor="Tabela de Informações do Razão Contabil" remarks="">
-		<CSharpPartial>True</CSharpPartial>
-		<SqlTable></SqlTable>
-		<extendedmodel></extendedmodel>
-	</item>
-	<item create="true"  id="7" name="TBREGFIN" api="true" apiname="" friendlyname="Vendas" modelversion="3" descriptor="Tabela de Informações de Vendas" remarks="">
+	<item create="true"  id="5" name="TBCADSAL" api="true" apiname="" friendlyname="SollusAccountBalance" modelversion="3" descriptor="Tabela de Informações de Saldos Contábeis" remarks="">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
 	</item>
 
-	<item create="true"  id="8" name="TBRESVEN" api="true" apiname="" friendlyname="ResumoVendas" modelversion="3" descriptor="Tabela de Resumo de Vendas" remarks="" comments="Esta tabela não faz parte das integrações SOLLUS, contém informações de vendas agrupadas por empresa, filial, ano e mes">
+	<item create="true"  id="6" name="TBRAZCON" api="true" apiname="" friendlyname="SollusLedger" modelversion="3" descriptor="Tabela de Informações do Razão Contabil" remarks="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+	<item create="true"  id="7" name="TBREGFIN" api="true" apiname="" friendlyname="SollusSales" modelversion="3" descriptor="Tabela de Informações de Vendas" remarks="">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
 	</item>
 
-	<item create="true"  id="9" name="DPCADCTD" api="true" apiname="" friendlyname="DeParaContas" modelversion="3" descriptor="Tabela de DePara de Contas Tecsa" remarks="" comments="Esta tabela não faz parte das integrações sollus, contém informações sobre o depara de contas contábeis">
+	<item create="true"  id="8" name="DPCADCTD" api="true" apiname="" friendlyname="SollusFromtoAccount" modelversion="3" descriptor="Tabela de DePara de Contas Tecsa" remarks="" comments="Esta tabela não faz parte das integrações sollus, contém informações sobre o depara de contas contábeis aplicados ao razão contábil">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
 	</item>
-	<item create="true"  id="10" name="TBCADFIL" api="true" apiname="" friendlyname="Filiais" modelversion="3" descriptor="Tabela de Filiais" remarks="" comments="Esta tabela não faz parte das integrações SOLLUS, contém informações sobre as filiais existentes">
+	<item create="true"  id="9" name="DPCADCCU" api="true" apiname="" friendlyname="SollusFromtoCostCenter" modelversion="3" descriptor="Tabela de De - Para de Centros de Custo" remarks="" comments="Esta tabela não faz parte das integrações sollus, contém informações sobre o depara de centros de custos aplicados ao razão contábil">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+	<item create="true"  id="10" name="TBCADFIL" api="true" apiname="" friendlyname="SolluBranches" modelversion="3" descriptor="Tabela de Filiais" remarks="" comments="Esta tabela não faz parte das integrações SOLLUS, contém informações sobre as filiais existentes">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+	<item create="true"  id="11" name="RFMATCTA" api="false" apiname="" friendlyname="SollusMaterialsAccount" modelversion="3" descriptor="Tabela de Referência de Contas Materiais" remarks="" comments="Esta tabela não faz parte das integrações SOLLUS, contém informações sobre as Contas contábeis de Extração das informações de materiais">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+	<item create="true"  id="12" name="RFMATCFO" api="false" apiname="" friendlyname="SollusMaterialsCFO" modelversion="3" descriptor="Tabela de Referência de CFOP's Materiais" remarks="" comments="Esta tabela não faz parte das integrações SOLLUS, contém informações sobre os Códigos Fiscais de Operação de Extração das informações de Materiais">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+	<item create="true"  id="13" name="RFMATDPC" api="false" apiname="" friendlyname="SollusMaterialsDepara" modelversion="3" descriptor="Tabela de Referência De-Para de Contas" remarks="" comments="Esta tabela não faz parte das integrações SOLLUS, contém informações sobre o De-Para de contas contábeis de Extração das informações de Materiais">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
 	</item>
 
+	<item create="true"  id="14" type="VIEW" name="VWRESVEN" api="false" apiname="" friendlyname="SollusSalesView" modelversion="3" descriptor="View de informações de Vendas e Serviços" remarks="" comments="Esta view não faz parte das integrações SOLLUS, contém informações sintéticas sobre o processo de Extração das informações de Vendas e Serviços">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
+
+	<item create="true"  id="15" type="VIEW" name="VWRAZCON" api="false" apiname="" friendlyname="SollusLedgerView" modelversion="3" descriptor="View de informações do Razão Contábil por empresa e periodo de apuração" remarks="" comments="Esta view não faz parte das integrações SOLLUS, contém informações sintéticas sobre o processo de Extração das informações do Razão Contábil">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<extendedmodel></extendedmodel>
+	</item>
 </root>
 
 

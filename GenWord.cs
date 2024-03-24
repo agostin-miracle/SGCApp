@@ -267,7 +267,7 @@ namespace SCGApp
 
 
 
-                        t.SetWidths(new float[] { 80, 170, 140, 80, 110, 400 }, true);
+                        t.SetWidths(new float[] { 80, 170, 150, 80, 110, 400 }, true);
 
 
                         t.Rows[0].Cells[0].Paragraphs[0].Append("#");
@@ -414,11 +414,6 @@ namespace SCGApp
                             p.InsertTableAfterSelf(fk);
                         }
                     }
-
-
-
-
-
 
                     document.Save();
 

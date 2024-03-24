@@ -352,18 +352,18 @@
 	<client active="1" id="18" title="DWRH" file="rh.xml" provider="1" context="RHCONNECT">
 		<paths>
 			<logger>private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</logger>
-			<business ns="PetCare.RH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.RH.Domain.Models, PetCare.RH.Domain.Dto,PetCare.RH.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\DWRH\Business</business>
-			<interface ns="PetCare.RH.Interface" using="System.Collections.Generic,PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto,MazeFire">C:\Repositorio\DWRH\Interface</interface>
-			<model ns="PetCare.RH.Domain.Models" using="System,MazeFire">C:\Repositorio\DWRH\Domain\Models</model>
-			<interfaceapp ns="PetCare.RH.Domain.Interface.Application" using="PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto,System.Collections.Generic" >C:\Repositorio\DWRH\Domain\Interface\Application</interfaceapp>
-			<serviceapp ns="PetCare.RH.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.RH.Domain.Interface.Application,PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto,PetCare.RH.Domain.Interface.Repository">C:\Repositorio\DWRH\Domain\Application</serviceapp>
-			<dto ns="PetCare.RH.Domain.Dto" using="System">C:\Repositorio\DWRH\Domain\Dto</dto>
-			<actions ns="PetCare.RH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.RH.Domain.Models, PetCare.RH.Domain.Dto,PetCare.RH.Interface,MazeFire">C:\Repositorio\DWRH\Business</actions>
+			<business ns="PetCare.RH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,PetCare.RH.Domain.Models, PetCare.RH.Domain.Dto,PetCare.RH.Interface,MazeFire,System.Collections.Generic">C:\Repositorio\PetCare.RH\Business</business>
+			<interface ns="PetCare.RH.Interface" using="System.Collections.Generic,PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto,MazeFire">C:\Repositorio\PetCare.RH\Interface</interface>
+			<model ns="PetCare.RH.Domain.Models" using="System,MazeFire">C:\Repositorio\PetCare.RH\Domain\Models</model>
+			<interfaceapp ns="PetCare.RH.Domain.Interface.Application" using="PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto,System.Collections.Generic" >C:\Repositorio\PetCare.RH\Domain\Interface\Application</interfaceapp>
+			<serviceapp ns="PetCare.RH.Domain.Application" using="System,MazeFire,System.Collections.Generic,PetCare.RH.Domain.Interface.Application,PetCare.RH.Domain.Models,PetCare.RH.Domain.Dto,PetCare.RH.Domain.Interface.Repository">C:\Repositorio\PetCare.RH\Domain\Application</serviceapp>
+			<dto ns="PetCare.RH.Domain.Dto" using="System">C:\Repositorio\PetCare.RH\Domain\Dto</dto>
+			<actions ns="PetCare.RH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.RH.Domain.Models, PetCare.RH.Domain.Dto,PetCare.RH.Interface,MazeFire">C:\Repositorio\PetCare.RH\Business</actions>
 			<api>C:\dbtools\Maze\Api</api>
 			<asp>C:\dbtools\Maze\Asp</asp>
-			<procs>C:\Repositorio\DWRH\Business\DbScripts</procs>
-			<lists ns="PetCare.RH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.RH.Domain.Models, PetCare.RH.Domain.Dto">C:\Repositorio\DWRH\Business</lists>
-			<docs>C:\Repositorio\DWRH\Business\Docs</docs>
+			<procs>C:\Repositorio\PetCare.RH\Business\DbScripts</procs>
+			<lists ns="PetCare.RH.Business" using="System,System.Linq,Dapper,System.Data, System.Reflection,System.Collections.Generic,PetCare.RH.Domain.Models, PetCare.RH.Domain.Dto">C:\Repositorio\PetCare.RH\Business</lists>
+			<docs>C:\Repositorio\PetCare.RH\Business\Docs</docs>
 			<webservice ns="PetCare.RH.API" using="System,System.Net,System.Reflection,System.Web.Http,System.Collections.Generic,System.Web.Http.Cors,PetCare.RH.Domain.Dto,PetCare.RH.Domain.Models,PetCare.RH.Business,Swashbuckle.Swagger.Annotations">C:\Repositorio\PetCare.RH.Api\Controllers\</webservice>
 			<webservicemodel>C:\dbtools\Maze\Api\Models</webservicemodel>
 		</paths>

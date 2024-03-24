@@ -256,7 +256,7 @@ GROUP BY FON.ORGBAS, FON.STAREC, FON.NORTEL, FON.TIPCTO
 		</view>
 
 
-		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','AVACEP','VALCEP','VALCEL','VALMAL','VALCMF'" procname="CVCADCLIINS" >
+		<insertcommand key="Key" fieldreturn="" supressidentity="true" exceptionparamns="'DATUPD','AVACEP','VALCEP','VALCEL','VALMAL','CLIKEY'" procname="PRCADCLIINS" >
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
 			<pre>
@@ -1311,13 +1311,10 @@ IF(@RETURN_VALUE=-2)
 		<SqlTable></SqlTable>
 	</item>
 
-
-
-
-	<item create="true"  id="19" name="CVCADVET" api="true" apiname="" friendlyname="Veterinarians" modelversion="3" descriptor="Tabela de Informações sobre veterinarios">
+	<item create="true"  id="19" name="CVCADVET" api="false" apiname="" friendlyname="Veterinarians" modelversion="3" descriptor="Tabela de Informações sobre veterinarios">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
-		<insertcommand key="Identity" exceptionparamns="'DATUPD'" fieldreturn="NIDSPT" procname="PRCADVETINS">
+		<insertcommand key="Key" exceptionparamns="'DATUPD'" fieldreturn="NIDSPT" procname="CVCADVETINS">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
 			<pre>
@@ -1331,7 +1328,6 @@ IF(EXISTS(SELECT 1 FROM CVCADVET (NOLOCK) WHERE APEVET = @APEVET AND ORGBAS = @O
 IF(@RETURN_VALUE=0)
 	BEGIN
 		SELECT @VETKEY = COALESCE(MAX(VETKEY),0)+1 FROM CVCADVET (NOLOCK)
-
 	END
 			]]>
 			</pre>
@@ -1342,12 +1338,11 @@ IF (@RETURN_VALUE=-2)
      BEGIN
 	     UPDATE CVCADVET 
 		    SET DSCVET = @DSCVET
-			   , NIDSPT = @NIDSPT
-			   , TIPFUN=@TIPFUN 
+			   ,NIDSPT = @NIDSPT
+			   ,TIPFUN=@TIPFUN 
 		  WHERE APEVET = @APEVET AND ORGBAS = @ORGBAS
 		 IF(@@ERROR=0)
 			SET @RETURN_VALUE = 2;
-
      END			
 				
 					]]>
@@ -1355,9 +1350,7 @@ IF (@RETURN_VALUE=-2)
 			<returns>
 				<return value="1" message="Registro inserido com sucesso" error="OK"/>
 				<return value="2" message="Registro alterado com sucesso" error="OK"/>
-
 				<return value="-2" message="" error="RECORDFOUND"></return>
-
 			</returns>
 		</insertcommand>
 
@@ -1495,45 +1488,6 @@ IF(@RETURN_VALUE=-2)
 	<item create="true"  id="23" name="TTSRJ010" api="true" apiname="" friendlyname="EmployeeRole"  modelversion="3" descriptor="Registro de Funções de Funcionários" comments="Base de origem : SRJ010/SRJ030 - Funções">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
-
-		<insertcommand key="Key" fieldreturn="FNCKEY" exceptionparamns="'DATUPD'" procname="PRSRJ010INS" method="Insert">
-			<maxfield field=""/>
-			<nextnumber field="" id="" />
-			<pre>
-				<![CDATA[
-DECLARE @TMPKEY INT =0
-IF(NOT EXISTS(SELECT 1 FROM TTSRJ010 (NOLOCK) WHERE FNCKEY=0))
-    INSERT INTO TTSRJ010 (FNCKEY, CODEMP, CODFIL, CODFNC, DSCFNC) VALUES (0,0,'','','');
-	
-IF(EXISTS(SELECT 1 FROM TTSRJ010 (NOLOCK) WHERE CODEMP =@CODEMP AND CODFIL = @CODFIL AND CODFNC = @CODFNC))
-	BEGIN
-		 UPDATE TTSRJ010
-		    SET DSCFNC = @DSCFNC
-			   ,DATUPD = GETDATE()
-		 WHERE CODEMP = @CODEMP
-		   AND CODFIL = @CODFIL
-		   AND CODFNC = @CODFNC
-		 
-		 IF(@@ERROR=0)
-			SET @RETURN_VALUE = 1;
-	END
-
-IF(@RETURN_VALUE = 0) 
-	BEGIN
-	    SELECT @TMPKEY = COALESCE(MAX( CAST( RIGHT(FNCKEY,7) AS INTEGER)),0) + 1 FROM TTSRJ010 WITH (NOLOCK)
-		SET @FNCKEY = RIGHT('00' + CONVERT(VARCHAR,@CODEMP),2) + RIGHT('0000000' + CONVERT(VARCHAR,@TMPKEY),7)
-	END
-				]]>
-			</pre>
-			<body></body>
-			<pos>
-				<![CDATA[
-				]]>
-			</pos>
-			<returns>
-				<return value="-1" message="" error="FAILALL"></return>
-			</returns>
-		</insertcommand>
 
 
 	</item>

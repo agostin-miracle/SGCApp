@@ -1054,41 +1054,41 @@ RETURN @RETURN_VALUE;
 				<query>
 					<![CDATA[
  SELECT LAN.NIDPCD
-       ,LAN.STAREC
-       ,LAN.CODANI
-       ,LAN.IDAANI
-       ,LAN.DATPCD
-       ,LAN.APEVET
-       ,LAN.CODORI
-       ,LAN.NUMOSS
-	   ,LAN.ANIPBI
-	   ,LAN.EMPKEY
-	   ,LAN.PCDKEY
-	   ,LAN.ANIKEY
-	   ,LAN.STACLI
-	   ,LAN.STAKEY
-	   ,LAN.VETKEY
-	   ,LAN.NIDBAS
-       ,CASE WHEN  (cast(datpcd as time(0)) >= '20:00:00' and cast(datpcd as time(0)) <= '23:59:59' 
+      ,LAN.STAREC
+      ,LAN.CODANI
+      ,LAN.IDAANI
+      ,LAN.DATPCD
+      ,LAN.APEVET
+      ,LAN.CODORI
+      ,LAN.NUMOSS
+	  ,LAN.ANIPBI
+	  ,LAN.EMPKEY
+	  ,LAN.PCDKEY
+	  ,LAN.ANIKEY
+	  ,LAN.STACLI
+	  ,LAN.STAKEY
+	  ,LAN.VETKEY
+	  ,LAN.NIDBAS
+      ,CASE WHEN  (cast(datpcd as time(0)) >= '20:00:00' and cast(datpcd as time(0)) <= '23:59:59' 
 	           or cast(datpcd as time(0)) >= '00:00:00' and cast(datpcd as time(0)) <= '07:59:59')
 			   THEN  2
 	          ELSE 1 END AS CODTUR
-	   ,CASE WHEN TRIM(CLA.DSCCLA)='' THEN 'Classifição não Atribuida' else CLA.DSCCLA END AS DSCCLA
-	   ,CASE WHEN CLI.HASCEP = 1 THEN SUBSTRING(CLI.AVACEP,1,5) + '-' + SUBSTRING(CLI.AVACEP,6,3) ELSE '00000-000' END   AS CODCEP
-       ,COALESCE(GEO.CODUFE,'') AS CODUFE
-       ,COALESCE(GEO.DSCBAI,'BAIRRO NAO atribuído') AS DSCBAI
-	   ,coalesce(GEO.BAILAT,0) AS LATITU
- 	   ,coalesce(GEO.BAILGT,0) AS LONGIT
-	   ,CONVERT(INT,FORMAT (DATPCD, 'yyyyMMdd')) AS NIDCAL
-   FROM TBPCDLAN LAN (NOLOCK)
+	  ,CASE WHEN TRIM(CLA.DSCCLA)='' THEN 'Classifição não Atribuida' else CLA.DSCCLA END AS DSCCLA
+	  ,CODCEP = SUBSTRING(CLI.CODCEP,1,5) + '-' + SUBSTRING(CLI.CODCEP,6,3) 
+      ,CASE WHEN COALESCE(GEO.DSCBAI,'') = '' THEN 'BAIRRO NAO ATRIBUIDO'  ELSE GEO.DSCBAI END AS DSCBAI
+	  ,coalesce(GEO.BAILAT,0) AS LATITU
+	  ,coalesce(GEO.BAILGT,0) AS LONGIT
+	  ,CONVERT(INT,FORMAT (DATPCD, 'yyyyMMdd')) AS NIDCAL
+  FROM TBPCDLAN LAN (NOLOCK)
   INNER JOIN TBCADANI ANI (NOLOCK) ON (ANI.ANIKEY = LAN.ANIKEY)
   INNER JOIN TBCADCLI CLI (NOLOCK) ON (CLI.CLIKEY = ANI.CLIKEY)
   INNER JOIN RFCLICLA CLA (NOLOCK) ON (CLA.CODCLA = CLI.CODCLA)
-   LEFT JOIN cep.dbo.TBCADCEP GEO (NOLOCK) ON (GEO.CODCEP = CLI.AVACEP)
+  LEFT JOIN cep.dbo.TBCADCEP GEO (NOLOCK) ON (GEO.CODCEP = CLI.CODCEP)
   where LAN.TIPREG=1 
     AND LAN.STAREC=1 
 	AND LAN.STACLI=1
 	AND LAN.SRCSYS=0
+	AND CLI.VALCEP IN (1,2)
 	AND DATPCD >= DATEADD(MONTH, -25, GETDATE()) ;
 					
 					]]>
@@ -1901,7 +1901,7 @@ select CLI.ORGBAS
 	  ,CLI.TYPCMF
 	  ,NOMCLI
 	  ,CLI.CODCMF
-	  ,CODCEP = CASE WHEN CLI.VALCEP=1 THEN CLI.CODCEP ELSE CLI.AVACEP END
+	  ,CLI.CODCEP
 	  ,DSCMAL
 	  ,SEXCLI
 	  ,CODCLA
@@ -1927,7 +1927,6 @@ select CLI.ORGBAS
                    ,SUM(CASE WHEN CODESP = 1 AND HASFAL=0 THEN 1 ELSE 0 END) AS CANANI
 				   ,SUM(CASE WHEN CODESP = 2 AND HASFAL=0 THEN 1 ELSE 0 END) AS FELANI
 				   ,SUM(CASE WHEN HASFAL=1 THEN 1 ELSE 0 END) AS NUMOBT
-
                FROM TBCADANI (NOLOCK) 
 			  WHERE DATEDIFF(YEAR, DATNAC, GETDATE()) <22 
 			  GROUP BY ORGBAS, CODCMF)  ANI
@@ -1939,15 +1938,13 @@ select CLI.ORGBAS
   LEFT JOIN TBCADEMP (NOLOCK) EMP
     ON (EMP.EMPKEY = CLI.ULTEMP)
 
-
-
  WHERE LEN(REPLACE(REPLACE(REPLACE(REPLACE(TELCEL,'(',''),')',''),' ',''),'-',''))=13
   AND isnumeric(REPLACE(REPLACE(REPLACE(REPLACE(TELCEL,'(',''),')',''),' ',''),'-',''))=1
    AND CLI.VALCEP in (1,2)
    AND CLI.VALMAL = 1
    AND CLI.VALCMF = 1
    AND CLI.ULTEMP NOT IN (29,8)
-   AND CASE WHEN CLI.VALCEP=1 THEN CLI.CODCEP ELSE CLI.AVACEP END IN (SELECT CODCEP FROM CEP.dbo.TBCADCEP WHERE COALESCE(CODUFE,'')<> '')
+   AND CLI.CODCEP IN (SELECT CODCEP FROM CEP.dbo.TBCADCEP WHERE COALESCE(CODUFE,'')<> '');
 
 ]]>
 				</query>
@@ -1962,11 +1959,15 @@ IF(NOT EXISTS(SELECT 1 FROM TBCADCLI (NOLOCK) WHERE CLIKEY=0))
     INSERT INTO TBCADCLI (CLIKEY, CODCMF, ORGBAS, NOMCLI,    CODCEP, CODCLA,    AVACEP) 
 	              VALUES (     0,     '',      0,  'N/D','00000000',      0,'00000000')
 	
-IF(EXISTS(SELECT 1 FROM TBCADCLI (NOLOCK) WHERE CODCMF=@CODCMF AND ORGBAS = @ORGBAS AND CLIKEY<>0))
+IF(EXISTS(SELECT 1 FROM TBCADCLI (NOLOCK) WHERE CODCMF=@CODCMF AND ORGBAS = @ORGBAS))
     SET @RETURN_VALUE=-2;
 
-IF(@RETURN_VALUE=0)
-	 SELECT @CLIKEY = COALESCE(MAX(CLIKEY),0) + 1 FROM TBCADCLI (NOLOCK)
+/*
+ * REMOVIDO EM 25/03/2024, A SETRIALIZAÇÃO É FEITA A PARTIR DO DATALAKE
+ * O CEP A SER CONTIDO SERÁ SOMENTE O CEP VALIDO
+ */
+--IF(@RETURN_VALUE=0)
+--	 SELECT @CLIKEY = COALESCE(MAX(CLIKEY),0) + 1 FROM TBCADCLI (NOLOCK)
 
       ]]>
 			</pre>
@@ -1976,7 +1977,8 @@ IF(@RETURN_VALUE=0)
 IF(@RETURN_VALUE=-2)
    BEGIN
 		UPDATE TBCADCLI
-           SET NOMCLI = @NOMCLI
+           SET CLIKEY = @CLIKEY
+		      ,NOMCLI = @NOMCLI
               ,CODCEP = @CODCEP
 			  ,FLGREC = @FLGREC
 			  ,VALCMF = @VALCMF
@@ -2000,8 +2002,7 @@ IF(@RETURN_VALUE=-2)
 			  ,VALMAL = @VALMAL
 			  ,ENVNEW = @ENVNEW
 			  ,ULTBAS = @ULTBAS
-         WHERE CODCMF = @CODCMF 
-		   AND ORGBAS = @ORGBAS;
+         WHERE CODCMF = @CODCMF AND ORGBAS = @ORGBAS;
 		    IF (@@ERROR=0)
 			     SET @RETURN_VALUE=2;
 		    ELSE
@@ -2020,7 +2021,7 @@ IF(@RETURN_VALUE=-2)
 		<methods>
 
 
-			<item script="true" alias="A." sql="" method="UpdateReferences" return="int" returnmode="2" procname="PRCADCLIUPDREF" desc ="Atualiza as referencias da tabela de Clientes para a tabela de Lancamentos e Animais" returnvalue="0">
+			<!--<item script="true" alias="A." sql="" method="UpdateReferences" return="int" returnmode="2" procname="PRCADCLIUPDREF" desc ="Atualiza as referencias da tabela de Clientes para a tabela de Lancamentos e Animais" returnvalue="0">
 				<query>
 					<![CDATA[
 DECLARE @RETURN_VALUE INT = 0;
@@ -2048,7 +2049,7 @@ RETURN @RETURN_VALUE;
 					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
 
 				</parameters>
-			</item>
+			</item>-->
 
 		</methods>
 
