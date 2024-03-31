@@ -174,32 +174,32 @@ IF(@RETURN_VALUE= -2)
 				<![CDATA[
 IF(@RETURN_VALUE=-2)
 	BEGIN
-	UPDATE CVCADANI
-		   SET CODCMF = @CODCMF
-			  ,NOMANI = @NOMANI
-			  ,SEXANI = @SEXANI
-			  ,DATNAC = @DATNAC
-			  ,TXTPES = @TXTPES
-			  ,TXTIDE = @TXTIDE
-			  --,NUMPES = @NUMPES
-			  --,PESIDE = @PESIDE
-			  ,DSCRAC = @DSCRAC
-			  ,DSCALE = @DSCALE
-			  ,DSCCOR = @DSCCOR
-			  ,CODESP = @CODESP
-			  ,NUMRGA = @NUMRGA
-			  ,OBSANI = @OBSANI
-			  ,CODORI = @CODORI
-			  ,HASFAL = @HASFAL
-			  ,HASCAS = @HASCAS
-			  ,DATOBT = @DATOBT
-			  ,STAREC = @STAREC
-			  ,DATATU = @DATATU
-			  ,DATUPD = GETDATE()
-		 WHERE  ORGBAS = @ORGBAS AND CODANI = @CODANI
+		UPDATE CVCADANI
+			   SET CODCMF = @CODCMF
+				  ,NOMANI = @NOMANI
+				  ,SEXANI = @SEXANI
+				  ,DATNAC = @DATNAC
+				  ,TXTPES = @TXTPES
+				  ,TXTIDE = @TXTIDE
+				  ,NUMPES = @NUMPES
+				  --,PESIDE = @PESIDE
+				  ,DSCRAC = @DSCRAC
+				  ,DSCALE = @DSCALE
+				  ,DSCCOR = @DSCCOR
+				  ,CODESP = @CODESP
+				  ,NUMRGA = @NUMRGA
+				  ,OBSANI = @OBSANI
+				  ,CODORI = @CODORI
+				  ,HASFAL = @HASFAL
+				  ,HASCAS = @HASCAS
+				  ,DATOBT = @DATOBT
+				  ,STAREC = @STAREC
+				  ,DATATU = @DATATU
+				  ,DATUPD = GETDATE()
+			 WHERE  ORGBAS = @ORGBAS AND CODANI = @CODANI
 		 
-		 IF(@@ERROR=0)
-		    SET @RETURN_VALUE=2;
+			 IF(@@ERROR=0)
+				SET @RETURN_VALUE=2;
 	END
         ]]>
 			</pos>
@@ -227,6 +227,47 @@ ELSE
 			</item>
 
 		</selectcommand>
+
+		<methods>
+			<item script="true" alias="A." sql="" method="UpdateWeight" return="int" returnmode="2" procname="PRCADANIUPDPES" desc ="Atualiza a Informação de Peso de Animais" returnvalue="0">
+				<query>
+					<![CDATA[
+    DECLARE @RETURN_VALUE INT = 0
+    DECLARE @TB TABLE (ORGBAS TINYINT, CODANI INT, NUMPES DECIMAL(20,3))
+	DECLARE @translations varchar(100) = REPLICATE(' ',26)+'.'+ REPLICATE(' ',6)
+    DECLARE @characters varchar(100) = 'abcdefghijklmnopqrstuvxywz,-+/~ ?'
+
+	INSERT INTO @TB(ORGBAS, CODANI, NUMPES)
+    SELECT ORGBAS,CODANI, TRIM(TXTPES) --, CONVERT(DECIMAL(8,3), TRANSLATE(TRIM(txtpes), @characters, @translations))
+	  FROM (SELECT ORGBAS, CODANI, TXTPES=TRANSLATE(txtpes,@characters, @translations)
+			   FROM CVCADANI (NOLOCK) 
+			  WHERE CODANI NOT IN (SELECT CODANI 
+									 FROM CVCADANI (NOLOCK)
+									 WHERE ORGBAS = @ORGBAS AND ISNUMERIC (TRANSLATE(txtpes, @characters, @translations))<>1)) A01
+	 WHERE ORGBAS = @ORGBAS 
+	   AND ISNUMERIC (TRANSLATE(txtpes, @characters, @translations))=1 
+	   AND LEFT(TRIM(TXTPES),1)<>'.'
+	
+	UPDATE CVCADANI
+	   SET NUMPES = B.NUMPES
+	  FROM CVCADANI ANI
+	 INNER JOIN @TB B
+	    ON (B.ORGBAS = ANI.ORGBAS AND B.CODANI = ANI.CODANI)
+
+       SET @RETURN_VALUE = @@ROWCOUNT;
+    RETURN @RETURN_VALUE; 
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="false" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+
+		</methods>
+		
 	</item>
 
 
@@ -2780,6 +2821,160 @@ DECLARE @RETURN_VALUE INT =0;
 	<item create="true"  id="503" type="TABLE" name="RFREPGER" api="true" apiname="" friendlyname="	ReportsReferences" modelversion="3" descriptor="Tabela de Parâmetros de Montagem de Relatórios" comments="Tabela que define os parâmetros funcionais de montagem de relatórios">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
+	</item>
+
+	<item create="true"  id="503" type="TABLE" name="RPMRT050" api="true" apiname="" friendlyname="ReportMRT050" modelversion="3" descriptor="Relatório MRT050" comments="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="RPMRT050INS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+				<return value="-99999" message="" error="BROKENCONNECTION"/>
+			</returns>
+		</insertcommand>
+
+
+		<methods>
+			<item script="true" alias="" sql="" method="Delete" return="int" returnmode="0" procname="PRMRT050DEL" desc ="Remove processamento anterior de movimento" returnvalue="0">
+				<query>
+					<![CDATA[
+DECLARE @RETURN_VALUE INT = 0
+DELETE FROM RPMRT050 WHERE DATEMI BETWEEN @DATINI AND @DATFIN 
+SET @RETURN_VALUE = @@ROWCOUNT
+RETURN @RETURN_VALUE;
+ 			]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Data Inicial" name="DATINI" type="System.DateTime" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Data Final" name="DATFIN" type="System.DateTime" default="" output="" null="false"/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+				</parameters>
+			</item>
+
+			<item script="true" alias="" sql="" method="UpdateReferences" return="int" returnmode="0" procname="PRMRT050UPDREF" desc ="Remove as definicoes de TIPREG = 4 - PETLOVE (Sintético) e incorpora as definições de TIPREG=14 - PETLOVE (Analítico), Adiciona informações referente a tabela de preço" returnvalue="0">
+				<query>
+					<![CDATA[
+     DECLARE @DATUPD DATETIME = GETDATE()
+	 DECLARE @RETURN_VALUE INT = 0
+	 DECLARE @TP TABLE (NUMNFE VARCHAR(9), CODFIL VARCHAR(4), VLRLIQ MONEY DEFAULT 0, HASREC BIT DEFAULT 0 )
+
+	 INSERT INTO @TP (NUMNFE, CODFIL, VLRLIQ)
+	 SELECT NUMNFE, CODFIL, SUM (VLRREP) AS VLRLIQ FROM EXTPCDLV  GROUP BY NUMNFE, CODFIL
+
+	 /* EXTRAI AS NOTAS SINTETICAS DE PETLOVE ABERTAS */
+	 UPDATE @TP
+	    SET HASREC = 1
+	   FROM @TP ORI
+	  INNER JOIN (SELECT NUMNFE
+	                    ,CODFIL
+						,SUM(VLRLIQ) AS VLRLIQ 
+					FROM RPMRT050 (NOLOCK) 
+				   WHERE TIPREG = 4 
+				     AND STAREC = 1
+				   GROUP BY NUMNFE, CODFIL) TOT
+	     ON (TOT.NUMNFE = ORI.NUMNFE AND TOT.CODFIL = ORI.CODFIL AND TOT.VLRLIQ = ORI.VLRLIQ)
+
+
+	 /* INSERE OS DADOS ANALITICOS PARA A TABELA */
+	INSERT INTO RPMRT050
+           (NIDFIN
+           ,CODEMP
+           ,NUMMES
+           ,NUMANO
+           ,STAREC
+           ,TIPREG
+           ,DATEMI
+           ,DATFEC
+           ,CODFIL
+           ,NUMOSS
+           ,NUMNFE
+           ,CODANI
+           ,CODPCD
+           ,QTDNUM
+           ,VLRTAB
+           ,VLRBRT
+           ,VLRLIQ
+           ,VLRDCT
+           ,DATUPD)
+	SELECT NIDFIN
+           ,1
+           ,NUMMES
+           ,NUMANO
+           ,STAREC
+           ,14
+           ,DATEMI
+           ,DATFEC
+           ,CODFIL
+           ,NUMOSS
+           ,NUMNFE
+           ,CODANI
+           ,CODPCD
+           ,1
+           ,0
+           ,VLRBRT
+           ,VLRLIQ
+           ,0
+           ,@DATUPD
+
+	  FROM EXTPCDLV (NOLOCK)
+	 WHERE CONCAT(NUMNFE,CODFIL) IN (SELECT CONCAT(NUMNFE,CODFIL) FROM @TP WHERE HASREC=1)
+	
+	   SET @RETURN_VALUE = @@ROWCOUNT
+
+	UPDATE RPMRT050 
+	   SET STAREC= 0 
+	 WHERE TIPREG = 4 
+	   AND CONCAT(NUMNFE,CODFIL) IN (SELECT CONCAT(NUMNFE,CODFIL) FROM @TP WHERE HASREC=1)
+
+   	   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT
+
+
+	/* ATUALIZA O VALOR DE TABELA DE PREÇO */
+	/* AS REGRAS APLICADAS SAO AS MESMAS DO DW */
+	UPDATE RPMRT050 
+	   SET VLRTAB = B.VLRREF
+      FROM RPMRT050 A 
+	 INNER JOIN  (SELECT CODFIL, EMPKEY FROM CVCADEMP (NOLOCK) WHERE HASPRO=1) EMP
+	    ON (EMP.CODFIL = A.CODFIL)
+	 INNER JOIN (SELECT ROW_NUMBER() OVER (ORDER BY EMPKEY, CODPCD, DATALT) AS ID,
+			           EMPKEY, 
+			           CODPCD, 
+			           DATALT, 
+			           VLRREF 
+	              FROM CVHSTPCD (NOLOCK) 
+	             WHERE DATALT >='20220526'
+	               AND EMPKEY > 0
+                   AND CODPCD > 0) B 
+			 ON (    B.EMPKEY = EMP.EMPKEY
+	             AND A.CODPCD = B.CODPCD 
+	  		     AND A.DATEMI >= B.DATALT)
+
+   	   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT
+RETURN @RETURN_VALUE;
+					
+					]]>
+				</query>
+				<parameters>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+		
+		</methods>
+
 	</item>
 
 
