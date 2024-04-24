@@ -57,6 +57,7 @@ namespace SCGApp
         public static void GenerateTablesDoc(string path, string outputfile, string headertitle = "", string subtitle = "Tabelas e Views")
         {
 
+            #region "Preparo de Informações"
             HeaderTitle = headertitle;
             SubTitle = subtitle;
             if (String.IsNullOrWhiteSpace(outputfile))
@@ -105,6 +106,26 @@ namespace SCGApp
                     item.Columns.Add(column);
                 }
 
+
+                var composes = node[i].SelectNodes("compose/item");
+                for (int j = 0; j < composes.Count; j++)
+                {
+                    var add = new ComposeItem(composes[j].SelectSingleNode("@table").Value.Trim(), composes[j].SelectSingleNode("@description").Value.Trim());
+                    item.Compose.Add(add);
+                }
+
+                var criterias = node[i].SelectNodes("compose/criteria/item");
+                for (int j = 0; j < criterias.Count; j++)
+                {
+                    var obj = new ComposeCriteria();
+                    obj.Order = MazeFire.Converter.ByteValue(criterias[j].SelectSingleNode("@order").Value.Trim());
+                    obj.Type = criterias[j].SelectSingleNode("@type").Value.Trim();
+                    obj.Field = criterias[j].SelectSingleNode("@field").Value.Trim();
+                    obj.Description = criterias[j].SelectSingleNode("@description").Value.Trim();
+                    item.Criterias.Add(obj);
+                    obj = null;
+                }
+
                 var index = node[i].SelectNodes("indexes/index");
                 for (int j = 0; j < index.Count; j++)
                 {
@@ -137,6 +158,8 @@ namespace SCGApp
                 result.Add(item);
             }
 
+            #endregion "Preparo de Informações"
+
             if (result.Count > 0)
             {
                 /*
@@ -148,10 +171,22 @@ namespace SCGApp
 
                 using (var document = DocX.Create(_outfile))
                 {
-                    document.AddHeaders();
-                    document.AddFooters();
+                    //document.AddHeaders();
+                    //document.AddFooters();
+                    // Indicate that the first page will have independent Headers/Footers
                     document.DifferentFirstPage = true;
+
+                    // Indicate that even and odd page will have separate Headers/Footers
                     document.DifferentOddAndEvenPages = true;
+
+                    document.Sections[0].AddFooters();
+                    document.Sections[0].AddHeaders();
+                    document.Sections[0].DifferentFirstPage = true;
+                    var footers = document.Sections[0].Footers;
+                    footers.First.InsertParagraph("");
+                    footers.Even.InsertParagraph("");
+                    footers.Odd.InsertParagraph("");
+
 
                     // Add a simple image from disk.
                     var image = document.AddImage(Path.Combine(ImagePath, ImageHeader));
@@ -182,18 +217,12 @@ namespace SCGApp
                     t2.Alignment = Alignment.center;
                     t2.InsertPageBreakAfterSelf();
 
-                    //document.Sections[0].AddHeaders();
-                    //document.Sections[0].AddFooters();
-                    ////document.AddHeaders();
-                    ////document.AddFooters();
-                    document.DifferentFirstPage = false;
-                    document.DifferentOddAndEvenPages = true;
 
 
                     document.InsertParagraph("ÍNDICE").FontSize(15d).SpacingAfter(50d).Alignment = Alignment.center;
                     var tocSwitches = new Dictionary<TableOfContentsSwitches, string>()
         {
-          { TableOfContentsSwitches.O, "1-3"},
+          { TableOfContentsSwitches.O, "1-2"},
           { TableOfContentsSwitches.U, ""},
           { TableOfContentsSwitches.Z, ""},
           { TableOfContentsSwitches.H, ""},
@@ -204,19 +233,20 @@ namespace SCGApp
                     document.InsertParagraph().InsertPageBreakAfterSelf();
 
                     document.InsertSectionPageBreak();
-                    //document.DifferentFirstPage = true;
+
 
                     document.Sections[1].AddHeaders();
                     document.Sections[1].AddFooters();
-
-
+                    document.Sections[1].DifferentFirstPage = true;
                     var headers1 = document.Sections[1].Headers;
                     headers1.First.InsertParagraph(HeaderTitle);
                     headers1.Even.InsertParagraph(HeaderTitle);
                     headers1.Odd.InsertParagraph(HeaderTitle);
-
-
                     var footers1 = document.Sections[1].Footers;
+                    PageNumberType o = new PageNumberType();
+                    o.PageNumberStart = 1;
+
+
                     footers1.First.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal).Alignment = Alignment.right;
 
                     footers1.Even.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal).Alignment = Alignment.right;
@@ -246,19 +276,55 @@ namespace SCGApp
                         if (!String.IsNullOrWhiteSpace(tb.Comments))
                         {
                             p = document.InsertParagraph();
-                            p.Append($"Propósito:{tb.Comments.Replace("@",Environment.NewLine)}").Font(new Xceed.Document.NET.Font("Arial")).Bold();
+                            p.Append($"Propósito:{tb.Comments.Replace("@", Environment.NewLine)}").Font(new Xceed.Document.NET.Font("Arial")).Bold();
                             p.StyleId = "Normal";
                         }
-                        //p = document.InsertParagraph();
-                        //p.Alignment = Alignment.left;
-                        //p.Append(tb.Description)
-                        //.Font(new Xceed.Document.NET.Font("Arial"))
-                        //.Color(Color.Blue)
-                        //.Bold()
-                        //.Append(": ").Append(tb.Comments).Color(Color.Black).SpacingAfter(10);
-                        //p.StyleId = "Normal";
 
 
+                        /* descrição da compos~ição da tabela */
+                        if (tb.Compose.Count > 0)
+                        {
+                            var cp1 = document.InsertParagraph();
+                            cp1.Append("Composição de Informações");
+                            cp1.StyleId = "Heading3";
+                            var ct1 = document.AddTable(tb.Compose.Count + 1, 2);
+                            ct1.Alignment = Alignment.center;
+                            ct1.Design = TableDesign.ColorfulShadingAccent1;
+                            ct1.AutoFit = AutoFit.ColumnWidth;
+                            ct1.SetWidths(new float[] { 100, 500 }, true);
+                            ct1.Rows[0].Cells[0].Paragraphs[0].Append("Objeto");
+                            ct1.Rows[0].Cells[1].Paragraphs[0].Append("Descrição");
+                            int r = 1;
+                            foreach (var item in tb.Compose)
+                            {
+                                ct1.Rows[r].Cells[0].Paragraphs[0].Append(item.Table.ToString()).FontSize(11d);
+                                ct1.Rows[r].Cells[1].Paragraphs[0].Append(item.Description.Trim()).FontSize(11d);
+                                r++;
+                            }
+                            document.InsertTable(ct1);
+
+                            var cp2 = document.InsertParagraph();
+                            cp2.Append("Critérios de Composição");
+                            cp2.StyleId = "Heading3";
+                            var ct2 = document.AddTable(tb.Criterias.Count + 1, 3);
+                            ct2.Alignment = Alignment.center;
+                            ct2.Design = TableDesign.ColorfulShadingAccent1;
+                            ct2.AutoFit = AutoFit.ColumnWidth;
+                            ct2.SetWidths(new float[] { 100,130, 470 }, true);
+                            ct2.Rows[0].Cells[0].Paragraphs[0].Append("Tipo");
+                            ct2.Rows[0].Cells[1].Paragraphs[0].Append("Campo");
+                            ct2.Rows[0].Cells[2].Paragraphs[0].Append("Descrição");
+                            r = 1;
+                            foreach (var item in tb.Criterias.OrderBy( ord => ord.Order))
+                            {
+                                ct2.Rows[r].Cells[0].Paragraphs[0].Append(item.Type.ToString()).FontSize(11d);
+                                ct2.Rows[r].Cells[1].Paragraphs[0].Append(item.Field.ToString()).FontSize(11d);
+                                ct2.Rows[r].Cells[2].Paragraphs[0].Append(item.Description.Trim()).FontSize(11d);
+                                r++;
+                            }
+                            document.InsertTable(ct2);
+
+                        }
 
                         var t = document.AddTable(tb.Columns.Count + 1, 6);
                         t.Alignment = Alignment.center;
@@ -266,9 +332,10 @@ namespace SCGApp
                         t.AutoFit = AutoFit.ColumnWidth;
 
 
-
+                        var pfl = document.InsertParagraph();
+                        pfl.Append("Discriminação dos campos");
+                        pfl.StyleId = "Heading3";
                         t.SetWidths(new float[] { 80, 170, 150, 80, 110, 400 }, true);
-
 
                         t.Rows[0].Cells[0].Paragraphs[0].Append("#");
                         t.Rows[0].Cells[1].Paragraphs[0].Append("Campo");
@@ -324,10 +391,10 @@ namespace SCGApp
                                     p = document.InsertParagraph();
                                     if (u == 0)
                                     {
-                                        p.Spacing(10).Append(item.Order.ToString()).Bold().Append(":" + lines[u]).SpacingLine(12);
+                                        p.Spacing(20).Append(item.Order.ToString()).Bold().Append(":" + lines[u]).SpacingLine(12);
                                     }
                                     else
-                                        p.Spacing(10).Append(lines[u]).SpacingLine(12);
+                                        p.Append(lines[u]).SpacingLine(9);
 
                                     p.StyleId = "Normal";
                                 }
@@ -419,6 +486,7 @@ namespace SCGApp
 
                 }
             }
+
         }
 
         public static void GenerateProceduresDoc(string path, string outputfile, string headertitle = "", string subtitle = "Procedures e Funções")
@@ -475,12 +543,7 @@ namespace SCGApp
 
                 using (var document = DocX.Create(_outfile))
                 {
-                    document.AddHeaders();
-                    document.AddFooters();
-                    document.DifferentFirstPage = true;
-                    document.DifferentOddAndEvenPages = true;
 
-                    // Add a simple image from disk.
                     var image = document.AddImage(Path.Combine(ImagePath, ImageHeader));
 
                     // Set Picture Height and Width.
@@ -508,10 +571,10 @@ namespace SCGApp
                     t2.Alignment = Alignment.center;
                     t2.InsertPageBreakAfterSelf();
 
-                    document.AddHeaders();
-                    document.AddFooters();
-                    document.DifferentFirstPage = true;
-                    document.DifferentOddAndEvenPages = true;
+                    //document.AddHeaders();
+                    //document.AddFooters();
+                    //document.DifferentFirstPage = true;
+                    //document.DifferentOddAndEvenPages = true;
                     //t1.InsertPicture(picture).SpacingBefore(20d).InsertPageBreakAfterSelf();
 
                     //#006790
@@ -528,42 +591,20 @@ namespace SCGApp
                     document.InsertParagraph().InsertPageBreakAfterSelf();
 
                     document.InsertSectionPageBreak();
-                    //document.AddHeaders();
-                    //document.AddFooters();
-                    //document.DifferentFirstPage = true;
-                    //document.DifferentOddAndEvenPages = true;
-                    //document.Headers.First.InsertParagraph(HeaderTitle + " w ");
-                    //document.Headers.Even.InsertParagraph(HeaderTitle);
-                    //document.Headers.Odd.InsertParagraph(HeaderTitle);
-
-                    //document.Footers.First.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal);
-                    //document.Footers.Even.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal);
-                    //document.Footers.Odd.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal);
-
-
-
-
-                    document.InsertSectionPageBreak();
-                    //document.DifferentFirstPage = true;
 
                     document.Sections[1].AddHeaders();
                     document.Sections[1].AddFooters();
-
-
+                    document.Sections[1].DifferentFirstPage = true;
                     var headers1 = document.Sections[1].Headers;
                     headers1.First.InsertParagraph(HeaderTitle);
                     headers1.Even.InsertParagraph(HeaderTitle);
                     headers1.Odd.InsertParagraph(HeaderTitle);
-
-
                     var footers1 = document.Sections[1].Footers;
                     footers1.First.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal).Alignment = Alignment.right;
 
                     footers1.Even.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal).Alignment = Alignment.right;
 
                     footers1.Odd.InsertParagraph("Página ").AppendPageNumber(PageNumberFormat.normal).Append(" de ").AppendPageCount(PageNumberFormat.normal).Alignment = Alignment.right;
-
-
 
 
                     var h1 = document.InsertParagraph();
@@ -579,18 +620,18 @@ namespace SCGApp
 
                         p = document.InsertParagraph();
                         p.Append(tb.Type).Font(new Xceed.Document.NET.Font("Calibri"))
-    .FontSize(12)
-    .Color(Color.Blue)
-    .Bold()
-    .Append(" " + tb.Description).Font(new Xceed.Document.NET.Font("Calibri")).Color(Color.Gray).Italic()
-    .SpacingAfter(40);
+        .FontSize(12)
+        .Color(Color.Blue)
+        .Bold()
+        .Append(" " + tb.Description).Font(new Xceed.Document.NET.Font("Calibri")).Color(Color.Gray).Italic()
+        .SpacingAfter(40);
                         // Insert another Paragraph into this document.
 
-                        var t = document.AddTable(tb.Columns.Count + 1, 6);
+                        var t = document.AddTable(tb.Columns.Count + 1, 5);
                         t.Alignment = Alignment.center;
                         t.Design = TableDesign.LightGridAccent1;
                         t.AutoFit = AutoFit.ColumnWidth;
-                        t.SetWidths(new float[] { 60, 210, 180, 70, 400, 100 }, true);
+                        t.SetWidths(new float[] { 60, 240, 200, 80, 430 }, true);
 
 
 
@@ -599,7 +640,6 @@ namespace SCGApp
                         t.Rows[0].Cells[2].Paragraphs[0].Append("Tipo");
                         t.Rows[0].Cells[3].Paragraphs[0].Append("I/O");
                         t.Rows[0].Cells[4].Paragraphs[0].Append("Descrição");
-                        t.Rows[0].Cells[5].Paragraphs[0].Append("Comentário");
                         int i = 1;
                         foreach (var item in tb.Columns)
                         {
@@ -614,7 +654,6 @@ namespace SCGApp
                                 t.Rows[i].Cells[2].Paragraphs[0].Append(item.DataType);
                             t.Rows[i].Cells[3].Paragraphs[0].Append(item.Output);
                             t.Rows[i].Cells[4].Paragraphs[0].Append(item.Description);
-                            t.Rows[i].Cells[5].Paragraphs[0].Append("");
                             i++;
                         }
 
@@ -649,6 +688,16 @@ namespace SCGApp
         public List<ForeignKeyModel> ForeignKeys { get; set; }
 
 
+        /// <summary>
+        /// Itens de composição
+        /// </summary>
+        public List<ComposeItem> Compose { get; set; }
+        /// <summary>
+        /// Critérios de Composicao
+        /// </summary>
+        public List<ComposeCriteria> Criterias { get; set; }
+
+
         public TablesModel()
         {
             this.Columns = new List<ColumnsModel>();
@@ -669,6 +718,8 @@ namespace SCGApp
             this.Columns = new List<ColumnsModel>();
             this.Indexes = new List<IndexModel>();
             this.ForeignKeys = new List<ForeignKeyModel>();
+            this.Compose = new List<ComposeItem>();
+            this.Criterias = new List<ComposeCriteria>();
         }
     }
 
@@ -789,4 +840,86 @@ namespace SCGApp
         public string ReferencedColumn { get; set; }
 
     }
+
+
+
+    /// <summary>
+    /// Item de Composição
+    /// </summary>
+    public class ComposeItem
+    {
+        /// <summary>
+        /// Nome da Tabela ou objeto de composição
+        /// </summary>
+        public string Table { get; set; }
+        /// <summary>
+        /// Descrição da Tabela ou objeto de composição
+        /// </summary>
+        public string Description { get; set; }
+
+
+        /// <summary>
+        /// Construtor de Atribuição
+        /// </summary>
+        /// <param name="table">Tabela ou objeto de referencia</param>
+        /// <param name="description">Descrição</param>
+        public ComposeItem(string table, string description)
+        {
+            this.Table = table;
+            this.Description = description;
+        }
+    }
+
+    /// <summary>
+    /// Itens de critério da Composição
+    /// </summary>
+    public class ComposeCriteria
+    {
+
+        /// <summary>
+        /// Ordem de Visualização
+        /// </summary>
+        public byte Order { get; set; }
+
+        /// <summary>
+        /// Tipo de Critério
+        /// </summary>
+        public string Type { get; set; }
+        /// <summary>
+        /// Nome do Campo de critério
+        /// </summary>
+        public string Field { get; set; }
+        /// <summary>
+        /// Descrição do Critério
+        /// </summary>
+        public string Description { get; set; }
+
+
+        /// <summary>
+        /// Construtor de Atribuição
+        /// </summary>
+        /// <param name="field">Campo de restrição</param>
+        /// <param name="description">Descrição</param>
+        public ComposeCriteria(byte order, string type, string field, string description)
+        {
+            this.Order = order;
+            this.Type = type;
+            this.Field = field;
+            this.Description = description;
+        }
+
+        /// <summary>
+        /// Construtor base
+        /// </summary>
+
+        public ComposeCriteria()
+        {
+            this.Order = 0;
+            this.Type = "";
+            this.Field = "";
+            this.Description = "";
+        }
+    }
+
+
 }

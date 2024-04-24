@@ -703,8 +703,10 @@ inner join cep.dbo.tbcadcep cep (NOLOCK) on (cep.codcep = case when cli.codcep='
 
 			<item  owner="" script="true" definer="" name="VWANAPET" desc ="View de Pesquisa de Informações de Animais Válidos">
 				<query>
-					<![CDATA[SELECT ANI.ANIKEY
+					<![CDATA[
+SELECT ANI.ANIKEY
       ,ANI.CODANI
+	  ,ANI.NOMANI
 	  ,ANI.ORGBAS
 	  ,DSCRAC
 	  ,CODESP
@@ -715,39 +717,45 @@ inner join cep.dbo.tbcadcep cep (NOLOCK) on (cep.codcep = case when cli.codcep='
 	  ,HASALE
 	  ,HASCAS
 	  ,HASCHP
-      ,EVPANI = CASE WHEN DATEDIFF(YEAR, DATNAC, GETDATE()) = 0 THEN 0
+      ,EVPANI = CASE WHEN DATEDIFF(YEAR, DATNAC, GETDATE()) = 0 THEN 5
                      WHEN DATEDIFF(YEAR, DATNAC, GETDATE()) IN (1,2) THEN 5
 	                 WHEN DATEDIFF(YEAR, DATNAC, GETDATE()) IN (3,4,5) THEN 4
                      WHEN DATEDIFF(YEAR, DATNAC, GETDATE()) IN (6,7,8) THEN 3
 	                 WHEN DATEDIFF(YEAR, DATNAC, GETDATE()) IN (9,10,11,12) THEN 2
 		        ELSE 1 END
+	  ,HASPES
 	  ,NUMPES
-	  ,HASINT =  COALESCE(DRS.FLAG,0)
-	  ,VAC012 = COALESCE(A012.STA012,0)
-	  ,VAC014 = COALESCE(A014.STA014,0)
+	  ,HASINT = IIF(DRS.CODANI IS NULL,0,1)
+	  ,VAC012 = COALESCE(A012.STA012,5)
+	  ,VAC014 = COALESCE(A014.STA014,5)
+	  ,NIDBAS
 
   FROM TBCADANI AS ANI WITH (NOLOCK)
-  LEFT JOIN (SELECT ORGBAS, CODANI, FLAG = 1
-                FROM TBPCDLAN (NOLOCK)
-               WHERE TIPREG = 1 AND STAREC=1 AND CODPCD IN (SELECT CODPCD FROM RFSTAOSS (NOLOCK) WHERE HASDRS=1)) DRS
+  LEFT JOIN (SELECT DISTINCT ORGBAS, CODANI
+               FROM TBPCDLAN (NOLOCK)
+               WHERE SRCSYS = 0 AND TIPREG = 1 AND STAREC=1 AND CODPCD IN (SELECT CODPCD FROM RFSTAOSS (NOLOCK) WHERE HASDRS=1)) DRS
 	ON (DRS.ORGBAS = ANI.ORGBAS AND DRS.CODANI = ANI.CODANI)
   LEFT JOIN (SELECT ANIKEY, STA012 
- FROM TBSTAVAC (NOLOCK)
-
-WHERE NUMMES IN ( SELECT MAX(NUMMES) FROM TBSTAVAC WHERE NUMANO = YEAR(GETDATE()))
-  AND NUMANO = YEAR(GETDATE())
-  AND STA012 IN (1,4,5)
-  ) A012
-  ON (A012.ANIKEY = ANI.ANIKEY)
+               FROM TBSTAVAC (NOLOCK)
+              WHERE NUMMES IN ( SELECT MAX(NUMMES) FROM TBSTAVAC WHERE NUMANO = YEAR(GETDATE()))
+                AND NUMANO = YEAR(GETDATE())
+			    AND STA012 IN (1,4,5)) A012
+    ON (A012.ANIKEY = ANI.ANIKEY)
 
   LEFT JOIN (SELECT ANIKEY, STA014
- FROM TBSTAVAC (NOLOCK)
-WHERE NUMMES IN ( SELECT MAX(NUMMES) FROM TBSTAVAC WHERE NUMANO = YEAR(GETDATE()))
-  AND NUMANO = YEAR(GETDATE())
-  AND STA014 IN (1,4,5)
-  ) A014
-  ON (A014.ANIKEY = ANI.ANIKEY)
- WHERE  (DATEDIFF(YEAR, DATNAC, GETDATE()) < 22) AND (HASFAL = 0)]]>
+              FROM TBSTAVAC (NOLOCK)
+             WHERE NUMMES IN ( SELECT MAX(NUMMES) FROM TBSTAVAC WHERE NUMANO = YEAR(GETDATE()))
+               AND NUMANO = YEAR(GETDATE())
+               AND STA014 IN (1,4,5)) A014
+    ON (A014.ANIKEY = ANI.ANIKEY)
+ WHERE  (DATEDIFF(YEAR, DATNAC, GETDATE()) < 22) AND (HASFAL = 0) 
+   AND TRIM(DSCRAC)<>''
+   AND CLIKEY>0
+   AND DATEDIFF(YEAR, DATNAC, GETDATE())<=40
+   AND DATNAC <= GETDATE()
+   AND CODESP >0
+   AND ANI.CODCMF<>''
+]]>
 				</query>
 
 			</item>
@@ -807,6 +815,8 @@ IF(@RETURN_VALUE = -2)
 			   HASCAS = @HASCAS,
 			   HASCHP = @HASCHP,
 			   NUMPES = @NUMPES,
+			   HASPES = @HASPES,
+			   NIDBAS = @NIDBAS,
     		   DATUPD = GETDATE()
     	 WHERE CODANI = @CODANI AND ORGBAS=@ORGBAS
 		IF(@@ERROR = 0 )
@@ -821,7 +831,7 @@ IF(@RETURN_VALUE = -2)
 			</returns>
 		</insertcommand>
 		<methods>
-			<item script="false" alias="A." sql="" method="GetLastProcedure" return="int" returnmode="2" procname="PRGETLASPCD" desc ="Obtêm o ID do Último Registro de Procedimento Gravado" returnvalue="0">
+			<!--<item script="false" alias="A." sql="" method="GetLastProcedure" return="int" returnmode="2" procname="PRGETLASPCD" desc ="Obtêm o ID do Último Registro de Procedimento Gravado" returnvalue="0">
 				<query>
 					<![CDATA[DECLARE @RETURN_VALUE INT = 0;
 SELECT @RETURN_VALUE = MAX(NIDPCD) FROM TBPCDLAN (NOLOCK) WHERE TIPREG=1 AND ORGBAS=@ORGBAS
@@ -832,9 +842,9 @@ RETURN ISNULL(@RETURN_VALUE,0)]]>
 					<parameter input="false" apply="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="" inputmode="4"/>
 
 				</parameters>
-			</item>
+			</item>-->
 
-			<item script="true" alias="A." sql="" method="InsertOrUpdate" return="int" returnmode="2" procname="PRCADANIINS" desc ="Insere/Atualiza um registro de animais" returnvalue="0">
+			<!--<item script="true" alias="A." sql="" method="InsertOrUpdate" return="int" returnmode="2" procname="PRCADANIINS" desc ="Insere/Atualiza um registro de animais" returnvalue="0">
 				<query>
 					<![CDATA[DECLARE @RETURN_VALUE INT = 0;
 SET @DSCRAC = UPPER(@DSCRAC)
@@ -918,7 +928,8 @@ RETURN @RETURN_VALUE;]]>
 					<parameter input="false" apply="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="" inputmode="4"/>
 
 				</parameters>
-			</item>
+			</item>-->
+		
 		</methods>
 
 
@@ -1152,57 +1163,7 @@ RETURN @RETURN_VALUE;
 			<item owner="" script="true" definer="" name="VWLANCONVWC" desc ="View de Registros de Lançamentos de Procedimentos base consulta VET WE CARE">
 				<query>
 					<![CDATA[
-	WITH CONSOLIDACAO
-		AS 
-		    (SELECT ORGBAS
-					  ,CODANI
-					  ,CODORI 
-					  ,APEVET
-					  ,CODPCD
-					  ,DATPCD = MAX(DATPCD)
-					  ,TIPRF1 = MAX(TIPRF1)
-					  ,HASRF2 = MAX(HASRF2)
-					  ,HASSR2 = MAX(HASSR2)
-					  ,HASLDO = MAX(HASLDO)
-		    FROM (SELECT LAN1.ORGBAS
-				   ,LAN1.CODPCD
-				   ,LAN1.CODANI
-				   ,LAN1.CODORI
-				   ,LAN1.APEVET
-				   ,LAN1.DATPCD
-                   ,TIPRF1
-                   ,HASRF2 = 1
-                   ,HASSR2 = CASE WHEN LAN1.CODPCD = RF2.CODPCD AND RF2.TIPRF1 = 1 THEN 1 ELSE 0 END
-                   ,HASLDO = CASE WHEN LAN1.NIDPCD = LDO.NIDPCD AND COALESCE(LDO.URLLDO,'') <> '' THEN 1 ELSE 0 END
-				   /*
-				    * SERIALIZA O REGISTRO E OEDENA POR RELEVANCIA HASSR1, HASLDO
-					*/
-				   ,NUMROW = ROW_NUMBER() OVER(PARTITION BY NUMOSS ORDER BY NUMOSS ASC, CASE WHEN LAN1.CODPCD = RF2.CODPCD AND RF2.TIPRF1 = 1 THEN 1 ELSE 0 END DESC, CASE WHEN LAN1.NIDPCD = LDO.NIDPCD AND COALESCE(LDO.URLLDO,'') <> '' THEN 1 ELSE 0 END DESC) 
-			   FROM TBPCDLAN (NOLOCK) LAN1
-			  INNER JOIN (SELECT CODPCD, TIPRF1 FROM RFSTAOSV (NOLOCK) WHERE TIPREL=2) RF2
-			     ON (RF2.CODPCD = LAN1.CODPCD)
-		       LEFT JOIN TBLDOCTO (NOLOCK) LDO 
-				 ON (LDO.ORGBAS = LAN1.ORGBAS AND LDO.NIDPCD = LAN1.NIDPCD)
-              WHERE LAN1.SRCSYS=0 
-			    AND LAN1.TIPREG=1
-			    AND LAN1.STAREC=1
-		
-				/*
-				 * CONDICAO DE RELEVANCIA, SITUACAO EM QUE PODE OCORRER, RESULTA EM NUMERO MAIOR DE ASSOCIAÇÕES AO REGISTRO
-				 */
-				AND CASE WHEN LAN1.CODPCD = RF2.CODPCD AND RF2.TIPRF1 = 1 THEN 1 ELSE 0 END = 1
-				) X
-		WHERE NUMROW=1
-	GROUP BY  ORGBAS
-	  ,CODANI
-	  ,CODORI 
-	  ,APEVET
-	  ,CODPCD
-	  )
-
-
-
-	SELECT DISTINCT 
+SELECT DISTINCT 
        LAN.ORGBAS
       ,LAN.NIDPCD
       ,LAN.STAREC
@@ -1210,7 +1171,7 @@ RETURN @RETURN_VALUE;
 	  ,LAN.ANIKEY
 	  ,LAN.ANIPBI
       ,LAN.CODANI
-      ,LAN.DATPCD
+      ,DATPCD = CONVERT(DATE,LAN.DATPCD)
       ,LAN.VLRPCD
       ,LAN.VLRPGT
       ,LAN.APEVET
@@ -1222,43 +1183,58 @@ RETURN @RETURN_VALUE;
       ,LAN.CODPCD
 	  ,LAN.PCDKEY
       ,LAN.CODORI
-      ,LAN.NIDBAS
+      ,BAS.NIDBAS
 	  ,BAS.DSCBAS
 	  ,HASRF1 = CAST ( 1 AS TINYINT)
-	  ,HASRF2 = CAST ( COALESCE(RF2.HASRF2,0) AS TINYINT)
+	  ,HASRF2 = CAST (COALESCE(RF2.HASRF2,0) AS TINYINT)
 	  ,HASSR2 = CAST (COALESCE(RF2.HASSR2,0) AS TINYINT)
 	  ,HASLDO = CAST (COALESCE(RF2.HASLDO,0) AS TINYINT)
 	  ,TIPRF1 = CAST (COALESCE(RF2.TIPRF1,0) AS TINYINT)
-	  --,RF2.DATPCD
-	  
-	  --, LAN.DATPCD
-	  --, DATEADD(day, 1,LAN.DATPCD)
-	 
   FROM TBPCDLAN (NOLOCK) LAN
- INNER JOIN TBPCDORI (NOLOCK) ORI 
+ INNER JOIN TBORIORL (NOLOCK) ORL 
+    ON (ORL.ORGBAS = LAN.ORGBAS AND ORL.NIDORI = LAN.CODORI AND LAN.DATPCD >= ORL.DATINI AND LAN.DATPCD <= ORL.DATFIN) 
+  LEFT JOIN TBPCDORI (NOLOCK) ORI 
     ON (ORI.ORGBAS = LAN.ORGBAS AND ORI.NIDORI = LAN.CODORI)
  INNER JOIN TBCADBAS (NOLOCK) BAS 
     ON (BAS.NIDBAS = LAN.NIDBAS)
-  -- CODORI, APEVET
-  LEFT JOIN CONSOLIDACAO RF2
-	ON (    RF2.ORGBAS = LAN.ORGBAS 
-	    --AND RF2.NUMOSS = LAN.NUMOSS 
-		AND RF2.CODANI = LAN.CODANI 
-		AND RF2.CODORI = LAN.CODORI 
-		AND RF2.APEVET = LAN.APEVET
-		AND CONVERT(INT,RF2.DATPCD,112) BETWEEN CONVERT(INT,LAN.DATPCD,112) AND CONVERT(INT, DATEADD(day, 1,LAN.DATPCD),112)
-			--	AND CONVERT(INT,RF2.DATPCD,112) BETWEEN CONVERT(INT,LAN.DATPCD,112) AND CONVERT(INT, DATEADD(day, 1,LAN.DATPCD),112)
-			)
-		--/*
-		-- * CONDICAO DE RELEVANCIA
-		-- */
-		--AND RF2.NUMROW = 1)
+  /*
+   * traz todos os registros de PCDLAN e as possiveis associações da subquery
+   */
+  LEFT JOIN (SELECT DISTINCT LAN1.ORGBAS
+				   ,LAN1.CODPCD
+				   ,LAN1.CODANI
+				   ,LAN1.CODORI
+				   ,LAN1.APEVET
+				   ,DATPCD = CONVERT( DATE, LAN1.DATPCD)
+                   ,TIPRF1 = CASE WHEN TIPRF1 IS NULL THEN -1 ELSE COALESCE(TIPRF1,0) END
+				   -- somente assinala que foi feita a leitura do tipo de relacao 2 
+                   ,HASRF2 = 1
+				   -- somente assinala que o procedimento detectado faz parte da definição de destaque 
+                   ,HASSR2 = CASE WHEN LAN1.CODPCD = RF2.CODPCD AND RF2.TIPRF1 = 1 THEN 1 ELSE 0 END
+				   -- faz verificacao de registro de laudo
+                   ,HASLDO = CASE WHEN LAN1.NIDPCD = LDO.NIDPCD AND COALESCE(LDO.URLLDO,'') <> '' THEN 1 ELSE 0 END
+			   FROM TBPCDLAN (NOLOCK) LAN1
+			  INNER JOIN (SELECT CODPCD, TIPRF1 FROM RFSTAOSV (NOLOCK) WHERE TIPREL=2) RF2
+			     ON (RF2.CODPCD = LAN1.CODPCD)
+     	       LEFT JOIN TBLDOCTO (NOLOCK) LDO 
+				 ON (LDO.ORGBAS = LAN1.ORGBAS AND LDO.NIDPCD = LAN1.NIDPCD)
+              WHERE LAN1.SRCSYS=0 
+			    AND LAN1.TIPREG=1
+			    AND LAN1.STAREC=1
+	            AND LAN1.DATPCD > '20211231 23:59:59'
+				AND LAN1.CODPCD IN (SELECT CODPCD FROM RFSTAOSV (NOLOCK) WHERE TIPREL=2)
+	            AND LAN1.NIDBAS NOT IN (SELECT NIDBAS FROM TBCADBAS (NOLOCK) WHERE DSCBAS LIKE '%PETCARE%')) RF2
+
+    ON (  RF2.ORGBAS = LAN.ORGBAS AND RF2.CODANI = LAN.CODANI AND RF2.CODORI = LAN.CODORI AND RF2.APEVET = LAN.APEVET
+		AND CONVERT(DATE,RF2.DATPCD,112) 
+		   BETWEEN CONVERT(DATE,LAN.DATPCD) AND CONVERT(DATE, DATEADD(day, 1,LAN.DATPCD)))
 	
- WHERE LAN.SRCSYS= 0 AND LAN.TIPREG=1 AND LAN.STAREC=1 
-   AND BAS.NIDBAS NOT IN (0,111,113,204,205,120)
+ WHERE LAN.SRCSYS= 0
+   AND LAN.TIPREG=1
+   AND LAN.STAREC=1 
+   AND LAN.NIDBAS NOT IN (SELECT NIDBAS FROM TBCADBAS (NOLOCK) WHERE DSCBAS LIKE '%PETCARE%')
    AND LAN.DATPCD > '20211231 23:59:59'
    AND LAN.CODPCD IN (SELECT CODPCD FROM RFSTAOSV WHERE TIPREL IN (1))
-   --AND LAN.NIDPCD IN (3078205, 3129153,4218624)  
 
 				]]>
 
@@ -1267,59 +1243,7 @@ RETURN @RETURN_VALUE;
 			<item owner="" script="true" definer="" name="VWLANINTVWC" desc ="View de Registros de Lançamentos de Procedimentos base internação VET WE CARE">
 				<query>
 					<![CDATA[
-
-
-	WITH CONSOLIDACAO
-		AS 
-		    (SELECT ORGBAS
-					  ,CODANI
-					  ,CODORI 
-					  ,APEVET
-					  ,CODPCD
-					  ,DATPCD = MAX(DATPCD)
-					  ,TIPRF1 = MAX(TIPRF1)
-					  ,HASRF2 = MAX(HASRF2)
-					  ,HASSR2 = MAX(HASSR2)
-					  ,HASLDO = MAX(HASLDO)
-		    FROM (SELECT LAN1.ORGBAS
-				   ,LAN1.CODPCD
-				   ,LAN1.CODANI
-				   ,LAN1.CODORI
-				   ,LAN1.APEVET
-				   ,LAN1.DATPCD
-                   ,TIPRF1
-                   ,HASRF2 = 1
-                   ,HASSR2 = CASE WHEN LAN1.CODPCD = RF2.CODPCD AND RF2.TIPRF1 = 1 THEN 1 ELSE 0 END
-                   ,HASLDO = CASE WHEN LAN1.NIDPCD = LDO.NIDPCD AND COALESCE(LDO.URLLDO,'') <> '' THEN 1 ELSE 0 END
-				   /*
-				    * SERIALIZA O REGISTRO E OEDENA POR RELEVANCIA HASSR1, HASLDO
-					*/
-				   ,NUMROW = ROW_NUMBER() OVER(PARTITION BY NUMOSS ORDER BY NUMOSS ASC, CASE WHEN LAN1.CODPCD = RF2.CODPCD AND RF2.TIPRF1 = 1 THEN 1 ELSE 0 END DESC, CASE WHEN LAN1.NIDPCD = LDO.NIDPCD AND COALESCE(LDO.URLLDO,'') <> '' THEN 1 ELSE 0 END DESC) 
-			   FROM TBPCDLAN (NOLOCK) LAN1
-			  INNER JOIN (SELECT CODPCD, TIPRF1 FROM RFSTAOSV (NOLOCK) WHERE TIPREL=3) RF2
-			     ON (RF2.CODPCD = LAN1.CODPCD)
-		       LEFT JOIN TBLDOCTO (NOLOCK) LDO 
-				 ON (LDO.ORGBAS = LAN1.ORGBAS AND LDO.NIDPCD = LAN1.NIDPCD)
-              WHERE LAN1.SRCSYS=0 
-			    AND LAN1.TIPREG=1
-			    AND LAN1.STAREC=1
-		
-				/*
-				 * CONDICAO DE RELEVANCIA, SITUACAO EM QUE PODE OCORRER, RESULTA EM NUMERO MAIOR DE ASSOCIAÇÕES AO REGISTRO
-				 */
-				AND CASE WHEN LAN1.CODPCD = RF2.CODPCD AND RF2.TIPRF1 = 1 THEN 1 ELSE 0 END = 1
-				) X
-		WHERE NUMROW=1
-	GROUP BY  ORGBAS
-	  ,CODANI
-	  ,CODORI 
-	  ,APEVET
-	  ,CODPCD
-	  )
-
-
-
-	SELECT DISTINCT 
+SELECT DISTINCT 
        LAN.ORGBAS
       ,LAN.NIDPCD
       ,LAN.STAREC
@@ -1327,7 +1251,7 @@ RETURN @RETURN_VALUE;
 	  ,LAN.ANIKEY
 	  ,LAN.ANIPBI
       ,LAN.CODANI
-      ,LAN.DATPCD
+      ,DATPCD = CONVERT(DATE,LAN.DATPCD)
       ,LAN.VLRPCD
       ,LAN.VLRPGT
       ,LAN.APEVET
@@ -1339,44 +1263,60 @@ RETURN @RETURN_VALUE;
       ,LAN.CODPCD
 	  ,LAN.PCDKEY
       ,LAN.CODORI
-      ,LAN.NIDBAS
+      ,BAS.NIDBAS
 	  ,BAS.DSCBAS
 	  ,HASRF1 = CAST ( 1 AS TINYINT)
-	  ,HASRF2 = CAST ( COALESCE(RF2.HASRF2,0) AS TINYINT)
+	  ,HASRF2 = CAST (COALESCE(RF2.HASRF2,0) AS TINYINT)
 	  ,HASSR2 = CAST (COALESCE(RF2.HASSR2,0) AS TINYINT)
 	  ,HASLDO = CAST (COALESCE(RF2.HASLDO,0) AS TINYINT)
 	  ,TIPRF1 = CAST (COALESCE(RF2.TIPRF1,0) AS TINYINT)
-	  --,RF2.DATPCD
-	  
-	  --, LAN.DATPCD
-	  --, DATEADD(day, 1,LAN.DATPCD)
-	 
   FROM TBPCDLAN (NOLOCK) LAN
- INNER JOIN TBPCDORI (NOLOCK) ORI 
+ INNER JOIN TBORIORL (NOLOCK) ORL 
+    ON (ORL.ORGBAS = LAN.ORGBAS AND ORL.NIDORI = LAN.CODORI AND LAN.DATPCD >= ORL.DATINI AND LAN.DATPCD <= ORL.DATFIN) 
+  LEFT JOIN TBPCDORI (NOLOCK) ORI 
     ON (ORI.ORGBAS = LAN.ORGBAS AND ORI.NIDORI = LAN.CODORI)
  INNER JOIN TBCADBAS (NOLOCK) BAS 
     ON (BAS.NIDBAS = LAN.NIDBAS)
-  -- CODORI, APEVET
-  LEFT JOIN CONSOLIDACAO RF2
-	ON (    RF2.ORGBAS = LAN.ORGBAS 
-	    --AND RF2.NUMOSS = LAN.NUMOSS 
-		AND RF2.CODANI = LAN.CODANI 
-		AND RF2.CODORI = LAN.CODORI 
-		AND RF2.APEVET = LAN.APEVET
-		AND CONVERT(INT,RF2.DATPCD,112) BETWEEN CONVERT(INT,LAN.DATPCD,112) AND CONVERT(INT, DATEADD(day, 1,LAN.DATPCD),112)
-			--	AND CONVERT(INT,RF2.DATPCD,112) BETWEEN CONVERT(INT,LAN.DATPCD,112) AND CONVERT(INT, DATEADD(day, 1,LAN.DATPCD),112)
-			)
-		--/*
-		-- * CONDICAO DE RELEVANCIA
-		-- */
-		--AND RF2.NUMROW = 1)
+  /*
+   * traz todos os registros de PCDLAN e as possiveis associações da subquery
+   */
+  LEFT JOIN (SELECT DISTINCT LAN1.ORGBAS
+				   ,LAN1.CODPCD
+				   ,LAN1.CODANI
+				   ,LAN1.CODORI
+				   ,LAN1.APEVET
+				   ,DATPCD = CONVERT( DATE, LAN1.DATPCD)
+                   ,TIPRF1 = CASE WHEN TIPRF1 IS NULL THEN -1 ELSE COALESCE(TIPRF1,0) END
+				   -- somente assinala que foi feita a leitura do tipo de relacao 2 
+                   ,HASRF2 = 1
+				   -- somente assinala que o procedimento detectado faz parte da definição de destaque 
+                   ,HASSR2 = CASE WHEN LAN1.CODPCD = RF2.CODPCD AND RF2.TIPRF1 = 1 THEN 1 ELSE 0 END
+				   -- faz verificacao de registro de laudo
+                   ,HASLDO = CASE WHEN LAN1.NIDPCD = LDO.NIDPCD AND COALESCE(LDO.URLLDO,'') <> '' THEN 1 ELSE 0 END
+			   FROM TBPCDLAN (NOLOCK) LAN1
+			  INNER JOIN (SELECT CODPCD, TIPRF1 FROM RFSTAOSV (NOLOCK) WHERE TIPREL=3) RF2
+			     ON (RF2.CODPCD = LAN1.CODPCD)
+     	       LEFT JOIN TBLDOCTO (NOLOCK) LDO 
+				 ON (LDO.ORGBAS = LAN1.ORGBAS AND LDO.NIDPCD = LAN1.NIDPCD)
+              WHERE LAN1.SRCSYS=0 
+			    AND LAN1.TIPREG=1
+			    AND LAN1.STAREC=1
+	            AND LAN1.DATPCD > '20211231 23:59:59'
+				AND LAN1.CODPCD IN (SELECT CODPCD FROM RFSTAOSV (NOLOCK) WHERE TIPREL=3)
+	            AND LAN1.NIDBAS NOT IN (SELECT NIDBAS FROM TBCADBAS (NOLOCK) WHERE DSCBAS LIKE '%PETCARE%')) RF2
+
+    ON (  RF2.ORGBAS = LAN.ORGBAS AND RF2.CODANI = LAN.CODANI AND RF2.CODORI = LAN.CODORI AND RF2.APEVET = LAN.APEVET
+		AND CONVERT(DATE,RF2.DATPCD,112) 
+		   BETWEEN CONVERT(DATE,LAN.DATPCD) AND CONVERT(DATE, DATEADD(day, 1,LAN.DATPCD)))
 	
- WHERE LAN.SRCSYS= 0 AND LAN.TIPREG=1 AND LAN.STAREC=1 
-   AND BAS.NIDBAS NOT IN (0,111,113,204,205,120)
+ WHERE LAN.SRCSYS= 0
+   AND LAN.TIPREG=1
+   AND LAN.STAREC=1 
+   AND LAN.NIDBAS NOT IN (SELECT NIDBAS FROM TBCADBAS (NOLOCK) WHERE DSCBAS LIKE '%PETCARE%')
    AND LAN.DATPCD > '20211231 23:59:59'
    AND LAN.CODPCD IN (SELECT CODPCD FROM RFSTAOSS (NOLOCK))
-   --AND LAN.NIDPCD IN (3078205, 3129153,4218624)
-   
+
+
 				
 				]]>
 
@@ -1482,7 +1422,7 @@ IF(@RETURN_VALUE=-2)
 			</item>
 
 
-			<item script="true" alias="A." sql="" method="GetLastProcedure" return="int" returnmode="21" procname="PRGETLASPCD" desc ="Obtêm o ID do Último Registro de Procedimento Gravado" returnvalue="0">
+			<!--<item script="true" alias="A." sql="" method="GetLastProcedure" return="int" returnmode="21" procname="PRGETLASPCD" desc ="Obtêm o ID do Último Registro de Procedimento Gravado" returnvalue="0">
 				<query>
 					<![CDATA[DECLARE @RETURN_VALUE INT = 0;
 SELECT @RETURN_VALUE = MAX(NIDPCD) FROM TBPCDLAN (NOLOCK) WHERE TIPREG=1 AND ORGBAS=@ORGBAS
@@ -1491,7 +1431,7 @@ RETURN ISNULL(@RETURN_VALUE,0)]]>
 				<parameters>
 					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
 				</parameters>
-			</item>
+			</item>-->
 
 			<item script="true" alias="A." sql="" method="HasRecord" return="int" returnmode="2" procname="PRGETHASPCD" desc ="Verifica se o registro existe para a base informada" returnvalue="0">
 				<query>
@@ -1505,6 +1445,8 @@ RETURN ISNULL(@RETURN_VALUE,0)]]>
 					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
 				</parameters>
 			</item>
+			
+			
 			<item script="false" alias="A." sql="" method="UpdateReferences" return="int" returnmode="21" procname="PRPCDLANUPDREF" desc ="Atualiza as referencias de lancamentos" returnvalue="0" timeout="2800">
 				<query>
 					<![CDATA[
@@ -2301,25 +2243,6 @@ IF(@RETURN_VALUE= -2)
 	<item create="true"  id="15" name="RLPCDVAC" api="true" apiname="" friendlyname="ProceduresVaccines" modelversion="3" descriptor="Tabela de Informações de Procedimentos associados a vacinas">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
-
-
-		<insertcommand key="Key" fieldreturn="CODPCD" exceptionparamns="" procname="PRPCDVACINS" method="Insert">
-			<maxfield field=""/>
-			<nextnumber field="" id="" />
-			<pre>
-				<![CDATA[
-      ]]>
-			</pre>
-			<body></body>
-			<pos>
-				<![CDATA[
-        ]]>
-			</pos>
-			<returns>
-				<return value="-1" message="" error="FAILALL"></return>
-				<return value="-2" message="" error="RECORDFOUND"></return>
-			</returns>
-		</insertcommand>
 	</item>
 	<item create="true"  id="16" name="TBCADBAS" api="true" apiname="" friendlyname="SalesBase" modelversion="3" descriptor="Tabela de Informações de Base de Vendas">
 		<CSharpPartial>True</CSharpPartial>
@@ -2582,7 +2505,7 @@ IF(@RETURN_VALUE = -2)
 
 	</item>
 
-	<item create="true"  id="25" name="TBREGINT" api="true" apiname="" friendlyname="RegistrosInternacao" modelversion="3" descriptor="Tabela de Registro de Internação">
+	<item create="true"  id="25" name="TBREGINT" api="true" apiname="" friendlyname="HospitalizationRecords" modelversion="3" descriptor="Tabela de Registro de Internação">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 
@@ -2613,7 +2536,7 @@ IF(@RETURN_VALUE=0 AND @ORIKEY<>0)
 				<return value="-4" message="Origem informada não existe" error="RECORDNOTFOUND"></return>
 			</returns>
 		</insertcommand>
-		<methods>
+		<!--<methods>
 			<item script="true" alias="B." sql="" method="Delete" return="int" returnmode="2" procname="PRREGINTDEL" desc ="Deleta a origem de base solicitada" returnvalue="0">
 				<query>
 					<![CDATA[
@@ -2632,7 +2555,7 @@ RETURN @RETURN_VALUE;
 					<parameter input="true" apply="false" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
 				</parameters>
 			</item>
-		</methods>
+		</methods>-->
 
 	</item>
 
@@ -5004,6 +4927,69 @@ IF(EXISTS(SELECT 1 FROM TBLDOCTO (NOLOCK) WHERE ORGBAS = @ORGBAS AND NIDLDO = @N
 	</item>
 
 
+	<item create="true"  id="43" type="TABLE" name="EXREGFRM" api="true" apiname="" friendlyname="FormsRegisters" modelversion="3" descriptor="Registros de Formulario" comments="Esta tabela retêm os registros de formulários existentes em campanhas de Marketing">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+
+		<view>
+			<item owner="" script="true" definer="" name="VWREGFRM" desc ="View de Registro de Dados de Formulários importados">
+				<query>
+					<![CDATA[SELECT NIDFRM, EMPKEY
+,FRFL01 as [1 - Em qual unidade esteve em seu último atendimento?]
+,FRFL02 as [2 - De 0 a 10, quão satisfeito você ficou com a sua última visita no Pet Care?]
+,FRFL03 as [3 - Qual a probabilidade de você recomendar o Pet Care a um parente ou amigo?]
+,FRFL04 as [4 - Poderia nos deixar um email de contato de preferência?]
+,FRFL05 as [5 - Muito obrigado!  Quer contribuir ainda mais com o Pet Care?]
+,FRFL06 as [6 - O site do Pet Care é fácil de usar e forneceu as informações que eu buscava?]
+,FRFL07 as [7 - Classifica o Pet Care como uma das principais opções de veterinário em sua região?]
+,FRFL08 as [8 - Foi fácil entrar em contato por telefone, email ou whatsapp com o Pet Care?]
+,FRFL09 as [9 - Quem me atendeu foi agradável e passou as informações que eu procurava?]
+,FRFL10 as [10 - Haviam horários de agendamento que se encaixavam às minhas necessidades?]
+,FRFL11 as [11 - Ao chegar ao Pet Care foi fácil identificar o local e estacionar?]
+,FRFL12 as [12 - A aparência do Hospital e de suas dependências me fizeram sentir acolhido e confortável]
+,FRFL13 as [13 - A equipe de atendimento está preparada para a minha visita?]
+,FRFL14 as [14 - Fui informado na recepção de quanto tempo demoraria para ser atendido?]
+,FRFL15 as [15 - O Médico Veterinário explicou claramente sobre o que estava acontecendo com o meu pet?]
+,FRFL16 as [16 - O Médico veterinário se mostrou empático comigo e com o meu pet?]
+,FRFL17 as [17 - O Médico Veterinário me explicou claramente como será o tratamento do meu pet (medicação, exames, prognóstico), inclusive falando dos custos?]
+,FRFL18 as [18 - O Médico Veterinário explicou o que deveria ser feito em casa, de modo que pudesse entender?]
+,FRFL19 as [19 - O processo de liberação e pagamento no caixa foi eficiente?]
+,FRFL20 as [20 - A equipe do caixa me ofereceu a opção de comprar os medicamentos no próprio hospital?]
+,FRFL21 as [21 - Quando o Médico Veterinário falou sobre retornos e exames foi oferecida a possibilidade de agendamentos?]
+,FRFL22 as [22 - Os preços dos serviços são compatíveis com a qualidade e conveniência oferecidos?]
+,FRFL23 as [23 - Eu sei o que o meu pet vai ter que fazer e quanto vou pagar nos retornos recomendados?]
+,FRFL24 as [24 - Eu recebi contato telefônico, whatsapp ou e-mail depois do atendimento para falar dos exames ou evolução do meu pet?]
+,FRFL25 as [25 - Quando precisei, foi fácil falar com o Pet Care depois da consulta?]
+,FRFL26 as [26 - O Pet Care oferece informações e avisos de check-up, retornos e vacinas que me ajudam a programar os cuidados preventivos?]
+,FRFL27 as [27 - O que mais poderia deixar de comentário ou sugestões?]
+,FRFL28 as [28 - Deixe seu nome, se quiser :)]
+,FRFL29 as [29 - Token]
+,FRFL30 as [30 - Submitted at]
+FROM EXREGFRM
+]]>
+				</query>
+			</item>
+		</view>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="PRREGFRMINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+	</item>
+
 	<item create="true"  id="200" type="TABLE" name="TBEMPFIL" api="true" apiname="" friendlyname="CompanyBranch" modelversion="3" descriptor="Associação Empresa x Filial" comments="">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
@@ -5037,7 +5023,7 @@ IF(EXISTS (SELECT 1 FROM TBEMPFIL (NOLOCK) WHERE CODFIL= @CODFIL))
 		</insertcommand>
 	</item>
 
-	<item create="true"  id="200" type="TABLE" name="TBPCDOPE" api="true" apiname="" friendlyname="ProceduresOperations" modelversion="3" descriptor="Operações de Agrupamento relativas aos procedimentos" comments="">
+	<item create="true"  id="200" type="TABLE" name="TBPCDOPE" api="true" apiname="" friendlyname="ProceduresOperations" modelversion="3" descriptor="Esta tabela armazena informações que definem operações de Agrupamento associadas aos procedimentos" comments="">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="PRPCDOPEINS" method="Insert">
@@ -5054,9 +5040,7 @@ IF(EXISTS (SELECT 1 FROM TBPCDOPE (NOLOCK) WHERE CODOPE=@CODOPE))
 			<body></body>
 			<pos>
 				<![CDATA[
- 
-				
-				
+ 			
 				]]>
 			</pos>
 			<returns>
@@ -5074,6 +5058,10 @@ IF(EXISTS (SELECT 1 FROM TBPCDOPE (NOLOCK) WHERE CODOPE=@CODOPE))
 		<SqlTable></SqlTable>
 	</item>
 	<item create="true"  id="200" type="TABLE" name="RFMODINP" api="true" apiname="" friendlyname="DataInputModes" modelversion="3" descriptor="Modos de Input de Dados" comments="Tabela que define os modos de entrada de dados para controle de consolidação de valores de faturamento">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="200" type="TABLE" name="RFSTAGER" api="true" apiname="" friendlyname="GeneralStatus" modelversion="3" descriptor="Status Geral" comments="Estabelecer uma ligação de integridade e relação nominal dos respectivos status de avaliação">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 	</item>

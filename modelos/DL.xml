@@ -44,8 +44,8 @@ IF(@RETURN_VALUE= -2)
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro inserido com sucesso" error=""></return>
-				<return value="2" message="Registro alterado com sucesso" error=""></return>
+				<return value="1" message="Registro incluido" error=""></return>
+				<return value="2" message="Registro alterado" error=""></return>
 				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
 		</insertcommand>
@@ -104,8 +104,8 @@ IF(@RETURN_VALUE= -2)
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro inserido com sucesso" error=""></return>
-				<return value="2" message="Registro alterado com sucesso" error=""></return>
+				<return value="1" message="Registro incluido" error=""></return>
+				<return value="2" message="Registro alterado" error=""></return>
 				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
 		</insertcommand>
@@ -147,8 +147,8 @@ IF(@RETURN_VALUE= -2)
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro inserido com sucesso" error=""></return>
-				<return value="2" message="Registro alterado com sucesso" error=""></return>
+				<return value="1" message="Registro incluido" error=""></return>
+				<return value="2" message="Registro alterado" error=""></return>
 				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
 		</insertcommand>
@@ -159,8 +159,7 @@ IF(@RETURN_VALUE= -2)
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
-		<insertcommand key="Key" fieldreturn="" exceptionparamns="'NUMPES','PESIDE','DATUPD','ULTPCD'" procname="CVCADANIINS" method="Insert">
-
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'NUMPES','PESIDE','DATUPD','ULTPCD','NIDBAS'" procname="CVCADANIINS" method="Insert">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
 			<pre>
@@ -181,8 +180,6 @@ IF(@RETURN_VALUE=-2)
 				  ,DATNAC = @DATNAC
 				  ,TXTPES = @TXTPES
 				  ,TXTIDE = @TXTIDE
-				  ,NUMPES = @NUMPES
-				  --,PESIDE = @PESIDE
 				  ,DSCRAC = @DSCRAC
 				  ,DSCALE = @DSCALE
 				  ,DSCCOR = @DSCCOR
@@ -204,8 +201,8 @@ IF(@RETURN_VALUE=-2)
         ]]>
 			</pos>
 			<returns>
-				<return value="1" operator="==" message="Registro incluido com sucesso" error="OK"/>
-				<return value="2" operator="==" message="Registro alterado com sucesso" error="OK"/>
+				<return value="1" operator="==" message="Registro incluido" error="OK"/>
+				<return value="2" operator="==" message="Registro alterado" error="OK"/>
 				<return value="-1" message="" error="FAILALL"/>
 				<return value="-99999" message="" error="BROKENCONNECTION"/>
 			</returns>
@@ -348,8 +345,8 @@ IF(@RETURN_VALUE = -2 )
         ]]>
 			</pos>
 			<returns>
-				<return value="1" operator="==" message="Registro incluido com sucesso" error="OK"/>
-				<return value="2" operator="==" message="Registro alterado com sucesso" error="OK"/>
+				<return value="1" operator="==" message="Registro incluido" error="OK"/>
+				<return value="2" operator="==" message="Registro alterado" error="OK"/>
 				<return value="-1" message="" error="FAILALL"/>
 			</returns>
 		</insertcommand>
@@ -751,6 +748,7 @@ IF(@RETURN_VALUE=-2)
 			  ,NUMOSS = @NUMOSS
 			  ,NUMQTD = @NUMQTD
 			  ,CODPCD = @CODPCD
+			  ,OLDORI = @OLDORI
 			  ,CODORI = @CODORI
 			  ,CODINT = @CODINT
 			  ,HASCVN = @HASCVN
@@ -766,8 +764,8 @@ IF(@RETURN_VALUE=-2)
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro inserido com sucesso" error="OK"></return>
-				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
+				<return value="2" message="Registro alterado" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"/>
 				<return value="-2" message="" error="RECORDFOUND"/>
 			</returns>
@@ -787,7 +785,7 @@ IF(@RETURN_VALUE=-2)
 		</selectcommand>
 
 		<methods>
-			<item script="true" alias="A." sql="" method="GetLastProcedure" return="int" returnmode="2" procname="CVPCDLANLASPCD" desc ="Obtêm o ID do Último Registro de Procedimento Gravado" returnvalue="0">
+			<!--<item script="true" alias="A." sql="" method="GetLastProcedure" return="int" returnmode="2" procname="CVPCDLANLASPCD" desc ="Obtêm o ID do Último Registro de Procedimento Gravado" returnvalue="0">
 				<query>
 					<![CDATA[
 DECLARE @RETURN_VALUE INT = 0;
@@ -800,9 +798,7 @@ RETURN @RETURN_VALUE;]]>
 					<parameter input="true" apply="true" omit="true" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
 					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
 				</parameters>
-			</item>
-
-
+			</item>-->
 
 			<item script="true" alias="A." sql="" method="UpdateBaseInformation" return="int" returnmode="2" procname="PRPCDLANUPDCLIBAS" desc ="Atualiza informações referente a ultima base de vendas aplicada para os registros de procedimento" returnvalue="0">
 				<query>
@@ -832,7 +828,154 @@ UPDATE CVCADCLI
 ON (Z01.ORGBAS = CVCADCLI.ORGBAS AND Z01.CODCMF = CVCADCLI.CODCMF)
 WHERE CVCADCLI.ORGBAS = @ORGBAS
 SET @RETURN_VALUE = @@ROWCOUNT;
-RETRUN @RETURN_VALUE;
+RETURN @RETURN_VALUE;
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" alias="" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+			<item script="true" alias="A." sql="" method="UpdatePetInformation" return="int" returnmode="2" procname="PRPCDLANUPDANIBAS" desc ="Atualiza informações referente a ultima base de vendas aplicada e outros atributos para os registros de PETS" returnvalue="0">
+				<query>
+					<![CDATA[
+    DECLARE @RETURN_VALUE INT =0
+
+	/*
+	 * ANIMAIS SEM LANCAMENTO
+	 */
+    UPDATE CVCADANI 
+       SET STAREC = 103
+     WHERE ORGBAS = @ORGBAS
+	   AND CODANI NOT IN (SELECT CODANI FROM CVPCDLAN (NOLOCK) WHERE ORGBAS=@ORGBAS)
+       SET @RETURN_VALUE = @@ROWCOUNT;
+
+	/*
+	 * RESET DE TODOS OS PARÂMETROS
+	 */
+    UPDATE CVCADANI 
+       SET ULTEMP = 0
+          ,ULTPCD = NULL
+    	  ,NIDBAS =0
+     WHERE ORGBAS = @ORGBAS
+	   AND STAREC <> 103;
+       SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+    
+    /*
+     * ATUALIZA AS INFORMACOES DE CVCADANI
+	 *   O CAMPO HASPRO = 1 DEFINE OS HOSPITAIS ATIVOS
+     */
+    UPDATE CVCADANI
+       SET ULTEMP = EMP.EMPKEY
+    	  ,ULTPCD = A02.ULTPCD
+    	  ,NIDBAS = BAS.NIDBAS
+      FROM CVCADANI ANI
+     INNER JOIN (SELECT DISTINCT A.ORGBAS
+    			       ,ULT.CODANI
+            		   ,ULTLCT
+            		   ,ULTPCD = ULT.DATPCD
+            		   ,ULTEMP = ULT.CODEMP
+        			   ,ULT.STAREC
+    				   ,NIDBAS = COALESCE(ORL.NIDBAS,0)
+              	   FROM (SELECT LAN.ORGBAS
+            			       ,ANI.CODANI
+            			       ,MAX(LAN.NIDPCD) AS ULTLCT
+                           FROM CVPCDLAN (NOLOCK) LAN
+            			  INNER JOIN CVCADANI (NOLOCK) ANI 
+            			     ON (ANI.ORGBAS = LAN.ORGBAS AND ANI.CODANI = LAN.CODANI)
+            			  WHERE LAN.ORGBAS = @ORGBAS
+                            AND LAN.CODEMP IN (SELECT DISTINCT CODEMP FROM CVCADEMP (NOLOCK) WHERE ORGBAS = @ORGBAS AND HASPRO=1)
+            	  GROUP BY LAN.ORGBAS, ANI.CODANI) A
+            	  INNER JOIN (SELECT ORGBAS, CODORI,NIDPCD, STAREC, DATPCD, CODPCD, CODEMP,CODANI 
+    				            FROM CVPCDLAN (NOLOCK) 
+    							WHERE ORGBAS=@ORGBAS) ULT 
+            		 ON (ULT.NIDPCD = A.ULTLCT)
+                   LEFT JOIN CVORIORL (NOLOCK) ORL 
+    			     ON (ORL.ORGBAS = ULT.ORGBAS AND ORL.NIDORI = ULT.CODORI AND ULT.DATPCD >= ORL.DATINI AND ULT.DATPCD <= ORL.DATFIN )
+    				) A02
+    	ON (A02.ORGBAS = ANI.ORGBAS AND A02.CODANI = ANI.CODANI)
+     INNER JOIN CVCADEMP EMP
+    	ON (EMP.CODEMP = A02.ULTEMP AND EMP.ORGBAS = @ORGBAS)
+     INNER JOIN CVCADBAS BAS
+  	    ON (BAS.ORGBAS = @ORGBAS AND BAS.DEFBAS = A02.NIDBAS)
+
+     WHERE ANI.ULTEMP = 0 AND ANI.STAREC <> 103;
+       SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+
+    /*
+     * ATUALIZA AS INFORMACOES DE CVCADANI
+	 *   O CAMPO HASPRO = 0 : VAREJO
+     */
+    UPDATE CVCADANI
+       SET ULTEMP = EMP.EMPKEY
+    	  ,ULTPCD = A02.ULTPCD
+    	  ,NIDBAS = BAS.NIDBAS
+      FROM CVCADANI ANI
+     INNER JOIN (SELECT DISTINCT A.ORGBAS
+    			       ,ULT.CODANI
+            		   ,ULTLCT
+            		   ,ULTPCD = ULT.DATPCD
+            		   ,ULTEMP = ULT.CODEMP
+        			   ,ULT.STAREC
+    				   ,NIDBAS = COALESCE(ORL.NIDBAS,0)
+              	   FROM (SELECT LAN.ORGBAS
+            			       ,ANI.CODANI
+            			       ,MAX(LAN.NIDPCD) AS ULTLCT
+                           FROM CVPCDLAN (NOLOCK) LAN
+            			  INNER JOIN CVCADANI (NOLOCK) ANI 
+            			     ON (ANI.ORGBAS = LAN.ORGBAS AND ANI.CODANI = LAN.CODANI)
+            			  WHERE LAN.ORGBAS = @ORGBAS
+                            AND LAN.CODEMP IN (SELECT DISTINCT CODEMP FROM CVCADEMP (NOLOCK) WHERE ORGBAS = @ORGBAS AND HASPRO=0)
+            	  GROUP BY LAN.ORGBAS, ANI.CODANI) A
+            	  INNER JOIN (SELECT ORGBAS, CODORI,NIDPCD, STAREC, DATPCD, CODPCD, CODEMP,CODANI 
+    				            FROM CVPCDLAN (NOLOCK) 
+    							WHERE ORGBAS=@ORGBAS) ULT 
+            		 ON (ULT.NIDPCD = A.ULTLCT)
+                   LEFT JOIN CVORIORL (NOLOCK) ORL 
+    			     ON (ORL.ORGBAS = ULT.ORGBAS AND ORL.NIDORI = ULT.CODORI AND ULT.DATPCD >= ORL.DATINI AND ULT.DATPCD <= ORL.DATFIN )
+    				) A02
+    	ON (A02.ORGBAS = ANI.ORGBAS AND A02.CODANI = ANI.CODANI)
+     INNER JOIN CVCADEMP EMP
+    	ON (EMP.CODEMP = A02.ULTEMP AND EMP.ORGBAS = @ORGBAS)
+     INNER JOIN CVCADBAS BAS
+  	    ON (BAS.ORGBAS = @ORGBAS AND BAS.DEFBAS = A02.NIDBAS)
+
+     WHERE ANI.ULTEMP = 0 AND ANI.STAREC <> 103;
+       SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT;
+     RETURN @RETURN_VALUE;
+]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" alias="" desc ="Origem da Base" name="ORGBAS" type="System.Byte" default="" output="" null=""/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+				</parameters>
+			</item>
+
+				<item script="true" alias="A." sql="" method="UpdateOriginInformation" return="int" returnmode="2" procname="PRPCDLANUPDORIHST" desc ="Atualiza informações referente a alteração de origem de lançamentos" returnvalue="0">
+				<query>
+					<![CDATA[
+/*
+ * 1) UM NIDPCD PODE CONTEM MULTIPLAS ALTERAÇÕES, PORTANTO, A SUBQUERY INTERNA PEGA O NIDPCD COM A ULTIMA ALTERACAO PARA ATUALIZACAO
+ * 2) A ATUALIZACAO SOMENTE OCORRE SE A ORIGEM FOR DIFERENTE
+ */
+DECLARE @RETURN_VALUE INT = 0;
+UPDATE CVPCDLAN
+   SET OLDORI = LAN.CODORI
+      ,CODORI = OR0.CODORI
+      ,STACHG = 2
+  FROM CVPCDLAN LAN
+	 INNER JOIN (SELECT ORH.ORGBAS, ORH.NIDALT, ORH.NIDPCD, ORH.CODORI 
+                   FROM CVHSTORI (NOLOCK) ORH
+                  INNER JOIN  (SELECT ORGBAS, NIDPCD, MAX(NIDALT) AS NIDALT 
+                                FROM CVHSTORI (NOLOCK)
+							   WHERE ORGBAS = @ORGBAS
+			             	   GROUP BY ORGBAS, NIDPCD) RES
+	                 ON (RES.ORGBAS = ORH.ORGBAS AND RES.NIDALT = ORH.NIDALT)) OR0
+        ON (LAN.ORGBAS = OR0.ORGBAS AND LAN.NIDPCD = OR0.NIDPCD)
+	 WHERE LAN.ORGBAS = @ORGBAS AND LAN.STAREC=1  AND (LAN.CODORI <> OR0.CODORI)
+RETURN @RETURN_VALUE;
 ]]>
 				</query>
 				<parameters>
@@ -895,8 +1038,8 @@ IF(@RETURN_VALUE=-2)
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro inserido com sucesso" error="OK"></return>
-				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
+				<return value="2" message="Registro alterado" error="OK"></return>
 
 				<return value="-1" message="" error="FAILALL"/>
 				<return value="-2" message="" error="RECORDFOUND"/>
@@ -1030,8 +1173,8 @@ IF(@RETURN_VALUE=-2)
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro inserido com sucesso" error=""></return>
-				<return value="2" message="Registro alterado com sucesso" error=""></return>
+				<return value="1" message="Registro incluido" error=""></return>
+				<return value="2" message="Registro alterado" error=""></return>
 				<return value="-1" message="" error="FAILALL"/>
 			</returns>
 		</insertcommand>
@@ -1074,8 +1217,8 @@ IF(@RETURN_VALUE=-2)
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro inserido com sucesso" error=""></return>
-				<return value="2" message="Registro alterado com sucesso" error=""></return>
+				<return value="1" message="Registro incluido" error=""></return>
+				<return value="2" message="Registro alterado" error=""></return>
 				<return value="-1" message="" error="FAILALL"/>
 			</returns>
 		</insertcommand>
@@ -1128,8 +1271,8 @@ IF(@RETURN_VALUE=-2)
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro inserido com sucesso" error=""></return>
-				<return value="2" message="Registro alterado com sucesso" error=""></return>
+				<return value="1" message="Registro incluido" error=""></return>
+				<return value="2" message="Registro alterado" error=""></return>
 
 				<return value="-1" message="" error="FAILALL"/>
 				<return value="-2" message="" error="RECORDFOUND"/>
@@ -1197,7 +1340,7 @@ RETURN @RETURN_VALUE;]]>
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro inserido com sucesso" error=""></return>
+				<return value="1" message="Registro incluido" error=""></return>
 				<return value="-1" message="" error="FAILALL"/>
 			</returns>
 		</insertcommand>
@@ -1221,6 +1364,45 @@ RETURN @RETURN_VALUE;]]>
 		</methods>
 	</item>
 
+	<item create="true"  id="13" name="CVHSTORI" api="false" apiname="" friendlyname="OriginsHistory" modelversion="3" descriptor="Tabela de Informações de Histórico de Alteração de Origens de Procedimento">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="PRHSTORIINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+IF(EXISTS(SELECT 1 FROM CVHSTORI (NOLOCK) WHERE ORGBAS = @ORGBAS AND NIDALT = @NIDALT))
+	SET @RETURN_VALUE = -2;
+       ]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+IF(@RETURN_VALUE=-2)
+	BEGIN
+	UPDATE CVHSTORI
+	   SET DATALT = @DATALT
+		  ,CODANI = @CODANI
+		  ,CODEMP = @CODEMP
+		  ,NIDPCD = @NIDPCD
+		  ,CODPCD = @CODPCD
+		  ,OLDORI = @OLDORI
+		  ,CODORI = @CODORI
+    WHERE  ORGBAS = @ORGBAS AND NIDALT = @NIDALT
+		IF(@@ERROR=0)
+		   SET @RETURN_VALUE = 2;
+	END
+        ]]>
+			</pos>
+			<returns>
+				<return value="1"  message="Registro incluido" error="OK"></return>
+				<return value="2"  message="Registro alterado" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>
+	</item>
 	<item create="true"  id="14" name="CVHSTPCD" api="true" apiname="" friendlyname="ProcedureHistory" modelversion="3" descriptor="Tabela de Informações de Histórico de Alteração de Valores de Procedimento">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
@@ -1246,8 +1428,8 @@ IF(@RETURN_VALUE=-2)
         ]]>
 			</pos>
 			<returns>
-				<return value="1"  message="Registro incluindo com sucesso" error="OK"></return>
-				<return value="2"  message="Registro incluindo com sucesso" error="OK"></return>
+				<return value="1"  message="Registro incluido" error="OK"></return>
+				<return value="2"  message="Registro incluido" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
 		</insertcommand>
@@ -1286,7 +1468,7 @@ IF(@RETURN_VALUE=-2)
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"/>
 				<return value="-2" message="" error="RECORDFOUND"/>
 
@@ -1343,7 +1525,7 @@ IF(@RETURN_VALUE=-2)
 				<![CDATA[]]>
 			</pos>
 			<returns>
-				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return operator=">" value="0" message="Registro incluido" error="OK"/>
 			</returns>
 		</insertcommand>
 	</item>
@@ -1389,8 +1571,8 @@ IF (@RETURN_VALUE=-2)
 					]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro inserido com sucesso" error="OK"/>
-				<return value="2" message="Registro alterado com sucesso" error="OK"/>
+				<return value="1" message="Registro incluido" error="OK"/>
+				<return value="2" message="Registro alterado" error="OK"/>
 				<return value="-2" message="" error="RECORDFOUND"></return>
 			</returns>
 		</insertcommand>
@@ -1417,7 +1599,7 @@ IF(EXISTS(SELECT 1 FROM CVVETSPT (NOLOCK) WHERE NIDSPT =@NIDSPT))
 				<![CDATA[]]>
 			</pos>
 			<returns>
-				<return operator=">" value="0" message="Registro inserido com sucesso" error="OK"/>
+				<return operator=">" value="0" message="Registro incluido" error="OK"/>
 				<return value="-2" message="" error="RECORDFOUND"></return>
 
 			</returns>
@@ -1464,8 +1646,8 @@ IF(@RETURN_VALUE=-2)
 			]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro inserido com sucesso" error="OK"/>
-				<return value="2" message="Registro alterado com sucesso" error="OK"/>
+				<return value="1" message="Registro incluido" error="OK"/>
+				<return value="2" message="Registro alterado" error="OK"/>
 				<return value="-1" message="" error="FAILALL"></return>
 				<return value="-2" message="" error="RECORDFOUND"></return>
 			</returns>
@@ -1519,6 +1701,8 @@ IF(@RETURN_VALUE=-2)
 				]]>
 			</pos>
 			<returns>
+				<return value="1" message="Registro incluido" error="OK"/>
+				<return value="2" message="Registro alterado" error="OK"/>
 				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
 		</insertcommand>
@@ -1529,8 +1713,6 @@ IF(@RETURN_VALUE=-2)
 	<item create="true"  id="23" name="TTSRJ010" api="true" apiname="" friendlyname="EmployeeRole"  modelversion="3" descriptor="Registro de Funções de Funcionários" comments="Base de origem : SRJ010/SRJ030 - Funções">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
-
-
 	</item>
 
 
@@ -1710,8 +1892,8 @@ IF(@RETURN_VALUE = 0)
 				]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
-				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
+				<return value="2" message="Registro alterado" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
 		</insertcommand>
@@ -1741,8 +1923,8 @@ IF(@CODEMP IS NULL)
 				]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
-				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
+				<return value="2" message="Registro alterado" error="OK"></return>
 
 				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
@@ -1776,9 +1958,6 @@ ELSE
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
-
-
-
 		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD','CHKPCD','CHKANI'" procname="PRSL1011INS" method="Insert">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
@@ -1811,7 +1990,7 @@ IF(@RETURN_VALUE = 0)
 				]]>
 			</pos>
 			<returns>
-				<return value="1" operator="==" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="1" operator="==" message="Registro alterado" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
 		</insertcommand>
@@ -1841,7 +2020,7 @@ IF(@CODEMP IS NULL)
 				]]>
 			</pos>
 			<returns>
-				<return value="1" operator="==" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="1" operator="==" message="Registro alterado" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
 		</updatecommand>
@@ -1877,9 +2056,6 @@ SELECT @RETURN_VALUE AS RETURN_VALUE;]]>
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
-
-
-
 		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATCAD'" procname="PRLOCCEPINS" method="Insert">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
@@ -1897,7 +2073,7 @@ IF(EXISTS(SELECT 1 FROM TBLOCCEP (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODCMF = @C
 				]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"></return>
 				<return value="-2" message="" error="RECORDFOUND"></return>
 			</returns>
@@ -1919,7 +2095,7 @@ IF(NOT EXISTS(SELECT 1 FROM TBLOCCEP (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODCMF 
 				]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="1" message="Registro alterado" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"></return>
 				<return value="-2" message="" error="RECORDNOTFOUND"></return>
 			</returns>
@@ -1927,13 +2103,10 @@ IF(NOT EXISTS(SELECT 1 FROM TBLOCCEP (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODCMF 
 
 
 		<selectallcommand>
-
 			<item script="false" alias="A." sql="" method="SelectAll" type="List" return="PostalAddressBook" procname="" desc ="Obtêm uma lista de todos os clientes e cep's cadastrados" remarks="">
 				<query>
 					<![CDATA[SELECT * FROM TBLOCCEP (NOLOCK) WHERE STAREC=0]]>
 				</query>
-
-
 			</item>
 		</selectallcommand>
 
@@ -1971,9 +2144,6 @@ RETURN @RETURN_VALUE;
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 		<extendedmodel></extendedmodel>
-
-
-
 		<insertcommand key="identity" fieldreturn="" exceptionparamns="'DATUPD'" procname="PRSZ6010INS" method="Insert">
 			<maxfield field=""/>
 			<nextnumber field="" id="" />
@@ -2003,8 +2173,8 @@ IF(@RETURN_VALUE = 0)
 				]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
-				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
+				<return value="2" message="Registro alterado" error="OK"></return>
 				<return value="-2" message="" error="RECORDFOUND"></return>
 
 			</returns>
@@ -2025,8 +2195,8 @@ IF(@CODEMP IS NULL)
 				]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
-				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
+				<return value="2" message="Registro alterado" error="OK"></return>
 			</returns>
 		</updatecommand>
 
@@ -2119,8 +2289,8 @@ IF(@RETURN_VALUE = -2)
 				]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
-				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
+				<return value="2" message="Registro alterado" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"></return>
 
 			</returns>
@@ -2451,8 +2621,8 @@ IF(EXISTS(SELECT 1 FROM CVLDOCTO (NOLOCK) WHERE ORGBAS = @ORGBAS AND NIDLDO = @N
 				]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
-				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
+				<return value="2" message="Registro alterado" error="OK"></return>
 
 				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
@@ -2516,8 +2686,8 @@ IF(EXISTS(SELECT 1 FROM CVCADUSU (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODUSU = @C
 				]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
-				<return value="2" message="Registro alterado com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
+				<return value="2" message="Registro alterado" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
 		</insertcommand>
@@ -2542,13 +2712,10 @@ IF(EXISTS(SELECT 1 FROM CVCADUSU (NOLOCK) WHERE ORGBAS = @ORGBAS AND CODUSU = @C
 			<body></body>
 			<pos>
 				<![CDATA[
-
-		
-		
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"/>
 				<return value="-2" message="" error="RECORDFOUND"/>
 				<return value="-99999" message="" error="BROKENCONNECTION"/>
@@ -2619,7 +2786,7 @@ DECLARE @RETURN_VALUE INT =0;
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"/>
 				<return value="-2" message="" error="RECORDFOUND"/>
 				<return value="-99999" message="" error="BROKENCONNECTION"/>
@@ -2673,7 +2840,7 @@ DECLARE @RETURN_VALUE INT =0;
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"/>
 				<return value="-2" message="" error="RECORDFOUND"/>
 				<return value="-99999" message="" error="BROKENCONNECTION"/>
@@ -2722,7 +2889,7 @@ DECLARE @RETURN_VALUE INT =0;
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"/>
 				<return value="-2" message="" error="RECORDFOUND"/>
 				<return value="-99999" message="" error="BROKENCONNECTION"/>
@@ -2772,7 +2939,7 @@ DECLARE @RETURN_VALUE INT =0;
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"/>
 				<return value="-2" message="" error="RECORDFOUND"/>
 				<return value="-99999" message="" error="BROKENCONNECTION"/>
@@ -2818,12 +2985,12 @@ DECLARE @RETURN_VALUE INT =0;
 		<SqlTable></SqlTable>
 	</item>
 
-	<item create="true"  id="503" type="TABLE" name="RFREPGER" api="true" apiname="" friendlyname="	ReportsReferences" modelversion="3" descriptor="Tabela de Parâmetros de Montagem de Relatórios" comments="Tabela que define os parâmetros funcionais de montagem de relatórios">
+	<item create="true"  id="504" type="TABLE" name="RFREPGER" api="true" apiname="" friendlyname="	ReportsReferences" modelversion="3" descriptor="Tabela de Parâmetros de Montagem de Relatórios" comments="Tabela que define os parâmetros funcionais de montagem de relatórios">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 	</item>
 
-	<item create="true"  id="503" type="TABLE" name="RPMRT050" api="true" apiname="" friendlyname="ReportMRT050" modelversion="3" descriptor="Relatório MRT050" comments="">
+	<item create="true"  id="505" type="TABLE" name="RPMRT050" api="true" apiname="" friendlyname="ReportMRT050" modelversion="3" descriptor="Relatório MRT050" comments="">
 		<CSharpPartial>True</CSharpPartial>
 		<SqlTable></SqlTable>
 
@@ -2839,7 +3006,7 @@ DECLARE @RETURN_VALUE INT =0;
         ]]>
 			</pos>
 			<returns>
-				<return value="1" message="Registro incluido com sucesso" error="OK"></return>
+				<return value="1" message="Registro incluido" error="OK"></return>
 				<return value="-1" message="" error="FAILALL"/>
 				<return value="-2" message="" error="RECORDFOUND"/>
 				<return value="-99999" message="" error="BROKENCONNECTION"/>
@@ -2977,6 +3144,121 @@ RETURN @RETURN_VALUE;
 
 	</item>
 
+
+	<item create="true"  id="506" type="TABLE" name="TTSF2010" api="true" apiname="" friendlyname="HeaderNF" modelversion="3" descriptor="Cabeçalho das NF de Saída" comments="">
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+		<compose>
+			<item table="SD2010" description="Itens de Venda da NF"></item>
+			<item table="SB1010" description="Descrição Genérica do Produto"></item>
+			<item table="SF4010" description="Tipos de Entrada e Saida"></item>
+			<item table="SF2010" description="Cabeçalho das NF's de saida"></item>
+			<item table="SA1010" description="Clientes"></item>
+			<item table="SL1010" description="Orçamento"></item>
+			<criteria>
+				<item order="02" field="*D_E_L_E_T_" type="Filtro" description="Aplicável a todas as tabelas envolvidas, *D_E_L_E_T_ = ' '"></item>
+				<item order="00" field="F2_FILIAL" type="Parâmetro" description="Lista de Filiais"></item>
+				<item order="01" field="F2_EMISSAO" type="Parâmetro" description="Data Inicial e Final de Leitura"></item>
+				<item order="99" field="F2_SERIE"  type="Filtro" description="Range de 'RPS' a 'RPS'"></item>
+				<item order="99" field="D2_FILIAL"  type="Filtro" description="D2_FILIAL = D2_FILIAL"></item>
+				<item order="99" field="D2_CLIENTE"  type="Filtro" description="D2_CLIENTE = F2_CLIENTE"></item>
+				<item order="99" field="D2_LOJA" type="Filtro"  description="D2_LOJA = F2_LOJA"></item>
+				<item order="99" field="D2_DOC"  type="Filtro" description="D2_DOC = F2_DOC"></item>
+				<item order="99" field="D2_SERIE"  type="Filtro" description="D2_SERIE = F2_SERIE"></item>
+				<item order="99" field="B1_FILIAL"  type="Filtro" description="B1_FILIAL = '02  '"></item>
+				<item order="99" field="F4_FILIAL" type="Filtro"  description="F4_FILIAL = '    '"></item>
+				<item order="99" field="F4_CODIGO"  type="Filtro" description="F4_CODIGO = D2_TES"></item>
+				<item order="99" field="F2_TIPODOC"  type="Filtro" description="NEGACAO DE F2_CODIGO >= '50'"></item>
+			</criteria>
+
+		</compose>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="" procname="PRTTSF2010INS" >
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+/* Verifica SE a filial está habilidade e captura a sua origem de base e o código de empresa base */
+SELECT @ORGBAS =  COALESCE(ORGBAS,0), @EMPKEY = EMPKEY FROM CVCADEMP (NOLOCK) WHERE CODFIL = @CODFIL AND HASPRO=1
+IF(@ORGBAS IS NULL)
+  SET @ORGBAS=0
+IF(@EMPKEY IS NULL)
+  SET @EMPKEY=0
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+        ]]>
+			</pos>
+			<returns>
+				<return value="1" message="Registro incluido" error="OK"></return>
+				<return value="-1" message="" error="FAILALL"/>
+				<return value="-2" message="" error="RECORDFOUND"/>
+			</returns>
+		</insertcommand>
+
+
+		<methods>
+
+			<item script="true" alias="" sql="" method="UpdateReferences" return="int" returnmode="0" procname="PRSF2010UPDREF" desc ="Atualiza as definições de batimento com a tabela de lançamentos" returnvalue="0">
+				<query>
+					<![CDATA[
+
+DECLARE @RETURN_VALUE INT=0;
+/* Verifica se a nota possui correspondencia com lancamentos */
+/* Não é possivel equalizar a data do lancamento */
+UPDATE TTSF2010
+   SET HASLAN = 1,
+       NIDPCD = LAN.NIDPCD
+  FROM TTSF2010 SF2
+ INNER JOIN CVCADEMP (NOLOCK) EMP
+    ON (EMP.CODFIL = SF2.CODFIL AND EMP.HASPRO = 1)
+ INNER JOIN CVPCDLAN (NOLOCK) LAN
+    ON (    SF2.EMPKEY = EMP.EMPKEY 
+	    AND SF2.ORGBAS = LAN.ORGBAS
+		AND SF2.CODANI = LAN.CODANI
+		AND SF2.CODPCD = LAN.CODPCD 
+		AND SF2.VLRBRT = LAN.VLRPCD)
+ WHERE SF2.DATEMI >= @DATINI AND SF2.DATEMI <=@DATFIN
+   SET @RETURN_VALUE = @@ROWCOUNT
+
+  
+/* ATUALIZA O VALOR DE TABELA DE PREÇO */
+UPDATE TTSF2010 
+   SET VLRTAB = B.VLRREF
+  FROM TTSF2010 SF2
+ INNER JOIN  (SELECT CODFIL, EMPKEY FROM CVCADEMP (NOLOCK) WHERE HASPRO=1) EMP
+    ON (EMP.CODFIL = SF2.CODFIL)
+ INNER JOIN (SELECT ROW_NUMBER() OVER (ORDER BY EMPKEY, CODPCD, DATALT) AS ID,
+			           EMPKEY, 
+			           CODPCD, 
+			           DATALT, 
+			           VLRREF 
+	              FROM CVHSTPCD (NOLOCK) 
+	             WHERE DATALT >='20220526'
+	               AND EMPKEY > 0
+                   AND CODPCD > 0) B 
+			 ON (    B.EMPKEY = SF2.EMPKEY
+	             AND SF2.CODPCD = B.CODPCD 
+	  		     AND SF2.DATEMI >= B.DATALT)
+ WHERE SF2.DATEMI >= @DATINI AND SF2.DATEMI <=@DATFIN
+   SET @RETURN_VALUE = @RETURN_VALUE + @@ROWCOUNT
+RETURN @RETURN_VALUE;
+					
+					]]>
+				</query>
+				<parameters>
+					<parameter input="true" apply="true" omit="true" desc ="Data Inicial" name="DATINI" type="System.DateTime" default="" output="" null="false"/>
+					<parameter input="true" apply="true" omit="true" desc ="Data Final" name="DATFIN" type="System.DateTime" default="" output="" null="false"/>
+					<parameter input="false" apply="true" omit="true" desc ="Retorno" name="RETURN_VALUE" type="System.Int32" default="" output="" null="false" inputmode="4"/>
+
+				</parameters>
+			</item>
+
+		</methods>
+
+	</item>
 
 	<actions>
 
@@ -3157,87 +3439,92 @@ SELECT DISTINCT CODANI
 		<item access="public" modifier="static" reference="" procbase="" script="true" alias="A." sql="" type="list" method="GetEZVETList" return="ReportCampaignEZVET" returnmode="5" procname="MKGETEZVLST" desc ="Obtêm a lista de registro baseada em campanha EZVET" remarks="" >
 			<query>
 				<![CDATA[
-				
-/*
- * QUERY OTIMIZADA
-   USING IX_CVPCDLAN_0005
- */
-DECLARE @TPCAMEZV TABLE (FLGREC TINYINT, CODCMF VARCHAR(15), DEAANI INT, LIVANI INT, NUMLIV TINYINT, NUMDEA TINYINT, DATNAC DATE NULL)
-
-INSERT INTO @TPCAMEZV (FLGREC, CODCMF, DEAANI, LIVANI, NUMLIV, NUMDEA)
-SELECT                      1, CODCMF, CODANI,      0,      0,      1
-  FROM CVCADANI (NOLOCK) ANI
- WHERE ORGBAS = @ORGBAS AND STAREC = 1 AND HASFAL = 1 OR DATOBT IS NOT NULL 
-   AND LEN(CODCMF)=11;
-
-INSERT INTO @TPCAMEZV (FLGREC, CODCMF, DEAANI, LIVANI, NUMLIV, NUMDEA, DATNAC)
-SELECT                      2, CODCMF,      0, CODANI,      1,      0, DATNAC
-  FROM CVCADANI (NOLOCK) ANI
- WHERE ORGBAS = @ORGBAS AND STAREC = 1 AND HASFAL = 0 OR DATOBT < GETDATE()
-
-INSERT INTO @TPCAMEZV (FLGREC, CODCMF,      DEAANI, LIVANI, NUMLIV, NUMDEA)
-SELECT                      9, CODCMF, MAX(DEAANI),      0,      0,      1
-  FROM @TPCAMEZV
- WHERE FLGREC = 1
- GROUP BY CODCMF
-
-INSERT INTO @TPCAMEZV (FLGREC, CODCMF, DEAANI, LIVANI, NUMLIV, NUMDEA, DATNAC)
-SELECT                      9, CODCMF,      0, LIVANI,      1,      0, DATNAC
-  FROM (SELECT NUMROW = ROW_NUMBER() OVER(PARTITION BY CODCMF ORDER BY CODCMF, DATNAC DESC) 
-              ,CODCMF
-		      ,LIVANI
-			  ,DATNAC
-	        FROM @TPCAMEZV
-		   WHERE FLGREC=2) QRY 
-		   WHERE QRY.NUMROW=1;
+     /*
+     * QUERY OTIMIZADA IX_CVPCDLAN_0006
+     */
     
-
-DELETE FROM @TPCAMEZV WHERE FLGREC <> 9;
-
-
+	TRUNCATE TABLE TPCAMEZV;
+    INSERT INTO TPCAMEZV (FLGREC, CODCMF, DEAANI, LIVANI, NUMLIV, NUMDEA)
+    SELECT                      1, CODCMF, CODANI,      0,      0,      1
+      FROM CVCADANI (NOLOCK) ANI
+     WHERE ORGBAS = @ORGBAS AND STAREC = 1 AND HASFAL = 1 OR DATOBT IS NOT NULL
+       AND LEN(CODCMF)=11;
     
-INSERT INTO @TPCAMEZV (FLGREC, CODCMF, DEAANI, LIVANI, NUMLIV, NUMDEA, DATNAC) 
-SELECT                      0, CODCMF, MAX(DEAANI) AS DEAANI, MAX(LIVANI) AS LIVANI, MAX(NUMLIV) AS NUMLIV, MAX(NUMDEA) AS NUMDEA, MAX(DATNAC) AS DATNAC
-  FROM @TPCAMEZV 
- WHERE FLGREC=9  
- GROUP BY CODCMF
-HAVING MAX(DEAANI)>0 AND MAX(LIVANI) >0 AND MAX(NUMLIV)>0 AND MAX(NUMDEA)>0  ;
-          
-DELETE FROM @TPCAMEZV WHERE FLGREC <> 0;
+    INSERT INTO TPCAMEZV (FLGREC, CODCMF, DEAANI, LIVANI, NUMLIV, NUMDEA, DATNAC)
+    SELECT                      2, CODCMF,      0, CODANI,      1,      0, DATNAC
+      FROM CVCADANI (NOLOCK) ANI
+     WHERE ORGBAS = @ORGBAS AND STAREC = 1 AND HASFAL = 0 OR DATOBT < GETDATE()
+    
+    INSERT INTO TPCAMEZV (FLGREC, CODCMF,      DEAANI, LIVANI, NUMLIV, NUMDEA)
+    SELECT                      9, CODCMF, MAX(DEAANI),      0,      0,      1
+      FROM TPCAMEZV
+     WHERE FLGREC = 1
+     GROUP BY CODCMF
+    
+    INSERT INTO TPCAMEZV (FLGREC, CODCMF, DEAANI, LIVANI, NUMLIV, NUMDEA, DATNAC)
+    SELECT                      9, CODCMF,      0, LIVANI,      1,      0, DATNAC
+      FROM (SELECT NUMROW = ROW_NUMBER() OVER(PARTITION BY CODCMF ORDER BY CODCMF, DATNAC DESC)
+                  ,CODCMF
+    		      ,LIVANI
+    			  ,DATNAC
+    	        FROM TPCAMEZV
+    		   WHERE FLGREC=2) QRY
+    		   WHERE QRY.NUMROW=1;
+    
+    
+    DELETE FROM TPCAMEZV WHERE FLGREC <> 9;
+    
+    
+    
+    INSERT INTO TPCAMEZV (FLGREC, CODCMF, DEAANI, LIVANI, NUMLIV, NUMDEA, DATNAC)
+    SELECT                      0, CODCMF, MAX(DEAANI) AS DEAANI, MAX(LIVANI) AS LIVANI, MAX(NUMLIV) AS NUMLIV, MAX(NUMDEA) AS NUMDEA, MAX(DATNAC) AS DATNAC
+      FROM TPCAMEZV
+     WHERE FLGREC=9
+     GROUP BY CODCMF
+    HAVING MAX(DEAANI)>0 AND MAX(LIVANI) >0 AND MAX(NUMLIV)>0 AND MAX(NUMDEA)>0  ;
+    
+    DELETE FROM TPCAMEZV WHERE FLGREC <> 0;
+    
+    DELETE FROM TPCAMEZV WHERE deaani = livani;
+    
+    SELECT A.CODCMF
+          ,DEAANI
+          ,ANI1.NOMANI AS ANIDEA
+          ,LIVANI
+          ,ANI2.NOMANI AS ANILIV
+          ,NUMLIV
+          ,NUMDEA
+    	  ,IDAANI = DATEDIFF(YEAR, A.DATNAC, GETDATE())
+          ,QRY.NIDBAS
+		  ,BASNAM = BAS.DSCBAS
+          ,CLI.NOMCLI AS NOMTUT
+    	  ,CLI.DSCMAL
+    	  ,TELCEL AS NUMCEL
+      FROM TPCAMEZV A
+     INNER JOIN CVCADCLI (NOLOCK) CLI
+        ON (CLI.ORGBAS = @ORGBAS AND CLI.CODCMF = A.CODCMF)
+     INNER JOIN (SELECT CODANI, MAX(NIDBAS) AS NIDBAS
+                   FROM CVPCDLAN (NOLOCK) LAN
+				   LEFT JOIN CVORIORL (NOLOCK) ORL
+    	             ON (ORL.ORGBAS = LAN.ORGBAS AND ORL.NIDORI = LAN.CODORI AND (LAN.DATPCD >= ORL.DATINI AND LAN.DATPCD <= ORL.DATFIN))
+    			--  INNER JOIN CVBASORI (NOLOCK) ORL
+    			--     ON (ORL.ORGBAS = LAN.ORGBAS AND ORL.NIDORI = LAN.CODORI AND ORL.IDXKEY = 1)
+                  WHERE LAN.ORGBAS = @ORGBAS
+    			    AND LAN.STAREC = 1
+    				AND LAN.CODANI IN (SELECT LIVANI FROM TPCAMEZV WHERE FLGREC=0 )
+    			  GROUP BY LAN.CODANI) QRY
+        ON (QRY.CODANI = A.LIVANI)
+     INNER JOIN CVCADANI (NOLOCK) ANI1
+        ON (ANI1.ORGBAS = @ORGBAS AND ANI1.CODANI = A.DEAANI)
+     INNER JOIN CVCADANI (NOLOCK) ANI2
+        ON (ANI2.ORGBAS = @ORGBAS AND ANI2.CODANI = A.LIVANI)
+	  LEFT JOIN CVCADBAS (NOLOCK) BAS
+    	ON (BAS.ORGBAS = @ORGBAS AND BAS.DEFBAS = QRY.NIDBAS)
 
-DELETE FROM @TPCAMEZV WHERE deaani = livani;
+     WHERE (CLI.ENVNEW = 'S')
+       AND A.FLGREC=0
+       AND BAS.DSCBAS = 'PETCARE'
 
-SELECT A.CODCMF
-      ,DEAANI
-      ,ANI1.NOMANI AS ANIDEA
-      ,LIVANI
-      ,ANI2.NOMANI AS ANILIV
-      ,NUMLIV
-      ,NUMDEA
-	  ,IDAANI = DATEDIFF(YEAR, A.DATNAC, GETDATE())
-      ,QRY.BASNAM
-      ,CLI.NOMCLI AS NOMTUT
-	  ,CLI.DSCMAL
-	  ,TELCEL AS NUMCEL
-  FROM @TPCAMEZV A
- INNER JOIN CVCADCLI (NOLOCK) CLI 
-    ON (CLI.ORGBAS = @ORGBAS AND CLI.CODCMF = A.CODCMF)
- INNER JOIN (SELECT CODANI, MAX(BASNAM) AS BASNAM
-               FROM CVPCDLAN (NOLOCK) LAN
-			  INNER JOIN CVBASORI (NOLOCK) ORL
-			     ON (ORL.ORGBAS = LAN.ORGBAS AND ORL.NIDORI = LAN.CODORI AND ORL.IDXKEY = 1)
-              WHERE LAN.ORGBAS = @ORGBAS
-			    AND LAN.STAREC = 1
-				AND LAN.CODANI IN (SELECT LIVANI FROM @TPCAMEZV WHERE FLGREC=0 )
-			  GROUP BY LAN.CODANI) QRY
-    ON (QRY.CODANI = A.LIVANI) 
- INNER JOIN CVCADANI (NOLOCK) ANI1 
-    ON (ANI1.ORGBAS = @ORGBAS AND ANI1.CODANI = A.DEAANI)
- INNER JOIN CVCADANI (NOLOCK) ANI2 
-    ON (ANI2.ORGBAS = @ORGBAS AND ANI2.CODANI = A.LIVANI)
- WHERE (CLI.ENVNEW = 'S')
-   AND FLGREC=0
-   AND BASNAM = 'PETCARE';
 
 	
 			]]>

@@ -283,7 +283,7 @@ IF(EXISTS ( SELECT 1 FROM RHREGAPO (NOLOCK) WHERE NIDAPO = @NIDAPO))
 		</insertcommand>
 
 		<methods>
-			
+
 			<item script="true" alias="" sql="" method="Delete" return="int" returnmode="2" procname="RHREGAPODEL" desc ="Deleta todos os registros do período informado" returnvalue="0">
 				<query>
 					<![CDATA[
@@ -742,7 +742,7 @@ IF(@RETURN_VALUE=-2)
 				<return value="-1" message="" error="FAILALL"></return>
 			</returns>
 		</insertcommand>
-	
+
 
 	</item>
 
@@ -965,10 +965,43 @@ IF(@RETURN_VALUE=0)
 			</item>
 
 		</selectcommand>
+	</item>
+
+
+	<item create="true"  id="34" name="EXSSTREG" api="true" apiname="" friendlyname="ExternalSSTData" modelversion="3" descriptor="Calendário Semanal" comments="Tabela customizada de inserção de informações SST">
+		<CSharpPartial>True</CSharpPartial>
+
+		<insertcommand key="Key" fieldreturn="" exceptionparamns="'DATUPD'" procname="EXSSTREGINS" method="Insert">
+			<maxfield field=""/>
+			<nextnumber field="" id="" />
+			<pre>
+				<![CDATA[
+
+				]]>
+			</pre>
+			<body></body>
+			<pos>
+				<![CDATA[
+				]]>
+			</pos>
+			<returns>
+				<return value="-1" message="" error="FAILALL"></return>
+			</returns>
+		</insertcommand>>
+
+
 
 
 	</item>
 
+	<item create="true"  id="35" name="RFEMPDEF" api="true" apiname="" friendlyname="ReferenceCompany" modelversion="3" descriptor="Referência de Personalidade Jurídica de Estabelecimento" >
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
+	<item create="true"  id="36" name="RHEMPDEF" api="true" apiname="" friendlyname="ReferenceCompanyAssociation" modelversion="3" descriptor="Referência de Personalidade Jurídica de Estabelecimento" comments ="Esta tabela promove a associação com a tabela RHCADFIL pelas chaves CODEMP, CODFIL e sua referencia juridica de estabelecimento" >
+		<CSharpPartial>True</CSharpPartial>
+		<SqlTable></SqlTable>
+	</item>
 	<actions>
 
 
@@ -1200,6 +1233,16 @@ IF(@RETURN_VALUE=0)
 	   Barbara dos Santos: A colaboradora era gestante e foi demitida na data 07/12. Porém a colaboradora estava gravida e foi reintegrada, em sua reintegração a sua data de demissão deve ser considerada. Precisamos corrigir este registro, desconsiderando a demissão e deixando a colabora com status normal na coluna STAADM
 	   */
        UPDATE RHMENFUN SET STAADM = 0, DATDSL = NULL, SITFOL = ' ' WHERE NIDFUN = 30000520 AND DATBAS = '20231231' AND STAADM=2
+
+	   /*
+	    * Débora aparecida
+		*/
+	   DELETE RHMENFUN WHERE NIDFUN = 10002895 AND DATBAS = '20231130';
+
+
+	   /* ARIZA */
+	   UPDATE RHMENFUN SET STAADM = 5 WHERE NIDFUN = 10003019 AND DATBAS = '20240430'
+
 	  RETURN @RETURN_VALUE;
 				
 				]]>
